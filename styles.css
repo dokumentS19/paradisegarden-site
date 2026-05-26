@@ -13,7 +13,7 @@ img{max-width:100%;height:auto;display:block}
 .bullets{margin:10px 0 0 0;padding:0 0 0 18px}.muted{color:var(--muted)}.small{font-size:.9em}.note{display:block;color:var(--muted);margin-top:10px;font-size:.85rem}
 .site-header{position:sticky;top:0;background:rgba(14,21,18,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);z-index:50}
 .header-inner{display:flex;align-items:center;justify-content:space-between;min-height:64px}
-.brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text)}.logo{width:auto;height:90px;object-fit:contain}.brand-title{font-weight:700}.brand-subtitle{display:block;font-size:.9rem;color:var(--muted)}
+.brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text)}.logo{width:auto;height:150px;object-fit:contain}.brand-title{font-weight:700}.brand-subtitle{display:block;font-size:.9rem;color:var(--muted)}
 .nav{display:flex;gap:18px}.nav a{color:var(--text);text-decoration:none;opacity:.9}.nav a:hover{opacity:1}.nav .cta{color:#fff;background:var(--brand);padding:8px 14px;border-radius:12px;border:1px solid var(--border)}
 .burger{display:none;background:none;border:0;cursor:pointer}.burger span{display:block;width:22px;height:2px;background:var(--text);margin:5px 0}
 .hero{padding:clamp(36px, 6vw, 64px) 0 24px;border-bottom:1px solid var(--border)}.hero-inner{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(16px,3vw,28px);align-items:center}
