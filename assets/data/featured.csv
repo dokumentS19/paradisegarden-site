@@ -1,0 +1,4 @@
+id,title,type,city,location,price_value,price_currency,area,bedrooms,bathrooms,cover,gallery,url,badges,date
+irpin-250,"Будинок 250 м² з ділянкою 6 соток",house,Ірпінь,"Ірпінь, Київська область",230000,EUR,250,4,3,assets/featured/irpin-house.jpg,"assets/featured/irpin-house.jpg|assets/featured/hostomel-townhouse.jpg",https://example.com/listing/irpin-250,Новинка,2026-02-01
+bucha-64,"2-кімнатна квартира 64 м²",apartment,Буча,"Буча, Київська область",68000,USD,64,2,1,assets/featured/bucha-flat.jpg,"assets/featured/bucha-flat.jpg",https://example.com/listing/bucha-64,Терміново,2026-01-22
+hostomel-120,"Таунхаус 120 м² з терасою",townhouse,Гостомель,"Гостомель, Київська область",115000,USD,120,3,2,assets/featured/hostomel-townhouse.jpg,"assets/featured/hostomel-townhouse.jpg",https://example.com/listing/hostomel-120,,2026-02-10
