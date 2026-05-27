@@ -378,8 +378,8 @@ body {
 
 /* САМА КАРТИНКА */
 .modal-img {
-  max-width: 90vw;
-  max-height: 90vh;
+  width: 100vw;
+  height: 100vh;
   object-fit: contain;
 
   display: block;
