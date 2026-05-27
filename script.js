@@ -227,3 +227,6 @@ const data = {
   3: {
     title: "1-к квартира, Ірпінь",
     desc: "Компактна квартира в центрі міста.",
+function changeImg(el){
+  document.getElementById("main-img").src = el.src;
+}
