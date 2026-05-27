@@ -143,7 +143,7 @@ p{
 .back-btn:hover{
   background: rgba(0,0,0,0.8);
 }
-``
+
 /* ===== FIX ВИРІВНЮВАННЯ СТОРІНКИ ===== */
 
 html, body {
@@ -243,13 +243,12 @@ body {
   text-decoration: none;
   border: 1px solid #374151;
 }
-``
+
 /* ===== FIX ТІЛЬКИ ДЛЯ СТОРІНКИ ОБ'ЄКТА ===== */
 
 body {
   display: block !important;
 }
-``
 #info {
   list-style: none;
   padding-left: 0;
@@ -260,7 +259,6 @@ body {
   padding-left: 10px;
   border-left: 3px solid #22c55e;
 }
-``
 /* ===== ХАРАКТЕРИСТИКИ ЯК КАРТОЧКИ ===== */
 
 #info {
@@ -329,4 +327,18 @@ body {
   content: "🏢"; /* поверхи */
 }
 
+#info {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
 
+#info li {
+  background: var(--card);
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
