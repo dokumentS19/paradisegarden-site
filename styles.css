@@ -244,3 +244,9 @@ body {
   border: 1px solid #374151;
 }
 ``
+/* ===== FIX ТІЛЬКИ ДЛЯ СТОРІНКИ ОБ'ЄКТА ===== */
+
+body {
+  display: block !important;
+}
+``
