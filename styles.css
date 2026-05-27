@@ -250,3 +250,8 @@ body {
   display: block !important;
 }
 ``
+#info li {
+  margin-bottom: 6px;
+  padding-left: 10px;
+  border-left: 3px solid #22c55e;
+}
