@@ -290,7 +290,7 @@ if (imgs) {
     });
   }
 }
-  const obj = data[id];
+const obj = data[id];
 
 if (obj) {
   document.getElementById("title").innerText = obj.title;
@@ -329,6 +329,4 @@ if (imgs) {
     });
   }
 }
-``
-``
 
