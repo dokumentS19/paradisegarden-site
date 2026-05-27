@@ -340,3 +340,14 @@ body {
 .nav a {
   font-size: 15px !important;
 }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 260px;
+}
+
+.header-inner {
+  gap: 20px;
+}
