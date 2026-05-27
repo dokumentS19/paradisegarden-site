@@ -213,45 +213,7 @@ html, body {
 .thumbs img:hover {
   opacity: 1;
 }
-/* ===== ВИРІВНЮВАННЯ КОНТЕНТУ ===== */
-
-
-.container {
-  max-width: 1100px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.
-.container {
-  max-width: 1100px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-
-.gallery {
-  max-width: 700px;
-  width: 100%;
-}
-/* ===== ЦЕНТРУВАННЯ ВСЬОГО КОНТЕНТУ ===== */
-
-.container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-/* 👉 ключовий момент */
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* 👉 щоб текст не розтягувався */
+/* ===== ЧИСТИЙ ФІКС ВИРІВНЮВАННЯ ===== */
 
 .container {
   max-width: 1100px;
@@ -259,38 +221,26 @@ html, body {
   margin: 0 auto;
   padding: 0 20px;
 }
-
-
-/* 👉 галерея під ширину */
-.gallery {
-  width: 100%;
-  max-width: 700px;
-}
-
-/* 👉 вирівнюємо текст красиво */
-h1, h2, p, ul {
-  text-align: left;
-}
-/* ===== ФІКС ВИРІВНЮВАННЯ ===== */
 
 body {
-  display: flex;
-  justify-content: center;
+  overflow-x: hidden;
 }
 
-
-.container {
-  max-width: 1100px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-
-/* щоб кнопка не ламала вирівнювання */
+/* кнопка назад */
 .back-btn {
   position: fixed;
   top: 20px;
   left: 20px;
   z-index: 999;
+
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+
+  padding: 8px 14px;
+  font-size: 14px;
+
+  border-radius: 8px;
+  text-decoration: none;
+  border: 1px solid #374151;
 }
+``
