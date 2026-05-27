@@ -309,7 +309,7 @@ body {
 }
 
 /* іконки */
-#info li::before {
+#info li:before {
   font-size: 18px;
 }
 
