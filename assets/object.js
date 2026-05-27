@@ -73,3 +73,49 @@ if (imgs) {
     thumbs.appendChild(img);
   });
 }
+
+// ===== FULLSCREEN =====
+
+let currentIndex = 0;
+let currentImages = [];
+
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modal-img");
+
+document.addEventListener("click", (e) => {
+  if (e.target.matches(".thumbs img, #main-img")) {
+
+    const imgs = document.querySelectorAll(".thumbs img");
+    currentImages = Array.from(imgs).map(i => i.src);
+
+    const clickedSrc = e.target.src;
+    currentIndex = currentImages.indexOf(clickedSrc);
+
+    modal.style.display = "block";
+    modalImg.src = clickedSrc;
+  }
+});
+
+// кнопка закрити
+document.getElementById("close").onclick = () => {
+  modal.style.display = "none";
+};
+
+// стрілка назад
+document.getElementById("prev").onclick = () => {
+  currentIndex--;
+  if (currentIndex < 0) currentIndex = currentImages.length - 1;
+  modalImg.src = currentImages[currentIndex];
+};
+
+// стрілка вперед
+document.getElementById("next").onclick = () => {
+  currentIndex++;
+  if (currentIndex >= currentImages.length) currentIndex = 0;
+  modalImg.src = currentImages[currentIndex];
+};
+
+// закриття по кліку
+modal.onclick = (e) => {
+  if (e.target === modal) modal.style.display = "none";
+};
