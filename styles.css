@@ -316,3 +316,17 @@ body {
   font-size: 18px;
 }
 
+/* конкретні іконки */
+#info li:nth-child(1)::before {
+  content: "📐"; /* площа */
+}
+
+#info li:nth-child(2)::before {
+  content: "🌿"; /* ділянка */
+}
+
+#info li:nth-child(3)::before {
+  content: "🏢"; /* поверхи */
+}
+
+
