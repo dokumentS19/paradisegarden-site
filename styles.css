@@ -213,3 +213,20 @@ html, body {
 .thumbs img:hover {
   opacity: 1;
 }
+/* ===== ВИРІВНЮВАННЯ КОНТЕНТУ ===== */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container > * {
+  width: 100%;
+  max-width: 700px;
+}
+
+.gallery {
+  max-width: 700px;
+  width: 100%;
+}
