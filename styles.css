@@ -261,3 +261,24 @@ html, body {
 h1, h2, p, ul {
   text-align: left;
 }
+/* ===== ФІКС ВИРІВНЮВАННЯ ===== */
+
+body {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* щоб кнопка не ламала вирівнювання */
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 999;
+}
