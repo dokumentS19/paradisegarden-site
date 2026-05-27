@@ -261,3 +261,21 @@ body {
   border-left: 3px solid #22c55e;
 }
 ``
+/* ===== ХАРАКТЕРИСТИКИ ЯК КАРТОЧКИ ===== */
+
+#info {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+#info li {
+  background: var(--card);
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  font-size: 0.95rem;
+}
