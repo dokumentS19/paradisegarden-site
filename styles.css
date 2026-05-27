@@ -305,15 +305,6 @@ body {
   cursor: pointer;
 }
 
-.nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 50px;
-  color: #fff;
-  cursor: pointer;
-}
-
 .prev { left: 30px; }
 .next { right: 30px; }
 /* щоб НІЩО не впливало */
@@ -321,12 +312,15 @@ body {
   box-sizing: border-box;
 }
 
+
 .nav {
   display: flex;
   gap: 18px;
   align-items: center;
 
-  flex-wrap: wrap;           /* ✅ дозволяє перенос */
+  flex-wrap: nowrap; /* ✅ ВАЖЛИВО */
+}
+
 }
 
 .nav a {
