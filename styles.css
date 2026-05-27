@@ -70,19 +70,6 @@ img{max-width:100%;height:auto;display:block}
 .fav-header-btn{margin-left:8px;display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--text);border:1px solid var(--border);padding:6px 10px;border-radius:999px;cursor:pointer}
 .fav-icon{font-size:1.05rem;line-height:1}
 .fav-counter{min-width:1.35em;height:1.35em;display:inline-grid;place-items:center;background:var(--brand);color:#fff;border-radius:999px;font-weight:700;font-size:.9em}
-/* Modal Gallery */
-.modal{position:fixed;inset:0;display:none;z-index:100}.modal.open{display:block}
-.modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.65)}
-.modal-content{position:relative;max-width:min(1100px, 96vw);margin:6vh auto;background:#0e1512;border:1px solid var(--border);border-radius:14px;padding:12px;box-shadow:var(--shadow)}
-.modal-main{position:relative;display:grid;place-items:center;background:#0c1813;border-radius:12px;overflow:hidden}
-.modal-main img{width:100%;height:auto;max-height:70vh;object-fit:contain;display:block}
-.modal-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.35);border:1px solid var(--border);color:#fff;width:40px;height:40px;border-radius:999px;display:grid;place-items:center;cursor:pointer}
-.modal-nav.prev{left:10px}.modal-nav.next{right:10px}
-.modal-close{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.35);color:#fff;border:1px solid var(--border);width:36px;height:36px;border-radius:999px;cursor:pointer}
-.modal-thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;max-height:22vh;overflow:auto}
-.modal-thumbs img{width:92px;height:64px;object-fit:cover;border:1px solid var(--border);border-radius:8px;opacity:.8;cursor:pointer}
-.modal-thumbs img.active{outline:2px solid var(--accent);opacity:1}
-.modal-caption{color:var(--muted);margin-top:6px;font-size:.95em}
 /* Responsive */
 @media (max-width:1080px){.grid-2{grid-template-columns:1fr;align-items:start}.hero-inner{grid-template-columns:1fr}}
 @media (max-width:900px){.grid-3{grid-template-columns:1fr 1fr}.cards{grid-template-columns:1fr 1fr}.listings-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.featured-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -326,6 +313,47 @@ body {
   color: white;
   cursor: pointer;
   user-select: none;
+}
+
+.prev { left: 30px; }
+.next { right: 30px; }
+
+/* ===== FULLSCREEN ===== */
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-size: 32px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 50px;
+  color: #fff;
+  cursor: pointer;
 }
 
 .prev { left: 30px; }
