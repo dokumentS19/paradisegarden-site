@@ -283,3 +283,50 @@ body {
 #info li:nth-child(1)::before { content: "📐"; }
 #info li:nth-child(2)::before { content: "🌿"; }
 #info li:nth-child(3)::before { content: "🏢"; }
+
+/* ===== FULLSCREEN FIX ===== */
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999 !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.95);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-img {
+  max-width: 90%;
+  max-height: 80%;
+  border-radius: 12px;
+}
+
+/* хрестик */
+.close {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-size: 32px;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* стрілки */
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 50px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+}
+
+.prev { left: 30px; }
+.next { right: 30px; }
