@@ -121,3 +121,26 @@ p{
   opacity:1;
 }
 ``
+.back-btn{
+  position: fixed;
+  top: 20px;
+  left: 20px;
+
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+
+  padding: 8px 14px;
+  font-size: 14px;
+
+  border-radius: 8px;
+  text-decoration: none;
+  border: 1px solid #374151;
+
+  backdrop-filter: blur(6px);
+  transition: 0.2s;
+}
+
+.back-btn:hover{
+  background: rgba(0,0,0,0.8);
+}
+``
