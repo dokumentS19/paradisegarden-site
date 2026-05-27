@@ -8,8 +8,8 @@
 body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;font-size:var(--fs-base);color:var(--text);background: radial-gradient(circle at top, #1e293b, #0f1720);line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
 img{max-width:100%;height:auto;display:block}
 .container {max-width: 1120px;width: 100%;margin: 0 auto;padding: 0 20px;}
-.section{padding:var(--space-section) 0}.
-.section.alt{background:rgba(0,0,0,0.3})}.grid-2{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(16px,3vw,28px)}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2.2vw,20px)}
+.section{padding:var(--space-section) 0}
+.section.alt{background:rgba(0,0,0,0.3};).grid-2{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(16px,3vw,28px)}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2.2vw,20px)}
 .bullets{margin:10px 0 0 0;padding:0 0 0 18px}.muted{color:var(--muted)}.small{font-size:.9em}.note{display:block;color:var(--muted);margin-top:10px;font-size:.85rem}
 .site-header{position:sticky;top:0;background:rgba(14,21,18,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);z-index:50}
 .header-inner{display:flex;align-items:center;justify-content:space-between;min-height:80px}
@@ -250,43 +250,12 @@ body {
 }
 #info {
   list-style: none;
-  padding-left: 0;
-}
-
-#info li {
-  margin-bottom: 6px;
-  padding-left: 10px;
-  border-left: 3px solid #22c55e;
-}
-/* ===== ХАРАКТЕРИСТИКИ ЯК КАРТОЧКИ ===== */
-
-#info {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 10px;
-}
-
-#info li {
-  background: var(--card);
-  padding: 12px 14px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  font-size: 0.95rem;
-}
-/* ===== ХАРАКТЕРИСТИКИ PRO ===== */
-
-#info {
-  list-style: none;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 12px;
 }
 
-/* карточка */
 #info li {
   background: var(--card);
   padding: 14px 16px;
@@ -301,43 +270,16 @@ body {
   transition: all 0.25s ease;
 }
 
-/* hover ефект */
 #info li:hover {
   transform: translateY(-3px);
   border-color: #22c55e;
   box-shadow: 0 15px 35px rgba(0,0,0,0.5);
 }
 
-/* іконки */
 #info li:before {
   font-size: 18px;
 }
 
-/* конкретні іконки */
-#info li:nth-child(1)::before {
-  content: "📐"; /* площа */
-}
-
-#info li:nth-child(2)::before {
-  content: "🌿"; /* ділянка */
-}
-
-#info li:nth-child(3)::before {
-  content: "🏢"; /* поверхи */
-}
-
-#info {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-}
-
-#info li {
-  background: var(--card);
-  padding: 14px 16px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-}
+#info li:nth-child(1)::before { content: "📐"; }
+#info li:nth-child(2)::before { content: "🌿"; }
+#info li:nth-child(3)::before { content: "🏢"; }
