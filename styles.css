@@ -327,15 +327,20 @@ body {
   inset: 0;
   background: rgba(0,0,0,0.95);
 
-  display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.modal.active {
+  display: flex;
+}
+
 .modal-img {
-  max-width: 90vw;
-  max-height: 90vh;
+  width: 100vw;
+  height: 100vh;
   object-fit: contain;
+  display: block;
+  margin: auto;
 }
 
 .close {
@@ -358,34 +363,6 @@ body {
 
 .prev { left: 30px; }
 .next { right: 30px; }
-
-/* ===== FINAL FIX FULLSCREEN ===== */
-
-.modal {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(0,0,0,0.95);
-
-  display: none;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal[style*="flex"] {
-  display: flex !important;
-}
-
-/* САМА КАРТИНКА */
-.modal-img {
-  width: 100vw;
-  height: 100vh;
-  object-fit: contain;
-
-  display: block;
-  margin: auto;
-}
-
 /* щоб НІЩО не впливало */
 .modal * {
   box-sizing: border-box;
