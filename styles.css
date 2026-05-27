@@ -279,3 +279,40 @@ body {
   box-shadow: var(--shadow);
   font-size: 0.95rem;
 }
+/* ===== ХАРАКТЕРИСТИКИ PRO ===== */
+
+#info {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+/* карточка */
+#info li {
+  background: var(--card);
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  transition: all 0.25s ease;
+}
+
+/* hover ефект */
+#info li:hover {
+  transform: translateY(-3px);
+  border-color: #22c55e;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+/* іконки */
+#info li::before {
+  font-size: 18px;
+}
+
