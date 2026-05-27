@@ -52,7 +52,8 @@ async function initData(){
   const urls = [REMOTE_SHEET_CSV_URL, AIRTABLE_VIEW_CSV_URL].filter(Boolean);
   let rows = [];
   async function fetchCsv(url){ try { const res = await fetch(url, {cache:'no-store'}); if (!res.ok) throw new Error(res.statusText); return await res.text(); } catch(e){ console.warn('CSV fetch failed:', url, e); return ''; } }
-  function parseCSV(text){ if (!text) return []; const lines = text.trim().split(/?
+  function parseCSV(text){ if (!text) return []; const lines = text.trim().split(/
+?
 /); if (!lines.length) return []; const headers = lines.shift().split(',').map(h=>h.trim()); return lines.map(line=>{ const cells = line.split(','); const obj = {}; headers.forEach((h,i)=> obj[h] = (cells[i]||'').trim()); return obj; }); }
   function parseRow(r){ if (!r || !r.id) return null; const toNum = v=> v===''? undefined : Number(v); const list = v=> (v||'').split(/[|,]/).map(s=>s.trim()).filter(Boolean); return { id:String(r.id), title:r.title||'', type:r.type||'', city:r.city||'', location:r.location||'', price:{ value: toNum(r.price_value), currency: (r.price_currency||'USD').toUpperCase() }, area: toNum(r.area), bedrooms: toNum(r.bedrooms), bathrooms: toNum(r.bathrooms), cover: r.cover||'', gallery: list(r.gallery), url: r.url||'#', badges: list(r.badges), date: r.date || '2000-01-01' }; }
 
@@ -207,3 +208,22 @@ function injectListingsJsonLd(){
   const s = document.createElement('script'); s.type='application/ld+json'; s.textContent = JSON.stringify(data); document.head.appendChild(s);
 }
 document.addEventListener('DOMContentLoaded', injectListingsJsonLd);
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+const data = {
+  1: {
+    title: "2-к квартира, Ірпінь",
+    desc: "Сучасна квартира у новобудові з комфортним плануванням.",
+    price: "65 000 $",
+    info: ["Площа: 65 м²", "Кухня: 15 м²", "Поверх: 3/10"]
+  },
+  2: {
+    title: "Будинок, Буча",
+    desc: "Просторий будинок з ділянкою та хорошим ремонтом.",
+    price: "120 000 $",
+    info: ["Площа: 120 м²", "Ділянка: 5 соток", "Поверхів: 2"]
+  },
+  3: {
+    title: "1-к квартира, Ірпінь",
+    desc: "Компактна квартира в центрі міста.",
