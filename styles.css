@@ -365,3 +365,22 @@ body {
   align-items: center;
   gap: 16px;  /* ✅ більше повітря */
 }
+/* СТРІЛКИ ДЛЯ ГАЛЕРЕЇ (FIX) */
+
+.modal .nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 50px;
+  color: #fff;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+.modal .prev {
+  left: 30px;
+}
+
+.modal .next {
+  right: 30px;
+}
