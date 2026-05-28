@@ -408,3 +408,18 @@ body {
 .modal .next {
   right: 20px !important;
 }
+/* FIX ШАПКА — текст в один рядок */
+
+.brand-title {
+  white-space: nowrap;
+}
+
+.brand-subtitle {
+  white-space: nowrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
