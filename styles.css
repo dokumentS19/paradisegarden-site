@@ -289,8 +289,8 @@ body {
 }
 
 .modal-img {
-  width: 80vw;
-  height: 70vh;
+  width: 60vw;
+  height: 50vh;
   object-fit: contain;
   display: block;
   margin: auto;
