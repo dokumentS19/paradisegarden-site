@@ -289,8 +289,8 @@ body {
 }
 
 modal-img {
-  max-width: 80vw;   /* ✅ ширина максимум 80% екрану */
-  max-height: 80vh;  /* ✅ висота максимум 80% */
+  max-width: 80vw;   /* ✅ ширина максимум 90% екрану */
+  max-height: 80vh;  /* ✅ висота максимум 90% */
 
   object-fit: contain;
   display: block;
