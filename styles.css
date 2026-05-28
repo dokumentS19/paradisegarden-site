@@ -357,6 +357,8 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;  /* ✅ більше повітря */
+
+  flex-wrap: wrap;  /* ✅ ось сюди */
 }
 /* СТРІЛКИ ДЛЯ ГАЛЕРЕЇ (FIX) */
 
@@ -440,3 +442,15 @@ body {
   white-space: nowrap;
 }
 
+#loginBtn {
+  background: #22c55e !important;  /* зелений */
+  color: #fff !important;
+
+  padding: 8px 14px;
+  border-radius: 10px;
+
+  font-weight: 600;
+  border: none;
+
+  margin-left: 10px; /* щоб не впиралась */
+}
