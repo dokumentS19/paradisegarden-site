@@ -288,7 +288,7 @@ body {
   display: flex;
 }
 
-modal-img {
+.modal-img {
   max-width: 90vw;   /* ✅ ширина максимум 90% екрану */
   max-height: 90vh;  /* ✅ висота максимум 90% */
 
@@ -296,7 +296,7 @@ modal-img {
   display: block;
   margin: auto;
 }
-
+''
 .close {
   position: absolute;
   top: 20px;
