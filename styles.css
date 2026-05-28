@@ -415,3 +415,28 @@ body {
   gap: 16px;
 }
 
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* 👉 обмежуємо текст */
+.brand {
+  flex: 0 0 auto;
+}
+
+/* 👉 меню займає тільки свій простір */
+.nav {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+/* 👉 щоб не влазило в текст */
+.brand-title {
+  white-space: nowrap;
+}
+
