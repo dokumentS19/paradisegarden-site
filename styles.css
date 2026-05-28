@@ -289,12 +289,14 @@ body {
 }
 
 .modal-img {
-  max-width: 90vw;   /* ✅ ширина максимум 90% екрану */
-  max-height: 90vh;  /* ✅ висота максимум 90% */
+  max-width: 75vw;   /* ✅ ще менше */
+  max-height: 75vh;
 
   object-fit: contain;
   display: block;
   margin: auto;
+}
+``
 }
 .close {
   position: absolute;
