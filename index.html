@@ -324,7 +324,18 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 const loginBtn = document.getElementById("loginBtn");
+<script type="module">
+import { initializeApp } from "...";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "...";
 
+const firebaseConfig = { ... };
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+const loginBtn = document.getElementById("loginBtn");
+``
 // Вхід
 loginBtn.onclick = () => {
   signInWithPopup(auth, provider)
