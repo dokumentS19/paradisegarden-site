@@ -411,7 +411,7 @@ body {
 .nav {
   overflow: visible !important;
 }
-..header-inner {
+.header-inner {
   overflow: visible;
 }
 .nav button {
