@@ -482,3 +482,14 @@ body {
   z-index: 999;
   margin-right: 8px;
 }
+.nav {
+  overflow: visible !important;
+}
+``
+.header-inner {
+  overflow: visible;
+}
+``
+.nav button {
+  pointer-events: auto;
+}
