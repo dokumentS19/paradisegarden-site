@@ -82,18 +82,15 @@ p{
 .gallery{
   margin-bottom:20px;
 }
-
 .gallery #main-img{
   width:100%;
   border-radius:12px;
   margin-bottom:10px;
 }
-
 .thumbs{
   display:flex;
   gap:10px;
 }
-
 .thumbs img{
   width:100px;
   height:70px;
@@ -102,65 +99,49 @@ p{
   cursor:pointer;
   opacity:0.7;
 }
-
 .thumbs img:hover{
   opacity:1;
 }
-  
-.back-btn{
+  .back-btn{
   position: fixed;
   top: 20px;
   left: 20px;
-
   background: rgba(0,0,0,0.6);
   color: #fff;
-
   padding: 8px 14px;
   font-size: 14px;
-
   border-radius: 8px;
   text-decoration: none;
   border: 1px solid #374151;
-
   backdrop-filter: blur(6px);
   transition: 0.2s;
 }
-
 .back-btn:hover{
   background: rgba(0,0,0,0.8);
 }
-
 /* ===== FIX ВИРІВНЮВАННЯ СТОРІНКИ ===== */
-
 html, body {
   width: 100%;
   overflow-x: hidden;
 }
-
 .container {
   width: 100%;
   max-width: 1000px;
   margin: 0 auto;
   padding: 0 20px;
 }
-
 /* ===== КНОПКА НАЗАД ===== */
-
 .back-btn {
   position: fixed;
   top: 20px;
   left: 20px;
-
   background: rgba(0,0,0,0.6);
   color: #fff;
-
   padding: 8px 14px;
   font-size: 14px;
-
   border-radius: 8px;
   text-decoration: none;
   border: 1px solid #374151;
-
   backdrop-filter: blur(6px);
   transition: 0.2s;
   z-index: 100;
@@ -175,18 +156,15 @@ html, body {
 .gallery {
   margin-bottom: 20px;
 }
-
 #main-img {
   width: 100%;
   border-radius: 12px;
 }
-
 .thumbs {
   display: flex;
   gap: 10px;
   margin-top: 10px;
 }
-
 .thumbs img {
   width: 90px;
   height: 60px;
@@ -195,43 +173,34 @@ html, body {
   cursor: pointer;
   opacity: 0.8;
 }
-
 .thumbs img:hover {
   opacity: 1;
 }
 /* ===== ЧИСТИЙ ФІКС ВИРІВНЮВАННЯ ===== */
-
 .container {
   max-width: 1100px;
   width: 100%;
   margin: 0 auto;
   padding: 0 20px;
 }
-
 body {
   overflow-x: hidden;
 }
-
 /* кнопка назад */
 .back-btn {
   position: fixed;
   top: 20px;
   left: 20px;
   z-index: 999;
-
   background: rgba(0,0,0,0.6);
   color: #fff;
-
   padding: 8px 14px;
   font-size: 14px;
-
   border-radius: 8px;
   text-decoration: none;
   border: 1px solid #374151;
 }
-
 /* ===== FIX ТІЛЬКИ ДЛЯ СТОРІНКИ ОБ'ЄКТА ===== */
-
 body {
   display: block !important;
 }
@@ -242,35 +211,28 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 12px;
 }
-
 #info li {
   background: var(--card);
   padding: 14px 16px;
   border-radius: 12px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-
   display: flex;
   align-items: center;
   gap: 10px;
-
   transition: all 0.25s ease;
 }
-
 #info li:hover {
   transform: translateY(-3px);
   border-color: #22c55e;
   box-shadow: 0 15px 35px rgba(0,0,0,0.5);
 }
-
 #info li:before {
   font-size: 18px;
 }
-
 #info li:nth-child(1)::before { content: "📐"; }
 #info li:nth-child(2)::before { content: "🌿"; }
 #info li:nth-child(3)::before { content: "🏢"; }
-
 /* ===== FULLSCREEN ===== */
 
 .modal {
@@ -283,15 +245,12 @@ body {
   align-items: center;
   justify-content: center;
 }
-
 .modal.active {
   display: flex;
 }
-
 .modal-img {
   max-width: 75vw;   /* ✅ ще менше */
   max-height: 75vh;
-
   object-fit: contain;
   display: block;
   margin: auto;
@@ -304,19 +263,16 @@ body {
   color: #fff;
   cursor: pointer;
 }
-
 .prev { left: 30px; }
 .next { right: 30px; }
 /* щоб НІЩО не впливало */
 .modal * {
   box-sizing: border-box;
 }
-
 .nav {
   display: flex;
   gap: 18px;
   align-items: center;
-
   flex-wrap: nowrap; /* ✅ ВАЖЛИВО */
 }
 .nav a {
@@ -326,8 +282,7 @@ body {
 
   font-size: 15px;
   white-space: nowrap;
-}
-.header-inner {
+}.header-inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -335,7 +290,6 @@ body {
   max-width: 1100px;
   margin: 0 auto;
 }
-
 .header-inner {
   gap: 20px;
 }
@@ -343,12 +297,10 @@ body {
 .brand div {
   line-height: 1.3;   /* ✅ норм відстань між рядками */
 }
-
 .brand-title {
   font-size: 16px;
   font-weight: 700;
 }
-
 .brand-subtitle {
   font-size: 13px;
   color: var(--muted);
@@ -357,11 +309,9 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;  /* ✅ більше повітря */
-
   flex-wrap: wrap;  /* ✅ ось сюди */
 }
 /* СТРІЛКИ ДЛЯ ГАЛЕРЕЇ (FIX) */
-
 .modal .nav {
   position: absolute;
   top: 50%;
@@ -375,29 +325,23 @@ body {
 .modal .prev {
   left: 30px;
 }
-
 .modal .next {
   right: 30px;
 }
 /* ===== FIX СТРІЛКИ 100% ===== */
-
 .modal .prev,
 .modal .next {
   position: fixed !important;
   top: 50% !important;
   transform: translateY(-50%) !important;
-
   font-size: 60px !important;
   color: white !important;
-
   cursor: pointer !important;
   z-index: 99999 !important;
 }
-
 .modal .prev {
   left: 20px !important;
 }
-
 .modal .next {
   right: 20px !important;
 }
@@ -406,29 +350,24 @@ body {
 .brand-title {
   white-space: nowrap;
 }
-
 .brand-subtitle {
   white-space: nowrap;
 }
-
 .brand {
   display: flex;
   align-items: center;
   gap: 16px;
 }
-
 .header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
 }
-
 /* 👉 обмежуємо текст */
 .brand {
   flex: 0 0 auto;
 }
-
 /* 👉 меню займає тільки свій простір */
 .nav {
   flex: 1;
@@ -441,33 +380,24 @@ body {
 .brand-title {
   white-space: nowrap;
 }
-
 #loginBtn {
   background: #22c55e !important;  /* зелений */
   color: #fff !important;
-
   padding: 8px 14px;
   border-radius: 10px;
-
   font-weight: 600;
   border: none;
-
   margin-left: 10px; /* щоб не впиралась */
 }
-
 #loginBtn {
   background: #22c55e !important;
   color: white !important;
-
   padding: 8px 16px;
   border-radius: 10px;
-
   font-weight: 600;
   border: none;
-
   margin-left: 12px;
 }
-
 /* hover щоб виглядало дорого */
 #loginBtn:hover {
   background: #16a34a;
@@ -476,7 +406,6 @@ body {
   position: relative;
   z-index: 999;
 }
-
 #favHeaderBtn {
   position: relative;
   z-index: 999;
@@ -485,11 +414,9 @@ body {
 .nav {
   overflow: visible !important;
 }
-
 ..header-inner {
   overflow: visible;
 }
-
 .nav button {
   pointer-events: auto;
 }
