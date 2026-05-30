@@ -424,3 +424,7 @@ body {
   pointer-events: auto;
 }
 ``
+#loginBtn {
+  position: relative !important;
+  z-index: 999999 !important;
+}
