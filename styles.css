@@ -486,7 +486,7 @@ body {
   overflow: visible !important;
 }
 
-.header-inner {
+..header-inner {
   overflow: visible;
 }
 
