@@ -334,14 +334,62 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 </script>
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-import { 
-  getAuth, 
-  GoogleAuthProvider, 
-  signInWithPopup, 
-  onAuthStateChanged,
-  signOut 
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+      
+// ✅ Auth (логін)
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+      
+// ✅ Firestore (база)
+import { getFirestore, doc, setDoc }
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
+      
+onst firebaseConfig = {
+  apiKey: "AIza...",
+  authDomain: "paradisegarden-site.firebaseapp.com",
+  projectId: "paradisegarden-site",
+};
+      
+// ✅ Auth
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// ✅ Firestore
+const db = getFirestore(app);
+
+const btn = document.getElementById("loginBtn");
+
+
+// ✅ ЛОГІН
+async function login() {
+  try {
+    const result = await signInWithPopup(auth, provider);
+
+    // 🔥 ПРИКЛАД ЗАПИСУ В БАЗУ
+    await saveFavorites(result.user.uid, [1, 2, 3]);
+
+    location.reload();
+
+  } catch (e) {
+    console.log(e);
+    alert(e.message);
+  }
+}
+
+      
+// ✅ ФУНКЦІЯ ЗБЕРЕЖЕННЯ (ТВОЯ)
+async function saveFavorites(userId, favs) {
+  await setDoc(doc(db, "users", userId), { favorites: favs });
+}
+      
+const app = initializeApp(firebaseConfig);
+      
+const db = getFirestore(app);
+
+async function saveFavorites(userId, favs) {
+  await setDoc(doc(db, "users", userId), { favorites: favs });
+}
+``
 import { 
   getFirestore, 
   doc, 
