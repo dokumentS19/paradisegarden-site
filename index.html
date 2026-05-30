@@ -301,6 +301,7 @@
 
   <script src="script.js"></script>
  <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 import { 
   getAuth, 
@@ -309,6 +310,13 @@ import {
   onAuthStateChanged,
   signOut 
 } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+import { 
+  getFirestore, 
+  doc, 
+  setDoc, 
+  getDoc 
+} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
@@ -322,22 +330,38 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+const db = getFirestore(app);
 
 const loginBtn = document.getElementById("loginBtn");
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    loginBtn.textContent = user.displayName || "Кабінет";
+// ✅ ФУНКЦІЇ обраного
+async function saveFavorites(userId, favs) {
+  await setDoc(doc(db, "users", userId), { favorites: favs });
+}
 
-    loginBtn.onclick = () => {
-      signOut(auth);
-    };
+async function loadFavorites(userId) {
+  const snap = await getDoc(doc(db, "users", userId));
+  return snap.exists() ? snap.data().favorites || [] : [];
+}
+
+// ✅ авторизація
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    const favs = await loadFavorites(user.uid);
+    localStorage.setItem("rs_favorites", JSON.stringify(favs));
+
+    loginBtn.textContent = user.displayName || "Кабінет";
+    loginBtn.onclick = () => signOut(auth);
+
   } else {
     loginBtn.textContent = "Увійти";
-
-    loginBtn.onclick = () => {
-      signInWithPopup(auth, provider);
-    };
+    loginBtn.onclick = () => signInWithPopup(auth, provider);
   }
 });
+
+// ✅ даємо доступ script.js
+window.auth = auth;
+window.saveFavorites = saveFavorites;
+
 </script>
+``
