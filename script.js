@@ -211,8 +211,7 @@ navigator.clipboard.writeText(text)
     const w = window.open();
     w?.document.write(`<pre>${text}</pre>`);
     alert('Неможливо скопіювати автоматично. Скопіюйте вручну.');
-  }); const w = window.open(); w?.document.write(`<pre>${text}</pre>`); alert('Неможливо скопіювати автоматично. Посилання відкрито у новому вікні — скопіюйте вручну.'); }); });
-});
+  });
 
 
 // ===== SEO: JSON-LD для обраних оголошень =====
