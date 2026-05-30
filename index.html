@@ -283,6 +283,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+  
+// ✅ ОЦЕ ТВОЄ НОВЕ
+import { getFirestore, doc, setDoc, getDoc }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
@@ -297,8 +301,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-
+const db = getFirestore(app);
 const btn = document.getElementById("loginBtn");
+  
+let currentUser = null;
+let favorites = [];
 
 // ✅ логін
 async function login() {
