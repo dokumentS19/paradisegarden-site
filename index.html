@@ -318,78 +318,30 @@ async function loadFavorites(userId) {
   const snap = await getDoc(doc(db, "users", userId));
   return snap.exists() ? snap.data().favorites || [] : [];
 }
-// ✅ авторизація
-onAuthStateChanged(auth, async (user) => {
+const loginBtn = document.getElementById("loginBtn");
 
-  console.log("AUTH START ✅");
-
-  const loginBtn = document.getElementById("loginBtn");
-
-  if (!loginBtn) return;
-
-  if (user) {
-    const favs = await loadFavorites(user.uid);
-    localStorage.setItem("rs_favorites", JSON.stringify(favs));
-
-    loginBtn.textContent = user.displayName || "Кабінет";
-
-    loginBtn.onclick = () => {
-      signOut(auth);
-    };
-
-  } else {
-    loginBtn.textContent = "Увійти";
-
-    loginBtn.onclick = () => {
-      signInWithPopup(auth, provider)
-        .then(() => {
-          console.log("LOGIN OK ✅");
-        })
-        .catch((error) => {
-          console.log("LOGIN ERROR ❌", error);
-          alert(error.message);
-        });
-    };
-  }
-});
-// ✅ авторизація
-onAuthStateChanged(auth, async (user) => {
-
-  console.log("AUTH START ✅");
-
-  const loginBtn = document.getElementById("loginBtn");
-
-  if (!loginBtn) return;
-
-  if (user) {
-    const favs = await loadFavorites(user.uid);
-    localStorage.setItem("rs_favorites", JSON.stringify(favs));
-
-    loginBtn.textContent = user.displayName || "Кабінет";
-
-    loginBtn.onclick = () => {
-      signOut(auth);
-    };
-
-  } else {
-    loginBtn.textContent = "Увійти";
-
-    loginBtn.onclick = () => {
-      signInWithPopup(auth, provider)
-        .then(() => {
-          console.log("LOGIN OK ✅");
-        })
-        .catch((error) => {
-          console.log("LOGIN ERROR ❌", error);
-          alert(error.message);
-        });
-    };
-  }
-
-});
-<script>
-document.body.onclick = (e) => {
-  alert(e.target.tagName + " / " + e.target.className);
+// клік по кнопці
+loginBtn.onclick = () => {
+  signInWithPopup(auth, provider)
+    .then(() => {
+      console.log("LOGIN OK ✅");
+    })
+    .catch((error) => {
+      console.log("LOGIN ERROR ❌", error);
+      alert(error.message);
+    });
 };
-</script>
- 
+
+// перевірка авторизації
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loginBtn.textContent = user.displayName || "Кабінет";
+
+    loginBtn.onclick = () => {
+      signOut(auth);
+    };
+
+  } else {
+    loginBtn.textContent = "Увійти";
+  }
+});
