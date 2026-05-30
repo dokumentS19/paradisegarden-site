@@ -320,20 +320,26 @@ async function loadFavorites(userId) {
 }
 // ✅ авторизація
 onAuthStateChanged(auth, async (user) => {
-onAuthStateChanged(auth, async (user) => {
-console.log("AUTH START ✅");   // 👈 оце
-const loginBtn = document.getElementById("loginBtn");
-const loginBtn = document.getElementById("loginBtn");
+
+  console.log("AUTH START ✅");
+
+  const loginBtn = document.getElementById("loginBtn");
+
   if (!loginBtn) return;
+
   if (user) {
     const favs = await loadFavorites(user.uid);
     localStorage.setItem("rs_favorites", JSON.stringify(favs));
+
     loginBtn.textContent = user.displayName || "Кабінет";
+
     loginBtn.onclick = () => {
       signOut(auth);
     };
+
   } else {
     loginBtn.textContent = "Увійти";
+
     loginBtn.onclick = () => {
       signInWithPopup(auth, provider)
         .then(() => {
@@ -345,4 +351,5 @@ const loginBtn = document.getElementById("loginBtn");
         });
     };
   }
+
 });
