@@ -345,23 +345,31 @@ async function loadFavorites(userId) {
 }
 
 // ✅ авторизація
+
 onAuthStateChanged(auth, async (user) => {
+
   if (user) {
     const favs = await loadFavorites(user.uid);
     localStorage.setItem("rs_favorites", JSON.stringify(favs));
 
     loginBtn.textContent = user.displayName || "Кабінет";
-    loginBtn.onclick = () => signOut(auth);
+
+    loginBtn.onclick = () => {
+      signOut(auth);
+    };
 
   } else {
     loginBtn.textContent = "Увійти";
-    loginBtn.onclick = () => signInWithPopup(auth, provider);
+
+    loginBtn.onclick = () => {
+      signInWithPopup(auth, provider)
+        .then(() => console.log("LOGIN OK ✅"))
+        .catch((error) => {
+          console.log("LOGIN ERROR ❌", error);
+          alert(error.message);
+        });
+    };
   }
 });
-
-// ✅ даємо доступ script.js
-window.auth = auth;
-window.saveFavorites = saveFavorites;
-
 </script>
 ``
