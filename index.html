@@ -307,6 +307,18 @@ const btn = document.getElementById("loginBtn");
 let currentUser = null;
 let favorites = [];
 
+  
+// ✅ завантаження з бази
+async function loadFavorites(userId) {
+  const snap = await getDoc(doc(db, "users", userId));
+  return snap.exists() ? snap.data().favorites || [] : [];
+}
+
+// ✅ збереження в базу
+async function saveFavorites(userId, favs) {
+  await setDoc(doc(db, "users", userId), { favorites: favs });
+}
+
 // ✅ логін
 async function login() {
   try {
@@ -322,6 +334,10 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     btn.textContent = user.displayName || user.email;
 
+    
+  // ✅ ОЦЕ ДОДАЙ (ЗАВАНТАЖЕННЯ)
+    favorites = await loadFavorites(user.uid);
+
     btn.onclick = async () => {
       await signOut(auth);
       location.reload();
@@ -332,8 +348,32 @@ onAuthStateChanged(auth, (user) => {
     btn.onclick = login;
   }
 });
+  
+//✅ ОЦЕ ДОДАЄШ ТУТ
+document.addEventListener("click", async (e) => {
+  if (!e.target.classList.contains("fav-btn")) return;
+
+  if (!currentUser) {
+    alert("Спочатку увійди");
+    return;
+  }
+
+  
+const id = Number(e.target.dataset.id);
+
+  if (favorites.includes(id)) {
+    favorites = favorites.filter(f => f !== id);
+    e.target.textContent = "♡";
+  } else {
+    favorites.push(id);
+    e.target.textContent = "❤️";
+  }
+
+  await saveFavorites(currentUser.uid, favorites);
+});
+
+
+// ❗ І ТІЛЬКИ ПОТІМ ЗАКРИВАЄШ
 </script>
 
-
-      
   
