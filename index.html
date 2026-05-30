@@ -341,3 +341,30 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 </script>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "ТУТ_ТВОЙ_API_KEY",
+  authDomain: "ТУТ_ТВОЙ_PROJECT.firebaseapp.com",
+  projectId: "ТУТ_ТВОЙ_PROJECT_ID",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+const loginBtn = document.getElementById("loginBtn");
+
+if (loginBtn) {
+  loginBtn.addEventListener("click", () => {
+    signInWithPopup(auth, provider)
+      .then(() => {
+        alert("✅ Увійшов");
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("❌ Помилка входу");
+      });
+  });
+}
