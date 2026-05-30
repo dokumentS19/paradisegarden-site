@@ -13,7 +13,27 @@ const FAV_KEY = "rs_favorites";
 function getFavs(){ try { return JSON.parse(localStorage.getItem(FAV_KEY) || "[]"); } catch { return []; } }
 function setFavs(list){ localStorage.setItem(FAV_KEY, JSON.stringify(list)); }
 function isFav(id){ return getFavs().includes(String(id)); }
-function toggleFav(id){ const list = getFavs(); const idx = list.indexOf(String(id)); if (idx>=0) list.splice(idx,1); else list.push(String(id)); setFavs(list); updateFavCounter(); return list.includes(String(id)); }
+function toggleFav(id){
+  const list = getFavs(); 
+  const idx = list.indexOf(String(id)); 
+
+  if (idx >= 0) {
+    list.splice(idx, 1);
+  } else {
+    list.push(String(id));
+  }
+
+  setFavs(list);
+  updateFavCounter();
+
+  // ✅ ЗБЕРЕЖЕННЯ В FIREBASE
+  const user = window.auth?.currentUser;
+  if (user) {
+    window.saveFavorites(user.uid, list);
+  }
+
+  return list.includes(String(id)); 
+}
 
 // ===== Header favorites counter =====
 const favCounter = document.getElementById('favCounter');
