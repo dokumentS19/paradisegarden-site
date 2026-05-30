@@ -331,4 +331,3 @@ function injectListingsJsonLd(){
   };
 
 }
-
