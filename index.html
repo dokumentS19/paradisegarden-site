@@ -332,9 +332,7 @@ window.addEventListener("DOMContentLoaded", () => {
       loginBtn.onclick = login;
     }
   });
-});
 </script>
-``
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 import { 
   getAuth, 
@@ -382,7 +380,6 @@ async function login() {
       alert(error.message);
     }
   }
-}
 
 // ✅ ВИХІД
 async function logout() {
@@ -400,3 +397,41 @@ onAuthStateChanged(auth, (user) => {
     loginBtn.onclick = login;
   }
 });
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
+  authDomain: "paradisegarden-site.firebaseapp.com",
+  projectId: "paradisegarden-site",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+const btn = document.getElementById("loginBtn");
+
+// логін
+btn.onclick = async () => {
+  try {
+    await signInWithPopup(auth, provider);
+    console.log("OK");
+  } catch (e) {
+    console.log(e);
+    alert(e.message);
+  }
+};
+
+// стан
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    btn.textContent = user.displayName;
+    btn.onclick = () => signOut(auth);
+  } else {
+    btn.textContent = "Увійти";
+  }
+});
+</script>
