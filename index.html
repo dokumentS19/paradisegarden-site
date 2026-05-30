@@ -308,6 +308,50 @@ let currentUser = null;
 let favorites = [];
 
   
+// ✅ ДОДАЙ ЦЕ
+let currentImages = [];
+let currentIndex = 0;
+
+const modal = document.getElementById("galleryModal");
+const modalImg = document.getElementById("galImg");
+
+// відкриття картинки
+document.querySelectorAll(".card img").forEach((img, index) => {
+  img.onclick = () => {
+    currentImages = Array.from(document.querySelectorAll(".card img")).map(i => i.src);
+    currentIndex = index;
+
+    modal.style.display = "block";
+    modalImg.src = currentImages[currentIndex];
+  };
+});
+
+// кнопка назад
+document.getElementById("galPrev").onclick = () => {
+  currentIndex--;
+  if (currentIndex < 0) currentIndex = currentImages.length - 1;
+  modalImg.src = currentImages[currentIndex];
+};
+
+// кнопка вперед
+document.getElementById("galNext").onclick = () => {
+  currentIndex++;
+  if (currentIndex >= currentImages.length) currentIndex = 0;
+  modalImg.src = currentImages[currentIndex];
+};
+
+  
+// закриття
+modal.onclick = (e) => {
+  if (e.target === modal) modal.style.display = "none";
+};
+
+// кнопка X
+document.getElementById("galClose").onclick = () => {
+  modal.style.display = "none";
+};
+
+  
 // ✅ завантаження з бази
 async function loadFavorites(userId) {
   const snap = await getDoc(doc(db, "users", userId));
@@ -332,8 +376,8 @@ async function login() {
 // ✅ стан кнопки
 onAuthStateChanged(auth, (user) => {
   if (user) {
+    currentUser = user; // ✅ ДУЖЕ ВАЖЛИВО
     btn.textContent = user.displayName || user.email;
-
     
   // ✅ ОЦЕ ДОДАЙ (ЗАВАНТАЖЕННЯ)
     favorites = await loadFavorites(user.uid);
