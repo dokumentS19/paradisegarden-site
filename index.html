@@ -351,5 +351,40 @@ onAuthStateChanged(auth, async (user) => {
         });
     };
   }
+});
+// ✅ авторизація
+onAuthStateChanged(auth, async (user) => {
+
+  console.log("AUTH START ✅");
+
+  const loginBtn = document.getElementById("loginBtn");
+
+  if (!loginBtn) return;
+
+  if (user) {
+    const favs = await loadFavorites(user.uid);
+    localStorage.setItem("rs_favorites", JSON.stringify(favs));
+
+    loginBtn.textContent = user.displayName || "Кабінет";
+
+    loginBtn.onclick = () => {
+      signOut(auth);
+    };
+
+  } else {
+    loginBtn.textContent = "Увійти";
+
+    loginBtn.onclick = () => {
+      signInWithPopup(auth, provider)
+        .then(() => {
+          console.log("LOGIN OK ✅");
+        })
+        .catch((error) => {
+          console.log("LOGIN ERROR ❌", error);
+          alert(error.message);
+        });
+    };
+  }
 
 });
+   
