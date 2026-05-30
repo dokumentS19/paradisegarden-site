@@ -309,4 +309,39 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
+const loginBtn = document.getElementById("loginBtn");
 
+// ✅ ВХІД
+async function login() {
+  try {
+    await signInWithPopup(auth, provider);
+    console.log("✅ Логін успішний");
+  } catch (error) {
+    console.error("❌ Помилка:", error);
+
+    if (error.code === "auth/popup-blocked") {
+      alert("Браузер заблокував вікно. Дозволь popup.");
+    } else if (error.code === "auth/unauthorized-domain") {
+      alert("Домен не дозволений у Firebase!");
+    } else {
+      alert(error.message);
+    }
+  }
+}
+
+// ✅ ВИХІД
+async function logout() {
+  await signOut(auth);
+  console.log("🚪 Вихід");
+}
+
+// ✅ СТАН КНОПКИ
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loginBtn.textContent = user.displayName || "Кабінет";
+    loginBtn.onclick = logout;
+  } else {
+    loginBtn.textContent = "Увійти через Google";
+    loginBtn.onclick = login;
+  }
+});
