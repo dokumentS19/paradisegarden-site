@@ -310,38 +310,3 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 
-// ✅ ФУНКЦІЇ обраного
-   async function saveFavorites(userId, favs) {
-  await setDoc(doc(db, "users", userId), { favorites: favs });
-}
-async function loadFavorites(userId) {
-  const snap = await getDoc(doc(db, "users", userId));
-  return snap.exists() ? snap.data().favorites || [] : [];
-}
-const loginBtn = document.getElementById("loginBtn");
-
-// клік по кнопці
-loginBtn.onclick = () => {
-  signInWithPopup(auth, provider)
-    .then(() => {
-      console.log("LOGIN OK ✅");
-    })
-    .catch((error) => {
-      console.log("LOGIN ERROR ❌", error);
-      alert(error.message);
-    });
-};
-
-// перевірка авторизації
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    loginBtn.textContent = user.displayName || "Кабінет";
-
-    loginBtn.onclick = () => {
-      signOut(auth);
-    };
-
-  } else {
-    loginBtn.textContent = "Увійти";
-  }
-});
