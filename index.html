@@ -279,7 +279,62 @@
     </div>
   </div>
   <script src="script.js"></script>
- <script type="module">
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
+  authDomain: "paradisegarden-site.firebaseapp.com",
+  projectId: "paradisegarden-site",
+  storageBucket: "paradisegarden-site.appspot.com",
+  messagingSenderId: "452352075250",
+  appId: "1:452352075250:web:049e1b3f10c44bc04c776b"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+window.addEventListener("DOMContentLoaded", () => {
+  const loginBtn = document.getElementById("loginBtn");
+
+  if (!loginBtn) {
+    console.log("❌ Кнопка НЕ знайдена");
+    return;
+  }
+
+  console.log("✅ Кнопка знайдена");
+
+  async function login() {
+    console.log("CLICK ✅");
+
+    try {
+      await signInWithPopup(auth, provider);
+      console.log("LOGIN OK ✅");
+    } catch (error) {
+      console.error("ERROR ❌", error);
+      alert(error.message);
+    }
+  }
+
+  async function logout() {
+    await signOut(auth);
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      loginBtn.textContent = user.displayName;
+      loginBtn.onclick = logout;
+    } else {
+      loginBtn.textContent = "Увійти";
+      loginBtn.onclick = login;
+    }
+  });
+});
+</script>
+``
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 import { 
   getAuth, 
