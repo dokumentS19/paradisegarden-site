@@ -234,7 +234,6 @@ body {
 #info li:nth-child(2)::before { content: "🌿"; }
 #info li:nth-child(3)::before { content: "🏢"; }
 /* ===== FULLSCREEN ===== */
-
 .modal {
   display: none;
   position: fixed;
@@ -293,7 +292,6 @@ body {
 .header-inner {
   gap: 20px;
 }
-
 .brand div {
   line-height: 1.3;   /* ✅ норм відстань між рядками */
 }
@@ -321,7 +319,6 @@ body {
   cursor: pointer;
   z-index: 10000;
 }
-
 .modal .prev {
   left: 30px;
 }
