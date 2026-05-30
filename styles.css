@@ -472,3 +472,13 @@ body {
 #loginBtn:hover {
   background: #16a34a;
 }
+#loginBtn {
+  position: relative;
+  z-index: 999;
+}
+
+#favHeaderBtn {
+  position: relative;
+  z-index: 999;
+  margin-right: 8px;
+}
