@@ -364,39 +364,6 @@ const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 const loginBtn = document.getElementById("loginBtn");
 
-// ✅ ВХІД
-async function login() {
-  try {
-    await signInWithPopup(auth, provider);
-    console.log("✅ Логін успішний");
-  } catch (error) {
-    console.error("❌ Помилка:", error);
-
-    if (error.code === "auth/popup-blocked") {
-      alert("Браузер заблокував вікно. Дозволь popup.");
-    } else if (error.code === "auth/unauthorized-domain") {
-      alert("Домен не дозволений у Firebase!");
-    } else {
-      alert(error.message);
-    }
-  }
-
-// ✅ ВИХІД
-async function logout() {
-  await signOut(auth);
-  console.log("🚪 Вихід");
-}
-
-// ✅ СТАН КНОПКИ
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    loginBtn.textContent = user.displayName || "Кабінет";
-    loginBtn.onclick = logout;
-  } else {
-    loginBtn.textContent = "Увійти через Google";
-    loginBtn.onclick = login;
-  }
-});
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
@@ -414,26 +381,35 @@ const provider = new GoogleAuthProvider();
 
 const btn = document.getElementById("loginBtn");
 
-// логін
-btn.onclick = async () => {
+// ✅ ЛОГІН
+async function login() {
   try {
     await signInWithPopup(auth, provider);
-    console.log("OK");
+    console.log("✅ LOGIN OK");
+    location.reload();
   } catch (e) {
     console.log(e);
     alert(e.message);
   }
-};
+}
 
-// стан
+// ✅ СТАН
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    btn.textContent = user.displayName;
-    btn.onclick = () => signOut(auth);
+    console.log("✅ Авторизований");
+
+    btn.textContent = user.displayName || user.email;
+
+    btn.onclick = async () => {
+      await signOut(auth);
+      location.reload();
+    };
+
   } else {
+    console.log("❌ Не авторизований");
+
     btn.textContent = "Увійти";
+    btn.onclick = login;
   }
 });
 </script>
-}
-``
