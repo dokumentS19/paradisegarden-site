@@ -363,10 +363,10 @@ onAuthStateChanged(auth, async (user) => {
   } else {
     loginBtn.textContent = "Увійти";
 
-    loginBtn.onclick = () => {
+    loginBtn.onclick = ()=>{
       signInWithPopup(auth, provider)
         .then(() => console.log("LOGIN OK ✅"))
-        .catch((error) => {
+        .catch((error) =>{
           console.log("LOGIN ERROR ❌", error);
           alert(error.message);
         });
