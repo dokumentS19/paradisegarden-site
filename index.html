@@ -351,24 +351,27 @@ onAuthStateChanged(auth, async (user) => {
   if (!loginBtn) return;
 
   if (user) {
-  const favs = await loadFavorites(user.uid);
-  localStorage.setItem("rs_favorites", JSON.stringify(favs));
+    const favs = await loadFavorites(user.uid);
+    localStorage.setItem("rs_favorites", JSON.stringify(favs));
 
-  loginBtn.textContent = user.displayName || "Кабінет";
+    loginBtn.textContent = user.displayName || "Кабінет";
 
-  loginBtn.onclick = () => {
-    signOut(auth);
-  };
+    loginBtn.onclick = () => {
+      signOut(auth);
+    };
 
-} else {
-  loginBtn.textContent = "Увійти";
+  } else {
+    loginBtn.textContent = "Увійти";
 
-  loginBtn.onclick = () =&gt; {
-    signInWithPopup(auth, provider)
-      .then(() =&gt; console.log("LOGIN OK ✅"))
-      .catch((error) =&gt; {
-        console.log("LOGIN ERROR ❌", error);
-        alert(error.message);
-      });
-  };
-}
+    loginBtn.onclick = () => {
+      signInWithPopup(auth, provider)
+        .then(() => {
+          console.log("LOGIN OK ✅");
+        })
+        .catch((error) => {
+          console.log("LOGIN ERROR ❌", error);
+          alert(error.message);
+        });
+    };
+  }
+
