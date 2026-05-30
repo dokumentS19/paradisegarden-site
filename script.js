@@ -41,7 +41,6 @@ const favHeaderBtn = document.getElementById('favHeaderBtn');
 function updateFavCounter(){ if (favCounter) favCounter.textContent = String(getFavs().length); }
 updateFavCounter();
 if (favHeaderBtn){ favHeaderBtn.addEventListener('click', ()=>{ const onlyFav = document.getElementById('featOnlyFav'); if (onlyFav && !onlyFav.checked){ onlyFav.checked = true; } document.getElementById('featured')?.scrollIntoView({behavior:'smooth'}); renderFeatured(); }); }
-
 // ===== DOM refs =====
 const showPhoneBtn  = document.getElementById('showPhoneBtn');
 const phoneNumber   = document.getElementById('phoneNumber');
@@ -206,7 +205,13 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   ;['featSearch','featCity','featType','featSort','featOnlyFav'].forEach(id=>{ const el = document.getElementById(id); if (el) el.addEventListener('input', renderFeatured); });
   const reset = document.getElementById('featReset'); if (reset) reset.addEventListener('click', ()=>{ const ids=['featSearch','featCity','featType','featSort','featOnlyFav']; ids.forEach(id=>{ const el=document.getElementById(id); if (!el) return; if (el.tagName==='INPUT' && el.type==='checkbox') el.checked=false; else if (el.tagName==='SELECT') el.selectedIndex=0; else el.value=''; }); renderFeatured(); });
   const exportBtn = document.getElementById('featExport'); if (exportBtn) exportBtn.addEventListener('click', ()=>{ const favIds = getFavs(); if (!favIds.length){ alert('Немає обраних оголошень для експорту.'); return; } const map = new Map(FEATURED_LISTINGS.map(x=>[String(x.id), x])); const lines = favIds.map(id => map.get(String(id))?.url).filter(Boolean); if (!lines.length){ alert('У обраних немає посилань.'); return; } const text = lines.join('\n');
-navigator.clipboard.writeText(text).then(()=> alert('Посилання обраних скопійовано у буфер обміну.');catch(()=>{ const w = window.open(); w?.document.write(`<pre>${text}</pre>`); alert('Неможливо скопіювати автоматично. Посилання відкрито у новому вікні — скопіюйте вручну.'); }); });
+navigator.clipboard.writeText(text)
+  .then(() => alert('Посилання обраних скопійовано у буфер обміну.'))
+  .catch(() => {
+    const w = window.open();
+    w?.document.write(`<pre>${text}</pre>`);
+    alert('Неможливо скопіювати автоматично. Скопіюйте вручну.');
+  }); const w = window.open(); w?.document.write(`<pre>${text}</pre>`); alert('Неможливо скопіювати автоматично. Посилання відкрито у новому вікні — скопіюйте вручну.'); }); });
 });
 
 
