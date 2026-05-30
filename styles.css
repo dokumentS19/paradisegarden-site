@@ -420,4 +420,10 @@ body {
 .nav button {
   pointer-events: auto;
 }
- 
+ .nav {
+  pointer-events: none;
+}
+.nav * {
+  pointer-events: auto;
+}
+``
