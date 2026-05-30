@@ -335,8 +335,8 @@ const db = getFirestore(app);
 const loginBtn = document.getElementById("loginBtn");
 
 // ✅ ФУНКЦІЇ обраного
-async function saveFavorites(userId, favs) {
   await setDoc(doc(db, "users", userId), { favorites: favs });
+
 }
 
 async function loadFavorites(userId) {
@@ -345,8 +345,11 @@ async function loadFavorites(userId) {
 }
 
 // ✅ авторизація
-
 onAuthStateChanged(auth, async (user) => {
+
+  const loginBtn = document.getElementById("loginBtn");
+
+  if (!loginBtn) return;
 
   if (user) {
     const favs = await loadFavorites(user.uid);
@@ -371,5 +374,3 @@ onAuthStateChanged(auth, async (user) => {
     };
   }
 });
-</script>
-``
