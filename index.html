@@ -414,6 +414,72 @@ const loginBtn = document.getElementById("loginBtn");
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+  
+// ✅ Auth (логін)
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+// ✅ Firestore (база)
+import { getFirestore, doc, setDoc }
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIza...",
+  authDomain: "paradisegarden-site.firebaseapp.com",
+  projectId: "paradisegarden-site",
+};
+
+const app = initializeApp(firebaseConfig);
+
+// ✅ Auth
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// ✅ Firestore
+const db = getFirestore(app);
+
+const btn = document.getElementById("loginBtn");
+
+
+// ✅ ФУНКЦІЯ ЗБЕРЕЖЕННЯ (ТВОЯ)
+async function saveFavorites(userId, favs) {
+  await setDoc(doc(db, "users", userId), { favorites: favs });
+}
+
+
+// ✅ ЛОГІН
+async function login() {
+  try {
+    const result = await signInWithPopup(auth, provider);
+
+    // 🔥 ПРИКЛАД ЗАПИСУ В БАЗУ
+    await saveFavorites(result.user.uid, [1, 2, 3]);
+
+    location.reload();
+
+  } catch (e) {
+    console.log(e);
+    alert(e.message);
+  }
+}
+
+// ✅ СТАН
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    btn.textContent = user.displayName || user.email;
+
+    btn.onclick = async () => {
+      await signOut(auth);
+      location.reload();
+    };
+
+  } else {
+    btn.textContent = "Увійти";
+    btn.onclick = login;
+  }
+});
+</script>
+
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
 from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
