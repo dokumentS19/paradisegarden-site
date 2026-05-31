@@ -303,14 +303,6 @@ body {
   font-size: 13px;
   color: var(--muted);
 }
-.modal .prev {
-  left: 20px !important;
-}
-.modal .next {
-  right: 20px !important;
-}
-/* FIX ШАПКА — текст в один рядок */
-
 .brand-title {
   white-space: nowrap;
 }
