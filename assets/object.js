@@ -55,7 +55,7 @@ if (obj) {
   });
 }
 
-const imgs = images[id];
+const imgs = images[id] || [];
 
 if (imgs) {
   document.getElementById("main-img").src = imgs[0];
