@@ -214,7 +214,7 @@ navigator.clipboard.writeText(text)
   });
 
 
-// ===== SEO: JSON-LD для обраних оголошень =====
+});// ===== SEO: JSON-LD для обраних оголошень =====
 function injectListingsJsonLd(){
   if (!Array.isArray(FEATURED_LISTINGS) || !FEATURED_LISTINGS.length) return;
   const data = FEATURED_LISTINGS.map(it=>({
