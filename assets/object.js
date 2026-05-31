@@ -85,11 +85,12 @@ const modalImg = document.getElementById("modal-img");
 document.addEventListener("click", (e) => {
   if (e.target.matches(".thumbs img, #main-img")) {
 
-    const imgs = document.querySelectorAll(".thumbs img");
-    currentImages = Array.from(imgs).map(i => i.src);
+   currentImages = imgs;
 
-    const clickedSrc = e.target.src;
-    currentIndex = currentImages.indexOf(clickedSrc);
+const clickedSrc = e.target.src;
+currentIndex = currentImages.indexOf(clickedSrc);
+
+if (currentIndex === -1) currentIndex = 0;
 
     modal.style.display = "block";
     modalImg.src = clickedSrc;
