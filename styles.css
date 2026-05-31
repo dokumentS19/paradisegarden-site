@@ -434,3 +434,12 @@ body {
 .modal * {
   pointer-events: none;
 }
+.modal-nav {
+  position: relative;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.modal-backdrop {
+  pointer-events: none;
+}
