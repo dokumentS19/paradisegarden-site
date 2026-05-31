@@ -303,16 +303,6 @@ body {
   font-size: 13px;
   color: var(--muted);
 }
-.modal .prev,
-.modal .next {
-  position: fixed !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  font-size: 60px !important;
-  color: white !important;
-  cursor: pointer !important;
-  z-index: 99999 !important;
-}
 .modal .prev {
   left: 20px !important;
 }
