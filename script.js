@@ -338,7 +338,7 @@ function injectListingsJsonLd(){
     modal.style.display = "none";
   };
 
-  document.getElementById("prev").onclick = () => {
+  document.getElementById("galPrev").onclick = () => {
     currentIndex--;
     if (currentIndex < 0) currentIndex = currentImages.length - 1;
     modalImg.src = currentImages[currentIndex];
