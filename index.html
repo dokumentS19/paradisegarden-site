@@ -314,10 +314,12 @@ let favorites = [];
 // ✅ ДОДАЙ ЦЕ
 let currentImages = [];
 let currentIndex = 0;
-
-const modal = document.getElementById("galleryModal");
-const modalImg = document.getElementById("galImg");
-
+let modal;
+let modalImg;
+window.addEventListener("load", () => {
+  modal = document.getElementById("galleryModal");
+  modalImg = document.getElementById("galImg");
+});
  
 // ✅ завантаження з бази
 async function loadFavorites(userId) {
