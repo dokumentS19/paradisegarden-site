@@ -103,17 +103,22 @@ document.getElementById("close").onclick = () => {
 
 // стрілка назад
 document.getElementById("prev").onclick = () => {
+  if (!currentImages.length) return;
+
   currentIndex--;
   if (currentIndex < 0) currentIndex = currentImages.length - 1;
   modalImg.src = currentImages[currentIndex];
 };
 
 // стрілка вперед
+
 document.getElementById("next").onclick = () => {
+  if (!currentImages.length) return;
   currentIndex++;
   if (currentIndex >= currentImages.length) currentIndex = 0;
   modalImg.src = currentImages[currentIndex];
 };
+
 
 // закриття по кліку
 modal.onclick = (e) => {
