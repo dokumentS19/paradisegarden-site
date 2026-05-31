@@ -423,7 +423,39 @@ document.addEventListener("click", (e) => {
   modal.style.display = "block";
   modalImg.src = currentImages[currentIndex];
 });
+document.addEventListener("click", (e) => {
+  if (!e.target.matches(".card img")) return;
 
+  const images = Array.from(document.querySelectorAll(".card img"));
+  currentImages = images.map(i => i.src);
+  currentIndex = images.indexOf(e.target);
+
+  modal.style.display = "block";
+  modalImg.src = currentImages[currentIndex];
+});
+
+
+// ✅ ВСТАВЛЯЄШ ОЦЕ ТУТ
+document.addEventListener("DOMContentLoaded", () => {
+
+  document.getElementById("galPrev").onclick = () => {
+    currentIndex--;
+    if (currentIndex < 0) currentIndex = currentImages.length - 1;
+    modalImg.src = currentImages[currentIndex];
+  };
+
+  document.getElementById("galNext").onclick = () => {
+    currentIndex++;
+    if (currentIndex >= currentImages.length) currentIndex = 0;
+    modalImg.src = currentImages[currentIndex];
+  };
+
+  document.getElementById("galClose").onclick = () => {
+    modal.style.display = "none";
+  };
+
+});
+``
 // ❗ І ТІЛЬКИ ПОТІМ ЗАКРИВАЄШ
 </script>
 
