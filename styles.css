@@ -286,7 +286,8 @@ body {
 }
 .nav {
   display: flex;
-  gap: 18px;
+  justify-content: flex-end;
+  gap: 16px;
   align-items: center;
   flex-wrap: nowrap; /* ✅ ВАЖЛИВО */
 }
@@ -294,10 +295,9 @@ body {
   color: var(--text);
   text-decoration: none;
   opacity: 0.9;
-
   font-size: 15px;
   white-space: nowrap;
-}.
+}
 .header-inner {
   display: flex;
   align-items: center;
@@ -381,13 +381,6 @@ body {
 .brand {
   flex: 0 0 auto;
 }
-/* 👉 меню займає тільки свій простір */
-.nav {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  gap: 16px;
-}
 
 /* 👉 щоб не влазило в текст */
 .brand-title {
@@ -423,23 +416,11 @@ body {
   position: relative;
   z-index: 999;
   margin-right: 8px;
-}
-.nav {
-  overflow: visible !important;
+
 }
 .header-inner {
   overflow: visible;
-}
-.nav button {
-  pointer-events: auto;
-}
 
-.nav {
-  pointer-events: auto;
-
-}
-.nav * {
-  pointer-events: auto;
 }
 #loginBtn {
   position: relative !important;
