@@ -423,6 +423,27 @@ modal.addEventListener("click", (e) => {
   document.getElementById("galClose").onclick = () => {
     modal.style.display = "none";
   
+// ✅ ОСЬ СЮДИ ВСТАВЛЯЄШ
+document.addEventListener("keydown", (e) => {
+  if (modal.style.display !== "block") return;
+
+  if (e.key === "ArrowRight") {
+    currentIndex++;
+    if (currentIndex >= currentImages.length) currentIndex = 0;
+    modalImg.src = currentImages[currentIndex];
+  }
+
+  if (e.key === "ArrowLeft") {
+    currentIndex--;
+    if (currentIndex < 0) currentIndex = currentImages.length - 1;
+    modalImg.src = currentImages[currentIndex];
+  }
+
+  if (e.key === "Escape") {
+    modal.style.display = "none";
+  }
+});
+
   };
 
 // ❗ І ТІЛЬКИ ПОТІМ ЗАКРИВАЄШ
