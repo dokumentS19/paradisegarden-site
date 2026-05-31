@@ -215,10 +215,7 @@ body {
   text-decoration: none;
   border: 1px solid #374151;
 }
-/* ===== FIX ТІЛЬКИ ДЛЯ СТОРІНКИ ОБ'ЄКТА ===== */
-body {
-  display: block !important;
-}
+
 #info {
   list-style: none;
   padding: 0;
