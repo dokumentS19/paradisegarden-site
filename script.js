@@ -312,45 +312,4 @@ function injectListingsJsonLd(){
     });
   }
 
-  // ✅ FULLSCREEN ГАЛЕРЕЯ
-
-  let currentIndex = 0;
-  let currentImages = [];
-
-  const modal = document.getElementById("modal");
-  const modalImg = document.getElementById("modal-img");
-
-  document.addEventListener("click", (e) => {
-    if (e.target.matches(".thumbs img, #main-img")) {
-
-      const imgs = document.querySelectorAll(".thumbs img");
-      currentImages = Array.from(imgs).map(i => i.src);
-
-      const clickedSrc = e.target.src;
-      currentIndex = currentImages.indexOf(clickedSrc);
-
-      modal.style.display = "flex";
-      modalImg.src = clickedSrc;
-    }
-  });
-
-  document.getElementById("close").onclick = () => {
-    modal.style.display = "none";
-  };
-
-  document.getElementById("galPrev").onclick = () => {
-    currentIndex--;
-    if (currentIndex < 0) currentIndex = currentImages.length - 1;
-    modalImg.src = currentImages[currentIndex];
-  };
-
-  document.getElementById("galNext").onclick = () => {
-    currentIndex++;
-    if (currentIndex >= currentImages.length) currentIndex = 0;
-    modalImg.src = currentImages[currentIndex];
-  };
-
-  modal.onclick = (e) => {
-    if (e.target === modal) modal.style.display = "none";
-  };
  
