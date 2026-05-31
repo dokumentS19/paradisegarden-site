@@ -344,7 +344,7 @@ function injectListingsJsonLd(){
     modalImg.src = currentImages[currentIndex];
   };
 
-  document.getElementById("next").onclick = () => {
+  document.getElementById("galNext").onclick = () => {
     currentIndex++;
     if (currentIndex >= currentImages.length) currentIndex = 0;
     modalImg.src = currentImages[currentIndex];
