@@ -374,9 +374,10 @@ async function login() {
 }
 
 // ✅ стан кнопки
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user; // ✅ ДУЖЕ ВАЖЛИВО
+    
     btn.textContent = user.displayName || user.email;
     
   // ✅ ОЦЕ ДОДАЙ (ЗАВАНТАЖЕННЯ)
@@ -388,6 +389,8 @@ onAuthStateChanged(auth, (user) => {
     };
 
   } else {
+    currentUser = null;   // ✅ ДОДАТИ
+    favorites = [];       // ✅ ДОДАТИ
     btn.textContent = "Увійти";
     btn.onclick = login;
   }
