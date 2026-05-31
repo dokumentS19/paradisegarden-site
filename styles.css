@@ -357,6 +357,17 @@ body {
   z-index: 99999;
 }
 
+modal .prev,
+.modal .next {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 60px;
+  color: white;
+  cursor: pointer;
+  z-index: 99999;
+}
+
 .modal .prev {
   left: 20px;
 }
