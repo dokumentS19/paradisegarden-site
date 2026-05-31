@@ -303,9 +303,6 @@ body {
   font-size: 13px;
   color: var(--muted);
 }
-.brand-title {
-  white-space: nowrap;
-}
 .brand-subtitle {
   white-space: nowrap;
 }
