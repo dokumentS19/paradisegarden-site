@@ -399,7 +399,10 @@ onAuthStateChanged(auth, async (user) => {
 });
   
 document.addEventListener("click", async (e) => {
-  if (!e.target.classList.contains("fav-btn")) return;
+ 
+const btn = e.target.closest(".fav-btn");
+if (!btn) return;
+
 
   if (!currentUser) {
     alert("Спочатку увійди");
@@ -420,6 +423,17 @@ const id = Number(e.target.dataset.id);
   await saveFavorites(currentUser.uid, favorites);
 });
 
+
+document.addEventListener("click", (e) => {
+  if (!e.target.matches(".card img")) return;
+
+  const images = Array.from(document.querySelectorAll(".card img"));
+  currentImages = images.map(i => i.src);
+  currentIndex = images.indexOf(e.target);
+
+  modal.style.display = "block";
+  modalImg.src = currentImages[currentIndex];
+});
 
 // ❗ І ТІЛЬКИ ПОТІМ ЗАКРИВАЄШ
 </script>
