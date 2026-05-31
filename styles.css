@@ -309,12 +309,6 @@ body {
   font-size: 13px;
   color: var(--muted);
 }
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 16px;  /* ✅ більше повітря */
-  flex-wrap: wrap;  /* ✅ ось сюди */
-}
 .modal .prev {
   left: 30px;
 }
