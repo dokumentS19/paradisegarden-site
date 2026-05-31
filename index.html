@@ -395,6 +395,8 @@ if (!img) return;
 const images = Array.from(document.querySelectorAll(".card img"));
 currentImages = images.map(i => i.src);
 currentIndex = images.findIndex(i => i === img);
+if (currentIndex === -1) return;
+
 
 
 modal.style.display = "block";
