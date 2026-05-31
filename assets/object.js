@@ -57,7 +57,7 @@ if (obj) {
 
 const imgs = images[id] || [];
 
-if (imgs) {
+if (imgs.length) {
   document.getElementById("main-img").src = imgs[0];
 
   const thumbs = document.querySelector(".thumbs");
