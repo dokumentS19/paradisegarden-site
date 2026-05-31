@@ -22,11 +22,16 @@ img{max-width:100%;height:auto;display:block}
   transition: all 0.2s ease;
 }
 
-.header-inner{
+
+.header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 70px; /* трохи компактніше */
+  max-width: 1100px;   /* ✅ центр */
+  margin: 0 auto;      /* ✅ центрує */
+  padding: 0 20px;     /* ✅ відступи */
+  gap: 20px;           /* ✅ відстань */
+  min-height: 70px;    /* ✅ висота */
 }
 
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}.logo{width:auto;height:123px;object-fit:contain;background:linear-gradient(135deg, #0f2a1d, #1f4d36);padding:2px;border-radius:6px;}.brand-title{font-weight:700}.brand-subtitle{display:block;font-size:.9rem;color:var(--muted)}
