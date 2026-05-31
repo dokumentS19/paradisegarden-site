@@ -398,10 +398,7 @@ body {
   margin-right: 8px;
 
 }
-.header-inner {
-  overflow: visible;
 
-}
 #loginBtn {
   position: relative !important;
   z-index: 999999 !important;
