@@ -379,11 +379,10 @@ async function login() {
 // ✅ стан кнопки
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    currentUser = user; // ✅ ДУЖЕ ВАЖЛИВО
+    currentUser = user; 
     
     btn.textContent = user.displayName || user.email;
     
-  // ✅ ОЦЕ ДОДАЙ (ЗАВАНТАЖЕННЯ)
     favorites = await loadFavorites(user.uid);
 
     btn.onclick = async () => {
@@ -392,14 +391,13 @@ onAuthStateChanged(auth, async (user) => {
     };
 
   } else {
-    currentUser = null;   // ✅ ДОДАТИ
-    favorites = [];       // ✅ ДОДАТИ
+    currentUser = null; 
+    favorites = [];       
     btn.textContent = "Увійти";
     btn.onclick = login;
   }
 });
   
-});//✅ ОЦЕ ДОДАЄШ ТУТ
 document.addEventListener("click", async (e) => {
   if (!e.target.classList.contains("fav-btn")) return;
 
