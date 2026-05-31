@@ -389,10 +389,23 @@ body {
   z-index: 999999 !important;
 }
 
+
 .modal-nav {
-  position: relative;
-  z-index: 10;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 60px;
+  color: white;
   cursor: pointer;
+  z-index: 99999;
+}
+
+.modal .prev {
+  left: 20px;
+}
+
+.modal .next {
+  right: 20px;
 }
 
 .modal-backdrop {
