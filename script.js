@@ -189,7 +189,7 @@ function renderExternalListings(){ const grid = document.getElementById('listing
           </div>
         </div>
       </article>`; }).join(''); }
-
+ 
 // ===== Other behaviours =====
 setupShowPhone(showPhoneBtn, phoneNumber); setupShowPhone(showPhoneBtn2, phoneNumber2);
 setupViber(viberLink); setupViber(viberLink2); setupTelegram(tgLink); setupTelegram(tgLink2);
