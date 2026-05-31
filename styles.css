@@ -357,7 +357,7 @@ body {
   z-index: 99999;
 }
 
-modal .prev,
+.modal .prev,
 .modal .next {
   position: fixed;
   top: 50%;
