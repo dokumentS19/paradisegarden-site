@@ -303,13 +303,6 @@ body {
   font-size: 13px;
   color: var(--muted);
 }
-.modal .prev {
-  left: 30px;
-}
-.modal .next {
-  right: 30px;
-}
-/* ===== FIX СТРІЛКИ 100% ===== */
 .modal .prev,
 .modal .next {
   position: fixed !important;
