@@ -274,9 +274,6 @@ body {
   color: #fff;
   cursor: pointer;
 }
-.prev { left: 30px; }
-.next { right: 30px; }
-/* щоб НІЩО не впливало */
 .modal * {
   box-sizing: border-box;
 }
