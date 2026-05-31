@@ -408,22 +408,23 @@ modal.addEventListener("click", (e) => {
   }
 });
 // ✅ ВСТАВЛЯЄШ ОЦЕ ТУТ
-  document.getElementById("galPrev").onclick = () => {
-    currentIndex--;
-    if (currentIndex < 0) currentIndex = currentImages.length - 1;
-    modalImg.src = currentImages[currentIndex];
-  };
+ document.getElementById("galPrev").onclick = () => {
+  currentIndex--;
+  if (currentIndex < 0) currentIndex = currentImages.length - 1;
+  modalImg.src = currentImages[currentIndex];
+};
 
-  document.getElementById("galNext").onclick = () => {
-    currentIndex++;
-    if (currentIndex >= currentImages.length) currentIndex = 0;
-    modalImg.src = currentImages[currentIndex];
-  };
+document.getElementById("galNext").onclick = () => {
+  currentIndex++;
+  if (currentIndex >= currentImages.length) currentIndex = 0;
+  modalImg.src = currentImages[currentIndex];
+};
 
-  document.getElementById("galClose").onclick = () => {
-    modal.style.display = "none";
-  
-// ✅ ОСЬ СЮДИ ВСТАВЛЯЄШ
+document.getElementById("galClose").onclick = () => {
+  modal.style.display = "none";
+};
+
+// ✅ КЛАВІАТУРА — ОКРЕМО
 document.addEventListener("keydown", (e) => {
   if (modal.style.display !== "block") return;
 
@@ -443,9 +444,7 @@ document.addEventListener("keydown", (e) => {
     modal.style.display = "none";
   }
 });
-
-  };
-
+  
 // ❗ І ТІЛЬКИ ПОТІМ ЗАКРИВАЄШ
 </script>
 
