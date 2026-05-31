@@ -352,41 +352,21 @@ body {
   white-space: nowrap;
 }
 #loginBtn {
-  background: #22c55e !important;  /* зелений */
-  color: #fff !important;
-  padding: 8px 14px;
-  border-radius: 10px;
-  font-weight: 600;
-  border: none;
-  margin-left: 10px; /* щоб не впиралась */
-}
-#loginBtn {
-  background: #22c55e !important;
-  color: white !important;
+  background: #22c55e;
+  color: white;
   padding: 8px 16px;
   border-radius: 10px;
   font-weight: 600;
   border: none;
   margin-left: 12px;
+  position: relative;
+  z-index: 9999;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
-/* hover щоб виглядало дорого */
+
 #loginBtn:hover {
   background: #16a34a;
-}
-#loginBtn {
-  position: relative;
-  z-index: 999;
-}
-#favHeaderBtn {
-  position: relative;
-  z-index: 999;
-  margin-right: 8px;
-
-}
-
-#loginBtn {
-  position: relative !important;
-  z-index: 999999 !important;
 }
 
 
