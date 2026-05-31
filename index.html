@@ -397,17 +397,6 @@ document.addEventListener("click", (e) => {
   modal.style.display = "block";
   modalImg.src = currentImages[currentIndex];
 });
-document.addEventListener("click", (e) => {
-  if (!e.target.matches(".card img")) return;
-
-  const images = Array.from(document.querySelectorAll(".card img"));
-  currentImages = images.map(i => i.src);
-  currentIndex = images.indexOf(e.target);
-
-  modal.style.display = "block";
-  modalImg.src = currentImages[currentIndex];
-});
-
 
 // ✅ ВСТАВЛЯЄШ ОЦЕ ТУТ
 document.addEventListener("DOMContentLoaded", () => {
@@ -429,7 +418,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 });
-``
 // ❗ І ТІЛЬКИ ПОТІМ ЗАКРИВАЄШ
 </script>
 
