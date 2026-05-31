@@ -400,8 +400,6 @@ document.addEventListener("click", (e) => {
 });
 
 // ✅ ВСТАВЛЯЄШ ОЦЕ ТУТ
-document.addEventListener("DOMContentLoaded", () => {
-
   document.getElementById("galPrev").onclick = () => {
     currentIndex--;
     if (currentIndex < 0) currentIndex = currentImages.length - 1;
@@ -416,9 +414,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("galClose").onclick = () => {
     modal.style.display = "none";
+  
   };
 
-});
 // ❗ І ТІЛЬКИ ПОТІМ ЗАКРИВАЄШ
 </script>
 
