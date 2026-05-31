@@ -351,12 +351,6 @@ body {
   align-items: center;
   gap: 16px;
 }
-.header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
 /* 👉 обмежуємо текст */
 .brand {
   flex: 0 0 auto;
