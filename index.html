@@ -318,16 +318,6 @@ let currentIndex = 0;
 const modal = document.getElementById("galleryModal");
 const modalImg = document.getElementById("galImg");
 
-// відкриття картинки
-document.querySelectorAll(".card img").forEach((img, index) => {
-  img.onclick = () => {
-    currentImages = Array.from(document.querySelectorAll(".card img")).map(i => i.src);
-    currentIndex = index;
-
-    modal.style.display = "block";
-    modalImg.src = currentImages[currentIndex];
-  };
-});
 
 // кнопка назад
 document.getElementById("galPrev").onclick = () => {
