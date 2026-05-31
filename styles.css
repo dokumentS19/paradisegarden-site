@@ -350,9 +350,6 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;
-}
-/* 👉 обмежуємо текст */
-.brand {
   flex: 0 0 auto;
 }
 
