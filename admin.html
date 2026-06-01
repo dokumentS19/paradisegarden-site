@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <title>Адмінка</title>
+</head>
+<body>
+
+<h2>Додати об'єкт</h2>
+
+<input id="title" placeholder="Назва"><br><br>
+<input id="area" placeholder="Площа"><br><br>
+<input id="price" placeholder="Ціна"><br><br>
+<input id="image" placeholder="URL фото"><br><br>
+
+<button onclick="addObject()">Додати</button>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getFirestore, collection, addDoc } 
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "ТВОЙ_КЛЮЧ",
+  authDomain: "ТВОЙ_ДОМЕН",
+  projectId: "paradisegarden-site"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.addObject = async () => {
+  const title = document.getElementById("title").value;
+  const area = document.getElementById("area").value;
+  const price = document.getElementById("price").value;
+  const image = document.getElementById("image").value;
+
+  await addDoc(collection(db, "objects"), {
+    title,
+    area,
+    price,
+    image
+  });
+
+  alert("✅ Об’єкт додано!");
+};
+</script>
+
+</body>
+</html>
+``
