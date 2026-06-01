@@ -366,3 +366,22 @@ body {
 .modal-backdrop {
   pointer-events: none;
 }
+
+.nav {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 260px;
+  height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 15px;
+  transition: right 0.3s ease;
+  z-index: 1000;
+}
+
+.nav.active {
+  right: 0;
+}
