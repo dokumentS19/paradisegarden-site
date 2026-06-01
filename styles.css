@@ -381,7 +381,7 @@ body {
     padding: 20px;
     gap: 15px;
     transition: right 0.3s ease;
-    z-index: 1000;
+    z-index: 9999;
   }
 
   .nav.active {
