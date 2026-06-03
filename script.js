@@ -133,7 +133,7 @@ function renderFeatured(){
   }).join('');
   grid.innerHTML = cardsHtml;
 
-   }); // Fav handlers
+ // Fav handlers
   grid.querySelectorAll('.feature-card').forEach(card=>{
     const id = card.getAttribute('data-id'); const fav = card.querySelector('.fav'); const checkbox = fav?.querySelector('input');
     if (checkbox){ checkbox.addEventListener('change', ()=>{ const state = toggleFav(id); fav.classList.toggle('checked', state); updateFavCounter(); }); }
