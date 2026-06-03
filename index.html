@@ -331,8 +331,7 @@ let currentIndex = 0;
 const modal = document.getElementById("galleryModal");
 const modalImg = document.getElementById("galImg");
 
- 
-// ✅ завантаження з бази
+ // ✅ завантаження з бази
 async function loadFavorites(userId) {
   const snap = await getDoc(doc(db, "users", userId));
   return snap.exists() ? snap.data().favorites || [] : [];
