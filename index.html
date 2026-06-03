@@ -458,19 +458,14 @@ document.addEventListener("keydown", (e) => {
 });
   
 // ❗ І ТІЛЬКИ ПОТІМ ЗАКРИВАЄШ
-</script>
+const burgerBtn = document.getElementById("burgerBtn");
+const navMenu = document.getElementById("navMenu");
 
-<script>
-const burger = document.getElementById("burgerBtn");
-const nav = document.getElementById("navMenu");
-
-burger.addEventListener("click", () => {
-  nav.classList.toggle("active");
-  burger.classList.toggle("active");
+burgerBtn.addEventListener("click", () => {
+  navMenu.classList.toggle("active");
+  burgerBtn.classList.toggle("active");
 });
 </script>
-
-</body>
 </html>
 
   
