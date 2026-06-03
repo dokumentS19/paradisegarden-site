@@ -483,10 +483,12 @@ if (form) {
       status.textContent = "✅ Заявка відправлена";
       form.reset();
 
-    } catch (err) {
-      console.error(err);
-      status.textContent = "❌ Помилка";
+  
+} catch (err) {
+  console.error(err);
+  status.textContent = "❌ Помилка";
+}
+  });
 }
 </script>
 </html>
-  
