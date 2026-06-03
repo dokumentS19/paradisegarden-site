@@ -450,11 +450,6 @@ document.addEventListener("keydown", (e) => {
     if (currentIndex < 0) currentIndex = currentImages.length - 1;
     modalImg.src = currentImages[currentIndex];
   }
-
-  if (e.key === "Escape") {
-    modal.style.display = "none";
-   }
-
   if (e.key === "Escape") {
     modal.style.display = "none";
   }
@@ -491,8 +486,6 @@ if (form) {
     } catch (err) {
       console.error(err);
       status.textContent = "❌ Помилка";
-    }
-  });
 }
 </script>
 </html>
