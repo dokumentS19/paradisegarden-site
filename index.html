@@ -498,6 +498,28 @@ if (form) {
   status.textContent = "❌ Помилка";
 }
   });
+}  
+// ✅ ФУНКЦІЯ ЗАВАНТАЖЕННЯ
+async function loadObjects() {
+  const snap = await getDocs(collection(db, "objects"));
+
+  const grid = document.getElementById("objectsGrid");
+  if (!grid) return;
+
+  grid.innerHTML = "";
+
+  snap.forEach(doc => {
+    const d = doc.data();
+
+    grid.innerHTML += `
+      <div class="card">
+        <img src="https://via.placeholder.com/400x250" alt="Об'єкт">
+        <h3>${d.title}</h3>
+        <p>Площа: ${d.area || "-"} м²</p>
+        <strong>${d.price} $</strong>
+      </div>
+      `;
+  });
 }
 </script>
 </html>
