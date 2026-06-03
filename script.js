@@ -281,37 +281,4 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   }
 
 });
-const form = document.getElementById("leadForm");
 
-if (form) {
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const name = form.name.value;
-    const tel = form.tel.value;
-    const msg = form.msg.value;
-
-    const status = document.getElementById("formStatus");
-
-    if (!name || !tel) {
-      status.textContent = "⚠️ Введіть імʼя і телефон";
-      return;
-    }
-
-    try {
-      await addDoc(collection(db, "requests"), {
-        name,
-        tel,
-        msg,
-        createdAt: new Date()
-      });
-
-      status.textContent = "✅ Заявка відправлена";
-      form.reset();
-
-    } catch (err) {
-      console.error(err);
-      status.textContent = "❌ Помилка";
-    }
-  });
-}
