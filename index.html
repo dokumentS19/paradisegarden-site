@@ -398,21 +398,6 @@ btn.textContent = "❤️";
   }
   await saveFavorites(currentUser.uid, favorites);
 });
-
-document.addEventListener("click", (e) => {
- const img = e.target.closest(".card img");
-if (!img) return;
-
-const images = Array.from(document.querySelectorAll(".card img"));
-currentImages = images.map(i => i.src);
-currentIndex = images.findIndex(i => i === img);
-if (currentIndex === -1) return;
-
-
-
-modal.style.display = "block";
-modalImg.src = currentImages[currentIndex];
-});
 modal.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.style.display = "none";
