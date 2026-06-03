@@ -199,117 +199,85 @@ if (recommendBtn){ recommendBtn.addEventListener('click', async ()=>{ const url 
 
 // ===== Bootstrap =====
 document.addEventListener('DOMContentLoaded', async ()=>{
+
   await initData();
   renderFeatured();
   renderExternalListings();
-  ;['featSearch','featCity','featType','featSort','featOnlyFav'].forEach(id=>{ const el = document.getElementById(id); if (el) el.addEventListener('input', renderFeatured); });
-  const reset = document.getElementById('featReset'); if (reset) reset.addEventListener('click', ()=>{ const ids=['featSearch','featCity','featType','featSort','featOnlyFav']; ids.forEach(id=>{ const el=document.getElementById(id); if (!el) return; if (el.tagName==='INPUT' && el.type==='checkbox') el.checked=false; else if (el.tagName==='SELECT') el.selectedIndex=0; else el.value=''; }); renderFeatured(); });
-  const exportBtn = document.getElementById('featExport'); if (exportBtn) exportBtn.addEventListener('click', ()=>{ const favIds = getFavs(); if (!favIds.length){ alert('Немає обраних оголошень для експорту.'); return; } const map = new Map(FEATURED_LISTINGS.map(x=>[String(x.id), x])); const lines = favIds.map(id => map.get(String(id))?.url).filter(Boolean); if (!lines.length){ alert('У обраних немає посилань.'); return; } const text = lines.join('\n');
-navigator.clipboard.writeText(text)
-  .then(() => alert('Посилання обраних скопійовано у буфер обміну.'))
-  .catch(() => {
-    const w = window.open();
-    w?.document.write(`<pre>${text}</pre>`);
-    alert('Неможливо скопіювати автоматично. Скопіюйте вручну.');
+
+  ['featSearch','featCity','featType','featSort','featOnlyFav'].forEach(id=>{
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', renderFeatured);
   });
 
+  const reset = document.getElementById('featReset');
+  if (reset) reset.addEventListener('click', ()=>{
+    const ids=['featSearch','featCity','featType','featSort','featOnlyFav'];
+    ids.forEach(id=>{
+      const el=document.getElementById(id);
+      if (!el) return;
+      if (el.tagName==='INPUT' && el.type==='checkbox') el.checked=false;
+      else if (el.tagName==='SELECT') el.selectedIndex=0;
+      else el.value='';
+    });
+    renderFeatured();
+  });
 
-});// ===== SEO: JSON-LD для обраних оголошень =====
-function injectListingsJsonLd(){
-  if (!Array.isArray(FEATURED_LISTINGS) || !FEATURED_LISTINGS.length) return;
-  const data = FEATURED_LISTINGS.map(it=>({
-    "@context":"https://schema.org",
-    "@type":"RealEstateListing",
-    name: it.title,
-    url: it.url,
-    seller: {"@type":"RealEstateAgent","name":"АН «Райський Сад»"},
-    address: {"@type":"PostalAddress","addressLocality": it.city || '',"addressRegion":"Київська область","addressCountry":"UA"},
-    area: it.area ? {"@type":"QuantitativeValue","value": it.area, "unitCode":"MTK"} : undefined,
-    image: [it.cover, ...(it.gallery||[])].filter(Boolean).slice(0,10),
-    offers: (it.price && typeof it.price.value==='number') ? {"@type":"Offer","price": it.price.value, "priceCurrency": (it.price.currency||'USD')} : undefined
-  }));
-  const s = document.createElement('script'); s.type='application/ld+json'; s.textContent = JSON.stringify(data); document.head.appendChild(s);
-}
+  const exportBtn = document.getElementById('featExport');
+  if (exportBtn) exportBtn.addEventListener('click', ()=>{
+    const favIds = getFavs();
 
- if (window.location.pathname.includes("object.html")) {
-
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
-
-  const data = {
-    1: {
-      title: "2-к квартира, Ірпінь",
-      desc: "Сучасна квартира у новобудові з комфортним плануванням.",
-      price: "65 000 $",
-      info: ["Площа: 65 м²", "Кухня: 15 м²", "Поверх: 3/10"]
-    },
-    2: {
-      title: "Будинок, Буча",
-      desc: "Просторий будинок з ділянкою та хорошим ремонтом.",
-      price: "120 000 $",
-      info: ["Площа: 120 м²", "Ділянка: 5 соток", "Поверхів: 2"]
-    },
-    3: {
-      title: "1-к квартира, Ірпінь",
-      desc: "Компактна квартира в центрі міста.",
-      price: "38 000 $",
-      info: ["Площа: 38 м²", "Центр"]
+    if (!favIds.length){
+      alert('Немає обраних оголошень');
+      return;
     }
-  };
 
-  const images = {
-    1: [
-      "https://picsum.photos/800/400",
-      "https://picsum.photos/800/401",
-      "https://picsum.photos/800/402"
-    ],
-    2: [
-      "https://picsum.photos/800/410",
-      "https://picsum.photos/800/411",
-      "https://picsum.photos/800/412"
-    ],
-    3: [
-      "https://picsum.photos/800/420",
-      "https://picsum.photos/800/421",
-      "https://picsum.photos/800/422"
-    ]
-  };
+    const map = new Map(FEATURED_LISTINGS.map(x=>[String(x.id), x]));
+    const lines = favIds.map(id => map.get(String(id))?.url).filter(Boolean);
 
-  const obj = data[id];
+    const text = lines.join('\n');
 
-  if (obj) {
-    document.getElementById("title").textContent = obj.title;
-    document.getElementById("desc").textContent = obj.desc;
-    document.getElementById("price").textContent = obj.price;
+    navigator.clipboard.writeText(text)
+      .then(()=> alert('✅ Скопійовано'))
+      .catch(()=>{
+        const w = window.open();
+        w?.document.write(`<pre>${text}</pre>`);
+      });
+  });
 
-    const ul = document.getElementById("info");
-    ul.innerHTML = "";
+  // ✅ ФОРМА
+  const form = document.getElementById("leadForm");
 
-    obj.info.forEach(i => {
-      const li = document.createElement("li");
-      li.textContent = i;
-      ul.appendChild(li);
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = form.querySelector('[name="name"]').value;
+      const tel = form.querySelector('[name="tel"]').value;
+      const msg = form.querySelector('[name="msg"]').value;
+
+      const status = document.getElementById("formStatus");
+
+      if (!name || !tel) {
+        status.textContent = "⚠️ Введіть імʼя і телефон";
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, "requests"), {
+          name,
+          tel,
+          msg,
+          createdAt: new Date()
+        });
+
+        status.textContent = "✅ Заявка відправлена";
+        form.reset();
+
+      } catch (err) {
+        console.error(err);
+        status.textContent = "❌ Помилка";
+      }
     });
   }
 
-  const imgs = images[id];
-
-  if (imgs) {
-    document.getElementById("main-img").src = imgs[0];
-
-    const thumbs = document.querySelector(".thumbs");
-    thumbs.innerHTML = "";
-
-    imgs.forEach(src => {
-      const img = document.createElement("img");
-      img.src = src;
-
-      img.onclick = () => {
-        document.getElementById("main-img").src = src;
-      };
-
-      thumbs.appendChild(img);
-    });
-  }
-
- 
+});
