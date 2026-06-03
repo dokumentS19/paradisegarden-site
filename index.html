@@ -398,8 +398,9 @@ btn.textContent = "❤️";
   }
   await saveFavorites(currentUser.uid, favorites);
 });
+
 modal.addEventListener("click", (e) => {
-  if (e.target === modal) {
+  if (e.target === modal || e.target.dataset.close) {
     modal.style.display = "none";
   }
 });
