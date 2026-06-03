@@ -308,9 +308,15 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signO
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
   
 // ✅ ОЦЕ ТВОЄ НОВЕ
-import { getFirestore, doc, setDoc, getDoc, collection, addDoc }
-from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-
+import {
+  getFirestore, 
+  doc, 
+  setDoc, 
+  getDoc, 
+  collection, 
+  addDoc,
+  getDocs   // ✅ ВАЖЛИВО!
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
   authDomain: "paradisegarden-site.firebaseapp.com",
