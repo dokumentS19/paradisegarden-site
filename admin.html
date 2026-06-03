@@ -30,19 +30,22 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 window.addObject = async () => {
-  const title = document.getElementById("title").value;
-  const area = document.getElementById("area").value;
-  const price = document.getElementById("price").value;
-  const image = document.getElementById("image").value;
 
-  await addDoc(collection(db, "objects"), {
-    title,
-    area,
-    price,
-    image
-  });
+const title = document.getElementById("title").value;
+const area = document.getElementById("area").value;
+const price = document.getElementById("price").value;
 
-  alert("✅ Об’єкт додано!");
+const file = document.getElementById("image").files[0];
+const image = file ? file.name : "";
+
+await addDoc(collection(db, "objects"), {
+  title,
+  area,
+  price,
+  image
+});
+
+alert("✅ Об’єкт додано!");
 };
 </script>
 
