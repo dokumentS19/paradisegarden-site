@@ -420,8 +420,7 @@ document.getElementById("galClose").onclick = () => {
   modal.style.display = "none";
 };
 
-// ✅ КЛАВІАТУРА — ОКРЕМО
-// ✅ КЛІК ПО ФОТО (ГАЛЕРЕЯ)
+// ✅ КЛІК ПО ФОТО
 document.querySelectorAll(".card img").forEach((img, index) => {
   img.addEventListener("click", () => {
 
@@ -433,7 +432,10 @@ document.querySelectorAll(".card img").forEach((img, index) => {
     modal.style.display = "block";
     modalImg.src = currentImages[currentIndex];
   });
-  document.addEventListener("keydown", (e) => {
+});
+
+// ✅ КЛАВІАТУРА
+document.addEventListener("keydown", (e) => {
   if (modal.style.display !== "block") return;
 
   if (e.key === "ArrowRight") {
@@ -447,6 +449,7 @@ document.querySelectorAll(".card img").forEach((img, index) => {
     if (currentIndex < 0) currentIndex = currentImages.length - 1;
     modalImg.src = currentImages[currentIndex];
   }
+
   if (e.key === "Escape") {
     modal.style.display = "none";
   }
