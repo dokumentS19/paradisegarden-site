@@ -292,7 +292,6 @@ function renderFeatured(){
   attachGalleryHandlers();
 }
 // ===== Gallery =====
-const modal = document.getElementById('galleryModal');
 const galImg = document.getElementById('galImg');
 const galPrev = document.getElementById('galPrev');
 const galNext = document.getElementById('galNext');
