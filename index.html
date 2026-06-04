@@ -519,15 +519,9 @@ async function loadObjects() {
 
     grid.innerHTML += `
       <div class="card">
-        <img src="${d.images?.[0] || 'https://via.placeholder.com/400x250'}" alt=" || "-"} м²</p>
+        <img src="${d.images?.[0] || d.image || 'https://via.placeholder.com/400x250'}" alt="Об'є"-"} м²</p>
         <strong>${d.price} $</strong>
       </div>
-    `;
-  });
-}
-
-loadObjects();
-
     `;
   });
 }
