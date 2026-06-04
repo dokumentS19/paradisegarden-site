@@ -519,20 +519,6 @@ const cardHTML = `
     grid.innerHTML += cardHTML;
   });
 
-  // ✅ КЛІК ПО ФОТО
-    img.addEventListener("click", () => {
-     const index = Number(img.dataset.index);
-      
-      const d = snap.docs[index].data();
-      currentImages = d.images || (d.image ? [d.image] : []);
-      currentIndex = 0;
-
-      if (!currentImages.length) return;
-
-      modal.style.display = "block";
-      modalImg.src = currentImages[currentIndex];
-    });
-  });
 }
 loadObjects();
 </script>
