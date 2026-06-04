@@ -55,10 +55,10 @@ console.log("FUNC START");
    images.push(img);
   }
   await addDoc(collection(db, "objects"), {
-  title: "test",
-  price: 123,
-  area: 50,
-  images: [],
+  title,
+  price,
+  area,
+  images,
   createdAt: new Date()
 });
   alert("✅ Об’єкт додано!");
