@@ -104,7 +104,7 @@ function updateFavUI() {
   const counter = document.getElementById("favCounter");
   if (counter) counter.textContent = favorites.length;
 }
-
+/*
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
@@ -127,6 +127,7 @@ onAuthStateChanged(auth, async (user) => {
     btn.onclick = login;
   }
 });
+*/
 let currentUser = null;
 let favorites = [];
 const btn = document.getElementById("loginBtn");
