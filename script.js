@@ -187,7 +187,10 @@ let galState = { list: [], index: 0, title: '' };
 function openGallery(listing){ galState.list = (listing.gallery && listing.gallery.length ? listing.gallery : [listing.cover]).filter(Boolean); galState.index = 0; galState.title = listing.title || ''; renderGallery(); modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; }
 function closeGallery(){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
 function showIdx(i){ if (!galState.list.length) return; galState.index = (i + galState.list.length) % galState.list.length; renderGallery(); }
-function renderGallery(){ const src = galState.list[galState.index]; galImg.src = src; galImg.alt = galState.title || "Фото об'єкта"; galCaption.textContent = `${galState.title} — ${galState.index+1}/${galState.list.length}`; galThumbs.innerHTML = galState.list.map((s,idx)=>`<img src="${s}" data-idx="${idx}" alt="thumb ${idx+1}" loading="lazy"/>`).join(''); galThumbs.querySelectorAll('img').forEach(img=>{ img.addEventListener('click', ()=> showIdx(Number(img.dataset.idx))); if (Number(img.dataset.idx)===galState.index) img.classList.add('active'); }); }
+function renderGallery(){ const src = galState.list[galState.index]; galImg.src = src; galImg.alt = galState.title || "Фото об'єкта"; 
+galCaption.textContent = `${galState.title} — ${galState.index+1}/${galState.list.length}`; galThumbs.innerHTML = galState.list.map((s,idx)=>`
+<img src="${s}" data-idx="${idx}" alt="thumb ${idx+1}" loading="lazy"/>`).join(''); galThumbs.querySelectorAll('img').forEach(img=>{ img.addEventListener('click',
+()=> showIdx(Number(img.dataset.idx))); if (Number(img.dataset.idx)===galState.index) img.classList.add('active'); });
 ['click'].forEach(()=>{}); // placeholder to avoid lint
 if (galPrev) galPrev.addEventListener('click', ()=> showIdx(galState.index - 1));
 if (galNext) galNext.addEventListener('click', ()=> showIdx(galState.index + 1));
