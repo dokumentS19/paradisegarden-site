@@ -270,3 +270,4 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   status.textContent = "❌ Помилка";
 }
 });
+});  // ✅ ОЦЕ ДОДАТИ - закриває DOMContentLoaded
