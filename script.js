@@ -66,6 +66,19 @@ document.addEventListener("click", (e) => {
   openGallery([img.src]);
 });
 document.addEventListener("click", async (e) => {
+
+  // ✅ ГАЛЕРЕЯ
+  if (e.target.matches(".gallery-img")) {
+    const img = e.target;
+
+    // просте відкриття модалки
+    modal.style.display = "block";
+    modalImg.src = img.src;
+
+    return; // важливо щоб не пішло далі
+  }
+
+  // ✅ ФАВОРИТИ
   const btn = e.target.closest(".fav-btn");
   if (!btn) return;
 
@@ -82,8 +95,11 @@ document.addEventListener("click", async (e) => {
     favorites.push(id);
   }
 
-  updateFavUI(); // ✅ оновлення UI
+  updateFavUI();
+
   await saveFavorites(currentUser.uid, favorites);
+});
+``
 });
 
 function updateFavUI() {
