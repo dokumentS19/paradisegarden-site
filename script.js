@@ -151,8 +151,7 @@ const AIRTABLE_VIEW_CSV_URL = ""; // Airtable View CSV
 
 // ===== Favorites storage =====
 
-  const list = getFavs(); 
-  const idx = list.indexOf(String(id)); 
+
   if (idx >= 0) {
     list.splice(idx, 1);
   } else {
