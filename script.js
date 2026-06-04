@@ -7,14 +7,19 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 console.log("SCRIPT OK");
 
-document.getElementById("showFavOnly").onclick = () => {
-  document.querySelectorAll(".card").forEach(card => {
-    const btn = card.querySelector(".fav-btn");
-    if (!btn) return;
+const showFavBtn = document.getElementById("showFavOnly");
 
-    const id = Number(btn.dataset.id);
+if (showFavBtn) {
+  showFavBtn.onclick = () => {
+    document.querySelectorAll(".card").forEach(card => {
+      const btn = card.querySelector(".fav-btn");
+      if (!btn) return;
 
-    card.style.display = favorites.includes(id) ? "block" : "none";
+      const id = Number(btn.dataset.id);
+      card.style.display = favorites.includes(id) ? "block" : "none";
+    });
+  };
+}
   });
 };
  
