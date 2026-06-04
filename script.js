@@ -31,7 +31,10 @@ if (showFavBtn) {
 }
  
 async function loadObjects() {
-  const snap = await getDocs(collection(db, "objects"));
+
+const snap = await getDocs(collection(db, "objects"));
+console.log("DOCS COUNT:", snap.size);
+
   const grid = document.getElementById("objectsGrid");
   if (!grid) return;
   grid.innerHTML = "";
