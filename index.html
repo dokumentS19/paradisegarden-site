@@ -527,27 +527,20 @@ grid.innerHTML += `
          alt="Обg>
   </div>
 `;
-
-  `;
-});
-
-  `;
-});
-  // ✅ ОСЬ ГОЛОВНЕ — ПІСЛЯ РЕНДЕРУ
-  document.querySelectorAll(".gallery-img").forEach((img, i) => {
+}); // ✅ кліки після рендера
+document.querySelectorAll(".gallery-img").forEach((img, i) => {
   img.addEventListener("click", () => {
-    
     const card = img.closest(".card");
     const index = Array.from(grid.children).indexOf(card);
-    const docData = snap.docs[index].data();
+    const d = snap.docs[index].data();
 
-    currentImages = docData.images || [docData.image];
+    currentImages = d.images || [d.image];
     currentIndex = 0;
 
     modal.style.display = "block";
-    modalImg.src = currentImages[currentIndex];
-      });
+    modalImg.src = currentImages[0];
   });
+});
 }
 
 loadObjects();
