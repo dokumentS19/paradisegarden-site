@@ -32,8 +32,6 @@ const db = getFirestore(app);
 window.addObject = async () => {
 console.log("FUNC START");
   console.log("пішли далі");
-  console.log("files:", files);
-  await readFile(files[i]);
   const title = document.getElementById("title").value;
   const area = document.getElementById("area").value;
   const price = document.getElementById("price").value;
