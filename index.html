@@ -486,13 +486,14 @@ async function loadObjects() {
     const imageUrl = d.images?.[0] || d.image || "https://via.placeholder.com/400x250";
 
     const cardHTML = `
-      <div class="card">
-        <img class="gallery-img" src="${imageUrl}" alt="Об'єкт">
+  <div class="card">
+    <img class="gallery-img" src="${imageUrl}" alt="Об'єкт">
 
-        <h3>${d.title || "Без назви"}</h3>
-        <p>Площа: ${d.area || "-"} м²</p>
-        <strong>${d.price || "-"} $</strong>
-      </div>
+    <h3>${d.title || "Без назви"}</h3>
+    <p>Площа: ${d.area || "-"} м²</p>
+    <strong>${d.price || "-"} $</strong>
+  </div>
+`;
     `;
 
     grid.innerHTML += cardHTML;
