@@ -1,10 +1,14 @@
 document.getElementById("showFavOnly").onclick = () => {
   document.querySelectorAll(".card").forEach(card => {
-    const id = Number(card.querySelector(".fav-btn").dataset.id);
+    const btn = card.querySelector(".fav-btn");
+    if (!btn) return;
+
+    const id = Number(btn.dataset.id);
 
     card.style.display = favorites.includes(id) ? "block" : "none";
   });
 };
+
 <button id="showFavOnly">Тільки обрані</button>
 async function loadObjects() {
   const snap = await getDocs(collection(db, "objects"));
