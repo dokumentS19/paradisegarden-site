@@ -1,3 +1,5 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 console.log("SCRIPT OK");
 document.getElementById("showFavOnly").onclick = () => {
   document.querySelectorAll(".card").forEach(card => {
@@ -147,8 +149,6 @@ let favorites = [];
 
 const btn = document.getElementById("loginBtn");
 ``   
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 const firebaseConfig = {
