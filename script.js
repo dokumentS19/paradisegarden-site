@@ -253,3 +253,4 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   console.error(err);
   status.textContent = "❌ Помилка";
 }
+});   // ✅ закриває addEventListener
