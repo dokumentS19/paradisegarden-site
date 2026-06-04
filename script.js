@@ -50,7 +50,7 @@ function showImage(index) {
   if (index < 0) index = currentImages.length - 1;
   if (index >= currentImages.length) index = 0;
 
-  currentIndex = index;
+  currentIndex = index; 
   modalImg.src = currentImages[currentIndex];
 }
 
