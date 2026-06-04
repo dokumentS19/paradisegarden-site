@@ -364,19 +364,6 @@ onAuthStateChanged(auth, async (user) => {
 
     updateFavUI();
   }
-
-});
-
-    };
-
-  } else {
-    currentUser = null; 
-    favorites = [];       
-    btn.textContent = "Увійти";
-    btn.onclick = login;
-  }
-
-});
   
 document.addEventListener("click", async (e) => {
  
