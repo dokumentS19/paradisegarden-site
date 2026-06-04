@@ -154,10 +154,6 @@ const firebaseConfig = {
 authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site"
 }; 
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
 const PHONE_NUMBER  = "+380674464705";
 const VIBER_NUMBER  = "+380674464705";
 const TELEGRAM_LINK = "https://t.me/+380674464705";
