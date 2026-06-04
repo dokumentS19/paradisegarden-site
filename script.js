@@ -232,8 +232,9 @@ if (recommendBtn)
 try{ await navigator.clipboard.writeText(url);
 recommendBtn.textContent = 'Посилання скопійовано!';setTimeout(()=>
 recommendBtn.textContent='Рекомендувати', 1800); }
-atch{ alert('Скопіюйте посилання: ' + url); 
-     } 
+catch {
+  alert('Скопіюйте посилання: ' + url); 
+}
   }); 
 } 
   // 
