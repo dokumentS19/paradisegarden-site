@@ -256,6 +256,6 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   status.textContent = "❌ Помилка";
 }
 });
-
+});  // ✅ ФІНАЛЬНА ДУЖКА
 
 
