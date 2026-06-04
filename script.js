@@ -479,5 +479,6 @@ window.addObject = async () => {
     console.error(e);
   }
 };
-
-document.getElementById("addBtn").onclick = window.addObject;
+document.addEventListener("DOMContentLoaded", () => {
+  loadObjects();
+});
