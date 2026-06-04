@@ -152,11 +152,6 @@ onAuthStateChanged(auth, async (user) => {
 let currentUser = null;
 let favorites = [];
 const btn = document.getElementById("loginBtn");
-const firebaseConfig = {
- apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
-authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site"
-}; 
 const PHONE_NUMBER  = "+380674464705";
 const VIBER_NUMBER  = "+380674464705";
 const TELEGRAM_LINK = "https://t.me/+380674464705";
