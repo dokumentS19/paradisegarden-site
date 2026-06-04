@@ -11,7 +11,7 @@ document.getElementById("showFavOnly").onclick = () => {
     card.style.display = favorites.includes(id) ? "block" : "none";
   });
 };
-
+ 
 async function loadObjects() {
   const snap = await getDocs(collection(db, "objects"));
 
