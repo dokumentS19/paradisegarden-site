@@ -35,30 +35,40 @@ window.addObject = async () => {
   const area = document.getElementById("area").value;
   const price = document.getElementById("price").value;
 
-  const file = document.getElementById("image").files[0];
+  const files = document.getElementById("image").files;
 
-  if (!title || !price || !file) {
+  if (!title || !price || files.length === 0) {
     alert("Заповни всі поля і вибери фото");
     return;
   }
 
- const reader = new FileReader();
+  let images = [];
 
-reader.onload = async function(e) {
+  const readFile = (file) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target.result);
+      reader.readAsDataURL(file);
+    });
+  };
 
-  const imageBase64 = e.target.result;
+  // ✅ читаємо всі файли
+  for (let i = 0; i < files.length; i++) {
+    const img = await readFile(files[i]);
+    images.push(img);
+  }
 
+  // ✅ записуємо масив фото
   await addDoc(collection(db, "objects"), {
     title,
     area,
     price,
-    image: imageBase64,
+    images, // ✅ ТЕПЕР МАСИВ
     createdAt: new Date()
   });
 
   alert("✅ Об’єкт додано!");
 
-  // ✅ ОСЬ ТУТ ПРАВИЛЬНО
   document.getElementById("title").value = "";
   document.getElementById("area").value = "";
   document.getElementById("price").value = "";
