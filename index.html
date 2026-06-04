@@ -513,27 +513,40 @@ async function loadObjects() {
   if (!grid) return;
 
   grid.innerHTML = "";
+ 
 
-  snap.forEach(doc => {
-    const d = doc.data();
+snap.forEach(doc => {
+  const d = doc.data();
 
-    grid.innerHTML += `
-      <div class="card">
-        <img class="gallery-img" src="${d.images?.[0] || d.image || 'https://viaоща: ${d.area || "-"} м²</p>
-        <strong>${d.price} $</strong>
-      </div>
-    `;
-  });
+const d = doc.data();
 
+grid.innerHTML += `
+  <div class="card">
+    <img class="gallery-img"
+         src="${d.images?.[0] || d.image || 'https://via.placeholder.com/400x250'}"
+         alt="Обg>
+  </div>
+`;
+
+  `;
+});
+
+  `;
+});
   // ✅ ОСЬ ГОЛОВНЕ — ПІСЛЯ РЕНДЕРУ
-  document.querySelectorAll(".gallery-img").forEach((img) => {
-    img.addEventListener("click", () => {
-      currentImages = [img.src]; // поки просто одне фото
-      currentIndex = 0;
+  document.querySelectorAll(".gallery-img").forEach((img, i) => {
+  img.addEventListener("click", () => {
+    
+    const card = img.closest(".card");
+    const index = Array.from(grid.children).indexOf(card);
+    const docData = snap.docs[index].data();
 
-      modal.style.display = "block";
-      modalImg.src = currentImages[currentIndex];
-    });
+    currentImages = docData.images || [docData.image];
+    currentIndex = 0;
+
+    modal.style.display = "block";
+    modalImg.src = currentImages[currentIndex];
+      });
   });
 }
 
