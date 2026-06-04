@@ -40,7 +40,10 @@ async function loadObjects() {
 
   updateFavUI(); // ✅
 }
-const modal = document.getElementById("galleryModal");
+const modalImg = document.getElementById("modalImg");
+
+let currentImages = [];
+let currentIndex = 0;
 
 document.addEventListener("keydown", (e) => {
   if (!modal || modal.style.display !== "block") return;
