@@ -7,6 +7,9 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 console.log("SCRIPT OK");
 
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 const showFavBtn = document.getElementById("showFavOnly");
 
 if (showFavBtn) {
