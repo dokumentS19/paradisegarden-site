@@ -206,9 +206,8 @@ async function loadObjects() {
     });
   } catch (e) {
     console.error(e);
-  }
-}
-});// ===== Bootstrap =====
+  }  // ← закриваємо функцію loadObjects
+// ===== Bootstrap =====
 document.addEventListener('DOMContentLoaded', async ()=>{
   await initData();
   renderFeatured();
