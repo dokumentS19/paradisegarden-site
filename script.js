@@ -227,10 +227,15 @@ setupShowPhone(showPhoneBtn, phoneNumber); setupShowPhone(showPhoneBtn2, phoneNu
 setupViber(viberLink); setupViber(viberLink2); setupTelegram(tgLink); setupTelegram(tgLink2);
 if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 if (burger && nav){ burger.addEventListener('click', ()=>{ const visible = getComputedStyle(nav).display !== 'none'; nav.style.display = visible ? 'none' : 'flex'; burger.setAttribute('aria-expanded', String(!visible)); }); nav.querySelectorAll('a').forEach(a=> a.addEventListener('click', ()=>{ if (window.matchMedia('(max-width: 980px)').matches){ nav.style.display = 'none'; burger.setAttribute('aria-expanded','false'); } })); }
-if (recommendBtn){ recommendBtn.addEventListener('click', async ()=>{ const url = location.href; 
-try{ await navigator.clipboard.writeText(url); recommendBtn.textContent = 'Посилання скопійовано!';
-   setTimeout(()=>recommendBtn.textContent='Рекомендувати', 1800); }
-    catch{ alert('Скопіюйте посилання: ' + url); } }); 
+if (recommendBtn)
+{ recommendBtn.addEventListener('click', async ()=>{ const url = location.href; 
+try{ await navigator.clipboard.writeText(url);
+recommendBtn.textContent = 'Посилання скопійовано!';setTimeout(()=>
+recommendBtn.textContent='Рекомендувати', 1800); }
+atch{ alert('Скопіюйте посилання: ' + url); 
+     } 
+  }); 
+} ✅ ← ОЦЕ ДОДАТИ
   // ✅ закриває addEventListener
 async function loadObjects() {
   try {
