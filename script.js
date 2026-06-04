@@ -172,7 +172,6 @@ const AIRTABLE_VIEW_CSV_URL = ""; // Airtable View CSV
 
 // ===== Header favorites counter =====
 const favCounter = document.getElementById('favCounter');
-const favCounter = document.getElementById('favCounter');
 const favHeaderBtn = document.getElementById('favHeaderBtn');
 
 function updateFavCounter(){ 
