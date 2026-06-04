@@ -63,7 +63,12 @@ document.addEventListener("click", (e) => {
   if (!e.target.matches(".gallery-img")) return;
 
   const img = e.target;
-  openGallery([img.src]);
+
+  modal.style.display = "block";
+  modalImg.src = img.src;
+
+  currentImages = [img.src];
+  currentIndex = 0;
 });
 document.addEventListener("click", async (e) => {
 
