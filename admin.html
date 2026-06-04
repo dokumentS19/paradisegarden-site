@@ -42,26 +42,31 @@ window.addObject = async () => {
     return;
   }
 
-  const reader = new FileReader();
+ const reader = new FileReader();
 
-  reader.onload = async function(e) {
+reader.onload = async function(e) {
 
-    const imageBase64 = e.target.result;
+  const imageBase64 = e.target.result;
 
-    await addDoc(collection(db, "objects"), {
-      title,
-      area,
-      price,
-      image: imageBase64, // ✅ ТУТ ТЕПЕР ФОТО
-      createdAt: new Date()
-    });
+  await addDoc(collection(db, "objects"), {
+    title,
+    area,
+    price,
+    image: imageBase64,
+    createdAt: new Date()
+  });
 
-    alert("✅ Об’єкт додано!");
-  };
+  alert("✅ Об’єкт додано!");
 
-  reader.readAsDataURL(file);
+  // ✅ ОСЬ ТУТ ПРАВИЛЬНО
+  document.getElementById("title").value = "";
+  document.getElementById("area").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("image").value = "";
 };
-``
+
+reader.readAsDataURL(file);
+};
 </script>
 
 </body>
