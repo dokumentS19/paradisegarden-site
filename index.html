@@ -523,7 +523,7 @@ const cardHTML = `
 <img class="gallery-img" data-index="${index}">
     img.addEventListener("click", () => {
      const index = Number(img.dataset.index);
-      const d = snap.docs[index].data();
+      
       const d = snap.docs[index].data();
       currentImages = d.images || (d.image ? [d.image] : []);
       currentIndex = 0;
