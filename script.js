@@ -255,3 +255,4 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 }
 });
 });   // ✅ закриває addEventListener
+onsole.log("SCRIPT OK");
