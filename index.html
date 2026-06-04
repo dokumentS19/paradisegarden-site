@@ -506,6 +506,7 @@ if (form) {
   }); 
 }  
 // ✅ ФУНКЦІЯ ЗАВАНТАЖЕННЯ
+// ✅ ФУНКЦІЯ ЗАВАНТАЖЕННЯ
 async function loadObjects() {
   const snap = await getDocs(collection(db, "objects"));
 
@@ -520,13 +521,13 @@ async function loadObjects() {
     grid.innerHTML += `
       <div class="card">
         <img class="gallery-img"
-             src="${d.images?.[0] || d.image || 'https://via.placeholder.com/400x250'}"
-             alt="g>${d.price || "-"} $</strong>
+             src="${d.images?.[0] || d.image || 'https://via.placeholder.com/400"-"} м²</p>
+        <strong>${d.price || "-"} $</strong>
       </div>
     `;
   });
 
-  // ✅ КЛІК ПО ФОТО
+  // ✅ КЛІК ПО ФОТО (галерея)
   document.querySelectorAll(".gallery-img").forEach((img, i) => {
     img.addEventListener("click", () => {
       const card = img.closest(".card");
