@@ -458,3 +458,26 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   status.textContent = "❌ Помилка";
 }
 });
+window.addObject = async () => {
+  console.log("CLICK ✅");
+
+  const title = document.getElementById("title").value;
+  const area = Number(document.getElementById("area").value);
+  const price = Number(document.getElementById("price").value);
+
+  try {
+    await addDoc(collection(db, "objects"), {
+      title,
+      area,
+      price,
+      images: []
+    });
+
+    console.log("ДОДАНО ✅");
+
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+document.getElementById("addBtn").onclick = window.addObject;
