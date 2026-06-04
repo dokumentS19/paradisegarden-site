@@ -1,9 +1,9 @@
    
-// ✅ 1. ІМПОРТИ (САМЕ НАВЕРХУ)
+// 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// ✅ 2. FIREBASE CONFIG
+// 
 const firebaseConfig = {
  
 apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
@@ -11,7 +11,7 @@ authDomain: "paradisegarden-site.firebaseapp.com",
 
   projectId: "paradisegarden-site"
 }; 
-// ✅ 3. І ТІЛЬКИ ПІСЛЯ ЦЬОГО INIT
+// 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 // ===== КОНТАКТИ (заповнено вашим номером) =====
@@ -39,7 +39,7 @@ function toggleFav(id){
   setFavs(list);
  updateFavCounter();
 
-  // ✅ ЗБЕРЕЖЕННЯ В FIREBASE
+  // 
   const user = window.auth?.currentUser;
   if (user) {
     window.saveFavorites(user.uid, list);
@@ -235,8 +235,8 @@ recommendBtn.textContent='Рекомендувати', 1800); }
 atch{ alert('Скопіюйте посилання: ' + url); 
      } 
   }); 
-} ✅ ← ОЦЕ ДОДАТИ
-  // ✅ закриває addEventListener
+} 
+  // 
 async function loadObjects() {
   try {
     const snap = await getDocs(collection(db, "objects"));
