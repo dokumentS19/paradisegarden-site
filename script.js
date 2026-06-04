@@ -99,7 +99,7 @@ document.addEventListener("click", (e) => {
     favorites.push(id);
   }
   updateFavUI();
-  await saveFavorites(currentUser.uid, favorites);
+ // await saveFavorites(currentUser.uid, favorites);
 });
 function updateFavUI() {
   document.querySelectorAll(".fav-btn").forEach(btn => {
