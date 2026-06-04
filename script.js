@@ -236,23 +236,20 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
     const text = lines.join('\n');
 
-    navigator.clipboard.writeText(text)
-      .then(()=> alert('✅ Скопійовано'))
-      .catch(()=>{
-        const w = window.open();
-        w?.document.write(`<pre>${text}</pre>`);
-     
-        });
-
-        status.textContent = "✅ Заявка відправлена";
-        form.reset();
-
-      } catch (err) {
-        console.error(err);
-        status.textContent = "❌ Помилка";
+    try {
+  navigator.clipboard.writeText(text)
+    .then(() => alert('✅ Скопійовано'))
+    .catch(() => {
+      const w = window.open();
+      if (w) {
+        w.document.write(`<pre>${text}</pre>`);
       }
     });
-  }
 
-});
+  status.textContent = "✅ Заявка відправлена";
+  form.reset();
 
+} catch (err) {
+  console.error(err);
+  status.textContent = "❌ Помилка";
+}
