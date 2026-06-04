@@ -10,7 +10,6 @@ document.getElementById("showFavOnly").onclick = () => {
   });
 };
 
-
 async function loadObjects() {
   const snap = await getDocs(collection(db, "objects"));
 
