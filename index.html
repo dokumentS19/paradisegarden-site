@@ -519,7 +519,9 @@ async function loadObjects() {
 
     grid.innerHTML += `
       <div class="card">
-        <img src="${d.images?.[0] || d.image || 'https://via.placeholder.com/400x250'}" alt="Об'є"-"} м²</p>
+        <img src="${d.images?.[0] || d.image || 'https://via.placeholder.com/400x250'}" alt="Об'єкт">
+        <h3>${d.title}</h3>
+        <p>Площа: ${d.area || "-"} м²</p>
         <strong>${d.price} $</strong>
       </div>
     `;
