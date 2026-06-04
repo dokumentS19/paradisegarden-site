@@ -50,10 +50,18 @@ console.log("FUNC START");
       reader.readAsDataURL(file);  
     });
   };
-   for (let i = 0; i < files.length; i++) {
-   const img = await readFile(files[i]);
-   images.push(img);
-  }
+  
+for (let i = 0; i < files.length; i++) {
+
+  console.log("📂 Почали читати файл", i);
+
+  const img = await readFile(files[i]);
+
+  console.log("✅ Файл прочитався", i);
+
+  images.push(img);
+}
+
   await addDoc(collection(db, "objects"), {
   title,
   price,
