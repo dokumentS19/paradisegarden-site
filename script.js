@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   renderFeatured();
   renderExternalListings();
   loadObjects(); 
- });/ ✅ ОСЬ ТУТ ПРАВИЛЬНО
+ // ✅ ОСЬ ТУТ ПРАВИЛЬНО
   ['featSearch','featCity','featType','featSort','featOnlyFav'].forEach(id=>{
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', renderFeatured);
