@@ -522,10 +522,9 @@ const cardHTML = `
   // ✅ КЛІК ПО ФОТО
 <img class="gallery-img" data-index="${index}">
     img.addEventListener("click", () => {
-      const card = img.closest(".card");
-      const index = Array.from(grid.children).indexOf(card);
+     const index = Number(img.dataset.index);
       const d = snap.docs[index].data();
-
+      const d = snap.docs[index].data();
       currentImages = d.images || (d.image ? [d.image] : []);
       currentIndex = 0;
 
