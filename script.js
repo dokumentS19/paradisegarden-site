@@ -40,6 +40,7 @@ async function loadObjects() {
 
   updateFavUI(); // ✅
 }
+const modal = document.getElementById("galleryModal");
 const modalImg = document.getElementById("modalImg");
 
 let currentImages = [];
