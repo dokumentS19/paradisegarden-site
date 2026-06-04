@@ -301,40 +301,7 @@
       <div id="galCaption" class="modal-caption"></div>
     </div>
   </div><script type="module" src="script.js"></script>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut }
-from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
   
-// ✅ ОЦЕ ТВОЄ НОВЕ
-import {
-  getFirestore, 
-  doc, 
-  setDoc, 
-  getDoc, 
-  collection, 
-  addDoc,
-  getDocs   // ✅ ВАЖЛИВО!
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-const firebaseConfig = {
-  apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
-  authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site",
-  storageBucket: "paradisegarden-site.appspot.com",
-  messagingSenderId: "452352075250",
-  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
-  measurementId: "G-6XHWE6Y0JE"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-const db = getFirestore(app);
-const btn = document.getElementById("loginBtn");
-  
-let currentUser = null;
-let favorites = [];
-
   
 // ✅ ДОДАЙ ЦЕ
 let currentImages = [];
