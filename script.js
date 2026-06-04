@@ -17,9 +17,7 @@ if (showFavBtn) {
 
       const id = Number(btn.dataset.id);
       card.style.display = favorites.includes(id) ? "block" : "none";
-    });
-  };
-}
+  }
   });
 };
  
