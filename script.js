@@ -73,9 +73,38 @@ function fmtPrice({value, currency='USD'} = {}){ if (typeof value !== 'number' |
 function bySortKey(a,b,key,dir='asc'){ const k = {asc:1,desc:-1}[dir]||1; const av = key.split('.').reduce((o,p)=>o?.[p], a); const bv = key.split('.').reduce((o,p)=>o?.[p], b); return av>bv?1*k:av<bv?-1*k:0; }
 function setupShowPhone(btn, out){ if (!btn || !out) return; btn.addEventListener('click', ()=>{ out.classList.remove('sr-only'); out.textContent = PHONE_NUMBER ? `Телефон: ${PHONE_NUMBER}` : 'Телефон: (не вказано)'; btn.setAttribute('aria-expanded','true'); btn.textContent = 'Телефон показано';                                                           
 btn.disabled = true; }); }
-function setupViber(aTag){ if (!aTag) return; const numberPlain = (VIBER_NUMBER||'').replace(/[^\d+]/g,''); aTag.href = numberPlain ? `viber://chat?number=${encodeURIComponent(numberPlain)}` : '#'; aTag.addEventListener('click', 
-e=>{ if(!numberPlain){ e.preventDefault(); alert('Номер Viber ще не вказано.'); }); 
-function setupTelegram(aTag){ if (!aTag) return; const url = (TELEGRAM_LINK||'').trim(); aTag.href = url || '#'; aTag.addEventListener('click', e=>{ if(!url){ e.preventDefault(); alert('Посилання на Telegram ще не вказано.');}); 
+function setupViber(aTag){
+  if (!aTag) return;
+
+  const numberPlain = (VIBER_NUMBER || '').replace(/[^\d+]/g,'');
+
+  aTag.href = numberPlain
+    ? `viber://chat?number=${encodeURIComponent(numberPlain)}`
+    : '#';
+
+  aTag.addEventListener('click', e => {
+    if (!numberPlain){
+      e.preventDefault();
+      alert('Номер Viber ще не вказано.');
+    }
+  });
+}
+
+function setupTelegram(aTag){
+  if (!aTag) return;
+
+  const url = (TELEGRAM_LINK || '').trim();
+
+  aTag.href = url || '#';
+
+  aTag.addEventListener('click', e => {
+    if (!url){
+      e.preventDefault();
+      alert('Посилання на Telegram ще не вказано.');
+    }
+  });
+}
+
 // ===== Featured data =====
 let FEATURED_LISTINGS = [];
 async function initData(){
