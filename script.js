@@ -204,7 +204,8 @@ async function loadObjects() {
       const card = document.createElement("div");
       card.className = "card";
       const img = document.createElement("img");
-      img.src = d.image || "https://via.placeholder.com/400x250";
+   img.src = d.images?.[0] || d.image || "https://via.placeholder.com/400x250";
+    ``
       const title = document.createElement("h3");
       title.textContent = d.title || "Без назви";
       const area = document.createElement("p");
