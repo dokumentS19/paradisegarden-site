@@ -105,7 +105,6 @@ document.addEventListener("click", async (e) => {
 
   await saveFavorites(currentUser.uid, favorites);
 });
-``
 });
 
 function updateFavUI() {
