@@ -269,5 +269,3 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 }
 });
 });  // ✅ ФІНАЛЬНА ДУЖКА
-
-
