@@ -244,7 +244,6 @@ function setupTelegram(aTag){
     }
   });
 }
-
 // ===== Featured data =====
 let FEATURED_LISTINGS = [];
 async function initData(){
@@ -376,39 +375,8 @@ catch {
   alert('Скопіюйте посилання: ' + url); 
 }
   }); 
-} 
-  // 
-async function loadObjects() {
-  try {
-    const snap = await getDocs(collection(db, "objects"));
-    const grid = document.getElementById("objectsGrid");
-    if (!grid) return;
-    grid.innerHTML = "";
-    snap.forEach(doc => {
-      const d = doc.data();
-      const card = document.createElement("div");
-      card.className = "card";
-      const img = document.createElement("img");
-   img.src = d.images?.[0] || d.image || "https://via.placeholder.com/400x250";
-    
-      const title = document.createElement("h3");
-      title.textContent = d.title || "Без назви";
-      const area = document.createElement("p");
-      area.textContent = "Площа: " + (d.area || "-") + " м²";
-      const price = document.createElement("strong");
-      price.textContent = (d.price || "-") + " $";
-      card.appendChild(img);
-      card.appendChild(title);
-      card.appendChild(area);
-      card.appendChild(price);
-      grid.appendChild(card);
-    });
-  } catch (e) {
-    console.error(e);
-  }
-  }  // ← закриваємо функцію loadObjects
-  // ===== Bootstrap =====
-document.addEventListener('DOMContentLoaded', async ()=>{
+ }  // ← закриваємо функцію loadObjects
+ document.addEventListener('DOMContentLoaded', async ()=>{
   await initData();
   renderFeatured();
   renderExternalListings();
@@ -479,6 +447,11 @@ window.addObject = async () => {
     console.error(e);
   }
 };
-document.addEventListener("DOMContentLoaded", () => {
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await initData();
+  renderFeatured();
+  renderExternalListings();
+
   loadObjects();
 });
