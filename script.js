@@ -1,4 +1,130 @@
-   
+document.getElementById("showFavOnly").onclick = () => {
+  document.querySelectorAll(".card").forEach(card => {
+    const id = Number(card.querySelector(".fav-btn").dataset.id);
+
+    card.style.display = favorites.includes(id) ? "block" : "none";
+  });
+};
+<button id="showFavOnly">Тільки обрані</button>
+async function loadObjects() {
+  const snap = await getDocs(collection(db, "objects"));
+
+  const grid = document.getElementById("objectsGrid");
+  if (!grid) return;
+
+  grid.innerHTML = "";
+
+  snap.forEach((docSnap, index) => {
+    const d = docSnap.data();
+
+    const imageUrl = d.images?.[0] || d.image || "https://via.placeholder.com/400x250";
+
+    grid.innerHTML += `
+      <div class="card">
+        <img class="gallery-img" src="${imageUrl}" data-index="${index}">
+        <button class="fav-btn" data-id="${index}">♡</button>
+
+        <h3>${d.title || "Без назви"}</h3>
+        <p>Площа: ${d.area || "-"} м²</p>
+        <strong>${d.price || "-"} $</strong>
+      </div>
+    `;
+  });
+
+  updateFavUI(); // ✅
+}
+document.addEventListener("keydown", (e) => {
+  if (modal.style.display !== "block") return;
+
+  if (e.key === "ArrowRight") showImage(currentIndex + 1);
+  if (e.key === "ArrowLeft") showImage(currentIndex - 1);
+  if (e.key === "Escape") modal.style.display = "none";
+});
+function showImage(index) {
+  if (index < 0) index = currentImages.length - 1;
+  if (index >= currentImages.length) index = 0;
+
+  currentIndex = index;
+  modalImg.src = currentImages[currentIndex];
+}
+
+document.getElementById("galNext").onclick = () => {
+  showImage(currentIndex + 1);
+};
+
+document.getElementById("galPrev").onclick = () => {
+  showImage(currentIndex - 1);
+};
+document.addEventListener("click", (e) => {
+  if (!e.target.matches(".gallery-img")) return;
+
+  const img = e.target;
+  openGallery([img.src]);
+});
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".fav-btn");
+  if (!btn) return;
+
+  if (!currentUser) {
+    alert("Спочатку увійди");
+    return;
+  }
+
+  const id = Number(btn.dataset.id);
+
+  if (favorites.includes(id)) {
+    favorites = favorites.filter(f => f !== id);
+  } else {
+    favorites.push(id);
+  }
+
+  updateFavUI(); // ✅ оновлення UI
+  await saveFavorites(currentUser.uid, favorites);
+});
+
+function updateFavUI() {
+  document.querySelectorAll(".fav-btn").forEach(btn => {
+    const id = Number(btn.dataset.id);
+
+    if (favorites.includes(id)) {
+      btn.textContent = "❤️";
+    } else {
+      btn.textContent = "♡";
+    }
+  });
+
+  // лічильник
+  const counter = document.getElementById("favCounter");
+  if (counter) counter.textContent = favorites.length;
+}
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+
+    btn.textContent = user.displayName || user.email;
+
+    favorites = await loadFavorites(user.uid);
+
+    updateFavUI(); // ✅ синхронізація
+
+    btn.onclick = async () => {
+      await signOut(auth);
+    };
+
+  } else {
+    currentUser = null;
+    favorites = [];
+
+    btn.textContent = "Увійти";
+    btn.onclick = login;
+  }
+});
+let currentUser = null;
+let favorites = [];
+
+const btn = document.getElementById("loginBtn");
+``   
 // 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
