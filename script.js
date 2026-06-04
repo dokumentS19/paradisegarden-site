@@ -10,6 +10,12 @@ console.log("SCRIPT OK");
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const firebaseConfig = {
+  apiKey: "...",
+  authDomain: "paradisegarden-site.firebaseapp.com",
+  projectId: "paradisegarden-site"
+};
+
 const showFavBtn = document.getElementById("showFavOnly");
 
 if (showFavBtn) {
