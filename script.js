@@ -227,7 +227,9 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   await initData();
   renderFeatured();
   renderExternalListings();
+   
   loadObjects();
+});
  // ✅ ОСЬ ТУТ ПРАВИЛЬНО
   ['featSearch','featCity','featType','featSort','featOnlyFav'].forEach(id=>{
     const el = document.getElementById(id);
