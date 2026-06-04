@@ -85,26 +85,30 @@ document.addEventListener("click", async (e) => {
     return; // важливо щоб не пішло далі
   }
 
+ document.addEventListener("click", async (e) => {
+
+  // ✅ ГАЛЕРЕЯ
+  if (e.target.matches(".gallery-img")) {
+    const img = e.target;
+    modal.style.display = "block";
+    modalImg.src = img.src;
+    return;
+  }
+
   // ✅ ФАВОРИТИ
-  document.addEventListener("click", async (e) => {
   const btn = e.target.closest(".fav-btn");
   if (!btn) return;
-
   if (!currentUser) {
     alert("Спочатку увійди");
     return;
   }
-
   const id = Number(btn.dataset.id);
-
   if (favorites.includes(id)) {
     favorites = favorites.filter(f => f !== id);
   } else {
     favorites.push(id);
   }
-
   updateFavUI();
-
   await saveFavorites(currentUser.uid, favorites);
 });
 function updateFavUI() {
