@@ -145,19 +145,6 @@ const TELEGRAM_LINK = "https://t.me/+380674464705";
 
 const REMOTE_SHEET_CSV_URL = "";  // Google Sheets CSV
 const AIRTABLE_VIEW_CSV_URL = ""; // Airtable View CSV
-
- const user = window.auth?.currentUser;
-  if (user) {
-    window.saveFavorites(user.uid, list);
-  }
-  function isFav(id) {
-  const user = window.auth?.currentUser;
-  if (user) {
-    window.saveFavorites(user.uid, list);
-  }
-  return list.includes(String(id));
-  }
-
 const favCounter = document.getElementById('favCounter');
 const favHeaderBtn = document.getElementById('favHeaderBtn');
 
