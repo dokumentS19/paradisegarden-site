@@ -62,14 +62,25 @@ for (let i = 0; i < files.length; i++) {
   images.push(img);
 }
 
+console.log("🚀 Перед addDoc");
+
+try {
   await addDoc(collection(db, "objects"), {
-  title,
-  price,
-  area,
-  images,
-  createdAt: new Date()
-});
+    title,
+    price,
+    area,
+    images,
+    createdAt: new Date()
+  });
+
+  console.log("✅ ДОДАНО В БАЗУ");
+
   alert("✅ Об’єкт додано!");
+
+} catch (e) {
+  console.error("❌ ПОМИЛКА:", e);
+}
+``
 
   document.getElementById("title").value = "";
   document.getElementById("area").value = "";
