@@ -154,6 +154,23 @@ onAuthStateChanged(auth, async (user) => {
 */
 let currentUser = null;
 let favorites = [];
+function getFavs() {
+  return favorites;
+}
+
+function toggleFav(id) {
+  if (favorites.includes(id)) {
+    favorites = favorites.filter(f => f !== id);
+    return false;
+  } else {
+    favorites.push(id);
+    return true;
+  }
+}
+
+function isFav(id) {
+  return favorites.includes(id);
+}
 const btn = document.getElementById("loginBtn");
 const PHONE_NUMBER  = "+380674464705";
 const VIBER_NUMBER  = "+380674464705";
