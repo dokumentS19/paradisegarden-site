@@ -255,4 +255,5 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 }
 });
 });   // ✅ закриває addEventListener
-onsole.log("SCRIPT OK");
+console.log("SCRIPT OK"))
+
