@@ -62,11 +62,15 @@ console.log("FUNC START");
   }
 
   // ✅ записуємо масив фото
-  await addDoc(collection(db, "objects"), {
-    title,
-    area,
-    price,
- images,
+  
+await addDoc(collection(db, "objects"), {
+  title: "test",
+  price: 123,
+  area: 50,
+  images: [],
+  createdAt: new Date()
+});
+
     createdAt: new Date()
   });
 
