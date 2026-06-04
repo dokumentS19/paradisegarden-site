@@ -181,8 +181,14 @@ const AIRTABLE_VIEW_CSV_URL = ""; // Airtable View CSV
   if (user) {
     window.saveFavorites(user.uid, list);
   }
-return list.includes(String(id)); 
-}
+  function isFav(id) {
+  const user = window.auth?.currentUser;
+  if (user) {
+    window.saveFavorites(user.uid, list);
+  }
+  return list.includes(String(id));
+  }
+
 const favCounter = document.getElementById('favCounter');
 ``
 const favHeaderBtn = document.getElementById('favHeaderBtn');
