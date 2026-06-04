@@ -11,6 +11,7 @@ const firebaseConfig = {
   apiKey: "...",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site"
+};
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 };
