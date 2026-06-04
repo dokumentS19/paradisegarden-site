@@ -333,17 +333,40 @@ async function login() {
 }
 
 // ✅ стан кнопки
+const btn = document.getElementById("loginBtn");
+
+let currentUser = null;
+let favorites = [];
+
 onAuthStateChanged(auth, async (user) => {
+
+  if (!btn) return;
+
   if (user) {
-    currentUser = user; 
-    
+    currentUser = user;
+
     btn.textContent = user.displayName || user.email;
-    
+
     favorites = await loadFavorites(user.uid);
+
+    updateFavUI(); // ✅ важливо
 
     btn.onclick = async () => {
       await signOut(auth);
-      location.reload();
+    };
+
+  } else {
+    currentUser = null;
+    favorites = [];
+
+    btn.textContent = "Увійти";
+    btn.onclick = login;
+
+    updateFavUI();
+  }
+
+});
+
     };
 
   } else {
