@@ -30,7 +30,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 window.addObject = async () => {
-
+console.log("FUNC START");
   const title = document.getElementById("title").value;
   const area = document.getElementById("area").value;
   const price = document.getElementById("price").value;
