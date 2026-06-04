@@ -219,16 +219,15 @@ async function loadObjects() {
     });
   } catch (e) {
     console.error(e);
-   }
+  }
   }  // ← закриваємо функцію loadObjects
-// ===== Bootstrap =====
+  // ===== Bootstrap =====
 document.addEventListener('DOMContentLoaded', async ()=>{
   await initData();
   renderFeatured();
   renderExternalListings();
-  loadObjects(
-   
-  ); // ✅ ОСЬ ТУТ ПРАВИЛЬНО
+  loadObjects(); 
+ // ✅ ОСЬ ТУТ ПРАВИЛЬНО
   ['featSearch','featCity','featType','featSort','featOnlyFav'].forEach(id=>{
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', renderFeatured);
