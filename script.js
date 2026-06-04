@@ -448,10 +448,3 @@ window.addObject = async () => {
   }
 };
 
-document.addEventListener('DOMContentLoaded', async () => {
-  await initData();
-  renderFeatured();
-  renderExternalListings();
-
-  loadObjects();
-});
