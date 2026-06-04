@@ -356,7 +356,6 @@ catch {
   alert('Скопіюйте посилання: ' + url); 
 }
   }); 
- }  // ← закриваємо функцію loadObjects
  document.addEventListener('DOMContentLoaded', async ()=>{
   await initData();
   renderFeatured();
