@@ -44,9 +44,7 @@ console.log("FUNC START");
     alert("Заповни всі поля і вибери фото");
     return;
   }
-
   let images = [];
-
   const readFile = (file) => {
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -54,16 +52,11 @@ console.log("FUNC START");
       reader.readAsDataURL(file);  
     });
   };
-
-  // ✅ читаємо всі файли
-    for (let i = 0; i < files.length; i++) {
+   for (let i = 0; i < files.length; i++) {
    const img = await readFile(files[i]);
    images.push(img);
   }
-
-  // ✅ записуємо масив фото
-  
-await addDoc(collection(db, "objects"), {
+  await addDoc(collection(db, "objects"), {
   title: "test",
   price: 123,
   area: 50,
