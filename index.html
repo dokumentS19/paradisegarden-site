@@ -520,7 +520,7 @@ const cardHTML = `
   });
 
   // ✅ КЛІК ПО ФОТО
-  document.querySelectorAll(".gallery-img").forEach((img) => {
+ grid.querySelectorAll(".gallery-img").forEach((img) => {
     img.addEventListener("click", () => {
       const card = img.closest(".card");
       const index = Array.from(grid.children).indexOf(card);
