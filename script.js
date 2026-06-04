@@ -14,17 +14,12 @@ document.getElementById("showFavOnly").onclick = () => {
  
 async function loadObjects() {
   const snap = await getDocs(collection(db, "objects"));
-
   const grid = document.getElementById("objectsGrid");
   if (!grid) return;
-
   grid.innerHTML = "";
-
   snap.forEach((docSnap, index) => {
-    const d = docSnap.data();
-
-    const imageUrl = d.images?.[0] || d.image || "https://via.placeholder.com/400x250";
-
+  const d = docSnap.data();
+   const imageUrl = d.images?.[0] || d.image || "https://via.placeholder.com/400x250";
     grid.innerHTML += `
       <div class="card">
         <img class="gallery-img" src="${imageUrl}" data-index="${index}">
