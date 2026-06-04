@@ -14,10 +14,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-};
-
 const showFavBtn = document.getElementById("showFavOnly");
-
 if (showFavBtn) {
   showFavBtn.onclick = () => {
     document.querySelectorAll(".card").forEach(card => {
