@@ -1,4 +1,14 @@
- 
+
+// ✅ 1. ІМПОРТИ (САМЕ НАВЕРХУ)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ✅ 2. FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "ТВОЄ_API_KEY",
+  authDomain: "ТВОЄ_AUTH_DOMAIN",
+  projectId: "paradisegarden-site"
+}; 
 // ===== КОНТАКТИ (заповнено вашим номером) =====
 const PHONE_NUMBER  = "+380674464705";
 const VIBER_NUMBER  = "+380674464705";
