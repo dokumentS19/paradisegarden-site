@@ -1,3 +1,4 @@
+console.log("SCRIPT OK");
 document.getElementById("showFavOnly").onclick = () => {
   document.querySelectorAll(".card").forEach(card => {
     const btn = card.querySelector(".fav-btn");
