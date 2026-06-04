@@ -150,11 +150,7 @@ const REMOTE_SHEET_CSV_URL = "";  // Google Sheets CSV
 const AIRTABLE_VIEW_CSV_URL = ""; // Airtable View CSV
 
 // ===== Favorites storage =====
-const FAV_KEY = "rs_favorites";
-function getFavs(){ try { return JSON.parse(localStorage.getItem(FAV_KEY) || "[]"); } catch { return []; } }
-function setFavs(list){ localStorage.setItem(FAV_KEY, JSON.stringify(list)); }
-function isFav(id){ return getFavs().includes(String(id)); }
-function toggleFav(id){
+
   const list = getFavs(); 
   const idx = list.indexOf(String(id)); 
   if (idx >= 0) {
