@@ -229,8 +229,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   renderExternalListings();
    
   loadObjects();
-});
- // ✅ ОСЬ ТУТ ПРАВИЛЬНО
+   
   ['featSearch','featCity','featType','featSort','featOnlyFav'].forEach(id=>{
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', renderFeatured);
@@ -246,6 +245,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
       else el.value='';
     });
     renderFeatured();
+  });
   });
   const exportBtn = document.getElementById('featExport');
   if (exportBtn) exportBtn.addEventListener('click', ()=>{
