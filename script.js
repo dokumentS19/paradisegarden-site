@@ -149,11 +149,10 @@ let favorites = [];
 
 const btn = document.getElementById("loginBtn");
 ``   
-// 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// 
+
 const firebaseConfig = {
  
 apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
@@ -161,20 +160,16 @@ authDomain: "paradisegarden-site.firebaseapp.com",
 
   projectId: "paradisegarden-site"
 }; 
-// 
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-// ===== КОНТАКТИ (заповнено вашим номером) =====
+
 const PHONE_NUMBER  = "+380674464705";
 const VIBER_NUMBER  = "+380674464705";
 const TELEGRAM_LINK = "https://t.me/+380674464705";
 
-// ===== РЕМОТ-ДЖЕРЕЛА ДАНИХ (заповніть при підключенні) =====
 const REMOTE_SHEET_CSV_URL = "";  // Google Sheets CSV
 const AIRTABLE_VIEW_CSV_URL = ""; // Airtable View CSV
-
-// ===== Favorites storage =====
-
 
   if (idx >= 0) {
     list.splice(idx, 1);
@@ -183,9 +178,7 @@ const AIRTABLE_VIEW_CSV_URL = ""; // Airtable View CSV
   }
   setFavs(list);
  updateFavCounter();
-
-  // 
-  const user = window.auth?.currentUser;
+ const user = window.auth?.currentUser;
   if (user) {
     window.saveFavorites(user.uid, list);
   }
@@ -196,22 +189,18 @@ const favHeaderBtn = document.getElementById('favHeaderBtn');
 function updateFavCounter(){ 
   if (favCounter) favCounter.textContent = favorites.length; 
 }
-
 updateFavCounter();
-
 if (favHeaderBtn){ 
-  favHeaderBtn.addEventListener('click', () => { 
-    const onlyFav = document.getElementById('featOnlyFav'); 
-
-    if (onlyFav && !onlyFav.checked){ 
-      onlyFav.checked = true; 
-    } 
+favHeaderBtn.addEventListener('click', () => { 
+const onlyFav = document.getElementById('featOnlyFav'); 
+if (onlyFav && !onlyFav.checked){ 
+onlyFav.checked = true; 
+   } 
 
     document.getElementById('featured')?.scrollIntoView({behavior:'smooth'}); 
     renderFeatured(); 
   }); 
 }
-// ===== DOM refs =====
 const showPhoneBtn  = document.getElementById('showPhoneBtn');
 const phoneNumber   = document.getElementById('phoneNumber');
 const viberLink     = document.getElementById('viberLink');
