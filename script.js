@@ -172,10 +172,27 @@ const AIRTABLE_VIEW_CSV_URL = ""; // Airtable View CSV
 
 // ===== Header favorites counter =====
 const favCounter = document.getElementById('favCounter');
+const favCounter = document.getElementById('favCounter');
 const favHeaderBtn = document.getElementById('favHeaderBtn');
-function updateFavCounter(){ if (favCounter) favCounter.textContent = String(getFavs().length); }
+
+function updateFavCounter(){ 
+  if (favCounter) favCounter.textContent = favorites.length; 
+}
+
 updateFavCounter();
-if (favHeaderBtn){ favHeaderBtn.addEventListener('click', ()=>{ const onlyFav = document.getElementById('featOnlyFav'); if (onlyFav && !onlyFav.checked){ onlyFav.checked = true; } document.getElementById('featured')?.scrollIntoView({behavior:'smooth'}); renderFeatured(); }); }
+
+if (favHeaderBtn){ 
+  favHeaderBtn.addEventListener('click', () => { 
+    const onlyFav = document.getElementById('featOnlyFav'); 
+
+    if (onlyFav && !onlyFav.checked){ 
+      onlyFav.checked = true; 
+    } 
+
+    document.getElementById('featured')?.scrollIntoView({behavior:'smooth'}); 
+    renderFeatured(); 
+  }); 
+}
 // ===== DOM refs =====
 const showPhoneBtn  = document.getElementById('showPhoneBtn');
 const phoneNumber   = document.getElementById('phoneNumber');
