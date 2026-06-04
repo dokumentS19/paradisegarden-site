@@ -506,3 +506,42 @@ if (form) {
   }); 
 }  
 // ✅ ФУНКЦІЯ ЗАВАНТАЖЕННЯ
+async function loadObjects() {
+  const snap = await getDocs(collection(db, "objects"));
+
+  const grid = document.getElementById("objectsGrid");
+  if (!grid) return;
+
+  grid.innerHTML = "";
+
+  snap.forEach(doc => {
+    const d = doc.data();
+
+    grid.innerHTML += `
+      <div class="card">
+        <img class="gallery-img"
+             src="${d.images?.[0] || d.image || 'https://via.placeholder.com/400x250'}"
+             alt="g>${d.price || "-"} $</strong>
+      </div>
+    `;
+  });
+
+  // ✅ КЛІК ПО ФОТО
+  document.querySelectorAll(".gallery-img").forEach((img, i) => {
+    img.addEventListener("click", () => {
+      const card = img.closest(".card");
+      const index = Array.from(grid.children).indexOf(card);
+      const d = snap.docs[index].data();
+
+      currentImages = d.images || (d.image ? [d.image] : []);
+      currentIndex = 0;
+
+      if (currentImages.length === 0) return;
+
+      modal.style.display = "block";
+      modalImg.src = currentImages[currentIndex];
+    });
+  });
+}
+
+loadObjects();
