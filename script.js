@@ -7,13 +7,12 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 console.log("SCRIPT OK");
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
 const firebaseConfig = {
   apiKey: "...",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site"
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 };
 
 const showFavBtn = document.getElementById("showFavOnly");
