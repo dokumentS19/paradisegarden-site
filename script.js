@@ -9,6 +9,9 @@ const firebaseConfig = {
   authDomain: "ТВОЄ_AUTH_DOMAIN",
   projectId: "paradisegarden-site"
 }; 
+// ✅ 3. І ТІЛЬКИ ПІСЛЯ ЦЬОГО INIT
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 // ===== КОНТАКТИ (заповнено вашим номером) =====
 const PHONE_NUMBER  = "+380674464705";
 const VIBER_NUMBER  = "+380674464705";
