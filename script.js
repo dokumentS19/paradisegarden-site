@@ -40,8 +40,12 @@ async function loadObjects() {
 
   updateFavUI(); // ✅
 }
+
+const modal = document.getElementById("galleryModal");
+
 document.addEventListener("keydown", (e) => {
-  if (modal.style.display !== "block") return;
+  if (!modal || modal.style.display !== "block") return;
+
 
   if (e.key === "ArrowRight") showImage(currentIndex + 1);
   if (e.key === "ArrowLeft") showImage(currentIndex - 1);
