@@ -16,15 +16,13 @@ function isFav(id){ return getFavs().includes(String(id)); }
 function toggleFav(id){
   const list = getFavs(); 
   const idx = list.indexOf(String(id)); 
-
   if (idx >= 0) {
     list.splice(idx, 1);
   } else {
     list.push(String(id));
   }
-
   setFavs(list);
-  updateFavCounter();
+ updateFavCounter();
 
   // ✅ ЗБЕРЕЖЕННЯ В FIREBASE
   const user = window.auth?.currentUser;
@@ -54,19 +52,15 @@ const burger        = document.querySelector('.burger');
 const nav           = document.querySelector('.nav');
 const yearSpan      = document.getElementById('year');
 const recommendBtn  = document.getElementById('recommendBtn');
-
 // ===== Utils =====
 const CURRENCY_SYMBOL = { UAH: '₴', USD: '$', EUR: '€' };
 function fmtPrice({value, currency='USD'} = {}){ if (typeof value !== 'number' || isNaN(value)) return 'Ціна за запитом'; const sym = CURRENCY_SYMBOL[currency] || ''; const num = value.toLocaleString('uk-UA', { maximumFractionDigits: 0 }); return `${sym}${num}`; }
 function bySortKey(a,b,key,dir='asc'){ const k = {asc:1,desc:-1}[dir]||1; const av = key.split('.').reduce((o,p)=>o?.[p], a); const bv = key.split('.').reduce((o,p)=>o?.[p], b); return av>bv?1*k:av<bv?-1*k:0; }
-
 function setupShowPhone(btn, out){ if (!btn || !out) return; btn.addEventListener('click', ()=>{ out.classList.remove('sr-only'); out.textContent = PHONE_NUMBER ? `Телефон: ${PHONE_NUMBER}` : 'Телефон: (не вказано)'; btn.setAttribute('aria-expanded','true'); btn.textContent = 'Телефон показано'; btn.disabled = true; }); }
 function setupViber(aTag){ if (!aTag) return; const numberPlain = (VIBER_NUMBER||'').replace(/[^\d+]/g,''); aTag.href = numberPlain ? `viber://chat?number=${encodeURIComponent(numberPlain)}` : '#'; aTag.addEventListener('click', e=>{ if(!numberPlain){ e.preventDefault(); alert('Номер Viber ще не вказано.'); } }); }
 function setupTelegram(aTag){ if (!aTag) return; const url = (TELEGRAM_LINK||'').trim(); aTag.href = url || '#'; aTag.addEventListener('click', e=>{ if(!url){ e.preventDefault(); alert('Посилання на Telegram ще не вказано.'); } }); }
-
 // ===== Featured data =====
 let FEATURED_LISTINGS = [];
-
 async function initData(){
   const urls = [REMOTE_SHEET_CSV_URL, AIRTABLE_VIEW_CSV_URL].filter(Boolean);
   let rows = [];
@@ -74,7 +68,6 @@ async function initData(){
   function parseCSV(text){ if (!text) return [];const lines = text.trim().split(/\r?\n/)
  ; if (!lines.length) return []; const headers = lines.shift().split(',').map(h=>h.trim()); return lines.map(line=>{ const cells = line.split(','); const obj = {}; headers.forEach((h,i)=> obj[h] = (cells[i]||'').trim()); return obj; }); }
   function parseRow(r){ if (!r || !r.id) return null; const toNum = v=> v===''? undefined : Number(v); const list = v=> (v||'').split(/[|,]/).map(s=>s.trim()).filter(Boolean); return { id:String(r.id), title:r.title||'', type:r.type||'', city:r.city||'', location:r.location||'', price:{ value: toNum(r.price_value), currency: (r.price_currency||'USD').toUpperCase() }, area: toNum(r.area), bedrooms: toNum(r.bedrooms), bathrooms: toNum(r.bathrooms), cover: r.cover||'', gallery: list(r.gallery), url: r.url||'#', badges: list(r.badges), date: r.date || '2000-01-01' }; }
-
   if (urls.length){
     for (const u of urls){ const csv = await fetchCsv(u); rows = rows.concat(parseCSV(csv)); }
   }
@@ -84,7 +77,6 @@ async function initData(){
   const mapped = rows.map(parseRow).filter(Boolean);
   if (mapped.length) FEATURED_LISTINGS = mapped;
 }
-
 // ===== Featured render =====
 function renderFeatured(){
   const grid = document.getElementById('featuredGrid'); const empty = document.getElementById('featuredEmpty'); if (!grid) return;
@@ -100,9 +92,7 @@ function renderFeatured(){
   if (sort === 'area_asc') items.sort((a,b)=>bySortKey(a,b,'area','asc'));
   if (sort === 'area_desc') items.sort((a,b)=>bySortKey(a,b,'area','desc'));
   if (sort === 'date_desc') items.sort((a,b)=> new Date(b.date) - new Date(a.date));
-
   if (!items.length){ grid.innerHTML = ''; if (empty) empty.hidden = false; return; } else if (empty) empty.hidden = true;
-
   const phone = PHONE_NUMBER; const viberHref = `viber://chat?number=${encodeURIComponent(PHONE_NUMBER)}`; const tgHref = TELEGRAM_LINK;
   const cardsHtml = items.map(it=>{
     const cover = it.cover || 'assets/covers/placeholder.webp'; const price = fmtPrice(it.price); const favChecked = isFav(it.id); const badges = (it.badges||[]).map(b=>`<span class="badge-tag">${b}</span>`).join('');
@@ -132,16 +122,13 @@ function renderFeatured(){
       </article>`;
   }).join('');
   grid.innerHTML = cardsHtml;
-
  // Fav handlers
   grid.querySelectorAll('.feature-card').forEach(card=>{
     const id = card.getAttribute('data-id'); const fav = card.querySelector('.fav'); const checkbox = fav?.querySelector('input');
     if (checkbox){ checkbox.addEventListener('change', ()=>{ const state = toggleFav(id); fav.classList.toggle('checked', state); updateFavCounter(); }); }
   });
-
   attachGalleryHandlers();
 }
-
 // ===== Gallery =====
 const modal = document.getElementById('galleryModal');
 const galImg = document.getElementById('galImg');
@@ -160,11 +147,8 @@ if (galPrev) galPrev.addEventListener('click', ()=> showIdx(galState.index - 1))
 if (galNext) galNext.addEventListener('click', ()=> showIdx(galState.index + 1));
 if (galClose) galClose.addEventListener('click', closeGallery);
 if (modal) modal.addEventListener('click', (e)=>{ if (e.target?.dataset?.close) closeGallery(); });
-
 document.addEventListener('keydown', (e)=>{ if (!modal.classList.contains('open')) return; if (e.key==='Escape') closeGallery(); if (e.key==='ArrowLeft') showIdx(galState.index - 1); if (e.key==='ArrowRight') showIdx(galState.index + 1); });
-
 function attachGalleryHandlers(){ const grid = document.getElementById('featuredGrid'); if (!grid) return; grid.querySelectorAll('[data-open-gallery]').forEach(a=>{ a.addEventListener('click', ev=>{ ev.preventDefault(); const id = a.getAttribute('data-open-gallery'); const listing = FEATURED_LISTINGS.find(x => String(x.id) === String(id)); if (listing) openGallery(listing); }); }); }
-
 // ===== External listings (other platforms) =====
 const EXTERNAL_LISTINGS = [
   { title: 'Будинок, Ірпінь, 250 м², 6 соток', platform: { name: 'DOM.RIA', logo: 'assets/platforms/domria.svg' }, url: 'https://dom.ria.com/uk/', cover: 'assets/featured/irpin-house.jpg', location: 'Ірпінь • Київська область', price: '€230 000', ctaLabel: 'Переглянути на DOM.RIA' },
@@ -189,28 +173,51 @@ function renderExternalListings(){ const grid = document.getElementById('listing
           </div>
         </div>
       </article>`; }).join(''); }
- 
-// ===== Other behaviours =====
+ // ===== Other behaviours =====
 setupShowPhone(showPhoneBtn, phoneNumber); setupShowPhone(showPhoneBtn2, phoneNumber2);
 setupViber(viberLink); setupViber(viberLink2); setupTelegram(tgLink); setupTelegram(tgLink2);
 if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 if (burger && nav){ burger.addEventListener('click', ()=>{ const visible = getComputedStyle(nav).display !== 'none'; nav.style.display = visible ? 'none' : 'flex'; burger.setAttribute('aria-expanded', String(!visible)); }); nav.querySelectorAll('a').forEach(a=> a.addEventListener('click', ()=>{ if (window.matchMedia('(max-width: 980px)').matches){ nav.style.display = 'none'; burger.setAttribute('aria-expanded','false'); } })); }
 if (recommendBtn){ recommendBtn.addEventListener('click', async ()=>{ const url = location.href; try{ await navigator.clipboard.writeText(url); recommendBtn.textContent = 'Посилання скопійовано!'; setTimeout(()=>recommendBtn.textContent='Рекомендувати', 1800); }catch{ alert('Скопіюйте посилання: ' + url); } }); }
-
+  // ✅ закриває addEventListener
+async function loadObjects() {
+  try {
+    const snap = await getDocs(collection(db, "objects"));
+    const grid = document.getElementById("objectsGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+    snap.forEach(doc => {
+      const d = doc.data();
+      const card = document.createElement("div");
+      card.className = "card";
+      const img = document.createElement("img");
+      img.src = d.image || "https://via.placeholder.com/400x250";
+      const title = document.createElement("h3");
+      title.textContent = d.title || "Без назви";
+      const area = document.createElement("p");
+      area.textContent = "Площа: " + (d.area || "-") + " м²";
+      const price = document.createElement("strong");
+      price.textContent = (d.price || "-") + " $";
+      card.appendChild(img);
+      card.appendChild(title);
+      card.appendChild(area);
+      card.appendChild(price);
+      grid.appendChild(card);
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
 // ===== Bootstrap =====
 document.addEventListener('DOMContentLoaded', async ()=>{
-
   await initData();
   renderFeatured();
   renderExternalListings();
-
   loadObjects(); // ✅ ОСЬ ТУТ ПРАВИЛЬНО
-
   ['featSearch','featCity','featType','featSort','featOnlyFav'].forEach(id=>{
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', renderFeatured);
   });
-
   const reset = document.getElementById('featReset');
   if (reset) reset.addEventListener('click', ()=>{
     const ids=['featSearch','featCity','featType','featSort','featOnlyFav'];
@@ -223,21 +230,16 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     });
     renderFeatured();
   });
-
   const exportBtn = document.getElementById('featExport');
   if (exportBtn) exportBtn.addEventListener('click', ()=>{
     const favIds = getFavs();
-
     if (!favIds.length){
       alert('Немає обраних оголошень');
       return;
     }
-
     const map = new Map(FEATURED_LISTINGS.map(x=>[String(x.id), x]));
     const lines = favIds.map(id => map.get(String(id))?.url).filter(Boolean);
-
     const text = lines.join('\n');
-
     try {
   navigator.clipboard.writeText(text)
     .then(() => alert('✅ Скопійовано'))
@@ -247,55 +249,13 @@ document.addEventListener('DOMContentLoaded', async ()=>{
         w.document.write(`<pre>${text}</pre>`);
       }
     });
-
   status.textContent = "✅ Заявка відправлена";
   form.reset();
-
 } catch (err) {
   console.error(err);
   status.textContent = "❌ Помилка";
 }
 });
-});   // ✅ закриває addEventListener
 
-async function loadObjects() {
-  try {
-    const snap = await getDocs(collection(db, "objects"));
-
-    const grid = document.getElementById("objectsGrid");
-    if (!grid) return;
-
-    grid.innerHTML = "";
-
-    snap.forEach(doc => {
-      const d = doc.data();
-
-      const card = document.createElement("div");
-      card.className = "card";
-
-      const img = document.createElement("img");
-      img.src = d.image || "https://via.placeholder.com/400x250";
-
-      const title = document.createElement("h3");
-      title.textContent = d.title || "Без назви";
-
-      const area = document.createElement("p");
-      area.textContent = "Площа: " + (d.area || "-") + " м²";
-
-      const price = document.createElement("strong");
-      price.textContent = (d.price || "-") + " $";
-
-      card.appendChild(img);
-      card.appendChild(title);
-      card.appendChild(area);
-      card.appendChild(price);
-
-      grid.appendChild(card);
-    });
-
-  } catch (e) {
-    console.error(e);
-  }
-}
 
 
