@@ -134,16 +134,10 @@ onAuthStateChanged(auth, async (user) => {
 });
 let currentUser = null;
 let favorites = [];
-
 const btn = document.getElementById("loginBtn");
-``   
-
-
 const firebaseConfig = {
- 
-apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
+ apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
 authDomain: "paradisegarden-site.firebaseapp.com",
-
   projectId: "paradisegarden-site"
 }; 
 
@@ -170,7 +164,6 @@ const AIRTABLE_VIEW_CSV_URL = ""; // Airtable View CSV
   }
 
 const favCounter = document.getElementById('favCounter');
-``
 const favHeaderBtn = document.getElementById('favHeaderBtn');
 
 function updateFavCounter(){ 
