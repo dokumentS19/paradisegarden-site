@@ -506,7 +506,6 @@ if (form) {
   }); 
 }  
 // ✅ ФУНКЦІЯ ЗАВАНТАЖЕННЯ
-// ✅ ФУНКЦІЯ ЗАВАНТАЖЕННЯ
 async function loadObjects() {
   const snap = await getDocs(collection(db, "objects"));
 
@@ -518,17 +517,23 @@ async function loadObjects() {
   snap.forEach(doc => {
     const d = doc.data();
 
-    grid.innerHTML += `
+    const imageUrl = d.images?.[0] || d.image || "https://via.placeholder.com/400x250";
+
+    const cardHTML = `
       <div class="card">
-        <img class="gallery-img"
-             src="${d.images?.[0] || d.image || 'https://via.placeholder.com/400"-"} м²</p>
+        <img class="gallery-img" src="${imageUrl}" alt="Об'єкт">
+
+        <h3>${d.title || "Без назви"}</h3>
+        <p>Площа: ${d.area || "-"} м²</p>
         <strong>${d.price || "-"} $</strong>
       </div>
     `;
+
+    grid.innerHTML += cardHTML;
   });
 
-  // ✅ КЛІК ПО ФОТО (галерея)
-  document.querySelectorAll(".gallery-img").forEach((img, i) => {
+  // ✅ КЛІК ПО ФОТО
+  document.querySelectorAll(".gallery-img").forEach((img) => {
     img.addEventListener("click", () => {
       const card = img.closest(".card");
       const index = Array.from(grid.children).indexOf(card);
@@ -537,7 +542,7 @@ async function loadObjects() {
       currentImages = d.images || (d.image ? [d.image] : []);
       currentIndex = 0;
 
-      if (currentImages.length === 0) return;
+      if (!currentImages.length) return;
 
       modal.style.display = "block";
       modalImg.src = currentImages[currentIndex];
