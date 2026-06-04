@@ -208,7 +208,7 @@ async function loadObjects() {
     console.error(e);
   }
 }
-// ===== Bootstrap =====
+});// ===== Bootstrap =====
 document.addEventListener('DOMContentLoaded', async ()=>{
   await initData();
   renderFeatured();
