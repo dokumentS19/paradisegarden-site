@@ -1,6 +1,12 @@
+
+import { initializeApp } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 import { getFirestore, collection, getDocs, addDoc }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 console.log("SCRIPT OK");
+
 document.getElementById("showFavOnly").onclick = () => {
   document.querySelectorAll(".card").forEach(card => {
     const btn = card.querySelector(".fav-btn");
