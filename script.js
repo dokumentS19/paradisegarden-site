@@ -5,8 +5,10 @@ import { getFirestore, collection, getDocs } from "https://www.gstatic.com/fireb
 
 // ✅ 2. FIREBASE CONFIG
 const firebaseConfig = {
-  apiKey: "ТВОЄ_API_KEY",
-  authDomain: "ТВОЄ_AUTH_DOMAIN",
+ 
+apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
+authDomain: "paradisegarden-site.firebaseapp.com",
+
   projectId: "paradisegarden-site"
 }; 
 // ✅ 3. І ТІЛЬКИ ПІСЛЯ ЦЬОГО INIT
