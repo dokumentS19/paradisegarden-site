@@ -485,7 +485,8 @@ async function loadObjects() {
 
     const imageUrl = d.images?.[0] || d.image || "https://via.placeholder.com/400x250";
 
-    const cardHTML = `
+ 
+const cardHTML = `
   <div class="card">
     <img class="gallery-img" src="${imageUrl}" alt="Об'єкт">
 
@@ -494,8 +495,6 @@ async function loadObjects() {
     <strong>${d.price || "-"} $</strong>
   </div>
 `;
-    `;
-
     grid.innerHTML += cardHTML;
   });
 
