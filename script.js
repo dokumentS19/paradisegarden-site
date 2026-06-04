@@ -86,6 +86,7 @@ document.addEventListener("click", async (e) => {
   }
 
   // ✅ ФАВОРИТИ
+  document.addEventListener("click", async (e) => {
   const btn = e.target.closest(".fav-btn");
   if (!btn) return;
 
