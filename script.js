@@ -30,8 +30,26 @@ console.log("DOCS COUNT:", snap.size);
   const grid = document.getElementById("objectsGrid");
   if (!grid) return;
   grid.innerHTML = "";
-  snap.forEach((docSnap, index) => {
+ let allObjects = [];
+
+snap.forEach((docSnap, index) => {
   const d = docSnap.data();
+
+  allObjects.push(d); // ✅ зберігаємо всі дані
+
+  const imageUrl = d.images?.[0] || "https://images.unsplash.com/photo-1560518883-ce09059eeffa";
+
+  grid.innerHTML += `
+    <div class="card">
+      <img class="gallery-img" src="${imageUrl}" data-index="${index}">
+      <button class="fav-btn" data-id="${index}">♡</button>
+
+      <h3>${d.title || "Без назви"}</h3>
+      <p>Площа: ${d.area || "-"} м²</p>
+      <strong>${d.price || "-"} $</strong>
+    </div>
+  `;
+});
   const imageUrl = d.images?.[0] || d.image || "https://images.unsplash.com/photo-1560518883-ce09059eeffa";
     grid.innerHTML += `
       <div class="card">
