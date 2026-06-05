@@ -54,12 +54,3 @@ window.addObject = async () => {
 
 // ✅ кнопка
 document.getElementById("addBtn").onclick = window.addObject;
-
-// ✅ конвертація
-function toBase64(file) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-  });
-}
