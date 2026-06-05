@@ -466,31 +466,3 @@ setTimeout(()=> recommendBtn.textContent='Рекомендувати', 1800);
   //status.textContent = "❌ Помилка";
 }
 });
-window.addObject = async () => {
-  console.log("CLICK ✅");
-
-  const title = document.getElementById("title").value;
-  const area = Number(document.getElementById("area").value);
-  const price = Number(document.getElementById("price").value);
-
-  const files = document.getElementById("image").files;
-
-  const images = [];
-
- 
-
-  try {
-    await addDoc(collection(db, "objects"), {
-      title,
-      area,
-      price,
-      images
-    });
-
-    alert("✅ Додано!");
-
-  } catch (e) {
-    console.error(e);
-    alert("❌ Помилка");
-  }
-};
