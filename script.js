@@ -344,7 +344,6 @@ if (e.key==='Escape') closeGallery();
 if (e.key==='ArrowLeft')showIdx(galState.index - 1); 
 if (e.key==='ArrowRight') showIdx(galState.index + 1);
 });
-//
 }
 function attachGalleryHandlers(){ const grid = document.getElementById('featuredGrid');
 if (!grid) return; grid.querySelectorAll('[data-open-gallery]').forEach(a=>{ a.addEventListener('click', 
