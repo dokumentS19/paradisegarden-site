@@ -113,7 +113,7 @@ if (prevBtn) {
 document.addEventListener("click", (e) => {
   const img = e.target.closest(".gallery-img");
  if (img) {
-  modal.style.display = "block";
+ modal.classList.add("active");
 
   const index = Number(img.dataset.index);
   const obj = allObjects[index];
