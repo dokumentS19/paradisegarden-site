@@ -2,9 +2,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
   
 const firebaseConfig = {
-  apiKey: "AIzaSy...",
+  apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
   authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site"
+  projectId: "paradisegarden-site",
 };
 
 const app = initializeApp(firebaseConfig);
