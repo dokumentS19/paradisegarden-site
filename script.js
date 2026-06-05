@@ -113,8 +113,6 @@ document.addEventListener("click", (e) => {
 
   updateFavUI();
 });
-
-});
  document.addEventListener("click", async (e) => {
   if (e.target.matches(".gallery-img")) {
     const img = e.target;
