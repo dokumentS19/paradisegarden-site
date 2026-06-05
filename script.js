@@ -97,7 +97,6 @@ document.addEventListener("click", (e) => {
   }
   updateFavUI();
 });
-}
 function updateFavUI() {
   document.querySelectorAll(".fav-btn").forEach(btn => {
     const id = Number(btn.dataset.id);
