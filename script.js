@@ -69,6 +69,8 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") modal.style.display = "none";
 });
 function showImage(index) {
+  if (!currentImages.length) return;
+
   if (index < 0) index = currentImages.length - 1;
   if (index >= currentImages.length) index = 0;
 
