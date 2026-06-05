@@ -1,35 +1,27 @@
 
 import { initializeApp } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
 import { getFirestore, collection, getDocs, addDoc }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 console.log("SCRIPT OK");
-
-
 const firebaseConfig = {
   apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
 const showFavBtn = document.getElementById("showFavOnly");
 if (showFavBtn) {
   showFavBtn.onclick = () => {
     document.querySelectorAll(".card").forEach(card => {
       const btn = card.querySelector(".fav-btn");
       if (!btn) return;
-
       const id = Number(btn.dataset.id);
       card.style.display = favorites.includes(id) ? "block" : "none";
     });
   };
-}
- 
+} 
 async function loadObjects() {
 
 const snap = await getDocs(collection(db, "objects"));
