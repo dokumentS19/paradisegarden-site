@@ -473,17 +473,27 @@ window.addObject = async () => {
   const area = Number(document.getElementById("area").value);
   const price = Number(document.getElementById("price").value);
 
+  const files = document.getElementById("image").files;
+
+  const images = [];
+
+  for (let file of files) {
+    const base64 = await toBase64(file);
+    images.push(base64);
+  }
+
   try {
     await addDoc(collection(db, "objects"), {
       title,
       area,
       price,
-      images: []
+      images
     });
 
-    console.log("ДОДАНО ✅");
+    alert("✅ Додано!");
 
   } catch (e) {
     console.error(e);
+    alert("❌ Помилка");
   }
 };
