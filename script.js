@@ -102,12 +102,6 @@ modal.addEventListener("touchend", (e) => {
     showImage(currentIndex - 1);
   }
 });
-  if (!currentImages.length) return;
-  if (index < 0) index = currentImages.length - 1;
-  if (index >= currentImages.length) index = 0;
-  currentIndex = index; 
-  modalImg.src = currentImages[currentIndex];
-}
 const nextBtn = document.getElementById("galNext");
 const prevBtn = document.getElementById("galPrev");
 
