@@ -106,12 +106,21 @@ if (prevBtn) {
 };
 document.addEventListener("click", (e) => {
   const img = e.target.closest(".gallery-img");
-  if (img) {
-    modal.style.display = "block";
-    currentImages = [img.src];
-    currentIndex = 0;
-    showImage(currentIndex);
-    return;
+ if (img) {
+  modal.style.display = "block";
+
+  const index = Number(img.dataset.index);
+  const obj = allObjects[index];
+
+  currentImages = obj.images?.length
+    ? obj.images
+    : [img.src];
+
+  currentIndex = 0;
+
+  showImage(currentIndex);
+  return;
+}
   }
   const btn = e.target.closest(".fav-btn");
   if (!btn) return;
