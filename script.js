@@ -62,18 +62,14 @@ document.addEventListener("keydown", (e) => {
 });
 function showImage(index) {
   if (!currentImages.length) return;
-
   if (index < 0) index = currentImages.length - 1;
   if (index >= currentImages.length) index = 0;
-
   currentIndex = index; 
   modalImg.src = currentImages[currentIndex];
 }
-
 document.getElementById("galNext").onclick = () => {
   showImage(currentIndex + 1);
 };
-
 document.getElementById("galPrev").onclick = () => {
   showImage(currentIndex - 1);
 };
@@ -88,6 +84,7 @@ document.addEventListener("click", (e) => {
   }
   const btn = e.target.closest(".fav-btn");
   if (!btn) return;
+
   if (!currentUser) {
     alert("Спочатку увійди");
     return;
