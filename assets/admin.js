@@ -1,14 +1,19 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-  
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 const firebaseConfig = {
   apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site",
+  storageBucket: "paradisegarden-site.firebasestorage.app",
+  messagingSenderId: "452352075250",
+  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
+  measurementId: "G-6XHWE6Y0JE"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const analytics = getAnalytics(app);
 
 // ✅ ГОЛОВНА ФУНКЦІЯ
 window.addObject = async () => {
