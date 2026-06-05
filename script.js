@@ -63,9 +63,12 @@ let currentIndex = 0;
 document.addEventListener("keydown", (e) => {
   if (!modal || modal.style.display !== "block") return;
 
-  if (e.key === "ArrowRight") showImage(currentIndex + 1);
-  if (e.key === "ArrowLeft") showImage(currentIndex - 1);
-  if (e.key === "Escape") modal.style.display = "none";
+  if (e.key === "ArrowRight")
+    showImage(currentIndex + 1);
+  if (e.key === "ArrowLeft") 
+    showImage(currentIndex - 1);
+  if (e.key === "Escape")
+  modal.classList.remove("active");
 });
 function showImage(index) {
   if (!currentImages.length) return;
