@@ -51,17 +51,7 @@ snap.forEach((docSnap, index) => {
     </div>
   `;
 });
-       <div class="card">
-        <img class="gallery-img" src="${imageUrl}" data-index="${index}">
-        <button class="fav-btn" data-id="${index}">♡</button>
-
-        <h3>${d.title || "Без назви"}</h3>
-        <p>Площа: ${d.area || "-"} м²</p>
-        <strong>${d.price || "-"} $</strong>
-      </div>
-    `;
-  });
-
+    
   updateFavUI(); // ✅
 }
 const modal = document.getElementById("galleryModal");
