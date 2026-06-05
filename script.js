@@ -102,14 +102,6 @@ document.addEventListener("click", (e) => {
   if (!currentUser) {
     alert("Спочатку увійди");
     return;
-  }
-  const id = Number(btn.dataset.id);
-  if (favorites.includes(id)) {
-    favorites = favorites.filter(f => f !== id);
-  } else {
-    favorites.push(id);
-  }
-  updateFavUI();
 });
 }
 function updateFavUI() {
