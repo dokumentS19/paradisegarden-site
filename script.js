@@ -51,9 +51,7 @@ snap.forEach((docSnap, index) => {
     </div>
   `;
 });
-  const imageUrl = d.images?.[0] || d.image || "https://images.unsplash.com/photo-1560518883-ce09059eeffa";
-    grid.innerHTML += `
-      <div class="card">
+       <div class="card">
         <img class="gallery-img" src="${imageUrl}" data-index="${index}">
         <button class="fav-btn" data-id="${index}">♡</button>
 
