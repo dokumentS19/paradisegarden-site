@@ -453,4 +453,3 @@ window.addObject = async () => {
     console.error(e);
   }
 };
-
