@@ -120,7 +120,6 @@ if (prevBtn) {
     showImage(currentIndex - 1);
   });
 }
-};
 document.addEventListener("click", (e) => {
   const img = e.target.closest(".gallery-img");
  if (img) {
