@@ -24,9 +24,14 @@ window.addObject = async () => {
   const images = [];
 
   for (let file of files) {
-    const base64 = await toBase64(file);
-    images.push(base64);
-  }
+  const storageRef = ref(storage, "images/" + Date.now() + "_" + file.name);
+
+  await uploadBytes(storageRef, file);
+
+  const url = await getDownloadURL(storageRef);
+
+  images.push(url);
+ }
 
   await addDoc(collection(db, "objects"), {
     title,
