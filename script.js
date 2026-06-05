@@ -115,13 +115,7 @@ document.addEventListener("click", (e) => {
 
   updateFavUI();
 });
- document.addEventListener("click", async (e) => {
-  if (e.target.matches(".gallery-img")) {
-    const img = e.target;
-    modal.style.display = "block";
-    modalImg.src = img.src;
-    return;
-  }
+   }
   const btn = e.target.closest(".fav-btn");
   if (!btn) return;
   if (!currentUser) {
