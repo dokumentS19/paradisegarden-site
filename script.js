@@ -425,11 +425,11 @@ setTimeout(()=> recommendBtn.textContent='Рекомендувати', 1800);
         w.document.write(`<pre>${text}</pre>`);
       }
     });
-  status.textContent = "✅ Заявка відправлена";
-  form.reset();
+  //status.textContent = "✅ Заявка відправлена";
+  //form.reset();
 } catch (err) {
   console.error(err);
-  status.textContent = "❌ Помилка";
+  //status.textContent = "❌ Помилка";
 }
 });
 window.addObject = async () => {
