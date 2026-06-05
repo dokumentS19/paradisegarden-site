@@ -79,6 +79,23 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") modal.style.display = "none";
 });
 function showImage(index) {
+let startX = 0;
+
+modal.addEventListener("touchstart", (e) => {
+  startX = e.touches[0].clientX;
+});
+
+modal.addEventListener("touchend", (e) => {
+  const endX = e.changedTouches[0].clientX;
+
+  if (startX - endX > 50) {
+    showImage(currentIndex + 1);
+  }
+
+  if (endX - startX > 50) {
+    showImage(currentIndex - 1);
+  }
+});
   if (!currentImages.length) return;
   if (index < 0) index = currentImages.length - 1;
   if (index >= currentImages.length) index = 0;
