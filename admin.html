@@ -5,7 +5,7 @@
   <title>Адмінка</title>
 </head>
 <body>
- 
+
 <h2>Додати об'єкт</h2>
 
 <input id="title" placeholder="Назва"><br><br>
@@ -15,80 +15,5 @@
 
 <button id="addBtn">Додати</button>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-import { getFirestore, collection, addDoc } 
-from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-
-
-const firebaseConfig = {
-  apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
-  authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-window.addObject = async () => {
-console.log("FUNC START");
-  console.log("пішли далі");
-  const title = document.getElementById("title").value;
-  const area = document.getElementById("area").value;
-  const price = document.getElementById("price").value;
-
-  const files = document.getElementById("image").files;
-
-  if (!title || !price || files.length === 0) {
-    alert("Заповни всі поля і вибери фото");
-    return;
-  }
-  let images = [];
-  const readFile = (file) => {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (e) => resolve(e.target.result);
-      reader.readAsDataURL(file);  
-    });
-  }; 
-  
-for (let i = 0; i < files.length; i++) {
-
-  console.log("📂 Почали читати файл", i);
-
-  const img = await readFile(files[i]);
-
-  console.log("✅ Файл прочитався", i);
-
-  images.push(img);
-}
-
-console.log("🚀 Перед addDoc");
-
-try {
-  await addDoc(collection(db, "objects"), {
-    title,
-    price,
-    area,
-    images,
-    createdAt: new Date()
-  });
-
-  console.log("✅ ДОДАНО В БАЗУ");
-
-  alert("✅ Об’єкт додано!");
-
-} catch (e) {
-  console.error("❌ ПОМИЛКА:", e);
-}
-``
-
-  document.getElementById("title").value = "";
-  document.getElementById("area").value = "";
-  document.getElementById("price").value = "";
- document.getElementById("image").value = "";
-};
-document.getElementById("addBtn").onclick = window.addObject;
-<script type="module" src="admin.js"></script>
-</body>
+<script type="module" src>
 </html>
-
