@@ -23,7 +23,8 @@ if (showFavBtn) {
   };
 } 
 async function loadObjects() {
-
+ console.log("LOAD OBJECTS ✅");
+  
 const snap = await getDocs(collection(db, "objects"));
 console.log("DOCS COUNT:", snap.size);
 
