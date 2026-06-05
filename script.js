@@ -81,30 +81,23 @@ document.addEventListener("click", (e) => {
   const img = e.target.closest(".gallery-img");
   if (img) {
     modal.style.display = "block";
-
     currentImages = [img.src];
     currentIndex = 0;
-
     showImage(currentIndex);
     return;
   }
-
   const btn = e.target.closest(".fav-btn");
   if (!btn) return;
-
   if (!currentUser) {
     alert("Спочатку увійди");
     return;
   }
-
   const id = Number(btn.dataset.id);
-
   if (favorites.includes(id)) {
     favorites = favorites.filter(f => f !== id);
   } else {
     favorites.push(id);
   }
-
   updateFavUI();
 });
    }
@@ -126,14 +119,12 @@ document.addEventListener("click", (e) => {
 function updateFavUI() {
   document.querySelectorAll(".fav-btn").forEach(btn => {
     const id = Number(btn.dataset.id);
-
     if (favorites.includes(id)) {
       btn.textContent = "❤️";
     } else {
       btn.textContent = "♡";
     }
   });
-
   // лічильник
   const counter = document.getElementById("favCounter");
   if (counter) counter.textContent = favorites.length;
