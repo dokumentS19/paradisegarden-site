@@ -31,7 +31,7 @@ console.log("DOCS COUNT:", snap.size);
   const grid = document.getElementById("objectsGrid");
   if (!grid) return;
   grid.innerHTML = "";
- let allObjects = [];
+allObjects = [];
 
 snap.forEach((docSnap, index) => {
   const d = docSnap.data();
