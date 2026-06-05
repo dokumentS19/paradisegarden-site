@@ -137,7 +137,6 @@ document.addEventListener("click", (e) => {
   showImage(currentIndex);
   return;
 }
-  }
   const btn = e.target.closest(".fav-btn");
   if (!btn) return;
 
