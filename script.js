@@ -67,11 +67,24 @@ function showImage(index) {
   currentIndex = index; 
   modalImg.src = currentImages[currentIndex];
 }
-document.getElementById("galNext").onclick = () => {
-  showImage(currentIndex + 1);
-};
-document.getElementById("galPrev").onclick = () => {
-  showImage(currentIndex - 1);
+const nextBtn = document.getElementById("galNext");
+const prevBtn = document.getElementById("galPrev");
+
+if (nextBtn) {
+  nextBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // ✅ ВАЖЛИВО
+    console.log("NEXT");
+    showImage(currentIndex + 1);
+  });
+}
+
+if (prevBtn) {
+  prevBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // ✅ ВАЖЛИВО
+    console.log("PREV");
+    showImage(currentIndex - 1);
+  });
+}
 };
 document.addEventListener("click", (e) => {
   const img = e.target.closest(".gallery-img");
