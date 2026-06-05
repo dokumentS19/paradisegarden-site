@@ -32,7 +32,7 @@ console.log("DOCS COUNT:", snap.size);
   grid.innerHTML = "";
   snap.forEach((docSnap, index) => {
   const d = docSnap.data();
-   const imageUrl = d.images?.[0] || d.image || "https://via.placeholder.com/400x250";
+  const imageUrl = d.images?.[0] || d.image || "https://images.unsplash.com/photo-1560518883-ce09059eeffa";
     grid.innerHTML += `
       <div class="card">
         <img class="gallery-img" src="${imageUrl}" data-index="${index}">
