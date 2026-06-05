@@ -84,15 +84,36 @@ document.getElementById("galPrev").onclick = () => {
   showImage(currentIndex - 1);
 };
 document.addEventListener("click", (e) => {
-  if (!e.target.matches(".gallery-img")) return;
+  const img = e.target.closest(".gallery-img");
+  if (img) {
+    modal.style.display = "block";
 
-  const img = e.target;
+    currentImages = [img.src];
+    currentIndex = 0;
 
-  modal.style.display = "block";
-  modalImg.src = img.src;
+    showImage(currentIndex);
+    return;
+  }
 
-  currentImages = [img.src];
-  currentIndex = 0;
+  const btn = e.target.closest(".fav-btn");
+  if (!btn) return;
+
+  if (!currentUser) {
+    alert("Спочатку увійди");
+    return;
+  }
+
+  const id = Number(btn.dataset.id);
+
+  if (favorites.includes(id)) {
+    favorites = favorites.filter(f => f !== id);
+  } else {
+    favorites.push(id);
+  }
+
+  updateFavUI();
+});
+
 });
  document.addEventListener("click", async (e) => {
   if (e.target.matches(".gallery-img")) {
