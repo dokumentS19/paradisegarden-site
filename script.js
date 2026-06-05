@@ -100,8 +100,7 @@ document.addEventListener("click", (e) => {
   }
   updateFavUI();
 });
-   }
-  const btn = e.target.closest(".fav-btn");
+ const btn = e.target.closest(".fav-btn");
   if (!btn) return;
   if (!currentUser) {
     alert("Спочатку увійди");
