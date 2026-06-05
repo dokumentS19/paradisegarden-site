@@ -338,13 +338,19 @@ if (galPrev) galPrev.addEventListener('click', ()=> showIdx(galState.index - 1))
 if (galNext) galNext.addEventListener('click', ()=> showIdx(galState.index + 1));
 if (galClose) galClose.addEventListener('click', closeGallery);
 if (modal) modal.addEventListener('click', (e)=>{ if (e.target?.dataset?.close) closeGallery(); });
-document.addEventListener('keydown', (e)=>{ if (!modal.classList.contains('open')) 
-return; if (e.key==='Escape') closeGallery(); if (e.key==='ArrowLeft')
-showIdx(galState.index - 1); if (e.key==='ArrowRight') showIdx(galState.index + 1);
+document.addEventListener('keydown', (e)=>{ 
+if (!modal.classList.contains('open'))return; 
+if (e.key==='Escape') closeGallery(); 
+if (e.key==='ArrowLeft')showIdx(galState.index - 1); 
+if (e.key==='ArrowRight') showIdx(galState.index + 1);
 });
+//
 }
-``
-function attachGalleryHandlers(){ const grid = document.getElementById('featuredGrid'); if (!grid) return; grid.querySelectorAll('[data-open-gallery]').forEach(a=>{ a.addEventListener('click', ev=>{ ev.preventDefault(); const id = a.getAttribute('data-open-gallery'); const listing = FEATURED_LISTINGS.find(x => String(x.id) === String(id)); if (listing) openGallery(listing); }); }); }
+function attachGalleryHandlers(){ const grid = document.getElementById('featuredGrid');
+if (!grid) return; grid.querySelectorAll('[data-open-gallery]').forEach(a=>{ a.addEventListener('click', 
+ev=>{ ev.preventDefault(); const id = a.getAttribute('data-open-gallery'); 
+const listing = FEATURED_LISTINGS.find(x => String(x.id) === String(id)); 
+if (listing) openGallery(listing); }); }); }
 // ===== External listings (other platforms) =====
 const EXTERNAL_LISTINGS = [
   { title: 'Будинок, Ірпінь, 250 м², 6 соток', platform: { name: 'DOM.RIA', logo: 'assets/platforms/domria.svg' }, url: 'https://dom.ria.com/uk/', cover: 'assets/featured/irpin-house.jpg', location: 'Ірпінь • Київська область', price: '€230 000', ctaLabel: 'Переглянути на DOM.RIA' },
