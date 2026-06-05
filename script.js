@@ -97,12 +97,6 @@ document.addEventListener("click", (e) => {
   }
   updateFavUI();
 });
- const btn = e.target.closest(".fav-btn");
-  if (!btn) return;
-  if (!currentUser) {
-    alert("Спочатку увійди");
-    return;
-});
 }
 function updateFavUI() {
   document.querySelectorAll(".fav-btn").forEach(btn => {
