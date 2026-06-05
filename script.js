@@ -477,10 +477,7 @@ window.addObject = async () => {
 
   const images = [];
 
-  for (let file of files) {
-    const base64 = await toBase64(file);
-    images.push(base64);
-  }
+ 
 
   try {
     await addDoc(collection(db, "objects"), {
