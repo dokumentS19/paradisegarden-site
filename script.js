@@ -56,7 +56,7 @@ console.log("DOCS COUNT:", snap.size);
   updateFavUI(); // ✅
 }
 const modal = document.getElementById("galleryModal");
-const modalImg = document.getElementById("modalImg");
+const modalImg = document.getElementById("galImg");
 
 let currentImages = [];
 let currentIndex = 0;
