@@ -156,3 +156,21 @@ document.getElementById("leadForm")?.addEventListener("submit", async e => {
 
 // ===== INIT =====
 document.addEventListener("DOMContentLoaded", loadObjects);
+// ===== SCROLL REVEAL =====
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("show");
+    }
+  });
+});
+
+document.querySelectorAll(".card").forEach(el=>{
+  observer.observe(el);
+});
+
+// ===== CURSOR GLOW =====
+document.addEventListener("mousemove", e=>{
+  document.body.style.setProperty("--x", e.clientX + "px");
+  document.body.style.setProperty("--y", e.clientY + "px");
+});
