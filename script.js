@@ -106,6 +106,40 @@ modal.addEventListener("touchend", (e) => {
     showImage(currentIndex - 1);
   }
 });
+modal.addEventListener("touchstart", (e) => {
+  startX = e.touches[0].clientX;
+});
+
+modal.addEventListener("touchend", (e) => {
+  const endX = e.changedTouches[0].clientX;
+
+  if (startX - endX > 50) {
+    showImage(currentIndex + 1);
+  }
+
+  if (endX - startX > 50) {
+    showImage(currentIndex - 1);
+  }
+});
+
+
+// ✅ ⬇⬇⬇ ОСЬ СЮДИ ВСТАВЛЯЄШ ZOOM ⬇⬇⬇
+let scale = 1;
+
+modalImg.addEventListener("wheel", (e) => {
+  e.preventDefault();
+
+  if (e.deltaY < 0) {
+    scale += 0.2;
+  } else {
+    scale -= 0.2;
+  }
+
+  if (scale < 1) scale = 1;
+  if (scale > 4) scale = 4;
+
+  modalImg.style.transform = `scale(${scale})`;
+});
 const nextBtn = document.getElementById("galNext");
 const prevBtn = document.getElementById("galPrev");
 
