@@ -156,10 +156,10 @@ modalImg.addEventListener("wheel", (e) => {
   if (scale < 1) scale = 1;
   if (scale > 4) scale = 4;
 
-  modalImg.style.transform = `scale(${scale})`;
+
+modalImg.style.transform = `scale(${scale})`;
 });
-``
-});
+
 const nextBtn = document.getElementById("galNext");
 const prevBtn = document.getElementById("galPrev");
 
