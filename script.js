@@ -410,15 +410,6 @@ function renderFeatured(){
   });
   attachGalleryHandlers();
 }
-  galState.list = listing.images.filter(Boolean);
-  galState.index = 0;
-  galState.title = listing.title || '';
-  renderGallery();
-
-  modal.classList.add('open');
-  modal.setAttribute('aria-hidden','false');
-  document.body.style.overflow = 'hidden';
-}
 function attachGalleryHandlers(){ const grid = document.getElementById('featuredGrid');
 if (!grid) return; grid.querySelectorAll('[data-open-gallery]').forEach(a=>{ a.addEventListener('click', 
 ev=>{ ev.preventDefault(); const id = a.getAttribute('data-open-gallery'); 
