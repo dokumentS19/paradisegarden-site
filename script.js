@@ -404,20 +404,6 @@ function renderFeatured(){
   });
   attachGalleryHandlers();
 }
-// ===== Gallery =====
-const modalImg = document.getElementById('modalImg');
-const galPrev = document.getElementById('galPrev');
-const galNext = document.getElementById('galNext');
-const galClose = document.getElementById('galClose');
-const galThumbs = document.getElementById('galThumbs'); 
-const galCaption = document.getElementById('galCaption');
-let galState = { list: [], index: 0, title: '' };
-function openGallery(listing){
-  if (!listing || !listing.images || listing.images.length === 0) {
-    console.log("❌ немає images або listing");
-    return;
-  }
-
   galState.list = listing.images.filter(Boolean);
   galState.index = 0;
   galState.title = listing.title || '';
