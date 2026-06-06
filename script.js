@@ -357,7 +357,7 @@ function renderFeatured(){
   attachGalleryHandlers();
 }
 // ===== Gallery =====
-const galImg = document.getElementById('galImg');
+const modalImg = document.getElementById('modalImg');
 const galPrev = document.getElementById('galPrev');
 const galNext = document.getElementById('galNext');
 const galClose = document.getElementById('galClose');
