@@ -26,7 +26,7 @@ document.getElementById("addBtn").onclick = async () => {
   const price = Number(document.getElementById("price").value);
   const files = document.getElementById("image").files;
 
-  if (!title || !area || !price) {
+ if (!title || isNaN(area) || isNaN(price)) {
     alert("Заповніть всі поля!");
     btn.disabled = false;
     return;
