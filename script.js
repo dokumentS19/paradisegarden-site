@@ -104,11 +104,16 @@ document.addEventListener("keydown", (e) => {
 });
 function showImage(index) {
   if (!currentImages.length) return;
+
   if (index < 0) index = currentImages.length - 1;
   if (index >= currentImages.length) index = 0;
 
   currentIndex = index; 
   modalImg.src = currentImages[currentIndex];
+
+  // ✅ скидання zoom
+  modalImg.style.transform = "scale(1)";
+}
   // ✅ скидаємо zoom
 scale = 1;
 modalImg.style.transform = "scale(1)";
