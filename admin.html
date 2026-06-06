@@ -15,7 +15,7 @@ body{
 .section{
   background:#fff;
   padding:15px;
-  border-radius:12px;
+  border-radius:10px;
   margin-bottom:20px;
 }
 input{
@@ -29,7 +29,6 @@ button{
   color:#fff;
   border:none;
   border-radius:8px;
-  cursor:pointer;
 }
 .adminOnly{display:none}
 </style>
@@ -37,9 +36,9 @@ button{
 
 <body>
 
-<h1>🚀 CRM Панель</h1>
+<h1>CRM Панель</h1>
 
-<!-- 🔐 AUTH -->
+<!-- LOGIN -->
 <div id="authBox" class="section">
   <input id="email" placeholder="Email">
   <input id="password" type="password" placeholder="Пароль">
@@ -47,43 +46,26 @@ button{
   <button id="register">Register</button>
 </div>
 
-<!-- 🏢 АГЕНТСТВО -->
+<!-- АГЕНТСТВО -->
 <div class="section adminOnly">
-  <h3>🏢 Агентство</h3>
-  <div id="agencyInfo">...</div>
+  <h3>Агентство</h3>
+  <div id="agencyInfo"></div>
 </div>
 
-<!-- ➕ ДОДАТИ ОБʼЄКТ -->
+<!-- ДОДАТИ -->
 <div class="section adminOnly">
-  <h3>Додати обʼєкт</h3>
+  <h3>Додати об'єкт</h3>
   <input id="title" placeholder="Назва">
   <input id="area" placeholder="Площа">
   <input id="price" placeholder="Ціна">
-  <input type="file" id="image" multiple>
   <button id="addBtn">Додати</button>
-
-  <div id="preview"></div>
 </div>
 
-<!-- 📊 СТАТИСТИКА -->
-<div class="section adminOnly">
-  <h3>📊 Dashboard</h3>
-  <div id="stats"></div>
-</div>
-
-<!-- 🏠 ОБʼЄКТИ -->
+<!-- СПИСОК -->
 <div class="section adminOnly">
   <h3>Обʼєкти</h3>
   <div id="adminList"></div>
 </div>
-
-<!-- 📞 ЛІДИ -->
-<div class="section adminOnly">
-  <h3>Клієнти</h3>
-  <div id="leads"></div>
-</div>
-
-<button onclick="logout()">Logout</button>
 
 <script type="module">
 
@@ -92,7 +74,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import {
   getAuth, signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  onAuthStateChanged, signOut
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
@@ -100,30 +82,26 @@ import {
   getDocs, query, where
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-  getStorage, ref, uploadBytes, getDownloadURL
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
+// CONFIG
 const app = initializeApp({
   apiKey:"ТУТ_API_KEY",
   authDomain:"paradisegarden-site.firebaseapp.com",
-  projectId:"paradisegarden-site",
-  storageBucket:"paradisegarden-site.firebasestorage.app"
+  projectId:"paradisegarden-site"
 });
 
 const auth = getAuth(app);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
 let agencyId = null;
 
-// ✅ LOGIN
+// LOGIN
 login.onclick = () => {
   signInWithEmailAndPassword(auth, email.value, password.value);
 };
 
-// ✅ REGISTER
+// REGISTER
 register.onclick = async () => {
+
   const u = await createUserWithEmailAndPassword(auth, email.value, password.value);
 
   await addDoc(collection(db,"users"),{
@@ -132,83 +110,51 @@ register.onclick = async () => {
     role: "admin",
 
     agencyName: "Моє агентство",
-    description: "Продаж нерухомості",
-    phone: "+380",
-    city: "Київ"
+    description: "Опис агентства",
+    city: "Буча"
   });
 };
 
-// ✅ AUTH STATE
-onAuthStateChanged(auth, async user => {
-  if (!user) return;
+// AUTH
+onAuthStateChanged(auth, async user=>{
+  if(!user) return;
 
   const snap = await getDocs(query(
     collection(db,"users"),
     where("uid","==",user.uid)
   ));
 
-  snap.forEach(d => {
+  snap.forEach(d=>{
     agencyId = d.data().agencyId;
+
+    agencyInfo.innerHTML = `
+      <b>${d.data().agencyName}</b><br>
+      ${d.data().description}<br>
+      ${d.data().city}
+    `;
   });
 
   authBox.style.display="none";
-  document.querySelectorAll(".adminOnly")
-    .forEach(el => el.style.display="block");
+  document.querySelectorAll(".adminOnly").forEach(e=>e.style.display="block");
 
-  loadAll();
+  loadObjects();
 });
 
-// ✅ АГЕНТСТВО
-async function loadAgency(){
-  const snap = await getDocs(query(
-    collection(db,"users"),
-    where("agencyId","==",agencyId)
-  ));
-
-  snap.forEach(d=>{
-    const a = d.data();
-
-    agencyInfo.innerHTML = `
-      <b>${a.agencyName}</b><br>
-      ${a.description}<br>
-      📞 ${a.phone}<br>
-      📍 ${a.city}
-    `;
-  });
-}
-
-// ✅ ДОДАТИ ОБʼЄКТ
-addBtn.onclick = async () => {
-
-  const images = [];
-
-  for (const file of image.files){
-    const refPath = ref(storage, "objects/"+Date.now()+"_"+file.name);
-    const snap = await uploadBytes(refPath, file);
-    const url = await getDownloadURL(snap.ref);
-    images.push(url);
-  }
-
+// ADD
+addBtn.onclick = async ()=>{
   await addDoc(collection(db,"objects"),{
     title:title.value,
-    area:Number(area.value) || 0,
-    price:Number(price.value) || 0,
-    images,
+    area:+area.value,
+    price:+price.value,
     agencyId,
     createdAt:Date.now()
   });
 
-  alert("✅ Додано");
-
-  title.value="";
-  area.value="";
-  price.value="";
-  image.value="";
-
+  alert("Додано");
   loadObjects();
 };
 
-// ✅ ОБʼЄКТИ
+// LOAD
 async function loadObjects(){
   const snap = await getDocs(query(
     collection(db,"objects"),
@@ -220,53 +166,11 @@ async function loadObjects(){
   snap.forEach(d=>{
     const o=d.data();
 
-    adminList.innerHTML += `
-      <div>${o.title} — ${o.price}$ — ${o.area}м²</div>
+    adminList.innerHTML+=`
+      <div>${o.title} — ${o.price}$</div>
     `;
   });
 }
-
-// ✅ ЛІДИ
-async function loadLeads(){
-  const snap = await getDocs(query(
-    collection(db,"leads"),
-    where("agencyId","==",agencyId)
-  ));
-
-  leads.innerHTML="";
-
-  snap.forEach(d=>{
-    const l=d.data();
-
-    leads.innerHTML += `
-      <div>${l.name} — ${l.phone}</div>
-    `;
-  });
-}
-
-// ✅ СТАТИСТИКА
-async function loadStats(){
-  const a = await getDocs(query(collection(db,"objects"),
-    where("agencyId","==",agencyId)));
-
-  const l = await getDocs(query(collection(db,"leads"),
-    where("agencyId","==",agencyId)));
-
-  stats.innerHTML = `Обʼєкти: ${a.size}<br>Ліди: ${l.size}`;
-}
-
-// ✅ ALL
-function loadAll(){
-  loadAgency();
-  loadObjects();
-  loadLeads();
-  loadStats();
-}
-
-// ✅ LOGOUT
-window.logout = () => {
-  signOut(auth).then(()=>location.reload());
-};
 
 </script>
 
