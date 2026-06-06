@@ -12,20 +12,17 @@ body{
   background:#f5f6f8;
   padding:20px;
 }
-
 .section{
   background:#fff;
   padding:15px;
   border-radius:12px;
   margin-bottom:20px;
 }
-
 input{
   width:100%;
   padding:10px;
   margin-bottom:10px;
 }
-
 button{
   padding:10px;
   background:#1f6f43;
@@ -34,7 +31,6 @@ button{
   border-radius:8px;
   cursor:pointer;
 }
-
 .adminOnly{display:none}
 </style>
 </head>
@@ -43,7 +39,7 @@ button{
 
 <h1>🚀 CRM Панель</h1>
 
-<!-- AUTH -->
+<!-- 🔐 AUTH -->
 <div id="authBox" class="section">
   <input id="email" placeholder="Email">
   <input id="password" type="password" placeholder="Пароль">
@@ -51,7 +47,13 @@ button{
   <button id="register">Register</button>
 </div>
 
-<!-- ADD OBJECT -->
+<!-- 🏢 АГЕНТСТВО -->
+<div class="section adminOnly">
+  <h3>🏢 Агентство</h3>
+  <div id="agencyInfo">...</div>
+</div>
+
+<!-- ➕ ДОДАТИ ОБʼЄКТ -->
 <div class="section adminOnly">
   <h3>Додати обʼєкт</h3>
   <input id="title" placeholder="Назва">
@@ -63,40 +65,28 @@ button{
   <div id="preview"></div>
 </div>
 
-<!-- STATS -->
+<!-- 📊 СТАТИСТИКА -->
 <div class="section adminOnly">
   <h3>📊 Dashboard</h3>
   <div id="stats"></div>
 </div>
 
-<!-- OBJECTS -->
+<!-- 🏠 ОБʼЄКТИ -->
 <div class="section adminOnly">
   <h3>Обʼєкти</h3>
   <div id="adminList"></div>
 </div>
 
-<!-- LEADS -->
+<!-- 📞 ЛІДИ -->
 <div class="section adminOnly">
-  <h3>CRM клієнти</h3>
+  <h3>Клієнти</h3>
   <div id="leads"></div>
-</div>
-
-<!-- FORM -->
-<div class="section adminOnly">
-  <h3>Заявка → Telegram</h3>
-  <form id="leadForm">
-    <input name="name" placeholder="Ім’я">
-    <input name="phone" placeholder="Телефон">
-    <button>Send</button>
-  </form>
 </div>
 
 <button onclick="logout()">Logout</button>
 
-<!-- SCRIPT -->
 <script type="module">
 
-// ===== Firebase =====
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
@@ -114,7 +104,6 @@ import {
   getStorage, ref, uploadBytes, getDownloadURL
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-// ===== CONFIG =====
 const app = initializeApp({
   apiKey:"ТУТ_API_KEY",
   authDomain:"paradisegarden-site.firebaseapp.com",
@@ -126,25 +115,30 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// ===== GLOBAL =====
 let agencyId = null;
 
-// ===== AUTH =====
-login.onclick = async () => {
-  await signInWithEmailAndPassword(auth, email.value, password.value);
+// ✅ LOGIN
+login.onclick = () => {
+  signInWithEmailAndPassword(auth, email.value, password.value);
 };
 
+// ✅ REGISTER
 register.onclick = async () => {
   const u = await createUserWithEmailAndPassword(auth, email.value, password.value);
 
   await addDoc(collection(db,"users"),{
     uid: u.user.uid,
     agencyId: u.user.uid,
-    role: "admin"
+    role: "admin",
+
+    agencyName: "Моє агентство",
+    description: "Продаж нерухомості",
+    phone: "+380",
+    city: "Київ"
   });
 };
 
-// ===== AUTH STATE =====
+// ✅ AUTH STATE
 onAuthStateChanged(auth, async user => {
   if (!user) return;
 
@@ -159,33 +153,46 @@ onAuthStateChanged(auth, async user => {
 
   authBox.style.display="none";
   document.querySelectorAll(".adminOnly")
-    .forEach(e => e.style.display="block");
+    .forEach(el => el.style.display="block");
 
   loadAll();
 });
 
-// ===== ADD OBJECT =====
+// ✅ АГЕНТСТВО
+async function loadAgency(){
+  const snap = await getDocs(query(
+    collection(db,"users"),
+    where("agencyId","==",agencyId)
+  ));
+
+  snap.forEach(d=>{
+    const a = d.data();
+
+    agencyInfo.innerHTML = `
+      <b>${a.agencyName}</b><br>
+      ${a.description}<br>
+      📞 ${a.phone}<br>
+      📍 ${a.city}
+    `;
+  });
+}
+
+// ✅ ДОДАТИ ОБʼЄКТ
 addBtn.onclick = async () => {
 
   const images = [];
 
-  if (image.files.length) {
-    for (const file of image.files) {
-
-      const name = Date.now()+"_"+file.name;
-      const storageRef = ref(storage, "objects/"+name);
-
-      const snap = await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(snap.ref);
-
-      images.push(url);
-    }
+  for (const file of image.files){
+    const refPath = ref(storage, "objects/"+Date.now()+"_"+file.name);
+    const snap = await uploadBytes(refPath, file);
+    const url = await getDownloadURL(snap.ref);
+    images.push(url);
   }
 
   await addDoc(collection(db,"objects"),{
-    title: title.value,
-    area: Number(area.value) || 0,
-    price: Number(price.value) || 0,
+    title:title.value,
+    area:Number(area.value) || 0,
+    price:Number(price.value) || 0,
     images,
     agencyId,
     createdAt:Date.now()
@@ -197,12 +204,11 @@ addBtn.onclick = async () => {
   area.value="";
   price.value="";
   image.value="";
-  preview.innerHTML="";
 
   loadObjects();
 };
 
-// ===== OBJECTS =====
+// ✅ ОБʼЄКТИ
 async function loadObjects(){
   const snap = await getDocs(query(
     collection(db,"objects"),
@@ -212,15 +218,15 @@ async function loadObjects(){
   adminList.innerHTML="";
 
   snap.forEach(d=>{
-    let o=d.data();
+    const o=d.data();
 
     adminList.innerHTML += `
-      <div>${o.title} — ${o.price}$</div>
+      <div>${o.title} — ${o.price}$ — ${o.area}м²</div>
     `;
   });
 }
 
-// ===== LEADS =====
+// ✅ ЛІДИ
 async function loadLeads(){
   const snap = await getDocs(query(
     collection(db,"leads"),
@@ -230,15 +236,15 @@ async function loadLeads(){
   leads.innerHTML="";
 
   snap.forEach(d=>{
-    let l=d.data();
+    const l=d.data();
 
     leads.innerHTML += `
-      <div>${l.name} ${l.phone}</div>
+      <div>${l.name} — ${l.phone}</div>
     `;
   });
 }
 
-// ===== STATS =====
+// ✅ СТАТИСТИКА
 async function loadStats(){
   const a = await getDocs(query(collection(db,"objects"),
     where("agencyId","==",agencyId)));
@@ -249,37 +255,16 @@ async function loadStats(){
   stats.innerHTML = `Обʼєкти: ${a.size}<br>Ліди: ${l.size}`;
 }
 
-// ===== LOAD ALL =====
+// ✅ ALL
 function loadAll(){
+  loadAgency();
   loadObjects();
   loadLeads();
   loadStats();
 }
 
-// ===== TELEGRAM =====
-leadForm.onsubmit = async (e)=>{
-  e.preventDefault();
-
-  const data = Object.fromEntries(new FormData(leadForm));
-  data.agencyId = agencyId;
-
-  await addDoc(collection(db,"leads"),data);
-
-  await fetch(`https://api.telegram.org/botYOUR_TOKEN/sendMessage`,{
-    method:"POST",
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      chat_id:"YOUR_CHAT_ID",
-      text:`🔥 ЛІД\n${data.name}\n${data.phone}`
-    })
-  });
-
-  alert("✅ Відправлено");
-  leadForm.reset();
-};
-
-// ===== LOGOUT =====
-window.logout = ()=>{
+// ✅ LOGOUT
+window.logout = () => {
   signOut(auth).then(()=>location.reload());
 };
 
