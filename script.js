@@ -341,16 +341,8 @@ async function initData(){
  ; if (!lines.length) return []; const headers = lines.shift().split(',').map(h=>h.trim()); return lines.map(line=>{ const cells = line.split(','); const obj = {}; headers.forEach((h,i)=> obj[h] = (cells[i]||'').trim()); return obj; }); }
   function parseRow(r){ if (!r || !r.id) return null; const toNum = v=> v===''? undefined : Number(v); const list = v=> (v||'').split(/[|,]/).map(s=>s.trim()).filter(Boolean); return { id:String(r.id), title:r.title||'', type:r.type||'', city:r.city||'', location:r.location||'', price:{ value: toNum(r.price_value), currency: (r.price_currency||'USD').toUpperCase() }, area: toNum(r.area), bedrooms: toNum(r.bedrooms), bathrooms: toNum(r.bathrooms), cover: r.cover||'', gallery: list(r.gallery), url: r.url||'#', badges: list(r.badges), date: r.date || '2000-01-01' }; }
   if (urls.length){
-    for (const u of urls){ const csv = await fetchCsv(u); rows = rows.concat(parseCSV(csv)); }
-  }
-  if (!rows.length){ // fallback to local csv
-    
-        <a href="#" class="feature-cover" data-open-gallery="${it.id}">
-          <img src="${cover}" alt="${it.title}" loading="lazy" decoding="async"/>
-          <div class="feature-badges">${badges}</div>
-        </a>
-}
-function attachGalleryHandlers(){ const grid = document.getElementById('featuredGrid');
+    for (const u of urls)
+    { const grid = document.getElementById('featuredGrid');
 if (!grid) return; grid.querySelectorAll('[data-open-gallery]').forEach(a=>{ a.addEventListener('click', 
 ev=>{ ev.preventDefault(); const id = a.getAttribute('data-open-gallery'); 
 const listing = FEATURED_LISTINGS.find(x => String(x.id) === String(id)); 
