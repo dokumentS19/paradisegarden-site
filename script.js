@@ -105,11 +105,24 @@ function showImage(index) {
   if (index < 0) index = currentImages.length - 1;
   if (index >= currentImages.length) index = 0;
 
-  currentIndex = index; 
+  currentIndex = index;
   modalImg.src = currentImages[currentIndex];
+}
 
-  // ✅ скидання zoom
-  modalImg.style.transform = "scale(1)";
+// 👇 ВСТАВ ОТУТ
+const tgBtn = document.getElementById("telegramBtn");
+
+const TELEGRAM_URL = "https://t.me/твій_нік";
+
+if (tgBtn) {
+  tgBtn.href = TELEGRAM_URL;
+
+  tgBtn.addEventListener("click", (e) => {
+    if (!TELEGRAM_URL) {
+      e.preventDefault();
+      alert("Telegram не вказаний");
+    }
+  });
 }
   // ✅ скидаємо zoom
 scale = 1;
