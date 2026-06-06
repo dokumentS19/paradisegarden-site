@@ -124,24 +124,7 @@ if (prevBtn) {
     showImage(currentIndex - 1);
   });
 }
-document.addEventListener("click", (e) => {
-  const img = e.target.closest(".gallery-img");
- if (img) {
- modal.classList.add("active");
-
-  const index = Number(img.dataset.index);
-  const obj = allObjects[index];
-
-  currentImages = obj.images?.length
-    ? obj.images
-    : [img.src];
-
-  currentIndex = 0;
-
-  showImage(currentIndex);
-  return;
-}
-  const btn = e.target.closest(".fav-btn");
+const btn = e.target.closest(".fav-btn");
   if (!btn) return;
 
   if (!currentUser) {
