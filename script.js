@@ -353,8 +353,17 @@ const galClose = document.getElementById('galClose');
 const galThumbs = document.getElementById('galThumbs'); 
 const galCaption = document.getElementById('galCaption');
 let galState = { list: [], index: 0, title: '' };
-function openGallery(listing){ galState.list = (listing.gallery && listing.gallery.length ? listing.gallery : [listing.cover]).filter(Boolean); galState.index = 0; galState.title = listing.title || ''; renderGallery(); modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; }
-function closeGallery(){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
+function openGallery(listing){
+  galState.list = (listing.images || []).filter(Boolean);
+  galState.index = 0;
+  galState.title = listing.title || '';
+  renderGallery();
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+}
+function closeGallery(){ modal.classList.remove('open');
+modal.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
 function showIdx(i){ if (!galState.list.length) return; galState.index = (i + galState.list.length) % galState.list.length; renderGallery(); }
 function renderGallery(){ const src = galState.list[galState.index]; galImg.src = src; galImg.alt = galState.title || "Фото об'єкта"; 
 galCaption.textContent = `${galState.title} — ${galState.index+1}/${galState.list.length}`; galThumbs.innerHTML = galState.list.map((s,idx)=>`
