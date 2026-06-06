@@ -196,3 +196,89 @@ body::after{
 @media(max-width:768px){
   .cards{grid-template-columns:1fr}
 }
+/* ===== HERO ===== */
+.hero{
+  text-align:center;
+  padding:120px 20px 80px;
+  position:relative;
+}
+
+.hero-title{
+  font-size:clamp(2.5rem,4vw,4rem);
+  font-weight:800;
+  background:linear-gradient(90deg,#fff,#4ade80);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+
+  opacity:0;
+  transform:translateY(40px);
+  animation:heroReveal 1s ease forwards;
+}
+
+.hero-sub{
+  color:var(--muted);
+  margin:20px 0;
+
+  opacity:0;
+  transform:translateY(40px);
+  animation:heroReveal 1s .3s ease forwards;
+}
+
+@keyframes heroReveal{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* ===== FEATURES ===== */
+.features{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  padding:60px 20px;
+}
+
+.feature{
+  background:var(--glass);
+  backdrop-filter:blur(10px);
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  font-size:1.2rem;
+
+  opacity:0;
+  transform:translateY(40px);
+  transition:.6s;
+}
+
+.feature.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ===== CTA ===== */
+.cta{
+  text-align:center;
+  padding:120px 20px;
+}
+
+.cta h2{
+  font-size:2.5rem;
+}
+
+/* ===== PARALLAX SECTION ===== */
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle,#22c55e22,transparent);
+  animation:float 10s infinite ease-in-out;
+  z-index:-1;
+}
+
+@keyframes float{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-30px)}
+  100%{transform:translateY(0)}
+}
