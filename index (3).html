@@ -406,8 +406,13 @@ modal.addEventListener("click", (e) => {
     modal.style.display = "none";
   }
 });
-document.getElementById("galPrev").onclick = () => {
-  currentIndex--;
+    let currentImages = [];
+let currentIndex = 0;
+
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modalImg");
+    
+document.getElementById("galPrev").onclick = () => {  currentIndex--;
   if (currentIndex < 0) currentIndex = currentImages.length - 1;
   modalImg.src = currentImages[currentIndex];
 };
