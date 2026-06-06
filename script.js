@@ -83,20 +83,21 @@ let currentImages = [];
 let currentIndex = 0;
 
 document.addEventListener("keydown", (e) => {
-  if (!modal || !modal.classList.contains("active")) return;
-
-  if (e.key === "ArrowRight") {
-    showImage(currentIndex + 1);
-  }
-
-  if (e.key === "ArrowLeft") {
-    showImage(currentIndex - 1);
+  if (Index - 1);  if (!modal || !modal.classList.contains("active")) return;
   }
 
   if (e.key === "Escape") {
     modal.classList.remove("active");
   }
 });
+
+  if (e.key === "ArrowRight") {
+    showImage(currentIndex + 1);
+  }
+
+  if (e.key === "ArrowLeft") {
+    modal.classList.remove("active");
+  }
 });
 function showImage(index) {
   if (!currentImages.length) return;
