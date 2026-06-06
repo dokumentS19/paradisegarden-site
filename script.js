@@ -89,7 +89,7 @@ let currentImages = [];
 let currentIndex = 0;
 
 document.addEventListener("keydown", (e) => {
-  if (!modal || modal.style.display !== "block") return;
+ if (!modal || !modal.class
 
   if (e.key === "ArrowRight")
     showImage(currentIndex + 1);
