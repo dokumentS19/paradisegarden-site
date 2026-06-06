@@ -354,10 +354,16 @@ const galThumbs = document.getElementById('galThumbs');
 const galCaption = document.getElementById('galCaption');
 let galState = { list: [], index: 0, title: '' };
 function openGallery(listing){
-  galState.list = (listing.images || []).filter(Boolean);
+  if (!listing || !listing.images || listing.images.length === 0) {
+    console.log("❌ немає images або listing");
+    return;
+  }
+
+  galState.list = listing.images.filter(Boolean);
   galState.index = 0;
   galState.title = listing.title || '';
   renderGallery();
+
   modal.classList.add('open');
   modal.setAttribute('aria-hidden','false');
   document.body.style.overflow = 'hidden';
