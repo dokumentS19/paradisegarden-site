@@ -51,15 +51,18 @@ snap.forEach((docSnap, index) => {
     </div>
   `;
 });
-    document.querySelectorAll(".gallery-img").forEach(img => {
-  img.addEventListener("click", () => {
-    const index = Number(img.dataset.index);
-    const obj = allObjects[index];
+   setTimeout(() => {
+  document.querySelectorAll(".gallery-img").forEach(img => {
+    img.addEventListener("click", () => {
+      const index = Number(img.dataset.index);
+      const obj = allObjects[index];
 
-    openGallery(obj);
+      console.log("CLICKED:", obj); // ✅ перевірка
+
+      openGallery(obj);
+    });
   });
-});
-``
+}, 0);
   updateFavUI(); // ✅
 }
 const modal = document.getElementById("galleryModal");
