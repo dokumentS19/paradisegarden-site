@@ -11,7 +11,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site",
-  storageBucket: "paradisegarden-site.appspot.com"
+ storageBucket: "paradisegarden-site.firebasestorage.app"
 };
 
 const app = initializeApp(firebaseConfig);
