@@ -335,7 +335,13 @@ function setupTelegram(aTag){
 
   const url = (TELEGRAM_LINK || '').trim();
 
-   }
+  aTag.href = url || '#';
+
+  aTag.addEventListener('click', (e) => {
+    if (!url){
+      e.preventDefault();
+      alert('Telegram не вказаний');
+    }
   });
 }
 // ===== Featured data =====
