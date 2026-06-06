@@ -30,34 +30,25 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// ===== AUTH (простий SaaS рівень) =====
-const PASSWORD = "admin123";  // 🔑 змінити
-const ROLE_ADMIN = "admin";
-const ROLE_MANAGER = "manager";
-
+// ===== AUTH =====
+const PASSWORD = "admin123";
 let currentRole = null;
 
-// login
 function login() {
   const pass = prompt("Пароль:");
-
   if (pass === PASSWORD) {
-    currentRole = ROLE_ADMIN;
-    localStorage.setItem("role", ROLE_ADMIN);
-    alert("✅ Увійшли як ADMIN");
+    currentRole = "admin";
+    localStorage.setItem("role", "admin");
     init();
   } else {
     alert("❌ Невірний пароль");
   }
 }
 
-// перевірка при старті
 function checkAuth() {
   const role = localStorage.getItem("role");
-
-  if (!role) {
-    login();
-  } else {
+  if (!role) login();
+  else {
     currentRole = role;
     init();
   }
@@ -75,7 +66,6 @@ const list = document.getElementById("adminList");
 // ===== PREVIEW =====
 fileInput?.addEventListener("change", () => {
   preview.innerHTML = "";
-
   for (const file of fileInput.files) {
     const img = document.createElement("img");
     img.src = URL.createObjectURL(file);
@@ -87,18 +77,9 @@ fileInput?.addEventListener("change", () => {
 
 // ===== ADD OBJECT =====
 async function addObject() {
-  if (currentRole !== ROLE_ADMIN) {
-    alert("⛔ Немає доступу");
-    return;
-  }
 
-  const title = titleInput.value.trim();
-  const area = Number(areaInput.value);
-  const price = Number(priceInput.value);
-  const files = fileInput.files;
-
-  if (!title || !price || !files.length) {
-    alert("❗ Заповни все");
+  if (!titleInput.value || !priceInput.value || !fileInput.files.length) {
+    alert("❗ Заповни всі поля");
     return;
   }
 
@@ -108,8 +89,9 @@ async function addObject() {
   try {
     const images = [];
 
-    for (const file of files) {
+    for (const file of fileInput.files) {
       const name = Date.now() + "_" + file.name;
+
       const storageRef = ref(storage, "objects/" + name);
 
       const snap = await uploadBytes(storageRef, file);
@@ -119,15 +101,16 @@ async function addObject() {
     }
 
     await addDoc(collection(db, "objects"), {
-      title,
-      area,
-      price,
+      title: titleInput.value,
+      area: Number(areaInput.value),
+      price: Number(priceInput.value),
       images,
       createdAt: Date.now()
     });
 
     alert("✅ Обʼєкт додано");
 
+    // reset
     titleInput.value = "";
     areaInput.value = "";
     priceInput.value = "";
@@ -163,7 +146,7 @@ async function loadObjects() {
 
       div.innerHTML = `
         <b>${d.title}</b> — ${d.price}$ 
-        ${currentRole === ROLE_ADMIN ? `<button data-id="${id}">❌</button>` : ""}
+        ${currentRole === "admin" ? `<button data-id="${id}">❌</button>` : ""}
       `;
 
       list.appendChild(div);
@@ -179,14 +162,14 @@ document.addEventListener("click", async (e) => {
   const btn = e.target.closest("button[data-id]");
   if (!btn) return;
 
-  if (currentRole !== ROLE_ADMIN) {
+  if (currentRole !== "admin") {
     alert("⛔ Немає доступу");
     return;
   }
 
   const id = btn.dataset.id;
 
-  if (!confirm("Видалити?")) return;
+  if (!confirm("Видалити об'єкт?")) return;
 
   await deleteDoc(doc(db, "objects", id));
 
@@ -194,7 +177,7 @@ document.addEventListener("click", async (e) => {
   loadObjects();
 });
 
-// ===== CRM: ВІДГУКИ BizChat =====
+// ===== REVIEWS =====
 const reviewForm = document.getElementById("reviewForm");
 
 reviewForm?.addEventListener("submit", async (e) => {
@@ -208,7 +191,7 @@ reviewForm?.addEventListener("submit", async (e) => {
       createdAt: Date.now()
     });
 
-    alert("✅ Дякуємо за відгук про BizChat!");
+    alert("✅ Відгук збережено");
     e.target.reset();
 
   } catch {
@@ -224,4 +207,3 @@ function init() {
 // ===== START =====
 checkAuth();
 addBtn?.addEventListener("click", addObject);
-``
