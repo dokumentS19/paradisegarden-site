@@ -18,7 +18,7 @@ button{padding:10px;background:#1f6f43;color:#fff;border:none;border-radius:8px}
 
 <h1>🚀 SaaS CRM PRO</h1>
 
-<div id="auth" class="section">
+<div id="authBox" class="section">
 <input id="email" placeholder="Email">
 <input id="password" type="password">
 <button id="login">Login</button>
@@ -66,6 +66,7 @@ button{padding:10px;background:#1f6f43;color:#fff;border:none;border-radius:8px}
 
 <script type="module">
 
+// ✅ Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
@@ -83,66 +84,68 @@ import {
  getStorage, ref, uploadBytes, getDownloadURL
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
+// ✅ CONFIG (твій)
 const app = initializeApp({
- apiKey:"API_KEY",
+ apiKey:"ТУТ_СВІЙ_API_KEY",
  authDomain:"paradisegarden-site.firebaseapp.com",
  projectId:"paradisegarden-site",
  storageBucket:"paradisegarden-site.firebasestorage.app"
 });
 
-const auth=getAuth(app);
-const db=getFirestore(app);
-const storage=getStorage(app);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
-let agencyId=null;
-let role="user";
+// ===== GLOBAL =====
+let agencyId = null;
 
 // ===== LOGIN =====
-login.onclick=async()=>{
- await signInWithEmailAndPassword(auth,email.value,password.value);
+login.onclick = async () => {
+ await signInWithEmailAndPassword(auth, email.value, password.value);
 };
 
-register.onclick=async()=>{
- const user=await createUserWithEmailAndPassword(auth,email.value,password.value);
-
- // 👇 створюємо агентство
- agencyId=user.user.uid;
+register.onclick = async () => {
+ const u = await createUserWithEmailAndPassword(auth, email.value, password.value);
+ agencyId = u.user.uid;
 
  await addDoc(collection(db,"users"),{
-  uid:user.user.uid,
-  role:"admin",
-  agencyId
+  uid: u.user.uid,
+  agencyId,
+  role: "admin"
  });
 };
 
 // ===== AUTH =====
-onAuthStateChanged(auth, async user=>{
- if(user){
+onAuthStateChanged(auth, async user => {
+ if(!user) return;
 
-  // отримуємо роль
-  const snap=await getDocs(query(collection(db,"users"),where("uid","==",user.uid)));
+ const snap = await getDocs(query(
+  collection(db,"users"),
+  where("uid","==",user.uid)
+ ));
 
-  snap.forEach(d=>{
-   role=d.data().role;
-   agencyId=d.data().agencyId;
-  });
+ snap.forEach(d=>{
+  agencyId = d.data().agencyId;
+ });
 
-  auth.style.display="none";
-  if(role==="admin"){
-   document.querySelectorAll(".adminOnly")
-   .forEach(x=>x.style.display="block");
-  }
+ document.getElementById("authBox").style.display="none";
+ document.querySelectorAll(".adminOnly").forEach(e=>e.style.display="block");
 
-  loadAll();
- }
+ loadAll();
 });
 
 // ===== ADD OBJECT =====
-add.onclick=async()=>{
- let imgs=[];
+add.onclick = async () => {
+
+ if(!title.value || !price.value){
+  alert("Заповни поля");
+  return;
+ }
+
+ let imgs = [];
 
  for(const f of image.files){
-  let r=ref(storage,"img/"+Date.now()+f.name);
+  const r = ref(storage,"img/"+Date.now()+f.name);
   await uploadBytes(r,f);
   imgs.push(await getDownloadURL(r));
  }
@@ -154,78 +157,79 @@ add.onclick=async()=>{
   images:imgs
  });
 
+ alert("✅ Додано");
  loadObjects();
 };
 
-// ===== LOAD OBJECTS =====
+// ===== OBJECTS =====
 async function loadObjects(){
- let snap=await getDocs(query(collection(db,"objects"),where("agencyId","==",agencyId)));
+ const snap = await getDocs(query(
+  collection(db,"objects"),
+  where("agencyId","==",agencyId)
+ ));
 
  objects.innerHTML="";
  snap.forEach(d=>{
   let o=d.data();
-  objects.innerHTML+=`<div>${o.title} — ${o.price}$</div>`;
+  objects.innerHTML += `<div>${o.title} — ${o.price}$</div>`;
  });
 }
 
-// ===== LOAD LEADS =====
+// ===== LEADS =====
 async function loadLeads(){
- let snap=await getDocs(query(collection(db,"leads"),where("agencyId","==",agencyId)));
+ const snap = await getDocs(query(
+  collection(db,"leads"),
+  where("agencyId","==",agencyId)
+ ));
 
  leads.innerHTML="";
-
  snap.forEach(d=>{
   let l=d.data();
-  leads.innerHTML+=`<div>${l.name} ${l.phone}</div>`;
+  leads.innerHTML += `<div>${l.name} ${l.phone}</div>`;
  });
 }
 
-// ===== DASHBOARD =====
+// ===== STATS =====
 async function loadStats(){
- let obj=await getDocs(query(collection(db,"objects"),where("agencyId","==",agencyId)));
- let lead=await getDocs(query(collection(db,"leads"),where("agencyId","==",agencyId)));
+ const a = await getDocs(query(collection(db,"objects"),where("agencyId","==",agencyId)));
+ const l = await getDocs(query(collection(db,"leads"),where("agencyId","==",agencyId)));
 
- stats.innerHTML=`
-  Обʼєкти: ${obj.size}<br>
-  Ліди: ${lead.size}
- `;
+ stats.innerHTML = `Обʼєкти: ${a.size}<br>Ліди: ${l.size}`;
 }
 
-// ===== ALL =====
 function loadAll(){
  loadObjects();
  loadLeads();
  loadStats();
 }
 
-// ===== TELEGRAM + CRM =====
-leadForm.onsubmit=async(e)=>{
+// ===== TELEGRAM =====
+leadForm.onsubmit = async (e)=>{
  e.preventDefault();
 
- let data=Object.fromEntries(new FormData(leadForm));
- data.agencyId=agencyId;
+ const data = Object.fromEntries(new FormData(leadForm));
+ data.agencyId = agencyId;
 
  await addDoc(collection(db,"leads"),data);
 
- fetch(`https://api.telegram.org/botBOT_TOKEN/sendMessage`,{
+ // ⚠️ ВСТАВ СВОЄ
+ fetch(`https://api.telegram.org/botYOUR_TOKEN/sendMessage`,{
   method:"POST",
   headers:{'Content-Type':'application/json'},
   body:JSON.stringify({
-    chat_id:"CHAT_ID",
+    chat_id:"YOUR_CHAT_ID",
     text:`🔥 ЛІД\n${data.name}\n${data.phone}`
   })
  });
 
- alert("✅ Лід відправлено");
+ alert("✅ Відправлено");
 };
 
-// ===== PAYMENT MOCK =====
-buy.onclick=()=>{
- alert("💳 Тут підключається Stripe або LiqPay");
-};
+// ===== PAYMENT =====
+buy.onclick = ()=> alert("💳 Підключи Stripe/LiqPay тут");
 
 // ===== LOGOUT =====
-window.logout=()=>signOut(auth).then(()=>location.reload());
+window.logout = ()=>signOut(auth).then(()=>location.reload());
 
 </script>
 
