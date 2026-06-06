@@ -1,8 +1,7 @@
-<!doctype html> 
+<!doctype html>
 <html lang="uk">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta=1"><meta charset="utf-8">
 <title>АН «Райський Сад»</title>
 
 <style>
@@ -10,47 +9,62 @@ body{
   font-family:Arial;
   background:#f5f6f8;
   margin:0;
-  padding:20px;
 }
+
+.hero{
+  text-align:center;
+  padding:100px 20px;
+  background:linear-gradient(135deg,#0f1720,#1f2937);
+  color:#fff;
+}
+
+.hero h1{font-size:36px}
+.hero p{color:#ccc}
+
 .cards{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
   gap:15px;
+  padding:20px;
 }
+
 .card{
   background:#fff;
   padding:10px;
   border-radius:10px;
-  position:relative;
 }
+
 img{
   width:100%;
   height:180px;
   object-fit:cover;
-  border-radius:10px;
 }
+
 button{
   padding:10px;
   background:#1f6f43;
   color:#fff;
   border:none;
   border-radius:8px;
+  cursor:pointer;
 }
+
 input{
   padding:10px;
   border-radius:8px;
   border:1px solid #ddd;
+  margin:5px;
 }
 
-/* modal */
 .modal{
   display:none;
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.9);
+  background:#000c;
   justify-content:center;
   align-items:center;
 }
+
 .modal.active{display:flex}
 .modal img{max-width:80%}
 </style>
@@ -58,7 +72,18 @@ input{
 
 <body>
 
-<h2>Об'єкти</h2>
+<!-- ✅ HERO -->
+<section class="hero">
+  <h1>Елітна нерухомість нового рівня</h1>
+  <p>Продаж. Інвестиції. Преміум сервіс.</p>
+
+  <button onclick="scrollToObjects()">
+    Переглянути обʼєкти
+  </button>
+</section>
+
+<!-- ✅ Фільтри -->
+<h2 style="padding:10px;">Об'єкти</h2>
 
 <input id="searchInput" placeholder="Пошук">
 <input id="priceFilter" placeholder="Ціна до">
@@ -66,8 +91,10 @@ input{
 
 <div>❤️ <span id="favCount">0</span></div>
 
+<!-- ✅ ОБʼЄКТИ -->
 <div id="objectsGrid" class="cards">Завантаження...</div>
 
+<!-- ✅ CRM -->
 <h3>Заявка</h3>
 <form id="leadForm">
   <input name="name" placeholder="Ім’я" required>
@@ -75,13 +102,14 @@ input{
   <button>Надіслати</button>
 </form>
 
+<!-- ✅ MODAL -->
 <div id="galleryModal" class="modal">
   <img id="modalImg">
 </div>
 
+<!-- ✅ JS -->
 <script type="module">
 
-// ===== Firebase =====
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs, addDoc } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -94,20 +122,16 @@ const app = initializeApp({
 
 const db = getFirestore(app);
 
-// ===== LOAD OBJECTS =====
 const grid = document.getElementById("objectsGrid");
-
 let objectsData = [];
 
+// ===== LOAD =====
 async function load(){
-  grid.innerHTML="Завантаження...";
-
   const snap = await getDocs(collection(db,"objects"));
-
   grid.innerHTML="";
   objectsData=[];
 
-  let i = 0;
+  let i=0;
 
   snap.forEach(doc=>{
     const d = doc.data();
@@ -115,11 +139,11 @@ async function load(){
 
     const img = d.images?.[0] || "";
 
-    grid.innerHTML += `
+    grid.innerHTML+=`
       <div class="card">
         ${img}
-        <h3>${d.title || "Без назви"}</h3>
-        <b>${d.price || "-"}$</b>
+        <h3>${d.title}</h3>
+        <b>${d.price}$</b>
       </div>
     `;
 
@@ -129,59 +153,58 @@ async function load(){
 
 load();
 
+// ===== SCROLL HERO =====
+window.scrollToObjects = ()=>{
+  document.getElementById("objectsGrid")
+    .scrollIntoView({behavior:"smooth"});
+};
+
 // ===== GALLERY =====
-const modal = document.getElementById("galleryModal");
-const modalImg = document.getElementById("modalImg");
+const modal=document.getElementById("galleryModal");
+const modalImg=document.getElementById("modalImg");
 
-document.addEventListener("click", e=>{
-  const img = e.target.closest("img[data-index]");
-  if(!img) return;
+document.addEventListener("click",e=>{
+  const img=e.target.closest("img[data-index]");
+  if(!img)return;
 
-  const index = +img.dataset.index;
-  const imgs = objectsData[index]?.images || [];
+  const i=+img.dataset.index;
+  const imgs=objectsData[i]?.images||[];
 
-  if(!imgs.length) return;
+  if(!imgs.length)return;
 
-  modalImg.src = imgs[0];
+  modalImg.src=imgs[0];
   modal.classList.add("active");
 });
 
-modal.onclick = () => modal.classList.remove("active");
+modal.onclick=()=>modal.classList.remove("active");
 
 // ===== FILTER =====
 searchInput.oninput=()=>{
-  const v = searchInput.value.toLowerCase();
-
+  const v=searchInput.value.toLowerCase();
   document.querySelectorAll(".card").forEach(c=>{
-    c.style.display = c.innerText.toLowerCase().includes(v)
-      ? "block" : "none";
+    c.style.display=c.innerText.toLowerCase().includes(v)
+      ?"block":"none";
   });
 };
 
 priceFilter.oninput=()=>{
-  const max = +priceFilter.value;
-
+  const max=+priceFilter.value;
   document.querySelectorAll(".card").forEach(c=>{
-    const price = +c.innerText.match(/\d+/)?.[0];
-    c.style.display = !max || price <= max ? "block":"none";
+    const price=+c.innerText.match(/\d+/)?.[0];
+    c.style.display=!max||price<=max?"block":"none";
   });
 };
 
 resetFilters.onclick=()=>location.reload();
 
-// ===== FAVORITES =====
-let favCount = document.getElementById("favCount");
-favCount.textContent = JSON.parse(localStorage.getItem("fav")||"[]").length;
-
-// ===== CRM + TELEGRAM =====
-leadForm.onsubmit = async e=>{
+// ===== CRM =====
+leadForm.onsubmit=async e=>{
   e.preventDefault();
 
-  const data = Object.fromEntries(new FormData(leadForm));
+  const data=Object.fromEntries(new FormData(leadForm));
 
   await addDoc(collection(db,"leads"),data);
 
-  // ⚠️ ВСТАВ СВОЄ
   fetch(`https://api.telegram.org/botYOUR_TOKEN/sendMessage`,{
     method:"POST",
     headers:{'Content-Type':'application/json'},
@@ -191,7 +214,7 @@ leadForm.onsubmit = async e=>{
     })
   });
 
-  alert("✅ Заявка відправлена");
+  alert("✅ Відправлено");
   leadForm.reset();
 };
 
@@ -199,3 +222,4 @@ leadForm.onsubmit = async e=>{
 
 </body>
 </html>
+
