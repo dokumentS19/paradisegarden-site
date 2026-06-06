@@ -1,223 +1,73 @@
-// ===== Firebase =====
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { db, storage } from "./firebase.js";
 
 import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  deleteDoc,
-  doc
+  collection, addDoc, getDocs, deleteDoc, doc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL
+  ref, uploadBytes, getDownloadURL
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-// ===== CONFIG =====
-const firebaseConfig = {
-  apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
-  authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site",
-  storageBucket: "paradisegarden-site.firebasestorage.app"
-};
-
-// ===== INIT =====
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const storage = getStorage(app);
-
-// ===== AUTH =====
-const PASSWORD = "admin123";
-let currentRole = null;
-
-function login() {
-  const pass = prompt("Пароль:");
-  if (pass === PASSWORD) {
-    currentRole = "admin";
-    localStorage.setItem("role", "admin");
-    init();
-  } else {
-    alert("❌ Невірний пароль");
-  }
-}
-
-function checkAuth() {
-  const role = localStorage.getItem("role");
-  if (!role) login();
-  else {
-    currentRole = role;
-    init();
-  }
-}
-
-// ===== DOM =====
-const addBtn = document.getElementById("addBtn");
-const titleInput = document.getElementById("title");
-const areaInput = document.getElementById("area");
-const priceInput = document.getElementById("price");
-const fileInput = document.getElementById("image");
-const preview = document.getElementById("preview");
+const title = document.getElementById("title");
+const area = document.getElementById("area");
+const price = document.getElementById("price");
+const image = document.getElementById("image");
 const list = document.getElementById("adminList");
 
-// ===== PREVIEW IMAGES =====
-fileInput?.addEventListener("change", () => {
-  preview.innerHTML = "";
+// ADD OBJECT
+document.getElementById("addBtn").onclick = async () => {
 
-  for (const file of fileInput.files) {
-    const img = document.createElement("img");
-    img.src = URL.createObjectURL(file);
-    img.style.width = "80px";
-    img.style.marginRight = "5px";
-    img.style.borderRadius = "6px";
-    preview.appendChild(img);
-  }
-});
+  const files = image.files;
+  const urls = [];
 
-// ===== ADD OBJECT =====
-async function addObject() {
-  if (!titleInput?.value) {
-    alert("Введіть назву");
-    return;
+  for (const file of files) {
+    const storageRef = ref(storage, "objects/" + file.name);
+
+    await uploadBytes(storageRef, file);
+    const url = await getDownloadURL(storageRef);
+
+    urls.push(url);
   }
 
-  addBtn.disabled = true;
-  addBtn.textContent = "Завантаження...";
+  await addDoc(collection(db, "objects"), {
+    title: title.value,
+    area: +area.value,
+    price: +price.value,
+    images: urls,
+    createdAt: Date.now()
+  });
 
-  try {
-    const images = [];
+  alert("✅ Додано");
 
-    // upload images
-    if (fileInput?.files.length) {
-      for (const file of fileInput.files) {
+  load();
+};
 
-        const name = Date.now() + "_" + file.name;
-        const storageRef = ref(storage, "objects/" + name);
+// LOAD
+async function load() {
+  const snap = await getDocs(collection(db, "objects"));
+  list.innerHTML = "";
 
-        const snap = await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(snap.ref);
+  snap.forEach(d => {
+    const data = d.data();
 
-        images.push(url);
-      }
-    }
+    const div = document.createElement("div");
 
-    // save to Firestore
-    await addDoc(collection(db, "objects"), {
-      title: titleInput.value,
-      area: Number(areaInput.value) || 0,
-      price: Number(priceInput.value) || 0,
-      images,
-      createdAt: Date.now()
-    });
+    div.innerHTML = `
+      <b>${data.title}</b> — ${data.price}$
+      <button data-id="${d.id}">❌</button>
+    `;
 
-    alert("✅ Обʼєкт додано");
-
-    // reset form
-    titleInput.value = "";
-    areaInput.value = "";
-    priceInput.value = "";
-    fileInput.value = "";
-    preview.innerHTML = "";
-
-    loadObjects();
-
-  } catch (err) {
-    console.error(err);
-    alert("❌ Помилка");
-  }
-
-  addBtn.disabled = false;
-  addBtn.textContent = "Додати";
+    list.appendChild(div);
+  });
 }
 
-// ===== LOAD OBJECTS =====
-async function loadObjects() {
-  if (!list) return;
+load();
 
-  list.innerHTML = "⏳ Завантаження...";
-
-  try {
-    const snap = await getDocs(collection(db, "objects"));
-    list.innerHTML = "";
-
-    snap.forEach(docSnap => {
-      const d = docSnap.data();
-      const id = docSnap.id;
-
-      const div = document.createElement("div");
-      div.style.marginBottom = "10px";
-
-      div.innerHTML = `
-        <b>${d.title}</b> — ${d.price}$ 
-        ${currentRole === "admin" 
-          ? `<button data-id="${id}" style="margin-left:10px;">❌</button>` 
-          : ""}
-      `;
-
-      list.appendChild(div);
-    });
-
-  } catch (err) {
-    console.error(err);
-    list.innerHTML = "❌ Помилка";
-  }
-}
-
-// ===== DELETE OBJECT =====
-document.addEventListener("click", async (e) => {
+// DELETE
+document.addEventListener("click", async e => {
   const btn = e.target.closest("button[data-id]");
   if (!btn) return;
 
-  if (currentRole !== "admin") {
-    alert("⛔ Немає доступу");
-    return;
-  }
-
-  const id = btn.dataset.id;
-
-  if (!confirm("Видалити об'єкт?")) return;
-
-  try {
-    await deleteDoc(doc(db, "objects", id));
-    alert("✅ Видалено");
-    loadObjects();
-  } catch (err) {
-    console.error(err);
-    alert("❌ Помилка");
-  }
+  await deleteDoc(doc(db, "objects", btn.dataset.id));
+  load();
 });
-
-// ===== REVIEWS =====
-const reviewForm = document.getElementById("reviewForm");
-
-reviewForm?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const data = Object.fromEntries(new FormData(e.target));
-
-  try {
-    await addDoc(collection(db, "reviews"), {
-      ...data,
-      createdAt: Date.now()
-    });
-
-    alert("✅ Відгук збережено");
-    e.target.reset();
-
-  } catch (err) {
-    console.error(err);
-    alert("❌ Помилка");
-  }
-});
-
-// ===== INIT =====
-function init() {
-  loadObjects();
-}
-
-// ===== START =====
-checkAuth();
-addBtn?.addEventListener("click", addObject);
