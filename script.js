@@ -74,7 +74,10 @@ function openGallery(obj) {
   currentImages = obj.images;
   currentIndex = 0;
 
+  // ✅ відкриваємо modal
   modal.classList.add("active");
+
+  // ✅ показуємо перше фото
   showImage(currentIndex);
 }
 const modal = document.getElementById("galleryModal");
