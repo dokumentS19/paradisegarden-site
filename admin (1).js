@@ -41,19 +41,19 @@ document.getElementById("addBtn").onclick = async () => {
   const images = [];
 
   try {
-    for (let file of files) {
+  for (let file of files) {
+  if (!file.type.startsWith("image/")) {
+    alert("Є файл не зображення!");
+    btn.disabled = false;
+    return;
+  }
 
-      if (!file.type.startsWith("image/")) {
-        alert("Тільки зображення!");
-        btn.disabled = false;
-        return;
-      }
-
-      if (file.size > 5 * 1024 * 1024) {
-        alert("Файл > 5MB");
-        btn.disabled = false;
-        return;
-      }
+  if (file.size > 5 * 1024 * 1024) {
+    alert("Файл занадто великий!");
+    btn.disabled = false;
+    return;
+  }
+}
 
       const uniqueName = crypto.randomUUID() + "_" + file.name;
       const storageRef = ref(storage, "images/" + uniqueName);
