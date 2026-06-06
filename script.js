@@ -85,7 +85,7 @@ function openGallery(obj) {
 const modal = document.getElementById("galleryModal");
 const modalImg = document.getElementById("modalImg");
 
-let currentImages = [];
+let currentImages = []; 
 let currentIndex = 0;
 
 document.addEventListener("keydown", (e) => {
