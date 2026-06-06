@@ -315,17 +315,17 @@ btn.disabled = true; }); }
 function setupViber(aTag){
   if (!aTag) return;
 
-  const numberPlain = (VIBER_NUMBER || '').replace(/[^\d+]/g,'');
+  const numberPlain = "+380674464705"; // ← заміни на свій номер
 
   aTag.href = numberPlain
     ? `viber://chat?number=${encodeURIComponent(numberPlain)}`
     : '#';
 
-  aTag.addEventListener('click', e => {
+  aTag.addEventListener('click', (e) => {
     if (!numberPlain){
       e.preventDefault();
       alert('Номер Viber ще не вказано.');
-    }
+   }
   });
 }
 
