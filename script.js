@@ -139,19 +139,7 @@ modal.addEventListener("touchend", (e) => {
 
   if (endX - startX > 50) {
     showImage(currentIndex - 1);
-  }
-});
-
-modal.addEventListener("touchend", (e) => {
-  const endX = e.changedTouches[0].clientX;
-
-  if (startX - endX > 50) {
-    showImage(currentIndex + 1);
-  }
-
-  if (endX - startX > 50) {
-    showImage(currentIndex - 1);
-  }
+ }
 });
 
 
