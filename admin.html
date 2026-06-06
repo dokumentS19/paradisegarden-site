@@ -11,16 +11,23 @@ const password = prompt("Введіть пароль:");
 
 if (password !== "1234") {
   alert("Невірний пароль!");
-  window.location.href = "/";
+  window.location.href = "index.html";
 }
 </script>
 
 <h2>Додати об'єкт</h2>
 
-<input id="title" placeholder="Назва"><br><br>
-<input id="area" placeholder="Площа"><br><br>
-<input id="price" placeholder="Ціна"><br><br>
-<input type="file" id="image" multiple>
+<label>Назва:</label><br>
+<input id="title"><br><br>
+
+<label>Площа:</label><br>
+<input id="area" type="number"><br><br>
+
+<label>Ціна:</label><br>
+<input id="price" type="number"><br><br>
+
+<label>Фото:</label><br>
+<input type="file" id="image" multiple><br><br>
 
 <button id="addBtn">Додати</button>
 
