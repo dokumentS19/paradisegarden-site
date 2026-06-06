@@ -108,17 +108,17 @@ function showImage(index) {
   currentIndex = index;
   modalImg.src = currentImages[currentIndex];
 }
+// ✅ правильний ID
+const tgBtn = document.getElementById("tgLink");
 
-// 👇 ВСТАВ ОТУТ
-const tgBtn = document.getElementById("telegramBtn");
-
+// ✅ одна змінна
 const TELEGRAM_LINK = "https://t.me/RSOleg";
 
 if (tgBtn) {
-  tgBtn.href = TELEGRAM_URL;
+  tgBtn.href = TELEGRAM_LINK;
 
   tgBtn.addEventListener("click", (e) => {
-    if (!TELEGRAM_URL) {
+    if (!TELEGRAM_LINK) {
       e.preventDefault();
       alert("Telegram не вказаний");
     }
