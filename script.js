@@ -97,9 +97,9 @@ document.addEventListener("keydown", (e) => {
     showImage(currentIndex - 1);
   }
 
-  if (e.key === "Escape") {
-    modal.classList.remove("active");
-    document.body.style.overflow = '';
+if (e.key === "Escape") {
+  closeGallery();
+}
   }
 });
 function showImage(index) {
@@ -111,6 +111,12 @@ function showImage(index) {
   currentIndex = index;
   modalImg.src = currentImages[currentIndex];
 }
+function closeGallery() {
+  modal.classList.remove("active");
+  document.body.style.overflow = '';
+}
+document.getElementById("galClose")?.addEventListener("click", closeGallery);
+document.querySelector(".modal-backdrop")?.addEventListener("click", closeGallery);
 // ✅ правильний ID
 const tgBtn = document.getElementById("tgLink");
 
