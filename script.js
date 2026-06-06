@@ -14,15 +14,17 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const showFavBtn = document.getElementById("showFavOnly");
 if (showFavBtn) {
-  showFavBtn.onclick = () => {
-    document.querySelectorAll(".card").forEach(card => {
-      const btn = card.querySelector(".fav-btn");
-      if (!btn) return;
-      const id = Number(btn.dataset.id);
-      card.style.display = favorites.includes(id) ? "block" : "none";
-    });
-  };
-} 
+ showFavBtn.onclick = () => {
+  const favs = JSON.parse(localStorage.getItem("favs") || "[]");
+
+  document.querySelectorAll(".card").forEach(card => {
+    const btn = card.querySelector(".fav-btn");
+    if (!btn) return;
+
+    const id = Number(btn.dataset.id);
+    card.style.display = favs.includes(id) ? "block" : "none";
+  });
+};
 async function loadObjects() {
  console.log("LOAD OBJECTS ✅");
   
