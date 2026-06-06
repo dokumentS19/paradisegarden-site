@@ -1,11 +1,13 @@
-import { initializeApp }
+iimport { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-import { getFirestore, collection, addDoc } 
+import { getFirestore, collection, addDoc }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import { getStorage, ref, uploadBytes, getDownloadURL } 
+import { getStorage, ref, uploadBytes, getDownloadURL }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+// ✅ CONFIG
 const firebaseConfig = {
   apiKey: "ТВОЙ_KEY",
   authDomain: "paradisegarden-site.firebaseapp.com",
@@ -13,11 +15,14 @@ const firebaseConfig = {
   storageBucket: "paradisegarden-site.appspot.com"
 };
 
+// ✅ INIT
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
+
+// ✅ КНОПКА
 document.getElementById("addBtn").onclick = async () => {
- 
+
   const btn = document.getElementById("addBtn");
   btn.disabled = true;
 
@@ -26,7 +31,8 @@ document.getElementById("addBtn").onclick = async () => {
   const price = Number(document.getElementById("price").value);
   const files = document.getElementById("image").files;
 
- if (!title || isNaN(area) || isNaN(price)) {
+  // ✅ перевірка полів
+  if (!title || isNaN(area) || isNaN(price)) {
     alert("Заповніть всі поля!");
     btn.disabled = false;
     return;
@@ -41,33 +47,38 @@ document.getElementById("addBtn").onclick = async () => {
   const images = [];
 
   try {
-  for (let file of files) {
-  if (!file.type.startsWith("image/")) {
-    alert("Є файл не зображення!");
-    btn.disabled = false;
-    return;
-  }
 
-  if (file.size > 5 * 1024 * 1024) {
-    alert("Файл занадто великий!");
-    btn.disabled = false;
-    return;
-  }
-}
+    // ✅ 1. перевіряємо всі файли
+    for (let file of files) {
+      if (!file.type.startsWith("image/")) {
+        alert("Є файл не зображення!");
+        btn.disabled = false;
+        return;
+      }
 
-     const cleanName = file.name.replace(/\s+/g, "_");
-const uniqueName = crypto.randomUUID() + "_" + cleanName;
-
-const folder = new Date().toISOString().slice(0,10);
-const storageRef = ref(storage, `images/${folder}/${uniqueName}`);
-
-const snapshot = await uploadBytes(storageRef, file);
-const url = await getDownloadURL(snapshot.ref);
-
-images.push(url);
-
+      if (file.size > 5 * 1024 * 1024) {
+        alert("Файл занадто великий!");
+        btn.disabled = false;
+        return;
+      }
     }
 
+    // ✅ 2. завантажуємо
+    for (let file of files) {
+
+      const cleanName = file.name.replace(/\s+/g, "_");
+      const uniqueName = crypto.randomUUID() + "_" + cleanName;
+
+      const folder = new Date().toISOString().slice(0,10);
+      const storageRef = ref(storage, `images/${folder}/${uniqueName}`);
+
+      const snapshot = await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(snapshot.ref);
+
+      images.push(url);
+    }
+
+    // ✅ 3. запис у базу
     await addDoc(collection(db, "objects"), {
       title,
       area,
@@ -78,6 +89,7 @@ images.push(url);
 
     alert("✅ Додано!");
 
+    // ✅ очистка
     document.getElementById("title").value = "";
     document.getElementById("area").value = "";
     document.getElementById("price").value = "";
