@@ -382,7 +382,7 @@ function openGallery(listing){
 function closeGallery(){ modal.classList.remove('open');
 modal.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
 function showIdx(i){ if (!galState.list.length) return; galState.index = (i + galState.list.length) % galState.list.length; renderGallery(); }
-function renderGallery(){ const src = galState.list[galState.index]; galImg.src = src; galImg.alt = galState.title || "Фото об'єкта"; 
+function renderGallery(){ const src = galState.list[galState.index]; modalImg.src = src; modalImg.alt = galState.title || "Фото об'єкта"; 
 galCaption.textContent = `${galState.title} — ${galState.index+1}/${galState.list.length}`; galThumbs.innerHTML = galState.list.map((s,idx)=>`
 <img src="${s}" data-idx="${idx}" alt="thumb ${idx+1}" loading="lazy"/>`).join(''); galThumbs.querySelectorAll('img').forEach(img=>{ img.addEventListener('click',
 ()=> showIdx(Number(img.dataset.idx))); if (Number(img.dataset.idx)===galState.index) img.classList.add('active'); });
