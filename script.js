@@ -88,6 +88,9 @@ function showImage(index) {
 
   currentIndex = index; 
   modalImg.src = currentImages[currentIndex];
+  // ✅ скидаємо zoom
+scale = 1;
+modalImg.style.transform = "scale(1)";
 }
 let startX = 0;
 
