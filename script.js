@@ -174,3 +174,17 @@ document.addEventListener("mousemove", e=>{
   document.body.style.setProperty("--x", e.clientX + "px");
   document.body.style.setProperty("--y", e.clientY + "px");
 });
+// ===== SCROLL STORY =====
+const elements = document.querySelectorAll(".feature, .card");
+
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("show");
+    }
+  });
+},{
+  threshold:0.2
+});
+
+elements.forEach(el => observer.observe(el));
