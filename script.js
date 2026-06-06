@@ -77,8 +77,10 @@ function openGallery(obj) {
   // ✅ відкриваємо modal
   modal.classList.add("active");
 
-  // ✅ показуємо перше фото
+  // ✅ показуємо фото
   showImage(currentIndex);
+
+  document.body.style.overflow = 'hidden';
 }
 const modal = document.getElementById("galleryModal");
 const modalImg = document.getElementById("modalImg");
