@@ -390,12 +390,7 @@ function renderFeatured(){
             </label>
           </div>
         </div>
-      </article>`;
-  // Fav handlers
-  grid.querySelectorAll('.feature-card').forEach(card=>{
-    const id = card.getAttribute('data-id'); const fav = card.querySelector('.fav'); const checkbox = fav?.querySelector('input');
-    if (checkbox){ checkbox.addEventListener('change', ()=>{ const state = toggleFav(id); fav.classList.toggle('checked', state); updateFavCounter(); }); }
-  });
+      });
   attachGalleryHandlers();
 }
 function attachGalleryHandlers(){ const grid = document.getElementById('featuredGrid');
