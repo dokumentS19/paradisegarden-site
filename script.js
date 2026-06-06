@@ -451,3 +451,48 @@ setTimeout(()=> recommendBtn.textContent='Рекомендувати', 1800);
   //status.textContent = "❌ Помилка";
 }
 });
+    // ===== Контакти =====
+
+const TELEGRAM_LINK = "https://t.me/твій_нік"; // ← заміни
+const PHONE_NUMBER = "+380XXXXXXXXX";           // ← заміни
+
+function setupTelegram(aTag){
+  if (!aTag) return;
+
+  const url = TELEGRAM_LINK;
+
+  aTag.href = url || '#';
+
+  aTag.addEventListener("click", (e) => {
+    if (!url){
+      e.preventDefault();
+      alert("Telegram не вказаний");
+    }
+  });
+}
+
+function setupViber(aTag){
+  if (!aTag) return;
+
+  const numberPlain = PHONE_NUMBER;
+
+  aTag.href = numberPlain
+    ? `viber://chat?number=${encodeURIComponent(numberPlain)}`
+    : '#';
+
+  aTag.addEventListener("click", (e) => {
+    if (!numberPlain){
+      e.preventDefault();
+      alert("Номер Viber ще не вказано");
+    }
+  });
+}
+
+// ===== ПІДКЛЮЧЕННЯ =====
+document.addEventListener("DOMContentLoaded", () => {
+  const tgLink = document.getElementById("tgLink");
+  const viberLink = document.getElementById("viberLink");
+
+  setupTelegram(tgLink);
+  setupViber(viberLink);
+});
