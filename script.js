@@ -93,9 +93,6 @@ scale = 1;
 modalImg.style.transform = "scale(1)";
 }
 let startX = 0;
-
-modal.addEventListener("touchstart", (e) => {
-  startX = e.touches[0].clientX;
 });
 
 modal.addEventListener("touchend", (e) => {
