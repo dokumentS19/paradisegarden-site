@@ -66,7 +66,7 @@ snap.forEach((docSnap, index) => {
   updateFavUI(); // ✅
 }
 const modal = document.getElementById("galleryModal");
-const modalImg = document.getElementById("galImg");
+const modalImg = document.getElementById("modalImg");
 
 let currentImages = [];
 let currentIndex = 0;
