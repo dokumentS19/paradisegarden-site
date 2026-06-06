@@ -427,26 +427,6 @@ function openGallery(listing){
   modal.setAttribute('aria-hidden','false');
   document.body.style.overflow = 'hidden';
 }
-function closeGallery(){ modal.classList.remove('open');
-modal.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
-function showIdx(i){ if (!galState.list.length) return; galState.index = (i + galState.list.length) % galState.list.length; renderGallery(); }
-function renderGallery(){ const src = galState.list[galState.index]; modalImg.src = src; modalImg.alt = galState.title || "Фото об'єкта"; 
-galCaption.textContent = `${galState.title} — ${galState.index+1}/${galState.list.length}`; galThumbs.innerHTML = galState.list.map((s,idx)=>`
-<img src="${s}" data-idx="${idx}" alt="thumb ${idx+1}" loading="lazy"/>`).join(''); galThumbs.querySelectorAll('img').forEach(img=>{ img.addEventListener('click',
-()=> showIdx(Number(img.dataset.idx))); if (Number(img.dataset.idx)===galState.index) img.classList.add('active'); });
-['click'].forEach(()=>{}); // placeholder to avoid lint
-if (galPrev) galPrev.addEventListener('click', ()=> showIdx(galState.index - 1));
-if (galNext) galNext.addEventListener('click', ()=> showIdx(galState.index + 1));
-if (galClose) galClose.addEventListener('click', closeGallery);
-if (modal) modal.addEventListener('click', (e)=>{ if (e.target?.dataset?.close) closeGallery(); });
-document.addEventListener('keydown', (e) => {
-  if (!modal.classList.contains('active')) return;
-
-  if (e.key === 'Escape') closeGallery(); 
-  if (e.key === 'ArrowLeft') showImage(currentIndex - 1); 
-  if (e.key === 'ArrowRight') showImage(currentIndex + 1);
-});
-}
 function attachGalleryHandlers(){ const grid = document.getElementById('featuredGrid');
 if (!grid) return; grid.querySelectorAll('[data-open-gallery]').forEach(a=>{ a.addEventListener('click', 
 ev=>{ ev.preventDefault(); const id = a.getAttribute('data-open-gallery'); 
