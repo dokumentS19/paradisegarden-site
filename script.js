@@ -375,24 +375,6 @@ function renderFeatured(){
           <img src="${cover}" alt="${it.title}" loading="lazy" decoding="async"/>
           <div class="feature-badges">${badges}</div>
         </a>
-        <div class="feature-body">
-          <h3 class="feature-title">${it.title}</h3>
-          ${meta ? `<div class="feature-meta">${meta}</div>` : ''}
-          <div class="feature-actions">
-            <span class="feature-price">${price}</span>
-            <a class="btn small outline" href="${it.url}" target="_blank" rel="noopener nofollow">Переглянути</a>
-            <a class="btn small outline" href="tel:${phone}">Подзвонити</a>
-            <a class="btn small outline" href="${viberHref}">Viber</a>
-            <a class="btn small tg" href="${tgHref}">Telegram</a>
-            <label class="fav ${favChecked ? 'checked' : ''}" title="Додати до обраного">
-              <input type="checkbox" ${favChecked ? 'checked' : ''} />
-              <span class="heart" aria-hidden="true"></span>
-              <span class="sr-only">Обране</span>
-            </label>
-          </div>
-        </div>
-      });
-  attachGalleryHandlers();
 }
 function attachGalleryHandlers(){ const grid = document.getElementById('featuredGrid');
 if (!grid) return; grid.querySelectorAll('[data-open-gallery]').forEach(a=>{ a.addEventListener('click', 
