@@ -72,16 +72,6 @@ function openGallery(obj) {
   currentIndex = 0;
 
   modal.classList.add("active");
-  showImage(currentIndex); // ✅ ОСЬ ЦЕ ДОДАЙ
-}
-}
-  currentImages = obj.images;
-  currentIndex = 0;
-
-  // ✅ відкриваємо modal
-  modal.classList.add("active");
-
-  // ✅ показуємо фото
   showImage(currentIndex);
 
   document.body.style.overflow = 'hidden';
