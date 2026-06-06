@@ -333,7 +333,7 @@ function setupTelegram(aTag){
 }
 // ===== Featured data =====
 let FEATURED_LISTINGS = [];
-async function initData(){
+async function initData(){ 
   const urls = [REMOTE_SHEET_CSV_URL, AIRTABLE_VIEW_CSV_URL].filter(Boolean);
   let rows = [];
   async function fetchCsv(url){ try { const res = await fetch(url, {cache:'no-store'}); if (!res.ok) throw new Error(res.statusText); return await res.text(); } catch(e){ console.warn('CSV fetch failed:', url, e); return ''; } }
