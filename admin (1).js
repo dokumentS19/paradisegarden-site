@@ -55,13 +55,17 @@ document.getElementById("addBtn").onclick = async () => {
   }
 }
 
-      const uniqueName = crypto.randomUUID() + "_" + file.name;
-      const storageRef = ref(storage, "images/" + uniqueName);
+     const cleanName = file.name.replace(/\s+/g, "_");
+const uniqueName = crypto.randomUUID() + "_" + cleanName;
 
-      const snapshot = await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(snapshot.ref);
+const folder = new Date().toISOString().slice(0,10);
+const storageRef = ref(storage, `images/${folder}/${uniqueName}`);
 
-      images.push(url);
+const snapshot = await uploadBytes(storageRef, file);
+const url = await getDownloadURL(snapshot.ref);
+
+images.push(url);
+
     }
 
     await addDoc(collection(db, "objects"), {
