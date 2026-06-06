@@ -65,6 +65,18 @@ snap.forEach((docSnap, index) => {
 }, 0);
   updateFavUI(); // ✅
 }
+function openGallery(obj) {
+  if (!obj || !obj.images || obj.images.length === 0) {
+    console.log("❌ немає фото");
+    return;
+  }
+
+  currentImages = obj.images;
+  currentIndex = 0;
+
+  modal.classList.add("active");
+  showImage(currentIndex);
+}
 const modal = document.getElementById("galleryModal");
 const modalImg = document.getElementById("modalImg");
 
