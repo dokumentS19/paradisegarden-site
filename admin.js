@@ -1,55 +1,49 @@
 import { getStorage, ref, uploadBytes, getDownloadURL }
-з «https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js»;
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-import { initializeApp } з "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc } з "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { initializeApp } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import { getFirestore, collection, addDoc } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
   authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: «райський сад-майданчик»,
-  storageBucket: "paradisegarden-site.firebasestorage.app",
-  messageagingSenderId: "452352075250",
-  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
-  Ідентифікатор вимірювання: "G-6XHWE6Y0JE"
+  projectId: "paradisegarden-site",
+  storageBucket: "paradisegarden-site.appspot.com"
 };
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app));
-// ✅ ГОЛОВНА ФУНКЦІЯ
-Вікно.addObject = асинхронний () => {
-  Const title = документ.getElementById("title").Цінність;
-  const area = Number(document.getElementById("area").Цінність);
-   const ціна = Номер(документ.getElementById("price").Цінність);
-  const files = документ.getElementById("image").Файли;
+const storage = getStorage(app);
 
-  Const Images = [];
+document.getElementById("addBtn").onclick = async () => {
+  const title = document.getElementById("title").value;
+  const area = Number(document.getElementById("area").value);
+  const price = Number(document.getElementById("price").value);
+  const files = document.getElementById("image").files;
 
-  for (let file of files) {
-  const storageRef = ref(storage, "images/" + Date.now() + "_" + файл.Ім'я);
+  const images = [];
 
-  waitit uploadBytes(storageRef, file);
+  try {
+    for (let file of files) {
+      const storageRef = ref(storage, "images/" + Date.now() + "_" + file.name);
+      const snapshot = await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(snapshot.ref);
+      images.push(url);
+    }
 
-  const url = await getDownloadURL(storageRef);
+    await addDoc(collection(db, "objects"), {
+      title,
+      area,
+      price,
+      images
+    });
 
-  зображення.push(url);
- }
-
-  waitit addDoc(collection(db, "objects")), {
- Заголовок,
- площа,
- Ціна,
- Зображення
-  });
-
-  alert(" ✅ Додано!");
-
-  // очистка ✅
-  Документ.getElementById("title").Цінність = "";
-  Документ.getElementById("area").Цінність = "";
-  Документ.getElementById("price").Цінність = "";
-  Документ.getElementById("image").Цінність = "";
+    alert("✅ Додано!");
+  } catch (e) {
+    console.error(e);
+    alert("❌ Помилка");
+  }
 };
-
-// ✅ кнопка
-Документ.getElementById("addBtn").onclick = вікно.addObject;
