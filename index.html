@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="uk">
 <head>
-<meta=1"><meta charset="utf-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>АН «Райський Сад»</title>
 
 <style>
@@ -11,16 +13,24 @@ body{
   margin:0;
 }
 
+/* HERO */
 .hero{
   text-align:center;
-  padding:100px 20px;
+  padding:80px 20px;
   background:linear-gradient(135deg,#0f1720,#1f2937);
   color:#fff;
 }
 
-.hero h1{font-size:36px}
+.hero h1{font-size:36px;margin:0}
 .hero p{color:#ccc}
 
+/* FILTER */
+.filters{
+  text-align:center;
+  padding:15px;
+}
+
+/* GRID */
 .cards{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
@@ -32,12 +42,19 @@ body{
   background:#fff;
   padding:10px;
   border-radius:10px;
+  box-shadow:0 4px 10px #0001;
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
 }
 
 img{
   width:100%;
   height:180px;
   object-fit:cover;
+  border-radius:8px;
 }
 
 button{
@@ -49,13 +66,7 @@ button{
   cursor:pointer;
 }
 
-input{
-  padding:10px;
-  border-radius:8px;
-  border:1px solid #ddd;
-  margin:5px;
-}
-
+/* MODAL */
 .modal{
   display:none;
   position:fixed;
@@ -67,47 +78,71 @@ input{
 
 .modal.active{display:flex}
 .modal img{max-width:80%}
+
+/* FORM */
+form{
+  padding:20px;
+  text-align:center;
+}
+
+input{
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ddd;
+  margin:5px;
+}
+
+/* CONTACT */
+.contacts{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
 </style>
 </head>
 
 <body>
 
 <!-- ✅ HERO -->
-<section class="hero">
-  <h1>Елітна нерухомість нового рівня</h1>
-  <p>Продаж. Інвестиції. Преміум сервіс.</p>
+<div class="hero">
+  <h1>АН «Райський Сад»</h1>
+  <p>Елітна нерухомість</p>
+  <button onclick="scrollToObjects()">Переглянути</button>
+</div>
 
-  <button onclick="scrollToObjects()">
-    Переглянути обʼєкти
-  </button>
-</section>
+<!-- ✅ FILTER -->
+<div class="filters">
+  <input id="searchInput" placeholder="Пошук">
+  <input id="priceFilter" type="number" placeholder="Ціна до">
+  <button id="resetFilters">Скинути</button>
+</div>
 
-<!-- ✅ Фільтри -->
-<h2 style="padding:10px;">Об'єкти</h2>
-
-<input id="searchInput" placeholder="Пошук">
-<input id="priceFilter" placeholder="Ціна до">
-<button id="resetFilters">Скинути</button>
-
-<div>❤️ <span id="favCount">0</span></div>
-
-<!-- ✅ ОБʼЄКТИ -->
-<div id="objectsGrid" class="cards">Завантаження...</div>
-
-<!-- ✅ CRM -->
-<h3>Заявка</h3>
-<form id="leadForm">
-  <input name="name" placeholder="Ім’я" required>
-  <input name="phone" placeholder="Телефон" required>
-  <button>Надіслати</button>
-</form>
+<!-- ✅ GRID -->
+<div id="objectsGrid" class="cards"></div>
 
 <!-- ✅ MODAL -->
 <div id="galleryModal" class="modal">
   <img id="modalImg">
 </div>
 
-<!-- ✅ JS -->
+<!-- ✅ FORM -->
+<form id="leadForm">
+  <h3>Залишити заявку</h3>
+  <input name="name" placeholder="Ім’я" required>
+  <input name="phone" placeholder="Телефон" required>
+  <button type="submit">Надіслати</button>
+</form>
+
+<!-- ✅ CONTACT BUTTONS -->
+<div class="contacts">
+  <button id="contactTelegram">Telegram</button>
+  <button id="contactViber">Viber</button>
+</div>
+
+<!-- ✅ SCRIPT -->
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -115,9 +150,9 @@ import { getFirestore, collection, getDocs, addDoc }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const app = initializeApp({
- apiKey:"ТУТ_API_KEY",
- authDomain:"paradisegarden-site.firebaseapp.com",
- projectId:"paradisegarden-site"
+  apiKey:"ТУТ_API_KEY",
+  authDomain:"paradisegarden-site.firebaseapp.com",
+  projectId:"paradisegarden-site"
 });
 
 const db = getFirestore(app);
@@ -127,6 +162,8 @@ let objectsData = [];
 
 // ===== LOAD =====
 async function load(){
+  grid.innerHTML="Завантаження...";
+
   const snap = await getDocs(collection(db,"objects"));
   grid.innerHTML="";
   objectsData=[];
@@ -141,19 +178,18 @@ async function load(){
 
     grid.innerHTML+=`
       <div class="card">
-        ${img}
-        <h3>${d.title}</h3>
-        <b>${d.price}$</b>
+        <imgg}
+        <h3>${d.title || "Без назви"}</h3>
+        <b>${d.price || "-"} $</b>
       </div>
     `;
-
     i++;
   });
 }
 
 load();
 
-// ===== SCROLL HERO =====
+// ===== SCROLL =====
 window.scrollToObjects = ()=>{
   document.getElementById("objectsGrid")
     .scrollIntoView({behavior:"smooth"});
@@ -179,33 +215,40 @@ document.addEventListener("click",e=>{
 modal.onclick=()=>modal.classList.remove("active");
 
 // ===== FILTER =====
+const searchInput = document.getElementById("searchInput");
+const priceFilter = document.getElementById("priceFilter");
+const resetFilters = document.getElementById("resetFilters");
+
 searchInput.oninput=()=>{
   const v=searchInput.value.toLowerCase();
+
   document.querySelectorAll(".card").forEach(c=>{
-    c.style.display=c.innerText.toLowerCase().includes(v)
-      ?"block":"none";
+    c.style.display = c.innerText.toLowerCase().includes(v)
+      ? "block" : "none";
   });
 };
 
 priceFilter.oninput=()=>{
   const max=+priceFilter.value;
+
   document.querySelectorAll(".card").forEach(c=>{
     const price=+c.innerText.match(/\d+/)?.[0];
-    c.style.display=!max||price<=max?"block":"none";
+    c.style.display = !max || price<=max
+      ? "block" : "none";
   });
 };
 
 resetFilters.onclick=()=>location.reload();
 
 // ===== CRM =====
-leadForm.onsubmit=async e=>{
+document.getElementById("leadForm").onsubmit=async e=>{
   e.preventDefault();
 
-  const data=Object.fromEntries(new FormData(leadForm));
+  const data=Object.fromEntries(new FormData(e.target));
 
   await addDoc(collection(db,"leads"),data);
 
-  fetch(`https://api.telegram.org/botYOUR_TOKEN/sendMessage`,{
+  await fetch(`https://api.telegram.org/botYOUR_TOKEN/sendMessage`,{
     method:"POST",
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
@@ -215,7 +258,16 @@ leadForm.onsubmit=async e=>{
   });
 
   alert("✅ Відправлено");
-  leadForm.reset();
+  e.target.reset();
+};
+
+// ===== CONTACT =====
+document.getElementById("contactTelegram").onclick=()=>{
+  window.open("https://t.me/YOUR_USERNAME","_blank");
+};
+
+document.getElementById("contactViber").onclick=()=>{
+  window.open("viber://chat?number=%2B380XXXXXXXXX","_blank");
 };
 
 </script>
