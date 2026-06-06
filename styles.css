@@ -443,3 +443,8 @@ body {
   max-height: 95%;
   object-fit: contain;
 }
+
+.modal-main img {
+  transition: transform 0.3s ease;
+  cursor: zoom-in;
+}
