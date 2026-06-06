@@ -335,13 +335,7 @@ function setupTelegram(aTag){
 
   const url = (TELEGRAM_LINK || '').trim();
 
-  aTag.href = url || '#';
-
-  aTag.addEventListener('click', e => {
-    if (!url){
-      e.preventDefault();
-      alert('Посилання на Telegram ще не вказано.');
-    }
+   }
   });
 }
 // ===== Featured data =====
