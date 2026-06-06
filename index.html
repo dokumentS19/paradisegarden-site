@@ -2,19 +2,224 @@
 <html lang="uk">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="widthstyles.css<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>АН «Райський Сад»</title>
+
+<style>
+body{
+  font-family:Arial;
+  background:#f5f6f8;
+  margin:0;
+}
+
+.hero{
+  text-align:center;
+  padding:100px 20px;
+  background:linear-gradient(135deg,#0f1720,#1f2937);
+  color:#fff;
+}
+
+.hero h1{font-size:36px}
+.hero p{color:#ccc}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:15px;
+  padding:20px;
+}
+
+.card{
+  background:#fff;
+  padding:10px;
+  border-radius:10px;
+}
+
+img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+}
+
+button{
+  padding:10px;
+  background:#1f6f43;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+input{
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ddd;
+  margin:5px;
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#000c;
+  justify-content:center;
+  align-items:center;
+}
+
+.modal.active{display:flex}
+.modal img{max-width:80%}
+</style>
 </head>
 
 <body>
 
-<h1 style="text-align:center">🌿 Paradise Garden</h1>
+<!-- ✅ HERO -->
+<section class="hero">
+  <h1>Елітна нерухомість нового рівня</h1>
+  <p>Продаж. Інвестиції. Преміум сервіс.</p>
 
-<div class="filters">
-  <input id="search" placeholder="Пошук">
+  <button onclick="scrollToObjects()">
+    Переглянути обʼєкти
+  </button>
+</section>
+
+<!-- ✅ Фільтри -->
+<h2 style="padding:10px;">Об'єкти</h2>
+
+<input id="searchInput" placeholder="Пошук">
+<input id="priceFilter" placeholder="Ціна до">
+<button id="resetFilters">Скинути</button>
+
+<div>❤️ <span id="favCount">0</span></div>
+
+<!-- ✅ ОБʼЄКТИ -->
+<div id="objectsGrid" class="cards">Завантаження...</div>
+
+<!-- ✅ CRM -->
+<h3>Заявка</h3>
+<form id="leadForm">
+  <input name="name" placeholder="Ім’я" required>
+  <input name="phone" placeholder="Телефон" required>
+  <button>Надіслати</button>
+</form>
+
+<!-- ✅ MODAL -->
+<div id="galleryModal" class="modal">
+  <img id="modalImg">
 </div>
 
-<div id="grid" class="cards"></div>
+<!-- ✅ JS -->
+<script type="module">
 
-<script type="module" src="</html>
-<title>Paradise Garden</title>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+const app = initializeApp({
+ apiKey:"ТУТ_API_KEY",
+ authDomain:"paradisegarden-site.firebaseapp.com",
+ projectId:"paradisegarden-site"
+});
+
+const db = getFirestore(app);
+
+const grid = document.getElementById("objectsGrid");
+let objectsData = [];
+
+// ===== LOAD =====
+async function load(){
+  const snap = await getDocs(collection(db,"objects"));
+  grid.innerHTML="";
+  objectsData=[];
+
+  let i=0;
+
+  snap.forEach(doc=>{
+    const d = doc.data();
+    objectsData.push(d);
+
+    const img = d.images?.[0] || "";
+
+    grid.innerHTML+=`
+      <div class="card">
+        ${img}
+        <h3>${d.title}</h3>
+        <b>${d.price}$</b>
+      </div>
+    `;
+
+    i++;
+  });
+}
+
+load();
+
+// ===== SCROLL HERO =====
+window.scrollToObjects = ()=>{
+  document.getElementById("objectsGrid")
+    .scrollIntoView({behavior:"smooth"});
+};
+
+// ===== GALLERY =====
+const modal=document.getElementById("galleryModal");
+const modalImg=document.getElementById("modalImg");
+
+document.addEventListener("click",e=>{
+  const img=e.target.closest("img[data-index]");
+  if(!img)return;
+
+  const i=+img.dataset.index;
+  const imgs=objectsData[i]?.images||[];
+
+  if(!imgs.length)return;
+
+  modalImg.src=imgs[0];
+  modal.classList.add("active");
+});
+
+modal.onclick=()=>modal.classList.remove("active");
+
+// ===== FILTER =====
+searchInput.oninput=()=>{
+  const v=searchInput.value.toLowerCase();
+  document.querySelectorAll(".card").forEach(c=>{
+    c.style.display=c.innerText.toLowerCase().includes(v)
+      ?"block":"none";
+  });
+};
+
+priceFilter.oninput=()=>{
+  const max=+priceFilter.value;
+  document.querySelectorAll(".card").forEach(c=>{
+    const price=+c.innerText.match(/\d+/)?.[0];
+    c.style.display=!max||price<=max?"block":"none";
+  });
+};
+
+resetFilters.onclick=()=>location.reload();
+
+// ===== CRM =====
+leadForm.onsubmit=async e=>{
+  e.preventDefault();
+
+  const data=Object.fromEntries(new FormData(leadForm));
+
+  await addDoc(collection(db,"leads"),data);
+
+  fetch(`https://api.telegram.org/botYOUR_TOKEN/sendMessage`,{
+    method:"POST",
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      chat_id:"YOUR_CHAT_ID",
+      text:`🔥 Новий клієнт\n${data.name}\n${data.phone}`
+    })
+  });
+
+  alert("✅ Відправлено");
+  leadForm.reset();
+};
+
+</script>
+
+</body>
+</html>
