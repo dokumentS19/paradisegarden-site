@@ -17,7 +17,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 document.getElementById("addBtn").onclick = async () => {
-
+ 
   const btn = document.getElementById("addBtn");
   btn.disabled = true;
 
