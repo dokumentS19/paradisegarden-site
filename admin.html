@@ -2,177 +2,23 @@
 <html lang="uk">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>CRM Панель</title>
-
-<style>
-body{
-  font-family:Arial;
-  background:#f5f6f8;
-  padding:20px;
-}
-.section{
-  background:#fff;
-  padding:15px;
-  border-radius:10px;
-  margin-bottom:20px;
-}
-input{
-  width:100%;
-  padding:10px;
-  margin-bottom:10px;
-}
-button{
-  padding:10px;
-  background:#1f6f43;
-  color:#fff;
-  border:none;
-  border-radius:8px;
-}
-.adminOnly{display:none}
-</style>
+<title>Admin</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-<h1>CRM Панель</h1>
+<h1>Адмін панель</h1>
 
-<!-- LOGIN -->
-<div id="authBox" class="section">
-  <input id="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Пароль">
-  <button id="login">Login</button>
-  <button id="register">Register</button>
-</div>
+<input id="title" placeholder="Назва">
+<input id="area" placeholder="Площа">
+<input id="price" placeholder="Ціна">
+<input id="image" type="file" multiple>
 
-<!-- АГЕНТСТВО -->
-<div class="section adminOnly">
-  <h3>Агентство</h3>
-  <div id="agencyInfo"></div>
-</div>
+<button id="addBtn">Додати</button>
 
-<!-- ДОДАТИ -->
-<div class="section adminOnly">
-  <h3>Додати об'єкт</h3>
-  <input id="title" placeholder="Назва">
-  <input id="area" placeholder="Площа">
-  <input id="price" placeholder="Ціна">
-  <button id="addBtn">Додати</button>
-</div>
+<div id="adminList"></div>
 
-<!-- СПИСОК -->
-<div class="section adminOnly">
-  <h3>Обʼєкти</h3>
-  <div id="adminList"></div>
-</div>
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-  getAuth, signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-  getFirestore, collection, addDoc,
-  getDocs, query, where
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// CONFIG
-const app = initializeApp({
-  apiKey:"ТУТ_API_KEY",
-  authDomain:"paradisegarden-site.firebaseapp.com",
-  projectId:"paradisegarden-site"
-});
-
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-let agencyId = null;
-
-// LOGIN
-login.onclick = () => {
-  signInWithEmailAndPassword(auth, email.value, password.value);
-};
-
-// REGISTER
-register.onclick = async () => {
-
-  const u = await createUserWithEmailAndPassword(auth, email.value, password.value);
-
-  await addDoc(collection(db,"users"),{
-    uid: u.user.uid,
-    agencyId: u.user.uid,
-    role: "admin",
-
-    agencyName: "Моє агентство",
-    description: "Опис агентства",
-    city: "Буча"
-  });
-};
-
-// AUTH
-onAuthStateChanged(auth, async user=>{
-  if(!user) return;
-
-  const snap = await getDocs(query(
-    collection(db,"users"),
-    where("uid","==",user.uid)
-  ));
-
-  snap.forEach(d=>{
-    agencyId = d.data().agencyId;
-
-    agencyInfo.innerHTML = `
-      <b>${d.data().agencyName}</b><br>
-      ${d.data().description}<br>
-      ${d.data().city}
-    `;
-  });
-
-  authBox.style.display="none";
-  document.querySelectorAll(".adminOnly").forEach(e=>e.style.display="block");
-
-  loadObjects();
-});
-
-// ADD
-addBtn.onclick = async ()=>{
-  await addDoc(collection(db,"objects"),{
-    title:title.value,
-    area:+area.value,
-    price:+price.value,
-    agencyId,
-    createdAt:Date.now()
-  });
-
-  alert("Додано");
-  loadObjects();
-};
-
-// LOAD
-async function loadObjects(){
-  const snap = await getDocs(query(
-    collection(db,"objects"),
-    where("agencyId","==",agencyId)
-  ));
-
-  adminList.innerHTML="";
-
-  snap.forEach(d=>{
-    const o=d.data();
-
-    adminList.innerHTML+=`
-      <div>${o.title} — ${o.price}$</div>
-    `;
-  });
-}
-
-</script>
-
+<script type="module" src="admin.js"></script>
 </body>
 </html>
