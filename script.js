@@ -65,10 +65,18 @@ snap.forEach((docSnap, index) => {
 }, 0);
   updateFavUI(); // ✅
 }
+
 function openGallery(obj) {
-  if (!obj || !obj.images || obj.images.length === 0) {
-    console.log("❌ немає фото");
-    return;
+  if (!obj || !obj.images || obj.images.length === 0) return;
+
+  currentImages = obj.images;
+  currentIndex = 0;
+
+  modal.classList.add("active");      // ✅ відкрили
+  showImage(currentIndex);            // ✅ показали
+}
+``
+
   }
 
   currentImages = obj.images;
