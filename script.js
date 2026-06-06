@@ -430,11 +430,12 @@ if (galPrev) galPrev.addEventListener('click', ()=> showIdx(galState.index - 1))
 if (galNext) galNext.addEventListener('click', ()=> showIdx(galState.index + 1));
 if (galClose) galClose.addEventListener('click', closeGallery);
 if (modal) modal.addEventListener('click', (e)=>{ if (e.target?.dataset?.close) closeGallery(); });
-document.addEventListener('keydown', (e)=>{ 
-if (!modal.classList.contains('open'))return; 
-if (e.key==='Escape') closeGallery(); 
-if (e.key==='ArrowLeft')showIdx(galState.index - 1); 
-if (e.key==='ArrowRight') showIdx(galState.index + 1);
+document.addEventListener('keydown', (e) => {
+  if (!modal.classList.contains('active')) return;
+
+  if (e.key === 'Escape') closeGallery(); 
+  if (e.key === 'ArrowLeft') showImage(currentIndex - 1); 
+  if (e.key === 'ArrowRight') showImage(currentIndex + 1);
 });
 }
 function attachGalleryHandlers(){ const grid = document.getElementById('featuredGrid');
