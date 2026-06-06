@@ -344,22 +344,7 @@ async function initData(){
     for (const u of urls){ const csv = await fetchCsv(u); rows = rows.concat(parseCSV(csv)); }
   }
   if (!rows.length){ // fallback to local csv
-    const csv = await fetchCsv('assets/data/featured.csv'); rows = rows.concat(parseCSV(csv));
-  }
-  const mapped = rows.map(parseRow).filter(Boolean);
-  if (mapped.length) FEATURED_LISTINGS = mapped;
-}
-// ===== Featured render =====
-function renderFeatured(){
-  const grid = document.getElementById('featuredGrid'); const empty = document.getElementById('featuredEmpty'); if (!grid) return;
-  const q = (document.getElementById('featSearch')?.value || '').toLowerCase().trim();
-  const city = document.getElementById('featCity')?.value || ''; const type = document.getElementById('featType')?.value || ''; const sort = document.getElementById('featSort')?.value || 'date_desc'; const onlyFav = !!document.getElementById('featOnlyFav')?.checked;
-  let items = [...FEATURED_LISTINGS];
- 
-    const cover = it.cover || 'assets/covers/placeholder.webp'; const price = fmtPrice(it.price); const favChecked = isFav(it.id); const badges = (it.badges||[]).map(b=>`<span class="badge-tag">${b}</span>`).join('');
-    const meta = [it.location || it.city || '', it.area ? `${it.area} м²` : '', Number.isFinite(it.bedrooms) ? `${it.bedrooms} кім.` : '', Number.isFinite(it.bathrooms) ? `${it.bathrooms} санвуз.` : ''].filter(Boolean).join(' • ');
-    return `
-      <article class="feature-card" data-id="${it.id}">
+    
         <a href="#" class="feature-cover" data-open-gallery="${it.id}">
           <img src="${cover}" alt="${it.title}" loading="lazy" decoding="async"/>
           <div class="feature-badges">${badges}</div>
