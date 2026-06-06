@@ -141,9 +141,6 @@ modal.addEventListener("touchend", (e) => {
     showImage(currentIndex - 1);
   }
 });
-modal.addEventListener("touchstart", (e) => {
-  startX = e.touches[0].clientX;
-});
 
 modal.addEventListener("touchend", (e) => {
   const endX = e.changedTouches[0].clientX;
