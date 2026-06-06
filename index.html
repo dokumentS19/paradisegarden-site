@@ -2,275 +2,38 @@
 <html lang="uk">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paradise Garden</title>
 
-<title>АН «Райський Сад»</title>
-
-<style>
-body{
-  font-family:Arial;
-  background:#f5f6f8;
-  margin:0;
-}
-
-/* HERO */
-.hero{
-  text-align:center;
-  padding:80px 20px;
-  background:linear-gradient(135deg,#0f1720,#1f2937);
-  color:#fff;
-}
-
-.hero h1{font-size:36px;margin:0}
-.hero p{color:#ccc}
-
-/* FILTER */
-.filters{
-  text-align:center;
-  padding:15px;
-}
-
-/* GRID */
-.cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:15px;
-  padding:20px;
-}
-
-.card{
-  background:#fff;
-  padding:10px;
-  border-radius:10px;
-  box-shadow:0 4px 10px #0001;
-  transition:0.3s;
-}
-
-.card:hover{
-  transform:translateY(-5px);
-}
-
-img{
-  width:100%;
-  height:180px;
-  object-fit:cover;
-  border-radius:8px;
-}
-
-button{
-  padding:10px;
-  background:#1f6f43;
-  color:#fff;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-/* MODAL */
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:#000c;
-  justify-content:center;
-  align-items:center;
-}
-
-.modal.active{display:flex}
-.modal img{max-width:80%}
-
-/* FORM */
-form{
-  padding:20px;
-  text-align:center;
-}
-
-input{
-  padding:10px;
-  border-radius:8px;
-  border:1px solid #ddd;
-  margin:5px;
-}
-
-/* CONTACT */
-.contacts{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-<!-- ✅ HERO -->
-<div class="hero">
-  <h1>АН «Райський Сад»</h1>
-  <p>Елітна нерухомість</p>
-  <button onclick="scrollToObjects()">Переглянути</button>
-</div>
+<header class="container">
+  <h2>🌿 Paradise Garden</h2>
+  <nav>
+    <button onclick="scrollToObjects()">Об'єкти</button>
+  </nav>
+</header>
 
-<!-- ✅ FILTER -->
-<div class="filters">
+<section class="hero">
+  <h1>Агентство нерухомості</h1>
+  <p>Продаж та оренда нерухомості</p>
+</section>
+
+<section class="filters">
   <input id="searchInput" placeholder="Пошук">
-  <input id="priceFilter" type="number" placeholder="Ціна до">
-  <button id="resetFilters">Скинути</button>
-</div>
+  <input id="priceFilter" placeholder="Макс ціна">
+</section>
 
-<!-- ✅ GRID -->
 <div id="objectsGrid" class="cards"></div>
 
-<!-- ✅ MODAL -->
+<!-- MODAL -->
 <div id="galleryModal" class="modal">
   <img id="modalImg">
 </div>
 
-<!-- ✅ FORM -->
-<form id="leadForm">
-  <h3>Залишити заявку</h3>
-  <input name="name" placeholder="Ім’я" required>
-  <input name="phone" placeholder="Телефон" required>
-  <button type="submit">Надіслати</button>
-</form>
-
-<!-- ✅ CONTACT BUTTONS -->
-<div class="contacts">
-  <button id="contactTelegram">Telegram</button>
-  <button id="contactViber">Viber</button>
-</div>
-
-<!-- ✅ SCRIPT -->
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const app = initializeApp({
-  apiKey:"ТУТ_API_KEY",
-  authDomain:"paradisegarden-site.firebaseapp.com",
-  projectId:"paradisegarden-site"
-});
-
-const db = getFirestore(app);
-
-const grid = document.getElementById("objectsGrid");
-let objectsData = [];
-
-// ===== LOAD =====
-async function load(){
-  grid.innerHTML="Завантаження...";
-
-  const snap = await getDocs(collection(db,"objects"));
-  grid.innerHTML="";
-  objectsData=[];
-
-  let i=0;
-
-  snap.forEach(doc=>{
-    const d = doc.data();
-    objectsData.push(d);
-
-    const img = d.images?.[0] || "";
-
-    grid.innerHTML+=`
-      <div class="card">
-        <imgg}
-        <h3>${d.title || "Без назви"}</h3>
-        <b>${d.price || "-"} $</b>
-      </div>
-    `;
-    i++;
-  });
-}
-
-load();
-
-// ===== SCROLL =====
-window.scrollToObjects = ()=>{
-  document.getElementById("objectsGrid")
-    .scrollIntoView({behavior:"smooth"});
-};
-
-// ===== GALLERY =====
-const modal=document.getElementById("galleryModal");
-const modalImg=document.getElementById("modalImg");
-
-document.addEventListener("click",e=>{
-  const img=e.target.closest("img[data-index]");
-  if(!img)return;
-
-  const i=+img.dataset.index;
-  const imgs=objectsData[i]?.images||[];
-
-  if(!imgs.length)return;
-
-  modalImg.src=imgs[0];
-  modal.classList.add("active");
-});
-
-modal.onclick=()=>modal.classList.remove("active");
-
-// ===== FILTER =====
-const searchInput = document.getElementById("searchInput");
-const priceFilter = document.getElementById("priceFilter");
-const resetFilters = document.getElementById("resetFilters");
-
-searchInput.oninput=()=>{
-  const v=searchInput.value.toLowerCase();
-
-  document.querySelectorAll(".card").forEach(c=>{
-    c.style.display = c.innerText.toLowerCase().includes(v)
-      ? "block" : "none";
-  });
-};
-
-priceFilter.oninput=()=>{
-  const max=+priceFilter.value;
-
-  document.querySelectorAll(".card").forEach(c=>{
-    const price=+c.innerText.match(/\d+/)?.[0];
-    c.style.display = !max || price<=max
-      ? "block" : "none";
-  });
-};
-
-resetFilters.onclick=()=>location.reload();
-
-// ===== CRM =====
-document.getElementById("leadForm").onsubmit=async e=>{
-  e.preventDefault();
-
-  const data=Object.fromEntries(new FormData(e.target));
-
-  await addDoc(collection(db,"leads"),data);
-
-  await fetch(`https://api.telegram.org/botYOUR_TOKEN/sendMessage`,{
-    method:"POST",
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      chat_id:"YOUR_CHAT_ID",
-      text:`🔥 Новий клієнт\n${data.name}\n${data.phone}`
-    })
-  });
-
-  alert("✅ Відправлено");
-  e.target.reset();
-};
-
-// ===== CONTACT =====
-document.getElementById("contactTelegram").onclick=()=>{
-  window.open("https://t.me/YOUR_USERNAME","_blank");
-};
-
-document.getElementById("contactViber").onclick=()=>{
-  window.open("viber://chat?number=%2B380XXXXXXXXX","_blank");
-};
-
-</script>
-
+<script type="module" src="script.js"></script>
 </body>
 </html>
