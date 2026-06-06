@@ -6,6 +6,16 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import { getStorage, ref, uploadBytes, getDownloadURL } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+const firebaseConfig = {
+  apiKey: "ТВОЙ_KEY",
+  authDomain: "paradisegarden-site.firebaseapp.com",
+  projectId: "paradisegarden-site",
+  storageBucket: "paradisegarden-site.appspot.com"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
 document.getElementById("addBtn").onclick = async () => {
 
   const btn = document.getElementById("addBtn");
