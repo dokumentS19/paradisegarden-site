@@ -25,6 +25,7 @@ if (showFavBtn) {
     card.style.display = favs.includes(id) ? "block" : "none";
   });
 };
+}
 async function loadObjects() {
  console.log("LOAD OBJECTS ✅");
   
