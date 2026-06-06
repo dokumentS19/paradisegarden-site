@@ -29,36 +29,45 @@ const modalImg = document.getElementById("modalImg");
 
 // ===== LOAD OBJECTS =====
 async function loadObjects() {
+  if (!grid) return;
+
   grid.innerHTML = "Завантаження...";
 
-  const snap = await getDocs(collection(db, "objects"));
-  grid.innerHTML = "";
-  allObjects = [];
+  try {
+    const snap = await getDocs(collection(db, "objects"));
+    grid.innerHTML = "";
+    allObjects = [];
 
-  let index = 0;
+    let index = 0;
 
-  snap.forEach(doc => {
-    const d = doc.data();
-    allObjects.push(d);
+    snap.forEach(doc => {
+      const d = doc.data();
+      allObjects.push(d);
 
-    const img = d.images?.[0] || 
-      "https://images.unsplash.com/photo-1560518883-ce09059eeffa";
+      const img = d.images?.[0] ||
+        "https://images.unsplash.com/photo-1560518883-ce09059eeffa";
 
-    grid.innerHTML += `
-      <div class="card">
-        <img class="gallery-img" src="${img}" data-index="${index}">
-        <button class="fav-btn" data-id="${index}">♡</button>
-        <h3>${d.title || "Без назви"}</h3>
-        <p>Площа: ${d.area || "-"} м²</p>
-        <strong>${d.price || "-"} $</strong>
-      </div>
-    `;
+      grid.innerHTML += `
+        <div class="card reveal">
+          <img class="gallery-img" src="${img}" data-index="${index}">
+          <button class="fav-btn" data-id="${index}">♡</button>
+          <h3>${d.title || "Без назви"}</h3>
+          <p>Площа: ${d.area || "-"} м²</p>
+          <strong>${d.price || "-"} $</strong>
+        </div>
+      `;
 
-    index++;
-  });
+      index++;
+    });
 
-  bindGallery();
-  updateFavCount();
+    bindGallery();
+    updateFavCount();
+    initReveal(); // ✅ після рендера
+
+  } catch (err) {
+    console.error(err);
+    grid.innerHTML = "❌ Помилка завантаження";
+  }
 }
 
 // ===== GALLERY =====
@@ -72,7 +81,7 @@ function bindGallery() {
 }
 
 function openGallery(obj) {
-  if (!obj?.images?.length) return;
+  if (!obj?.images?.length || !modal) return;
 
   currentImages = obj.images;
   currentIndex = 0;
@@ -82,6 +91,8 @@ function openGallery(obj) {
 }
 
 function showImage(i) {
+  if (!modalImg) return;
+
   if (i < 0) i = currentImages.length - 1;
   if (i >= currentImages.length) i = 0;
 
@@ -90,13 +101,13 @@ function showImage(i) {
 }
 
 function closeGallery() {
-  modal.classList.remove("active");
+  modal?.classList.remove("active");
 }
 
 // controls
-document.getElementById("galClose")?.onclick = closeGallery;
-document.getElementById("galNext")?.onclick = () => showImage(currentIndex + 1);
-document.getElementById("galPrev")?.onclick = () => showImage(currentIndex - 1);
+document.getElementById("galClose")?.addEventListener("click", closeGallery);
+document.getElementById("galNext")?.addEventListener("click", () => showImage(currentIndex + 1));
+document.getElementById("galPrev")?.addEventListener("click", () => showImage(currentIndex - 1));
 
 modal?.addEventListener("click", e => {
   if (e.target === modal) closeGallery();
@@ -136,14 +147,17 @@ document.getElementById("leadForm")?.addEventListener("submit", async e => {
   try {
     await addDoc(collection(db, "leads"), data);
 
-    await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT,
-        text: `🔥 Новий клієнт\nІм’я: ${data.name}\nТелефон: ${data.phone}`
-      })
-    });
+    // TELEGRAM
+    if (TELEGRAM_TOKEN !== "YOUR_TOKEN") {
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT,
+          text: `🔥 Новий клієнт\nІм’я: ${data.name}\nТелефон: ${data.phone}`
+        })
+      });
+    }
 
     alert("✅ Заявка відправлена");
     e.target.reset();
@@ -154,37 +168,51 @@ document.getElementById("leadForm")?.addEventListener("submit", async e => {
   }
 });
 
-// ===== INIT =====
-document.addEventListener("DOMContentLoaded", loadObjects);
 // ===== SCROLL REVEAL =====
-const observer = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.classList.add("show");
-    }
-  });
-});
+let revealObserver;
 
-document.querySelectorAll(".card").forEach(el=>{
-  observer.observe(el);
-});
+function initReveal() {
+  const elements = document.querySelectorAll(".card, .feature");
+
+  revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+      }
+    });
+  }, {
+    threshold: 0.2
+  });
+
+  elements.forEach(el => revealObserver.observe(el));
+}
 
 // ===== CURSOR GLOW =====
-document.addEventListener("mousemove", e=>{
+document.addEventListener("mousemove", e => {
   document.body.style.setProperty("--x", e.clientX + "px");
   document.body.style.setProperty("--y", e.clientY + "px");
 });
-// ===== SCROLL STORY =====
-const elements = document.querySelectorAll(".feature, .card");
 
-const observer = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.classList.add("show");
-    }
-  });
-},{
-  threshold:0.2
+// ===== CONTACT BUTTONS (Telegram + Viber) =====
+function initContacts() {
+  const tgBtn = document.getElementById("contactTelegram");
+  const viberBtn = document.getElementById("contactViber");
+
+  if (tgBtn) {
+    tgBtn.onclick = () => {
+      window.open("https://t.me/YOUR_USERNAME", "_blank");
+    };
+  }
+
+  if (viberBtn) {
+    viberBtn.onclick = () => {
+      window.open("viber://chat?number=%2B380XXXXXXXXX", "_blank");
+    };
+  }
+}
+
+// ===== INIT =====
+document.addEventListener("DOMContentLoaded", () => {
+  loadObjects();
+  initContacts();
 });
-
-elements.forEach(el => observer.observe(el));
