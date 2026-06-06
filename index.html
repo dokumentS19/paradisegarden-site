@@ -67,8 +67,19 @@
         ❤ <span id="favCounter">0</span>
       </button>
 
-      <button id="loginBtn" class="btn primary">
+     <button id="loginBtn" class="btn primary" onclick="login()">
         Увійти
+       <script>
+function login() {
+  const password = prompt("Введіть пароль:");
+
+  if (password === "1234") {
+    window.location.href = "admin.html";
+  } else {
+    alert("Невірний пароль");
+  }
+}
+</script>
       </button>
     </nav>
 
