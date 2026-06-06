@@ -9,6 +9,7 @@ const firebaseConfig = {
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site"
 };
+const TELEGRAM_LINK = "https://t.me/RSOleg";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const showFavBtn = document.getElementById("showFavOnly");
