@@ -63,23 +63,24 @@ const fileInput = document.getElementById("image");
 const preview = document.getElementById("preview");
 const list = document.getElementById("adminList");
 
-// ===== PREVIEW =====
+// ===== PREVIEW IMAGES =====
 fileInput?.addEventListener("change", () => {
   preview.innerHTML = "";
+
   for (const file of fileInput.files) {
     const img = document.createElement("img");
     img.src = URL.createObjectURL(file);
     img.style.width = "80px";
     img.style.marginRight = "5px";
+    img.style.borderRadius = "6px";
     preview.appendChild(img);
   }
 });
 
 // ===== ADD OBJECT =====
 async function addObject() {
-
-  if (!titleInput.value || !priceInput.value || !fileInput.files.length) {
-    alert("❗ Заповни всі поля");
+  if (!titleInput?.value) {
+    alert("Введіть назву");
     return;
   }
 
@@ -89,28 +90,32 @@ async function addObject() {
   try {
     const images = [];
 
-    for (const file of fileInput.files) {
-      const name = Date.now() + "_" + file.name;
+    // upload images
+    if (fileInput?.files.length) {
+      for (const file of fileInput.files) {
 
-      const storageRef = ref(storage, "objects/" + name);
+        const name = Date.now() + "_" + file.name;
+        const storageRef = ref(storage, "objects/" + name);
 
-      const snap = await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(snap.ref);
+        const snap = await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(snap.ref);
 
-      images.push(url);
+        images.push(url);
+      }
     }
 
+    // save to Firestore
     await addDoc(collection(db, "objects"), {
       title: titleInput.value,
-      area: Number(areaInput.value),
-      price: Number(priceInput.value),
+      area: Number(areaInput.value) || 0,
+      price: Number(priceInput.value) || 0,
       images,
       createdAt: Date.now()
     });
 
     alert("✅ Обʼєкт додано");
 
-    // reset
+    // reset form
     titleInput.value = "";
     areaInput.value = "";
     priceInput.value = "";
@@ -143,21 +148,25 @@ async function loadObjects() {
       const id = docSnap.id;
 
       const div = document.createElement("div");
+      div.style.marginBottom = "10px";
 
       div.innerHTML = `
         <b>${d.title}</b> — ${d.price}$ 
-        ${currentRole === "admin" ? `<button data-id="${id}">❌</button>` : ""}
+        ${currentRole === "admin" 
+          ? `<button data-id="${id}" style="margin-left:10px;">❌</button>` 
+          : ""}
       `;
 
       list.appendChild(div);
     });
 
-  } catch {
+  } catch (err) {
+    console.error(err);
     list.innerHTML = "❌ Помилка";
   }
 }
 
-// ===== DELETE =====
+// ===== DELETE OBJECT =====
 document.addEventListener("click", async (e) => {
   const btn = e.target.closest("button[data-id]");
   if (!btn) return;
@@ -171,10 +180,14 @@ document.addEventListener("click", async (e) => {
 
   if (!confirm("Видалити об'єкт?")) return;
 
-  await deleteDoc(doc(db, "objects", id));
-
-  alert("✅ Видалено");
-  loadObjects();
+  try {
+    await deleteDoc(doc(db, "objects", id));
+    alert("✅ Видалено");
+    loadObjects();
+  } catch (err) {
+    console.error(err);
+    alert("❌ Помилка");
+  }
 });
 
 // ===== REVIEWS =====
@@ -194,7 +207,8 @@ reviewForm?.addEventListener("submit", async (e) => {
     alert("✅ Відгук збережено");
     e.target.reset();
 
-  } catch {
+  } catch (err) {
+    console.error(err);
     alert("❌ Помилка");
   }
 });
