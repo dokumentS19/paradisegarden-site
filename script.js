@@ -112,7 +112,7 @@ function showImage(index) {
 // 👇 ВСТАВ ОТУТ
 const tgBtn = document.getElementById("telegramBtn");
 
-const TELEGRAM_URL = "https://t.me/твій_нік";
+const TELEGRAM_LINK = "https://t.me/RSOleg";
 
 if (tgBtn) {
   tgBtn.href = TELEGRAM_URL;
