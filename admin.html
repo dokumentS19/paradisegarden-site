@@ -1,30 +1,233 @@
 <!doctype html>
 <html lang="uk">
 <head>
-  <meta charset="utf-8">
-  <title>Адмінка</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SaaS CRM PRO</title>
+
+<style>
+body{font-family:Arial;background:#f5f6f8;padding:20px}
+.section{background:#fff;padding:15px;border-radius:12px;margin-bottom:20px}
+input{width:100%;padding:10px;margin-bottom:10px}
+button{padding:10px;background:#1f6f43;color:#fff;border:none;border-radius:8px}
+.adminOnly{display:none}
+</style>
 </head>
+
 <body>
 
-<script>
-const password = prompt("Введіть пароль:");
+<h1>🚀 SaaS CRM PRO</h1>
 
-if (password !== "1234") {
-  alert("Невірний пароль!");
-  window.location.href = "/";
-}
-</script>
+<div id="auth" class="section">
+<input id="email" placeholder="Email">
+<input id="password" type="password">
+<button id="login">Login</button>
+<button id="register">Register</button>
+</div>
 
-<h2>Додати об'єкт</h2>
-
-<input id="title" placeholder="Назва"><br><br>
-<input id="area" placeholder="Площа"><br><br>
-<input id="price" placeholder="Ціна"><br><br>
+<div class="section adminOnly">
+<h3>Додати обʼєкт</h3>
+<input id="title">
+<input id="price">
 <input type="file" id="image" multiple>
+<button id="add">Додати</button>
+</div>
 
-<button id="addBtn">Додати</button>
+<div class="section">
+<h3>📊 Dashboard</h3>
+<div id="stats"></div>
+</div>
 
-<script type="module" src="admin.js"></script>
+<div class="section">
+<h3>Обʼєкти</h3>
+<div id="objects"></div>
+</div>
+
+<div class="section">
+<h3>CRM клієнти</h3>
+<div id="leads"></div>
+</div>
+
+<div class="section">
+<h3>Заявка → Telegram</h3>
+<form id="leadForm">
+<input name="name">
+<input name="phone">
+<button>Send</button>
+</form>
+</div>
+
+<div class="section">
+<h3>Підписка</h3>
+<button id="buy">Activate PRO</button>
+</div>
+
+<button onclick="logout()">Logout</button>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+ getAuth, signInWithEmailAndPassword,
+ createUserWithEmailAndPassword,
+ onAuthStateChanged, signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+ getFirestore, collection, addDoc,
+ getDocs, query, where
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+ getStorage, ref, uploadBytes, getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+const app = initializeApp({
+ apiKey:"API_KEY",
+ authDomain:"paradisegarden-site.firebaseapp.com",
+ projectId:"paradisegarden-site",
+ storageBucket:"paradisegarden-site.firebasestorage.app"
+});
+
+const auth=getAuth(app);
+const db=getFirestore(app);
+const storage=getStorage(app);
+
+let agencyId=null;
+let role="user";
+
+// ===== LOGIN =====
+login.onclick=async()=>{
+ await signInWithEmailAndPassword(auth,email.value,password.value);
+};
+
+register.onclick=async()=>{
+ const user=await createUserWithEmailAndPassword(auth,email.value,password.value);
+
+ // 👇 створюємо агентство
+ agencyId=user.user.uid;
+
+ await addDoc(collection(db,"users"),{
+  uid:user.user.uid,
+  role:"admin",
+  agencyId
+ });
+};
+
+// ===== AUTH =====
+onAuthStateChanged(auth, async user=>{
+ if(user){
+
+  // отримуємо роль
+  const snap=await getDocs(query(collection(db,"users"),where("uid","==",user.uid)));
+
+  snap.forEach(d=>{
+   role=d.data().role;
+   agencyId=d.data().agencyId;
+  });
+
+  auth.style.display="none";
+  if(role==="admin"){
+   document.querySelectorAll(".adminOnly")
+   .forEach(x=>x.style.display="block");
+  }
+
+  loadAll();
+ }
+});
+
+// ===== ADD OBJECT =====
+add.onclick=async()=>{
+ let imgs=[];
+
+ for(const f of image.files){
+  let r=ref(storage,"img/"+Date.now()+f.name);
+  await uploadBytes(r,f);
+  imgs.push(await getDownloadURL(r));
+ }
+
+ await addDoc(collection(db,"objects"),{
+  agencyId,
+  title:title.value,
+  price:price.value,
+  images:imgs
+ });
+
+ loadObjects();
+};
+
+// ===== LOAD OBJECTS =====
+async function loadObjects(){
+ let snap=await getDocs(query(collection(db,"objects"),where("agencyId","==",agencyId)));
+
+ objects.innerHTML="";
+ snap.forEach(d=>{
+  let o=d.data();
+  objects.innerHTML+=`<div>${o.title} — ${o.price}$</div>`;
+ });
+}
+
+// ===== LOAD LEADS =====
+async function loadLeads(){
+ let snap=await getDocs(query(collection(db,"leads"),where("agencyId","==",agencyId)));
+
+ leads.innerHTML="";
+
+ snap.forEach(d=>{
+  let l=d.data();
+  leads.innerHTML+=`<div>${l.name} ${l.phone}</div>`;
+ });
+}
+
+// ===== DASHBOARD =====
+async function loadStats(){
+ let obj=await getDocs(query(collection(db,"objects"),where("agencyId","==",agencyId)));
+ let lead=await getDocs(query(collection(db,"leads"),where("agencyId","==",agencyId)));
+
+ stats.innerHTML=`
+  Обʼєкти: ${obj.size}<br>
+  Ліди: ${lead.size}
+ `;
+}
+
+// ===== ALL =====
+function loadAll(){
+ loadObjects();
+ loadLeads();
+ loadStats();
+}
+
+// ===== TELEGRAM + CRM =====
+leadForm.onsubmit=async(e)=>{
+ e.preventDefault();
+
+ let data=Object.fromEntries(new FormData(leadForm));
+ data.agencyId=agencyId;
+
+ await addDoc(collection(db,"leads"),data);
+
+ fetch(`https://api.telegram.org/botBOT_TOKEN/sendMessage`,{
+  method:"POST",
+  headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({
+    chat_id:"CHAT_ID",
+    text:`🔥 ЛІД\n${data.name}\n${data.phone}`
+  })
+ });
+
+ alert("✅ Лід відправлено");
+};
+
+// ===== PAYMENT MOCK =====
+buy.onclick=()=>{
+ alert("💳 Тут підключається Stripe або LiqPay");
+};
+
+// ===== LOGOUT =====
+window.logout=()=>signOut(auth).then(()=>location.reload());
+
+</script>
 
 </body>
 </html>
