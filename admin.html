@@ -3,93 +3,123 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SaaS CRM PRO</title>
+
+<title>CRM Панель</title>
 
 <style>
-body{font-family:Arial;background:#f5f6f8;padding:20px}
-.section{background:#fff;padding:15px;border-radius:12px;margin-bottom:20px}
-input{width:100%;padding:10px;margin-bottom:10px}
-button{padding:10px;background:#1f6f43;color:#fff;border:none;border-radius:8px}
+body{
+  font-family:Arial;
+  background:#f5f6f8;
+  padding:20px;
+}
+
+.section{
+  background:#fff;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:20px;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin-bottom:10px;
+}
+
+button{
+  padding:10px;
+  background:#1f6f43;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
 .adminOnly{display:none}
 </style>
 </head>
 
 <body>
 
-<h1>🚀 SaaS CRM PRO</h1>
+<h1>🚀 CRM Панель</h1>
 
+<!-- AUTH -->
 <div id="authBox" class="section">
-<input id="email" placeholder="Email">
-<input id="password" type="password">
-<button id="login">Login</button>
-<button id="register">Register</button>
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Пароль">
+  <button id="login">Login</button>
+  <button id="register">Register</button>
 </div>
 
+<!-- ADD OBJECT -->
 <div class="section adminOnly">
-<h3>Додати обʼєкт</h3>
-<input id="title">
-<input id="price">
-<input type="file" id="image" multiple>
-<button id="add">Додати</button>
+  <h3>Додати обʼєкт</h3>
+  <input id="title" placeholder="Назва">
+  <input id="area" placeholder="Площа">
+  <input id="price" placeholder="Ціна">
+  <input type="file" id="image" multiple>
+  <button id="addBtn">Додати</button>
+
+  <div id="preview"></div>
 </div>
 
-<div class="section">
-<h3>📊 Dashboard</h3>
-<div id="stats"></div>
+<!-- STATS -->
+<div class="section adminOnly">
+  <h3>📊 Dashboard</h3>
+  <div id="stats"></div>
 </div>
 
-<div class="section">
-<h3>Обʼєкти</h3>
-<div id="objects"></div>
+<!-- OBJECTS -->
+<div class="section adminOnly">
+  <h3>Обʼєкти</h3>
+  <div id="adminList"></div>
 </div>
 
-<div class="section">
-<h3>CRM клієнти</h3>
-<div id="leads"></div>
+<!-- LEADS -->
+<div class="section adminOnly">
+  <h3>CRM клієнти</h3>
+  <div id="leads"></div>
 </div>
 
-<div class="section">
-<h3>Заявка → Telegram</h3>
-<form id="leadForm">
-<input name="name">
-<input name="phone">
-<button>Send</button>
-</form>
-</div>
-
-<div class="section">
-<h3>Підписка</h3>
-<button id="buy">Activate PRO</button>
+<!-- FORM -->
+<div class="section adminOnly">
+  <h3>Заявка → Telegram</h3>
+  <form id="leadForm">
+    <input name="name" placeholder="Ім’я">
+    <input name="phone" placeholder="Телефон">
+    <button>Send</button>
+  </form>
 </div>
 
 <button onclick="logout()">Logout</button>
 
+<!-- SCRIPT -->
 <script type="module">
 
-// ✅ Firebase
+// ===== Firebase =====
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
- getAuth, signInWithEmailAndPassword,
- createUserWithEmailAndPassword,
- onAuthStateChanged, signOut
+  getAuth, signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged, signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
- getFirestore, collection, addDoc,
- getDocs, query, where
+  getFirestore, collection, addDoc,
+  getDocs, query, where
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
- getStorage, ref, uploadBytes, getDownloadURL
+  getStorage, ref, uploadBytes, getDownloadURL
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-// ✅ CONFIG (твій)
+// ===== CONFIG =====
 const app = initializeApp({
- apiKey:"ТУТ_СВІЙ_API_KEY",
- authDomain:"paradisegarden-site.firebaseapp.com",
- projectId:"paradisegarden-site",
- storageBucket:"paradisegarden-site.firebasestorage.app"
+  apiKey:"ТУТ_API_KEY",
+  authDomain:"paradisegarden-site.firebaseapp.com",
+  projectId:"paradisegarden-site",
+  storageBucket:"paradisegarden-site.firebasestorage.app"
 });
 
 const auth = getAuth(app);
@@ -99,137 +129,159 @@ const storage = getStorage(app);
 // ===== GLOBAL =====
 let agencyId = null;
 
-// ===== LOGIN =====
+// ===== AUTH =====
 login.onclick = async () => {
- await signInWithEmailAndPassword(auth, email.value, password.value);
+  await signInWithEmailAndPassword(auth, email.value, password.value);
 };
 
 register.onclick = async () => {
- const u = await createUserWithEmailAndPassword(auth, email.value, password.value);
- agencyId = u.user.uid;
+  const u = await createUserWithEmailAndPassword(auth, email.value, password.value);
 
- await addDoc(collection(db,"users"),{
-  uid: u.user.uid,
-  agencyId,
-  role: "admin"
- });
+  await addDoc(collection(db,"users"),{
+    uid: u.user.uid,
+    agencyId: u.user.uid,
+    role: "admin"
+  });
 };
 
-// ===== AUTH =====
+// ===== AUTH STATE =====
 onAuthStateChanged(auth, async user => {
- if(!user) return;
+  if (!user) return;
 
- const snap = await getDocs(query(
-  collection(db,"users"),
-  where("uid","==",user.uid)
- ));
+  const snap = await getDocs(query(
+    collection(db,"users"),
+    where("uid","==",user.uid)
+  ));
 
- snap.forEach(d=>{
-  agencyId = d.data().agencyId;
- });
+  snap.forEach(d => {
+    agencyId = d.data().agencyId;
+  });
 
- document.getElementById("authBox").style.display="none";
- document.querySelectorAll(".adminOnly").forEach(e=>e.style.display="block");
+  authBox.style.display="none";
+  document.querySelectorAll(".adminOnly")
+    .forEach(e => e.style.display="block");
 
- loadAll();
+  loadAll();
 });
 
 // ===== ADD OBJECT =====
-add.onclick = async () => {
+addBtn.onclick = async () => {
 
- if(!title.value || !price.value){
-  alert("Заповни поля");
-  return;
- }
+  const images = [];
 
- let imgs = [];
+  if (image.files.length) {
+    for (const file of image.files) {
 
- for(const f of image.files){
-  const r = ref(storage,"img/"+Date.now()+f.name);
-  await uploadBytes(r,f);
-  imgs.push(await getDownloadURL(r));
- }
+      const name = Date.now()+"_"+file.name;
+      const storageRef = ref(storage, "objects/"+name);
 
- await addDoc(collection(db,"objects"),{
-  agencyId,
-  title:title.value,
-  price:price.value,
-  images:imgs
- });
+      const snap = await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(snap.ref);
 
- alert("✅ Додано");
- loadObjects();
+      images.push(url);
+    }
+  }
+
+  await addDoc(collection(db,"objects"),{
+    title: title.value,
+    area: Number(area.value) || 0,
+    price: Number(price.value) || 0,
+    images,
+    agencyId,
+    createdAt:Date.now()
+  });
+
+  alert("✅ Додано");
+
+  title.value="";
+  area.value="";
+  price.value="";
+  image.value="";
+  preview.innerHTML="";
+
+  loadObjects();
 };
 
 // ===== OBJECTS =====
 async function loadObjects(){
- const snap = await getDocs(query(
-  collection(db,"objects"),
-  where("agencyId","==",agencyId)
- ));
+  const snap = await getDocs(query(
+    collection(db,"objects"),
+    where("agencyId","==",agencyId)
+  ));
 
- objects.innerHTML="";
- snap.forEach(d=>{
-  let o=d.data();
-  objects.innerHTML += `<div>${o.title} — ${o.price}$</div>`;
- });
+  adminList.innerHTML="";
+
+  snap.forEach(d=>{
+    let o=d.data();
+
+    adminList.innerHTML += `
+      <div>${o.title} — ${o.price}$</div>
+    `;
+  });
 }
 
 // ===== LEADS =====
 async function loadLeads(){
- const snap = await getDocs(query(
-  collection(db,"leads"),
-  where("agencyId","==",agencyId)
- ));
+  const snap = await getDocs(query(
+    collection(db,"leads"),
+    where("agencyId","==",agencyId)
+  ));
 
- leads.innerHTML="";
- snap.forEach(d=>{
-  let l=d.data();
-  leads.innerHTML += `<div>${l.name} ${l.phone}</div>`;
- });
+  leads.innerHTML="";
+
+  snap.forEach(d=>{
+    let l=d.data();
+
+    leads.innerHTML += `
+      <div>${l.name} ${l.phone}</div>
+    `;
+  });
 }
 
 // ===== STATS =====
 async function loadStats(){
- const a = await getDocs(query(collection(db,"objects"),where("agencyId","==",agencyId)));
- const l = await getDocs(query(collection(db,"leads"),where("agencyId","==",agencyId)));
+  const a = await getDocs(query(collection(db,"objects"),
+    where("agencyId","==",agencyId)));
 
- stats.innerHTML = `Обʼєкти: ${a.size}<br>Ліди: ${l.size}`;
+  const l = await getDocs(query(collection(db,"leads"),
+    where("agencyId","==",agencyId)));
+
+  stats.innerHTML = `Обʼєкти: ${a.size}<br>Ліди: ${l.size}`;
 }
 
+// ===== LOAD ALL =====
 function loadAll(){
- loadObjects();
- loadLeads();
- loadStats();
+  loadObjects();
+  loadLeads();
+  loadStats();
 }
 
 // ===== TELEGRAM =====
 leadForm.onsubmit = async (e)=>{
- e.preventDefault();
+  e.preventDefault();
 
- const data = Object.fromEntries(new FormData(leadForm));
- data.agencyId = agencyId;
+  const data = Object.fromEntries(new FormData(leadForm));
+  data.agencyId = agencyId;
 
- await addDoc(collection(db,"leads"),data);
+  await addDoc(collection(db,"leads"),data);
 
- // ⚠️ ВСТАВ СВОЄ
- fetch(`https://api.telegram.org/botYOUR_TOKEN/sendMessage`,{
-  method:"POST",
-  headers:{'Content-Type':'application/json'},
-  body:JSON.stringify({
-    chat_id:"YOUR_CHAT_ID",
-    text:`🔥 ЛІД\n${data.name}\n${data.phone}`
-  })
- });
+  await fetch(`https://api.telegram.org/botYOUR_TOKEN/sendMessage`,{
+    method:"POST",
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      chat_id:"YOUR_CHAT_ID",
+      text:`🔥 ЛІД\n${data.name}\n${data.phone}`
+    })
+  });
 
- alert("✅ Відправлено");
+  alert("✅ Відправлено");
+  leadForm.reset();
 };
 
-// ===== PAYMENT =====
-buy.onclick = ()=> alert("💳 Підключи Stripe/LiqPay тут");
-
 // ===== LOGOUT =====
-window.logout = ()=>signOut(auth).then(()=>location.reload());
+window.logout = ()=>{
+  signOut(auth).then(()=>location.reload());
+};
 
 </script>
 
