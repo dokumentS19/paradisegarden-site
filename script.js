@@ -30,7 +30,7 @@ async function loadObjects() {
     const img = d.images?.[0] || "https://via.placeholder.com/400";
 
     const html = `
-      <a href="object.html?id=${doc.id}" class="card">
+      <a href="assets/object.html?id=${doc.id}" class="card">
         <img src="${img}" alt="">
         <h3>${d.title || "Без назви"}</h3>
         <p>${d.area || "-"} м²</p>
