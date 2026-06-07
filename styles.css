@@ -160,7 +160,7 @@ h1, h2 {
   border: none;
 }
 
-/* ✅ TEXTAREA (CRM) */
+/* ✅ TEXTAREA */
 textarea {
   width: 100%;
   min-height: 70px;
@@ -187,6 +187,27 @@ textarea:focus {
   border-left: 4px solid gold;
 }
 
+/* ✅ KPI DASHBOARD */
+.kpi {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.kpi-box {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.kpi-box strong {
+  display: block;
+  font-size: 22px;
+  margin-top: 5px;
+}
+
 /* ✅ CHART */
 canvas {
   margin-top: 20px;
@@ -202,19 +223,19 @@ canvas {
   gap: 20px;
 }
 
-/* ✅ CARD (CRM PREMIUM) */
+/* ✅ CARD (PREMIUM) */
 .card {
   position: relative;
   background: #1e293b;
   border-radius: 12px;
   padding: 12px;
-  transition: 0.25s;
   border-left: 4px solid #16a34a;
+  transition: all 0.3s ease;
 }
 
 .card:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.8);
 }
 
 /* ✅ IMAGE */
@@ -231,7 +252,7 @@ canvas {
   font-weight: bold;
 }
 
-/* ✅ BUTTONS IN CARD */
+/* ✅ BUTTONS */
 .card button {
   margin-top: 5px;
   margin-right: 5px;
@@ -295,4 +316,37 @@ canvas {
     height: auto;
     padding: 20px;
   }
+}
+
+/* 🌞 LIGHT THEME */
+body.light {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+body.light .topbar {
+  background: #ffffff;
+  border-bottom: 1px solid #cbd5f5;
+}
+
+body.light .about,
+body.light .features,
+body.light .objects,
+body.light .form,
+body.light .contacts {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+body.light .card {
+  background: #f1f5f9;
+}
+
+body.light textarea {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+body.light #stats {
+  background: #ffffff;
 }
