@@ -9,7 +9,7 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 // ✅ CONFIG
 const firebaseConfig = {
-  apiKey: "ТВОЙ_KEY",
+apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site",
   storageBucket: "paradisegarden-site.appspot.com"
