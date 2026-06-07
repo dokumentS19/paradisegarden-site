@@ -1,4 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 import {
   getFirestore,
   collection,
@@ -12,7 +13,7 @@ import {
   getDownloadURL
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-// ✅ ТВОЙ КОНФІГ
+// 🔥 ВСТАВ СВОЇ ДАНІ
 const firebaseConfig = {
   apiKey: "ТВОЙ_API_KEY",
   authDomain: "paradisegarden-site.firebaseapp.com",
@@ -25,41 +26,75 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// ✅ ДОДАВАННЯ ОБ'ЄКТА
+// ✅ ПРЕВ’Ю ФОТО
+const input = document.getElementById("file");
+const preview = document.getElementById("preview");
+
+input.addEventListener("change", () => {
+  preview.innerHTML = "";
+
+  const files = input.files;
+
+  for (let file of files) {
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      const img = document.createElement("img");
+      img.src = e.target.result;
+      preview.appendChild(img);
+    };
+
+    reader.readAsDataURL(file);
+  }
+});
+
+// ✅ ДОДАВАННЯ ОБ’ЄКТА
 window.addObject = async () => {
   const title = document.getElementById("title").value;
   const area = document.getElementById("area").value;
   const price = document.getElementById("price").value;
-  const file = document.getElementById("file").files[0];
+  const files = input.files;
 
-  if (!title || !price || !file) {
+  if (!title || !price || files.length === 0) {
     alert("Заповни всі поля і вибери фото");
     return;
   }
 
   try {
-    // ✅ шлях в storage
-    const storageRef = ref(storage, "objects/" + Date.now() + "_" + file.name);
+    const imageUrls = [];
 
-    // ✅ загрузка файлу
-    await uploadBytes(storageRef, file);
+    // ✅ загрузка всіх фото
+    for (let file of files) {
 
-    // ✅ отримати URL
-    const url = await getDownloadURL(storageRef);
+      const storageRef = ref(
+        storage,
+        "objects/" + Date.now() + "_" + file.name
+      );
+
+      await uploadBytes(storageRef, file);
+
+      const url = await getDownloadURL(storageRef);
+
+      imageUrls.push(url);
+    }
 
     // ✅ запис в Firestore
     await addDoc(collection(db, "objects"), {
       title,
       area,
       price,
-      images: [url], // ✅ ВАЖЛИВО
+      images: imageUrls, // ✅ масив фото
       createdAt: new Date()
     });
 
     alert("✅ Об'єкт додано!");
+
+    // очистка
+    preview.innerHTML = "";
+    input.value = "";
+
   } catch (err) {
     console.error(err);
-    alert("❌ Помилка загрузки");
+    alert("❌ Помилка завантаження");
   }
-};
 };
