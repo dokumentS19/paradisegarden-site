@@ -29,14 +29,15 @@ async function loadObjects() {
 
     const img = d.images?.[0] || "https://via.placeholder.com/400";
 
-    const html = `
-      <a href="assets/object.html?id=${doc.id}" class="card">
-        <img src="${img}" alt="">
-        <h3>${d.title || "Без назви"}</h3>
-        <p>${d.area || "-"} м²</p>
-        <strong>${d.price || "-"} $</strong>
-      </a>
-    `;
+   const html = `
+  <a href="assets/object.html?id=${doc.id}" class="card">
+    <img src="${img}" alt="Об'єкт">
+
+    <h3>${d.title || "Без назви"}</h3>
+    <p>Площа: ${d.area || "-"} м²</p>
+    <strong>${d.price || "-"} $</strong>
+  </a>
+`;
 
     grid.insertAdjacentHTML("beforeend", html);
   });
