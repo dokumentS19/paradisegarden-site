@@ -127,7 +127,6 @@ function analytics(data) {
 
   const hot = data.filter(l => getPriority(l) > 6).length;
 
-  // ✅ ТЕКСТОВА АНАЛІТИКА
   document.getElementById("stats").innerHTML = `
     <h3>📊 Аналітика агентства</h3>
     <p>Всього заявок: ${total}</p>
@@ -138,14 +137,14 @@ function analytics(data) {
     <p>🔥 Гарячі клієнти: ${hot}</p>
   `;
 
-  // ✅ KPI DASHBOARD (ОСЬ ТЕ, ЩО ТИ ДОДАВАВ)
+  // ✅ KPI
   document.getElementById("kpi-total").innerText = total;
   document.getElementById("kpi-done").innerText = done;
   document.getElementById("kpi-income").innerText = income + "$";
 }
 
 /* ===================================
-   ✅ ГРАФІК
+   ✅ ГРАФІК (GRADIENT)
 =================================== */
 function drawChart(data) {
 
@@ -157,6 +156,7 @@ function drawChart(data) {
 
   const ctx = canvas.getContext("2d");
 
+  // ✅ GRADIENT
   const gradient = ctx.createLinearGradient(0, 0, 0, 200);
   gradient.addColorStop(0, "#22c55e");
   gradient.addColorStop(1, "#4ade80");
@@ -265,3 +265,4 @@ if (localStorage.getItem("theme") === "light") {
    ✅ START
 =================================== */
 loadLeads();
+``
