@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CRM — заявки</title>
+
   <link rel="stylesheet" href="styles.css">
+
+  <!-- ✅ Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -21,7 +25,11 @@
 <!-- ✅ АНАЛІТИКА -->
 <section class="about">
   <h2>📊 Аналітика</h2>
+
   <div id="stats"></div>
+
+  <!-- ✅ ГРАФІК -->
+  <canvas id="leadsChart" height="120"></canvas>
 </section>
 
 <!-- ✅ ПОШУК -->
@@ -45,12 +53,14 @@
   <button onclick="filterStatus('done')" class="btn">Оброблені</button>
 </section>
 
-<!-- ✅ СПИСОК -->
+<!-- ✅ СПИСОК ЗАЯВОК -->
 <section class="objects">
   <h2>📋 Список заявок</h2>
+
   <div id="leads"></div>
 </section>
 
+<!-- ✅ JS -->
 <script type="module" src="leads.js"></script>
 
 </body>
