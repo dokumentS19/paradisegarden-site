@@ -130,7 +130,6 @@ document.querySelectorAll(".card img").forEach((img, index) => {
     modal.style.display = "block";
     modalImg.src = currentImages[currentIndex];
   });
-});
 // ✅ КЛАВІАТУРА
 document.addEventListener("keydown", (e) => {
   if (modal.style.display !== "block") return;
