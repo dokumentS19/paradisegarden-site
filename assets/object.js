@@ -8,7 +8,9 @@ import {
   getDocs,
   query,
   where,
-  addDoc
+  addDoc,
+  updateDoc,
+  increment
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -32,17 +34,14 @@ let images = [];
 let current = 0;
 let currentObject = null;
 
-// ✅ перемикання
+// ✅ SLIDER
 function changeSlide(step) {
   current += step;
-
   if (current >= images.length) current = 0;
   if (current < 0) current = images.length - 1;
-
   updateImage();
 }
 
-// ✅ оновлення
 function updateImage() {
   const img = document.getElementById("mainImg");
   if (!img) return;
@@ -59,13 +58,12 @@ function updateImage() {
   });
 }
 
-// ✅ вибір
 function selectImage(index) {
   current = index;
   updateImage();
 }
 
-// ✅ карта
+// ✅ MAP
 function initMap(lat, lng) {
   if (!lat || !lng) return;
 
@@ -80,15 +78,11 @@ function initMap(lat, lng) {
   });
 }
 
-// ✅ чат
+// ✅ CHAT
 window.startChat = async (ownerId) => {
 
   const user = auth.currentUser;
-
-  if (!user) {
-    alert("Увійди!");
-    return;
-  }
+  if (!user) return alert("Увійди!");
 
   const q = query(
     collection(db, "chats"),
@@ -99,11 +93,9 @@ window.startChat = async (ownerId) => {
 
   let chatId = null;
 
-  snap.forEach(doc => {
-    const users = doc.data().users;
-
-    if (users.includes(ownerId)) {
-      chatId = doc.id;
+  snap.forEach(d => {
+    if (d.data().users.includes(ownerId)) {
+      chatId = d.id;
     }
   });
 
@@ -112,19 +104,46 @@ window.startChat = async (ownerId) => {
       users: [user.uid, ownerId],
       createdAt: new Date()
     });
-
     chatId = newChat.id;
   }
 
   window.location.href = `chat.html?chatId=${chatId}`;
 };
 
-// ✅ дзвінок
+// ✅ CALL
 window.call = () => {
   window.location.href = "tel:+380674464705";
 };
 
-// ✅ ЗАВАНТАЖЕННЯ
+// ✅ RATING
+window.rate = async (value) => {
+  const refObj = doc(db, "objects", id);
+
+  await updateDoc(refObj, {
+    rating: increment(value),
+    ratingCount: increment(1)
+  });
+
+  alert("✅ Оцінено");
+};
+
+// ✅ STATUS
+window.markSold = async () => {
+  await updateDoc(doc(db, "objects", id), {
+    status: "sold"
+  });
+  alert("✅ Продано");
+};
+
+// ✅ VIP
+window.makeVIP = async () => {
+  await updateDoc(doc(db, "objects", id), {
+    vip: true
+  });
+  alert("🔥 VIP активовано");
+};
+
+// ✅ LOAD OBJECT
 async function loadObject() {
 
   const snap = await getDoc(doc(db, "objects", id));
@@ -137,20 +156,25 @@ async function loadObject() {
   const d = snap.data();
   currentObject = d;
 
-  images = d.images || (d.image ? [d.image] : []);
+  // ✅ перегляди
+  await updateDoc(doc(db, "objects", id), {
+    views: increment(1)
+  });
+
+  images = d.images || [];
 
   document.getElementById("objectPage").innerHTML = `
     <div class="object-page">
 
       <a href="index.html" class="back">← Назад</a>
 
+      <!-- ✅ VIP -->
+      ${d.vip ? "🔥 VIP Оголошення" : ""}
+
       <div class="gallery">
         <button class="nav left" onclick="changeSlide(-1)">◀</button>
-
         <img id="mainImg" src="${images[0] || ""}">
-
         <button class="nav right" onclick="changeSlide(1)">▶</button>
-
         <div id="counter">1 / ${images.length}</div>
       </div>
 
@@ -160,33 +184,30 @@ async function loadObject() {
         `).join("")}
       </div>
 
-      <h1>${d.title || "Без назви"}</h1>
-      <p>📐 ${d.area || "-"} м²</p>
-      <p>💰 ${d.price || "-"} $</p>
+      <h1>${d.title}</h1>
 
-      <!-- ✅ продавець -->
+      <p>📐 ${d.area || "-"} м²</p>
+      <p>💰 ${d.price} $</p>
+
+      <p>👁 ${d.views || 0}</p>
+      <p>${d.status === "sold" ? "❌ Продано" : "✅ Активне"}</p>
+
+      <!-- ✅ SELLER -->
       <div class="seller">
-        <strong>👤 Продавець</strong>
-        ${d.ownerName || "Користувач"}
-        <div>⭐⭐⭐⭐☆ (4.0)</div>
+        <strong>👤 ${d.ownerName || "Користувач"}</strong>
+        <div>⭐ ${(d.rating || 0)} (${d.ratingCount || 0})</div>
       </div>
 
       <button onclick="call()">📞 Подзвонити</button>
+      <button onclick="startChat('${d.ownerId}')">💬 Написати</button>
 
-      <button onclick="startChat('${d.ownerId}')" style="
-        margin-top:10px;
-        padding:12px;
-        background:#3b82f6;
-        color:white;
-        border:none;
-        border-radius:8px;
-      ">
-        💬 Написати продавцю
-      </button>
+      <button onclick="rate(5)">⭐ Оцінити</button>
+      <button onclick="markSold()">✅ Продано</button>
+      <button onclick="makeVIP()">🔥 VIP</button>
 
       <div id="map" style="height:300px; margin-top:20px;"></div>
 
-      <h3 style="margin-top:30px;">📌 Схожі об'єкти</h3>
+      <h3>📌 Схожі об'єкти</h3>
       <div id="similar"></div>
 
     </div>
@@ -200,7 +221,7 @@ async function loadObject() {
   }, 300);
 }
 
-// ✅ схожі об'єкти
+// ✅ SIMILAR
 async function loadSimilar() {
 
   const grid = document.getElementById("similar");
@@ -214,40 +235,16 @@ async function loadSimilar() {
     const o = docu.data();
 
     if (
-      o.price &&
-      currentObject.price &&
+      o.price && currentObject.price &&
       Math.abs(o.price - currentObject.price) < 20000
     ) {
-      const img = o.images?.[0] || "https://via.placeholder.com/200";
+      const img = o.images?.[0];
 
       grid.innerHTML += `
         <a href="object.html?id=${docu.id}">
-          <img src="${img}">
-          <h4>${o.title}</h4>
+          <img src="${img}" style="height:100px;width:100%;object-fit:cover;">
+          <p>${o.title}</p>
           <strong>${o.price}$</strong>
         </a>
       `;
-    }
-  });
-}
-
-// ✅ глобально
-window.changeSlide = changeSlide;
-window.selectImage = selectImage;
-
-// ✅ запуск
-loadObject();
-
-// ✅ swipe
-let startX = 0;
-
-document.addEventListener("touchstart", e => {
-  startX = e.touches[0].clientX;
-});
-
-document.addEventListener("touchend", e => {
-  const endX = e.changedTouches[0].clientX;
-
-  if (endX - startX > 50) changeSlide(-1);
-  if (startX - endX > 50) changeSlide(1);
-});
+   
