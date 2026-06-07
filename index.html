@@ -213,64 +213,12 @@ async function loadObjects() {
         <p>Площа: ${d.area || "-"} м²</p>
         <strong>${d.price || "-"} $</strong>
       </div>
-    `;  // ✅ ОБОВʼЯЗКОВО закрити тут
-
-    grid.innerHTML += cardHTML; // ✅ вже тут
-  });
-}
-async function loadObjects() {
-  const snap = await getDocs(collection(db, "objects"));
-
-  const grid = document.getElementById("objectsGrid");
-  if (!grid) return;
-
-  grid.innerHTML = "";
-
-  snap.forEach(doc => {
-    const d = doc.data();
-
-    const imageUrl = d.images?.[0] || d.image || "https://via.placeholder.com/400x250";
-
-    const cardHTML = `
-      <div class="card">
-        <img class="gallery-img" src="${imageUrl}" alt="Об'єкт">
-
-        <h3>${d.title || "Без назви"}</h3>
-        <p>Площа: ${d.area || "-"} м²</p>
-        <strong>${d.price || "-"} $</strong>
-      </div>
     `;
 
     grid.innerHTML += cardHTML;
   });
 
- async function loadObjects() {
-  const snap = await getDocs(collection(db, "objects"));
-
-  const grid = document.getElementById("objectsGrid");
-  if (!grid) return;
-
-  grid.innerHTML = "";
-
-  snap.forEach(doc => {
-    const d = doc.data();
-
-    const imageUrl = d.images?.[0] || d.image || "https://via.placeholder.com/400x250";
-
-    const cardHTML = `
-      <div class="card">
-        <img class="gallery-img" src="${imageUrl}" alt="Об'єкт">
-
-        <h3>${d.title || "Без назви"}</h3>
-        <p>Площа: ${d.area || "-"} м²</p>
-        <strong>${d.price || "-"} $</strong>
-      </div>
-    `;
-
-    grid.innerHTML += cardHTML;
-  });
-
-  // ✅ ТУТ ВАЖЛИВО
+  // ✅ галерея
   document.querySelectorAll(".gallery-img").forEach((img, index) => {
     img.addEventListener("click", () => {
 
