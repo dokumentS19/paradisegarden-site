@@ -1,13 +1,53 @@
 <!DOCTYPE html>
-<html lang="ukmeta charset="UTF-8"><html lang="uk">
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Чат</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      padding: 20px;
+    }
+
+    #messages {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+
+    #messages div {
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    input {
+      padding: 10px;
+      width: 70%;
+      border-radius: 6px;
+      border: none;
+    }
+
+    button {
+      padding: 10px;
+      background: #16a34a;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
 
 <h2>💬 Чат</h2>
 
-<div id="messages" style="margin-bottom:10px;"></div>
+<div id="messages"></div>
 
 <input id="msg" placeholder="Написати...">
 <button onclick="send()">Відправити</button>
@@ -16,4 +56,3 @@
 
 </body>
 </html>
-<head>
