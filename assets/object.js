@@ -16,6 +16,7 @@ const db = getFirestore(app);
 
 const id = new URLSearchParams(window.location.search).get("id");
 
+// ✅ ФУНКЦІЯ ЗАВАНТАЖЕННЯ
 async function loadObject() {
   if (!id) return;
 
@@ -30,22 +31,26 @@ async function loadObject() {
 
   const img = d.images?.[0] || d.image || "https://via.placeholder.com/400";
 
-document.getElementById("objectPage").innerHTML = `
-  <div class="card">
+  document.getElementById("objectPage").innerHTML = `
+    <div class="card">
 
-    <img src="${img}" alt="">
+      <img src="${img}" alt="">
 
-    <h1>${d.title || "Без назви"}</h1>
+      <h1>${d.title || "Без назви"}</h1>
 
-    <p>📐 ${d.area || "-"} м²</p>
-    <p>💰 ${d.price || "-"} $</p>
+      <p>📐 ${d.area || "-"} м²</p>
+      <p>💰 ${d.price || "-"} $</p>
 
-    <button onclick="call()">📞 Подзвонити</button>
+      <button onclick="call()">📞 Подзвонити</button>
 
-  </div>
-`;
+    </div>
+  `;
+} // ✅ ОЦЕЇ ДУЖКИ У ТЕБЕ НЕ ВИСТАЧАЛО
+
+// ✅ ВИКЛИК ПОЗА ФУНКЦІЄЮ
 window.call = () => {
   window.location.href = "tel:+380674464705";
 };
 
 loadObject();
+
