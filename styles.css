@@ -23,3 +23,62 @@ body {
   width: 100%;
   border-radius: 6px;
 }
+.object-page {
+  max-width: 900px;
+  margin: auto;
+}
+
+.gallery {
+  position: relative;
+}
+
+.gallery img {
+  width: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 30px;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.left { left: 10px; }
+.right { right: 10px; }
+
+.call-btn {
+  margin-top: 15px;
+  padding: 12px 20px;
+  background: #16a34a;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ✅ МОДАЛКА */
+#modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  justify-content: center;
+  align-items: center;
+}
+
+#modal img {
+  max-width: 90%;
+  max-height: 90%;
+}
