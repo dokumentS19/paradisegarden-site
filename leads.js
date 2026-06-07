@@ -111,7 +111,7 @@ ${d.note || ""}
 }
 
 /* ===================================
-   ✅ АНАЛІТИКА
+   ✅ АНАЛІТИКА + KPI
 =================================== */
 function analytics(data) {
 
@@ -127,8 +127,141 @@ function analytics(data) {
 
   const hot = data.filter(l => getPriority(l) > 6).length;
 
+  // ✅ ТЕКСТОВА АНАЛІТИКА
   document.getElementById("stats").innerHTML = `
     <h3>📊 Аналітика агентства</h3>
     <p>Всього заявок: ${total}</p>
     <p>Нові: ${newLeads}</p>
+    <p>Оброблені: ${done}</p>
+    <p>📈 Конверсія: ${conversion}%</p>
+    <p>💰 Потенційний дохід: ${income}$</p>
+    <p>🔥 Гарячі клієнти: ${hot}</p>
+  `;
 
+  // ✅ KPI DASHBOARD (ОСЬ ТЕ, ЩО ТИ ДОДАВАВ)
+  document.getElementById("kpi-total").innerText = total;
+  document.getElementById("kpi-done").innerText = done;
+  document.getElementById("kpi-income").innerText = income + "$";
+}
+
+/* ===================================
+   ✅ ГРАФІК
+=================================== */
+function drawChart(data) {
+
+  const done = data.filter(l => l.status === "done").length;
+  const newLeads = data.length - done;
+
+  const canvas = document.getElementById("leadsChart");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+  gradient.addColorStop(0, "#22c55e");
+  gradient.addColorStop(1, "#4ade80");
+
+  new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: ["Нові", "Оброблені"],
+      datasets: [{
+        data: [newLeads, done],
+        backgroundColor: ["#facc15", gradient]
+      }]
+    }
+  });
+}
+
+/* ===================================
+   ✅ FILTER
+=================================== */
+window.filterStatus = (status) => {
+
+  if (status === "all") {
+    render(allLeads);
+    return;
+  }
+
+  const filtered = allLeads.filter(l => l.status === status);
+  render(filtered);
+};
+
+/* ===================================
+   ✅ SEARCH
+=================================== */
+window.searchLead = () => {
+
+  const text = document.getElementById("searchLead").value.toLowerCase();
+
+  const filtered = allLeads.filter(l =>
+    l.name.toLowerCase().includes(text) ||
+    l.phone.includes(text)
+  );
+
+  render(filtered);
+};
+
+/* ===================================
+   ✅ STATUS
+=================================== */
+window.markDone = async (id) => {
+
+  await updateDoc(doc(db, "leads", id), {
+    status: "done"
+  });
+
+  loadLeads();
+};
+
+/* ===================================
+   ✅ DELETE
+=================================== */
+window.removeLead = async (id) => {
+
+  if (!confirm("Видалити заявку?")) return;
+
+  await deleteDoc(doc(db, "leads", id));
+
+  loadLeads();
+};
+
+/* ===================================
+   ✅ SAVE NOTE
+=================================== */
+window.saveNote = async (id) => {
+
+  const text = document.getElementById("note-" + id).value;
+
+  await updateDoc(doc(db, "leads", id), {
+    note: text
+  });
+
+  alert("✅ Збережено");
+};
+
+/* ===================================
+   ✅ THEME SWITCH
+=================================== */
+window.toggleTheme = function () {
+
+  const current = document.body.classList.contains("light");
+
+  if (current) {
+    document.body.classList.remove("light");
+    localStorage.setItem("theme", "dark");
+  } else {
+    document.body.classList.add("light");
+    localStorage.setItem("theme", "light");
+  }
+};
+
+// ✅ LOAD THEME
+if (localStorage.getItem("theme") === "light") {
+  document.body.classList.add("light");
+}
+
+/* ===================================
+   ✅ START
+=================================== */
+loadLeads();
