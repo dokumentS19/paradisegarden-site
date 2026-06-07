@@ -444,8 +444,8 @@ setTimeout(()=> recommendBtn.textContent='Рекомендувати', 1800);
 });
     // ===== Контакти =====
 
-const TELEGRAM_LINK = "https://t.me/твій_нік"; // ← заміни
-const PHONE_NUMBER = "+380XXXXXXXXX";           // ← заміни
+const TELEGRAM_LINK = "https://t.me/RSOleg";
+const PHONE_NUMBER = "+380953777196"; 
 
 function setupTelegram(aTag){
   if (!aTag) return;
