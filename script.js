@@ -3,7 +3,7 @@ import {
   getFirestore,
   collection,
   getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"; 
 
 // ✅ ВСТАВ СВОЇ ДАНІ
 const firebaseConfig = {
