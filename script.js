@@ -201,6 +201,8 @@ const btn = e.target.closest(".fav-btn");
     favorites.push(id);
   }
   updateFavUI();
+
+localStorage.setItem("favs", JSON.stringify(favorites));
 });
 function updateFavUI() {
   document.querySelectorAll(".fav-btn").forEach(btn => {
