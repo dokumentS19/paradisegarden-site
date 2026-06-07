@@ -186,21 +186,7 @@ if (prevBtn) {
   });
 }
 const btn = e.target.closest(".fav-btn");
-  if (!btn) return;
-
-  if (!currentUser) {
-    alert("Спочатку увійди");
-    return;
-  }
-  const id = Number(btn.dataset.id);
-  if (favorites.includes(id)) {
-    favorites = favorites.filter(f => f !== id);
-  } else {
-    favorites.push(id);
-  }
-  updateFavUI();
-
-localStorage.setItem("favs", JSON.stringify(favorites));
+...
 });
 function updateFavUI() {
   document.querySelectorAll(".fav-btn").forEach(btn => {
