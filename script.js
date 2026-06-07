@@ -7,46 +7,93 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
+  apiKey: "ТВОЙ_KEY",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site",
-  storageBucket: "paradisegarden-site.firebasestorage.app",
-  messagingSenderId: "452352075250",
-  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
-  measurementId: "G-6XHWE6Y0JE"
-};
-  authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site",
-  storageBucket: "paradisegarden-site.firebasestorage.app"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-async function loadObjects() {
+let allObjects = [];
+
+async function load() {
   const snap = await getDocs(collection(db, "objects"));
 
-  const grid = document.getElementById("objectsGrid");
-  if (!grid) return;
-
-  grid.innerHTML = "";
+  allObjects = [];
 
   snap.forEach(doc => {
-    const d = doc.data();
+    allObjects.push({ id: doc.id, ...doc.data() });
+  });
+
+  render(allObjects);
+}
+
+// ✅ відображення
+function render(data) {
+  const grid = document.getElementById("objectsGrid");
+  grid.innerHTML = "";
+
+  data.forEach(d => {
 
     const img = d.images?.[0] || "https://via.placeholder.com/400";
 
- const html = `
-  <a href="assets/object.html?id=${doc.id}" class="card${d.title || "Без назви"}</h3>
-    <p>${d.area || "-"} м²</p>
-    <strong>${d.price || "-"} $</strong>
+    grid.innerHTML += `
+      <div class="card">
 
-  </a>
-`;
+        object.html?id=${d.id}
 
+          ${img}
 
-    grid.insertAdjacentHTML("beforeend", html);
+          <h3>${d.title}</h3>
+          <p>${d.area || "-"} м²</p>
+          <strong>${d.price}$</strong>
+
+        </a>
+
+        ❤️
+        
+
+      </div>
+    `;
   });
 }
 
-loadObjects();
+// ❤️ обране
+function toggleFav(id) {
+  let favs = JSON.parse(localStorage.getItem("favs")) || [];
+
+  if (favs.includes(id)) {
+    favs = favs.filter(f => f !== id);
+  } else {
+    favs.push(id);
+  }
+
+  localStorage.setItem("favs", JSON.stringify(favs));
+}
+
+window.toggleFav = toggleFav;
+
+
+// ✅ пошук + фільтр
+document.getElementById("search").oninput =
+document.getElementById("minPrice").oninput =
+document.getElementById("maxPrice").oninput = () => {
+
+  const text = document.getElementById("search").value.toLowerCase();
+  const min = Number(document.getElementById("minPrice").value);
+  const max = Number(document.getElementById("maxPrice").value);
+
+  const filtered = allObjects.filter(d => {
+
+    const matchText = d.title?.toLowerCase().includes(text);
+    const matchMin = !min || d.price >= min;
+    const matchMax = !max || d.price <= max;
+
+    return matchText && matchMin && matchMax;
+  });
+
+  render(filtered);
+};
+
+load();
