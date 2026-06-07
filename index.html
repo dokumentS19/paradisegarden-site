@@ -73,7 +73,8 @@
     </nav>
 
   </div>
-document.getElementById("galNext").onclick = () => {
+</header>  
+  document.getElementById("galNext").onclick = () => {
   currentIndex++;
   if (currentIndex >= currentImages.length) currentIndex = 0;
   modalImg.src = currentImages[currentIndex];
