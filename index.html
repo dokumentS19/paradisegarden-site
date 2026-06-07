@@ -220,3 +220,17 @@ async function loadObjects() {
 }
 
 loadObjects();
+setTimeout(() => {
+  document.querySelectorAll(".gallery-img").forEach((img, index) => {
+    img.addEventListener("click", () => {
+
+      currentImages = Array.from(document.querySelectorAll(".gallery-img"))
+        .map(i => i.src);
+
+      currentIndex = index;
+
+      modal.style.display = "block";
+      modalImg.src = currentImages[currentIndex];
+    });
+  });
+}, 0);
