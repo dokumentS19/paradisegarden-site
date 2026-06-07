@@ -34,12 +34,12 @@ const auth = getAuth(app);
 
 let currentUser = null;
 
-// ✅ отримуємо юзера
+// ✅ USER
 onAuthStateChanged(auth, user => {
   currentUser = user;
 });
 
-// ✅ PREVIEW ФОТО
+// ✅ PREVIEW
 const input = document.getElementById("file");
 const preview = document.getElementById("preview");
 
@@ -61,7 +61,7 @@ input.addEventListener("change", () => {
   }
 });
 
-// ✅ ДОДАТИ ОБʼЄКТ
+// ✅ ADD OBJECT
 window.addObject = async () => {
 
   const title = document.getElementById("title").value.trim();
@@ -69,24 +69,24 @@ window.addObject = async () => {
   const price = document.getElementById("price").value;
   const files = input.files;
 
-  // ✅ перевірка
   if (!title || !price || files.length === 0) {
-    alert("Заповни назву, ціну і вибери фото");
+    alert("Заповни всі поля і додай фото");
     return;
   }
 
   if (!currentUser) {
-    alert("Увійди в кабінет!");
+    alert("Увійди!");
     return;
   }
 
   try {
     const imageUrls = [];
 
-    // ✅ загрузка фото
     for (let file of files) {
 
-      const fileName = Date.now() + "_" + Math.random().toString(36).slice(2);
+      const fileName =
+        Date.now() + "_" + Math.random().toString(36).slice(2);
+
       const storageRef = ref(storage, "objects/" + fileName);
 
       await uploadBytes(storageRef, file);
@@ -96,18 +96,28 @@ window.addObject = async () => {
       imageUrls.push(url);
     }
 
-    // ✅ запис у Firestore
+    // ✅ ЗАПИС В FIREBASE
     await addDoc(collection(db, "objects"), {
       title,
       area: area || "-",
       price: Number(price),
       images: imageUrls,
+
+      // ✅ власник
       ownerId: currentUser.uid,
-      ownerName: currentUser.displayName || "Користувач", // ✅ ДОДАНО
+      ownerName: currentUser.displayName || "Користувач",
+
+      // ✅ PRO ПОЛЯ
+      status: "active",
+      views: 0,
+      rating: 0,
+      ratingCount: 0,
+      vip: false,
+
       createdAt: new Date()
     });
 
-    alert("✅ Об'єкт додано!");
+    alert("✅ Об'єкт створено!");
 
     // ✅ очистка
     preview.innerHTML = "";
@@ -118,6 +128,6 @@ window.addObject = async () => {
 
   } catch (err) {
     console.error(err);
-    alert("❌ Помилка завантаження");
+    alert("❌ Помилка");
   }
 };
