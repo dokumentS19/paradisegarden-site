@@ -100,7 +100,6 @@ document.addEventListener("keydown", (e) => {
 if (e.key === "Escape") {
   closeGallery();
 }
-  }
 });
 function showImage(index) {
   if (!currentImages.length) return;
