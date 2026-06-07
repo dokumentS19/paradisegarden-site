@@ -18,7 +18,7 @@ import {
 const firebaseConfig = {
   apiKey: "ТВОЙ_API_KEY",
   authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site", 
+  projectId: "paradisegarden-site",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -26,14 +26,17 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+// ✅ отримуємо chatId з URL
+const chatId = new URLSearchParams(window.location.search).get("chatId");
+
 let currentUser = null;
 
-// ✅ запит дозволу на push
+// ✅ push дозволи
 if ("Notification" in window) {
   Notification.requestPermission();
 }
 
-// ✅ функція нотифікації
+// ✅ push функція
 function notify(text) {
   if (Notification.permission === "granted") {
     new Notification("📩 Нове повідомлення", {
@@ -47,12 +50,16 @@ onAuthStateChanged(auth, user => {
   currentUser = user;
 });
 
-// ✅ чат контейнер
+// ✅ блок повідомлень
 const messagesDiv = document.getElementById("messages");
 
-// ✅ real-time чат
-const q = query(collection(db, "chat"), orderBy("createdAt"));
+// ✅ підписка на повідомлення (1‑на‑1)
+const q = query(
+  collection(db, "messages"),
+  orderBy("createdAt")
+);
 
+// ✅ слухаємо чат
 onSnapshot(q, snap => {
 
   messagesDiv.innerHTML = "";
@@ -60,27 +67,32 @@ onSnapshot(q, snap => {
   snap.forEach(doc => {
     const d = doc.data();
 
+    // ✅ показуємо тільки свій чат
+    if (d.chatId !== chatId) return;
+
+    const isMine = d.senderId === currentUser?.uid;
+
     messagesDiv.innerHTML += `
       <div style="
-        background:#1e293b;
-        padding:8px;
-        margin-bottom:6px;
-        border-radius:6px;
+        background:${isMine ? "#16a34a" : "#1e293b"};
+        padding:10px;
+        margin:5px;
+        border-radius:10px;
+        text-align:${isMine ? "right" : "left"};
       ">
-        <strong>${d.userName || "Анонім"}:</strong>
         ${d.text}
       </div>
     `;
 
-    // ✅ push повідомлення
-    if (currentUser && d.userId !== currentUser.uid) {
+    // ✅ пуш тільки від інших
+    if (currentUser && d.senderId !== currentUser.uid) {
       notify(d.text);
     }
   });
 
 });
 
-// ✅ відправка повідомлення
+// ✅ відправка
 window.send = async () => {
 
   const input = document.getElementById("msg");
@@ -88,12 +100,17 @@ window.send = async () => {
 
   if (!text) return;
 
-  await addDoc(collection(db, "chat"), {
+  await addDoc(collection(db, "messages"), {
     text: text,
-    userId: currentUser?.uid || "guest",
-    userName: currentUser?.displayName || "Гість",
+    chatId: chatId, // ✅ ключове
+    senderId: currentUser?.uid,
     createdAt: new Date()
   });
 
   input.value = "";
+
+  // ✅ авто-скрол вниз
+  setTimeout(() => {
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }, 100);
 };
