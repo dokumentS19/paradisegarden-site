@@ -165,3 +165,42 @@ header a:hover {
   max-height: 90%;
   border-radius: 10px;
 }
+/* ✅ HEADER sticky */
+.topbar {
+  position: sticky;
+  top: 0;
+  background: #0f172a;
+  padding: 10px;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #1e293b;
+}
+
+.topbar input {
+  margin-right: 10px;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+}
+
+.topbar a {
+  padding: 10px;
+  background: #16a34a;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+/* ❤️ кнопка */
+.favorite {
+  cursor: pointer;
+  font-size: 20px;
+  margin-top: 5px;
+}
