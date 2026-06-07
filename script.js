@@ -247,7 +247,6 @@ function isFav(id) {
 const btn = document.getElementById("loginBtn");
 const PHONE_NUMBER  = "+380674464705";
 const VIBER_NUMBER  = "+380674464705";
-const TELEGRAM_LINK = "https://t.me/+380674464705";
 
 const REMOTE_SHEET_CSV_URL = "";  // Google Sheets CSV
 const AIRTABLE_VIEW_CSV_URL = ""; // Airtable View CSV
