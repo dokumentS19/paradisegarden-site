@@ -1,1 +1,193 @@
+<!doctype html>
+<html lang="uk">
+<head>  
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>АН «Райський Сад» — Агентство нерухомості, Ірпінь</title>
+  <meta name="description" content="АН «Райський Сад» — купівля/продаж, оренда, оцінка, документи та юридичний супровід нерухомості в Ірпені, Києві та області. Засновано у 2005 році. Директор — Іванчик Олег Степанович." />
+  <meta name="theme-color" content="#1f6f43" />
+  <link rel="icon" type="image/png" href="assets/logo-rayskyi-sad.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="АН «Райський Сад» — Агентство нерухомості, Ірпінь" />
+  <meta property="og:description" content="Повний супровід угод з нерухомістю: Київ та Київська область. Досвід з 2005 року." />
+  <meta property="og:image" content="assets/logo-rayskyi-sad.png" />
+  <meta property="og:locale" content="uk_UA" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "RealEstateAgent",
+    "name": "АН «Райський Сад»",
+    "description": "Агентство нерухомості: купівля/продаж, оренда, оцінка, документи, юридичний супровід. Київ та Київська область. Засновано у 2005 році.",
+    "address": { "@type": "PostalAddress", "addressLocality": "Ірпінь", "addressRegion": "Київська область", "addressCountry": "UA" },
+    "areaServed": ["Ірпінь","Буча","Гостомель","Ворзель","Київ та область"],
+    "foundingDate": "2005",
+    "founder": "Іванчик Олег Степанович",
+    "url": "https://example.com",
+    "telephone": "+380674464705",
+    "sameAs": ["viber://chat?number=%2B380674464705","https://t.me/+380674464705"]
+  }
+  </script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
 
+    <a href="#top" class="brand">
+      <img src="assets/logo.png" class="logo" />
+      <div class="brand-text">
+        <span class="brand-title">АН «Райський Сад»</span>
+        <span class="brand-subtitle">Агентство нерухомості • Ірпінь</span>
+      </div>
+    </a>
+
+    <button class="burger" id="burgerBtn">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav class="nav" id="navMenu">
+      <a href="#about">Про компанію</a>
+      <a href="#director">Про директора</a>
+      <a href="#featured">Обрані</a>
+      <a href="#services">Послуги</a>
+      <a href="#listings">Об’єкти</a>
+      <a href="#regions">Регіони</a>
+      <a href="#values">Цінності</a>
+      <a href="#contacts">Контакти</a>
+
+      
+<!-- ✅ АДМІН -->
+  <a href="admin.html" class="btn">Адмін</a>
+
+      
+      <!-- ✅ КНОПКИ В МЕНЮ -->
+      <button id="favHeaderBtn" class="fav-header-btn" type="button">
+        ❤ <span id="favCounter">0</span>
+      </button>
+
+      <button id="loginBtn" class="btn primary">
+        Увійти
+      </button>
+    </nav>
+
+  </div>
+document.getElementById("galNext").onclick = () => {
+  currentIndex++;
+  if (currentIndex >= currentImages.length) currentIndex = 0;
+  modalImg.src = currentImages[currentIndex];
+};
+
+document.getElementById("galClose").onclick = () => {
+  modal.style.display = "none";
+};
+
+// ✅ КЛІК ПО ФОТО
+
+document.querySelectorAll(".card img").forEach((img, index) => {
+  img.addEventListener("click", () => {
+
+    currentImages = Array.from(document.querySelectorAll(".card img"))
+      .map(i => i.src);
+
+    currentIndex = index;
+
+    modal.style.display = "block";
+    modalImg.src = currentImages[currentIndex];
+  });
+});
+// ✅ КЛАВІАТУРА
+document.addEventListener("keydown", (e) => {
+  if (modal.style.display !== "block") return;
+
+  if (e.key === "ArrowRight") {
+    currentIndex++;
+    if (currentIndex >= currentImages.length) currentIndex = 0;
+    modalImg.src = currentImages[currentIndex];
+  }
+
+  if (e.key === "ArrowLeft") {
+    currentIndex--;
+    if (currentIndex < 0) currentIndex = currentImages.length - 1;
+    modalImg.src = currentImages[currentIndex];
+  }
+
+  if (e.key === "Escape") {
+    modal.style.display = "none";
+  }
+});
+  // ✅ ФОРМА
+const form = document.getElementById("leadForm");
+
+if (form) {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = form.name.value;
+    const tel = form.tel.value;
+    const msg = form.msg.value;
+
+    const status = document.getElementById("formStatus");
+
+    if (!name || !tel) {
+      status.textContent = "⚠️ Введіть імʼя і телефон";
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "requests"), {
+        name,
+        tel,
+        msg,
+        createdAt: new Date()
+      });
+
+      status.textContent = "✅ Заявка відправлена";
+      form.reset();
+
+  
+} catch (err) {
+  console.error(err);
+  status.textContent = "❌ Помилка";
+}
+  }); 
+}  
+// ✅ ФУНКЦІЯ ЗАВАНТАЖЕННЯ
+async function loadObjects() {
+  const snap = await getDocs(collection(db, "objects"));
+
+  const grid = document.getElementById("objectsGrid");
+  if (!grid) return;
+
+  grid.innerHTML = "";
+
+  snap.forEach(doc => {
+    const d = doc.data();
+
+    const imageUrl = d.images?.[0] || d.image || "https://via.placeholder.com/400x250";
+
+ 
+const cardHTML = `
+  <div class="card">
+    <img class="gallery-img" src="${imageUrl}" alt="Об'єкт">
+
+    <h3>${d.title || "Без назви"}</h3>
+    <p>Площа: ${d.area || "-"} м²</p>
+    <strong>${d.price || "-"} $</strong>
+  </div>
+`;
+    grid.innerHTML += cardHTML;
+  });
+
+}
+
+loadObjects();
+
+</script>
+
+<script type="module" src="script.js"></script>
+
+</body>
+</html>
+``
