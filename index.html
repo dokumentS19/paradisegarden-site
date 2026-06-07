@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="uk">
-<head>
+<html<head><html lang="uk">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>АН Райський Сад</title>
@@ -27,23 +26,23 @@
   </div>
 </header>
 
-<!-- ✅ HERO БАНЕР -->
+<!-- ✅ HERO -->
 <section class="hero">
-  <div class="hero-text">
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
     <h1>Агентство нерухомості "Райський Сад"</h1>
+
     <p>
-      Продаж, купівля та оренда нерухомості в Ірпені та Київській області.
-      Працюємо тільки з перевіреними об'єктами та супроводжуємо угоду від початку до кінця.
+      Продаж, купівля та оренда нерухомості в Ірпені та Київській області
     </p>
 
-    <a href="#objectsGrid" class="btn">
-      Переглянути об'єкти
-    </a>
+    <a href="#objectsGrid" class="btn">Переглянути об'єкти</a>
   </div>
 </section>
 
 <!-- ✅ ПРО НАС -->
-<section id="about" class="about">
+<section id="about" class="about fade-in">
   <h2>🏡 Про агентство</h2>
 
   <p>
@@ -53,7 +52,7 @@
 
   <p>
     Ми працюємо з квартирами, будинками та земельними ділянками,
-    пропонуємо тільки перевірені об'єкти та повний супровід угоди.
+    та забезпечуємо повний супровід угоди.
   </p>
 
   <div class="list">
@@ -65,7 +64,7 @@
 </section>
 
 <!-- ✅ ЧОМУ МИ -->
-<section class="features">
+<section class="features fade-in">
   <h2>Чому обирають нас</h2>
 
   <div class="grid">
@@ -76,14 +75,46 @@
   </div>
 </section>
 
+<!-- ✅ ВІДГУКИ -->
+<section class="reviews fade-in">
+  <h2>⭐ Відгуки клієнтів</h2>
+
+  <div class="reviews-grid">
+    <div class="review">
+      Дуже швидко допомогли купити квартиру 👍  
+      <strong>— Олексій</strong>
+    </div>
+
+    <div class="review">
+      Все прозоро і професійно  
+      <strong>— Ірина</strong>
+    </div>
+
+    <div class="review">
+      Найкраще агентство в Ірпені 🔥  
+      <strong>— Максим</strong>
+    </div>
+  </div>
+</section>
+
 <!-- ✅ ОБʼЄКТИ -->
-<section class="objects">
+<section class="objects fade-in">
   <h2>Об'єкти нерухомості</h2>
   <div id="objectsGrid"></div>
 </section>
 
+<!-- ✅ ФОРМА -->
+<section class="form fade-in">
+  <h2>📩 Залишити заявку</h2>
+
+  <input placeholder="Ваше ім'я"><br><br>
+  <input placeholder="Телефон"><br><br>
+
+  <button class="btn">Відправити</button>
+</section>
+
 <!-- ✅ КОНТАКТИ -->
-<section id="contacts" class="contacts">
+<section id="contacts" class="contacts fade-in">
   <h2>📞 Контакти</h2>
 
   <div class="contact-card">
@@ -98,7 +129,23 @@
   © Paradise Garden — всі права захищені
 </footer>
 
+<!-- ✅ Анімація -->
+<script>
+const els = document.querySelectorAll(".fade-in");
+
+window.addEventListener("scroll", () => {
+  els.forEach(el => {
+    const top = el.getBoundingClientRect().top;
+    if (top < window.innerHeight - 100) {
+      el.classList.add("show");
+    }
+  });
+});
+</script>
+
 <script type="module" src="script.js"></script>
 
 </body>
 </html>
+
+
