@@ -69,7 +69,7 @@ document.getElementById("addBtn").onclick = async () => {
       const cleanName = file.name.replace(/\s+/g, "_");
       const uniqueName = crypto.randomUUID() + "_" + cleanName;
 
-      const folder = new Date().toISOString().slice(0,10);
+    const folder = new Date().toISOString().slice(0,10).replace(/:/g, "-");
       const storageRef = ref(storage, `images/${folder}/${uniqueName}`);
 
       const snapshot = await uploadBytes(storageRef, file);
