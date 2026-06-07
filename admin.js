@@ -18,7 +18,7 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// ✅ CONFIG (виправлено)
+// ✅ CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
   authDomain: "paradisegarden-site.firebaseapp.com",
@@ -39,7 +39,7 @@ onAuthStateChanged(auth, user => {
   currentUser = user;
 });
 
-// ✅ ПРЕВ’Ю ФОТО
+// ✅ PREVIEW ФОТО
 const input = document.getElementById("file");
 const preview = document.getElementById("preview");
 
@@ -61,16 +61,17 @@ input.addEventListener("change", () => {
   }
 });
 
-// ✅ ДОДАВАННЯ ОБ’ЄКТА
+// ✅ ДОДАТИ ОБʼЄКТ
 window.addObject = async () => {
 
-  const title = document.getElementById("title").value;
+  const title = document.getElementById("title").value.trim();
   const area = document.getElementById("area").value;
   const price = document.getElementById("price").value;
   const files = input.files;
 
+  // ✅ перевірка
   if (!title || !price || files.length === 0) {
-    alert("Заповни всі поля і вибери фото");
+    alert("Заповни назву, ціну і вибери фото");
     return;
   }
 
@@ -85,10 +86,8 @@ window.addObject = async () => {
     // ✅ загрузка фото
     for (let file of files) {
 
-      const storageRef = ref(
-        storage,
-        "objects/" + Date.now() + "_" + file.name
-      );
+      const fileName = Date.now() + "_" + Math.random().toString(36).slice(2);
+      const storageRef = ref(storage, "objects/" + fileName);
 
       await uploadBytes(storageRef, file);
 
@@ -100,18 +99,22 @@ window.addObject = async () => {
     // ✅ запис у Firestore
     await addDoc(collection(db, "objects"), {
       title,
-      area,
-      price,
+      area: area || "-",
+      price: Number(price),
       images: imageUrls,
-      ownerId: currentUser.uid, // ✅ ВАЖЛИВО!
+      ownerId: currentUser.uid,
+      ownerName: currentUser.displayName || "Користувач", // ✅ ДОДАНО
       createdAt: new Date()
     });
 
     alert("✅ Об'єкт додано!");
 
-    // очистка
+    // ✅ очистка
     preview.innerHTML = "";
     input.value = "";
+    document.getElementById("title").value = "";
+    document.getElementById("area").value = "";
+    document.getElementById("price").value = "";
 
   } catch (err) {
     console.error(err);
