@@ -22,6 +22,26 @@ const db = getFirestore(app);
 let allLeads = [];
 
 /* ===================================
+   ✅ AI ПРІОРИТЕТ
+=================================== */
+function getPriority(lead) {
+
+  let score = 0;
+
+  if (lead.status === "new") score += 2;
+  if (lead.note && lead.note.length > 5) score += 2;
+
+  score += Math.min((lead.income || 0) / 1000, 5);
+
+  if (lead.createdAt?.seconds) {
+    const days = (Date.now() - lead.createdAt.seconds * 1000) / (1000 * 60 * 60 * 24);
+    if (days < 2) score += 2;
+  }
+
+  return score;
+}
+
+/* ===================================
    ✅ LOAD
 =================================== */
 async function loadLeads() {
@@ -36,10 +56,11 @@ async function loadLeads() {
 
   render(allLeads);
   analytics(allLeads);
+  drawChart(allLeads);
 }
 
 /* ===================================
-   ✅ RENDER
+   ✅ RENDER (AI СОРТУВАННЯ)
 =================================== */
 function render(data) {
 
@@ -51,27 +72,42 @@ function render(data) {
     return;
   }
 
-  data.forEach(d => {
+  data
+    .sort((a, b) => getPriority(b) - getPriority(a))
+    .forEach(d => {
 
-    container.innerHTML += `
-      <div class="card">
+      const priority = getPriority(d);
 
-        <h3>👤 ${d.name}</h3>
+      let badge = "🟡";
+      if (priority > 6) badge = "🔥 ГАРЯЧИЙ";
+      else if (priority > 3) badge = "⚡ ТЕПЛИЙ";
 
-        <p>📞 ${d.phone}</p>
+      container.innerHTML += `
+        <div class="card">
 
-        <p>
-          ${d.status === "done"
-            ? "✅ Оброблено"
-            : "🟡 Нова"}
-        </p>
+          <h3>👤 ${d.name}</h3>
+          <p>📞 ${d.phone}</p>
 
-        <button onclick="markDone('${d.id}')">✅</button>
-        <button onclick="removeLead('${d.id}')">❌</button>
+          <p><strong>${badge}</strong></p>
 
-      </div>
-    `;
-  });
+          <textarea id="note-${d.id}" placeholder="Коментар...">
+${d.note || ""}
+          </textarea>
+
+          <button onclick="saveNote('${d.id}')">💾 Зберегти</button>
+
+          <p>
+            ${d.status === "done"
+              ? "✅ Оброблено"
+              : "🟡 Нова"}
+          </p>
+
+          <button onclick="markDone('${d.id}')">✅</button>
+          <button onclick="removeLead('${d.id}')">❌</button>
+
+        </div>
+      `;
+    });
 }
 
 /* ===================================
@@ -83,12 +119,47 @@ function analytics(data) {
   const done = data.filter(l => l.status === "done").length;
   const newLeads = total - done;
 
+  const conversion = total
+    ? Math.round((done / total) * 100)
+    : 0;
+
+  const income = data.reduce((sum, l) => sum + (l.income || 0), 0);
+
+  const hot = data.filter(l => getPriority(l) > 6).length;
+
   document.getElementById("stats").innerHTML = `
-    <h3>📊 Аналітика</h3>
-    <p>Всего: ${total}</p>
+    <h3>📊 Аналітика агентства</h3>
+    <p>Всього заявок: ${total}</p>
     <p>Нові: ${newLeads}</p>
     <p>Оброблені: ${done}</p>
+    <p>📈 Конверсія: ${conversion}%</p>
+    <p>💰 Потенційний дохід: ${income}$</p>
+    <p>🔥 Гарячі клієнти: ${hot}</p>
   `;
+}
+
+/* ===================================
+   ✅ ГРАФІК
+=================================== */
+function drawChart(data) {
+
+  const done = data.filter(l => l.status === "done").length;
+  const newLeads = data.length - done;
+
+  const ctx = document.getElementById("leadsChart");
+
+  if (!ctx) return;
+
+  new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: ["Нові", "Оброблені"],
+      datasets: [{
+        data: [newLeads, done],
+        backgroundColor: ["#facc15", "#22c55e"]
+      }]
+    }
+  });
 }
 
 /* ===================================
@@ -102,7 +173,6 @@ window.filterStatus = (status) => {
   }
 
   const filtered = allLeads.filter(l => l.status === status);
-
   render(filtered);
 };
 
@@ -146,7 +216,20 @@ window.removeLead = async (id) => {
 };
 
 /* ===================================
+   ✅ SAVE NOTE
+=================================== */
+window.saveNote = async (id) => {
+
+  const text = document.getElementById("note-" + id).value;
+
+  await updateDoc(doc(db, "leads", id), {
+    note: text
+  });
+
+  alert("✅ Збережено");
+};
+
+/* ===================================
    ✅ START
 =================================== */
 loadLeads();
-``
