@@ -27,13 +27,19 @@
   </div>
 </header>
 
-<!-- ✅ HERO -->
-<section style="margin:20px 0;">
-  <h1>Агентство нерухомості "Райський Сад"</h1>
-  <p>
-    Продаж, купівля та оренда нерухомості в Ірпені та Київській області.
-    Працюємо тільки з перевіреними об'єктами та супроводжуємо угоду від початку до кінця.
-  </p>
+<!-- ✅ HERO БАНЕР -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Агентство нерухомості "Райський Сад"</h1>
+    <p>
+      Продаж, купівля та оренда нерухомості в Ірпені та Київській області.
+      Працюємо тільки з перевіреними об'єктами та супроводжуємо угоду від початку до кінця.
+    </p>
+
+    <a href="#objectsGrid" class="btn">
+      Переглянути об'єкти
+    </a>
+  </div>
 </section>
 
 <!-- ✅ ПРО НАС -->
@@ -50,11 +56,11 @@
     пропонуємо тільки перевірені об'єкти та повний супровід угоди.
   </p>
 
-  <div style="margin-top:10px;">
-    ✅ перевірені об'єкти<br>
-    ✅ супровід угоди<br>
-    ✅ консультації<br>
-    ✅ підбір під бюджет
+  <div class="list">
+    <div>✅ перевірені об'єкти</div>
+    <div>✅ супровід угоди</div>
+    <div>✅ консультації</div>
+    <div>✅ підбір під бюджет</div>
   </div>
 </section>
 
@@ -71,21 +77,24 @@
 </section>
 
 <!-- ✅ ОБʼЄКТИ -->
-<h2 style="margin-top:30px;">Об'єкти нерухомості</h2>
-
-<div id="objectsGrid"></div>
+<section class="objects">
+  <h2>Об'єкти нерухомості</h2>
+  <div id="objectsGrid"></div>
+</section>
 
 <!-- ✅ КОНТАКТИ -->
 <section id="contacts" class="contacts">
   <h2>📞 Контакти</h2>
 
-  <p>📞 +38 095 3777196</p>
-  <p>📍 Ірпінь, Київська область</p>
-  <p>📧 info@paradisegarden.com.ua</p>
+  <div class="contact-card">
+    <p>📞 +38 095 3777196</p>
+    <p>📍 Ірпінь, Київська область</p>
+    <p>📧 info@paradisegarden.com.ua</p>
+  </div>
 </section>
 
 <!-- ✅ FOOTER -->
-<footer style="margin-top:40px; text-align:center; opacity:0.6;">
+<footer class="footer">
   © Paradise Garden — всі права захищені
 </footer>
 
