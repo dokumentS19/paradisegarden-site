@@ -7,7 +7,7 @@ import {
 
 // ✅ Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
+  apiKey: "ТВОЙ_FIREBASE_KEY",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site",
 };
@@ -15,14 +15,140 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ✅ ID з URL
+// ✅ ID
 const id = new URLSearchParams(window.location.search).get("id");
 
-// ✅ ГАЛЕРЕЯ
+// ✅ Галерея
 let images = [];
 let current = 0;
 
-// ✅ Перемикання
+// ✅ Перемикання фото
 function changeSlide(step) {
   current += step;
 
+  if (current >= images.length) current = 0;
+  if (current < 0) current = images.length - 1;
+
+  updateImage();
+}
+
+// ✅ Оновлення фото
+function updateImage() {
+  const img = document.getElementById("mainImg");
+  if (!img) return;
+
+  img.src = images[current];
+
+  const counter = document.getElementById("counter");
+  if (counter) {
+    counter.textContent = `${current + 1} / ${images.length}`;
+  }
+
+  document.querySelectorAll(".thumbs img").forEach((el, i) => {
+    el.classList.toggle("active", i === current);
+  });
+}
+
+// ✅ Вибір знизу
+function selectImage(index) {
+  current = index;
+  updateImage();
+}
+
+// ✅ Карта
+function initMap(lat, lng) {
+  if (!lat || !lng) return;
+
+  const map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: Number(lat), lng: Number(lng) },
+    zoom: 15,
+  });
+
+  new google.maps.Marker({
+    position: { lat: Number(lat), lng: Number(lng) },
+    map: map,
+  });
+}
+
+// ✅ Завантаження об'єкта
+async function loadObject() {
+  if (!id) return;
+
+  const snap = await getDoc(doc(db, "objects", id));
+
+  if (!snap.exists()) {
+    document.getElementById("objectPage").innerHTML = "❌ Не знайдено";
+    return;
+  }
+
+  const d = snap.data();
+
+  images = d.images || (d.image ? [d.image] : []);
+
+  document.getElementById("objectPage").innerHTML = `
+    <div class="object-page">
+
+      <div class="gallery">
+
+        <button class="nav left" onclick="changeSlide(-1)">◀</button>
+
+        <img id="mainImg" src="${images[0] || ""}">
+
+        <button class="nav right" onclick="changeSlide(1)">▶</button>
+
+        <div id="counter">1 / ${images.length}</div>
+
+      </div>
+
+      <div class="thumbs">
+        ${images.map((img, i) => `
+          <img src="${img}" onclick="selectImage(${i})">
+        `).join("")}
+      </div>
+
+      <h1>${d.title || "Без назви"}</h1>
+
+      <p>📐 ${d.area || "-"} м²</p>
+      <p>💰 ${d.price || "-"} $</p>
+
+      <button onclick="call()">📞 Подзвонити</button>
+
+      <!-- ✅ КАРТА -->
+      <div id="map" style="height:300px; margin-top:20px;"></div>
+
+    </div>
+  `;
+
+  updateImage();
+
+  // ✅ запуск карти
+  setTimeout(() => {
+    initMap(d.lat, d.lng);
+  }, 300);
+}
+
+// ✅ Телефон
+window.call = () => {
+  window.location.href = "tel:+380674464705";
+};
+
+// ✅ глобальні функції
+window.changeSlide = changeSlide;
+window.selectImage = selectImage;
+
+// ✅ запуск
+loadObject();
+
+// ✅ свайп
+let startX = 0;
+
+document.addEventListener("touchstart", e => {
+  startX = e.touches[0].clientX;
+});
+
+document.addEventListener("touchend", e => {
+  let endX = e.changedTouches[0].clientX;
+
+  if (endX - startX > 50) changeSlide(-1);
+  if (startX - endX > 50) changeSlide(1);
+});
