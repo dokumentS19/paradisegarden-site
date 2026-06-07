@@ -160,7 +160,7 @@ h1, h2 {
   border: none;
 }
 
-/* ✅ CRM TEXTAREA */
+/* ✅ TEXTAREA (CRM) */
 textarea {
   width: 100%;
   min-height: 70px;
@@ -202,7 +202,7 @@ canvas {
   gap: 20px;
 }
 
-/* ✅ CARD (PREMIUM CRM) */
+/* ✅ CARD (CRM PREMIUM) */
 .card {
   position: relative;
   background: #1e293b;
@@ -231,7 +231,7 @@ canvas {
   font-weight: bold;
 }
 
-/* ✅ CARD BUTTONS */
+/* ✅ BUTTONS IN CARD */
 .card button {
   margin-top: 5px;
   margin-right: 5px;
