@@ -2,7 +2,7 @@
 --bg:#0f1720;--card:#1a2330;--brand:#22c55e;--accent:#4ade80;--text:#ffffff;--muted:#9ca3af;--border:#374151;--shadow:0 10px 30px rgba(0,0,0,.4);
 --fs-hero:clamp(1.8rem, 2.4vw + 1.2rem, 3rem);--fs-h2:clamp(1.3rem, 1.4vw + 1rem, 2rem);--fs-base:clamp(0.98rem, 0.4vw + 0.8rem, 1.075rem);
 --space-section:clamp(48px, 8vw, 96px);--radius:14px;
-}
+} 
 *{box-sizing:border-box}html,body{margin:0;padding:0}
 body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;font-size:var(--fs-base);color:var(--text);background: radial-gradient(circle at top, #1e293b, #0f1720);line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
 img{max-width:100%;height:auto;display:block}
