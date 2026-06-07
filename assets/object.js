@@ -29,6 +29,16 @@ function changeSlide(step) {
   document.getElementById("mainImg").src = images[current];
 }
 
-// ✅ КЛІК → FULLSCREEN
+// ✅ FULLSCREEN
 function openModal() {
+  document.getElementById("modal").style.display = "flex";
+  document.getElementById("modalImg").src = images[current];
+}
+
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+}
+
+// ✅ ЗАВАНТАЖЕННЯ ОБ'ЄКТА
+async function loadObject() {
 
