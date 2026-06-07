@@ -1,41 +1,20 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="utf-8">
-  <title>Адмінка</title>
+  <meta charset="UTF-8">
+  <title>Адмін</title>
 </head>
-<body style="display:none;">
-
-<script>
-const password = prompt("Введіть пароль:");
-
-if (password !== "1234") {
-  alert("Невірний пароль!");
-  window.location.href = "index.html";
-} else {
-  document.body.style.display = "block";
-}
-</script>
-``
+<body>
 
 <h2>Додати об'єкт</h2>
 
-<label>Назва:</label><br>
-<input id="title"><br><br>
+<input id="title" placeholder="Назва"><br><br>
+<input id="area" placeholder="Площа"><br><br>
+<input id="price" placeholder="Ціна"><br><br>
 
-<label>Площа:</label><br>
-<input id="area" type="number"><br><br>
-
-<label>Ціна:</label><br>
-<input id="price" type="number"><br><br>
-
-<label>Фото:</label><br>
-<input type="file" id="image" multiple><br><br>
-
-<button id="addBtn">Додати</button>
+<button onclick="addObject()">Додати</button>
 
 <script type="module" src="admin.js"></script>
 
 </body>
 </html>
- 
