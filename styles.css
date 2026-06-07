@@ -4,7 +4,7 @@ body {
   color: white;
   padding: 20px;
 }
-
+ 
 #objectsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
