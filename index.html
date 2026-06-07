@@ -75,7 +75,15 @@
   </div>
 </header>  
   <script type="module">
-  document.getElementById("galNext").onclick = () => {
+
+let currentImages = [];
+let currentIndex = 0;
+
+const modal = document.getElementById("galleryModal");
+const modalImg = document.getElementById("modalImg");
+
+    
+    document.getElementById("galNext").onclick = () => {
   currentIndex++;
   if (currentIndex >= currentImages.length) currentIndex = 0;
   modalImg.src = currentImages[currentIndex];
@@ -186,8 +194,6 @@ const cardHTML = `
 
 loadObjects();
 </script>
-<script type="module" src="script.js"></script>
-
 </body>
 </html>
 ``
