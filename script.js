@@ -18,7 +18,7 @@ const db = getFirestore(app);
 
 let allObjects = [];
 
-// ✅ завантаження
+// ✅ LOAD
 async function load() {
   const snap = await getDocs(collection(db, "objects"));
 
@@ -31,8 +31,9 @@ async function load() {
   render(allObjects);
 }
 
-// ✅ рендер
+// ✅ RENDER
 function render(data) {
+
   const grid = document.getElementById("objectsGrid");
   grid.innerHTML = "";
 
@@ -40,6 +41,11 @@ function render(data) {
     grid.innerHTML = "<p>Нічого не знайдено</p>";
     return;
   }
+
+  // ✅ VIP зверху
+  data.sort((a, b) => {
+    return (b.vip === true) - (a.vip === true);
+  });
 
   data.forEach(d => {
 
@@ -51,18 +57,28 @@ function render(data) {
     grid.innerHTML += `
       <div class="card">
 
+        ${d.vip ? `<div style="color:gold;">🔥 VIP</div>` : ""}
+
         <a href="object.html?id=${d.id}">
-
           <img src="${img}">
-
           <h3>${d.title || "Без назви"}</h3>
 
-          <p>${d.area || "-"} м²</p>
+          <p>📐 ${d.area || "-"}</p>
 
-          <strong>${d.price || "-"} $</strong>
+          <strong>💰 ${d.price || "-"} $</strong>
 
+          <p>👁 ${d.views || 0}</p>
+
+          <p>
+            ${d.status === "sold"
+              ? "❌ Продано"
+              : "✅ Активне"}
+          </p>
+
+          <p>⭐ ${(d.rating || 0)} (${d.ratingCount || 0})</p>
         </a>
 
+        <!-- ❤️ -->
         <div onclick="toggleFav('${d.id}')" class="favorite">
           ${isFav ? "❤️" : "🤍"}
         </div>
@@ -72,7 +88,7 @@ function render(data) {
   });
 }
 
-// ✅ ОБРАНЕ
+// ✅ FAVORITES
 function toggleFav(id) {
   let favs = JSON.parse(localStorage.getItem("favs")) || [];
 
@@ -89,8 +105,7 @@ function toggleFav(id) {
 
 window.toggleFav = toggleFav;
 
-
-// ✅ ПОШУК + ФІЛЬТР
+// ✅ FILTER
 const search = document.getElementById("search");
 const minPrice = document.getElementById("minPrice");
 const maxPrice = document.getElementById("maxPrice");
@@ -118,6 +133,5 @@ if (search && minPrice && maxPrice) {
   };
 }
 
-// ✅ старт
+// ✅ START
 load();
-``
