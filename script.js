@@ -25,8 +25,7 @@ async function login() {
   } catch (e) {
     alert(e.message);
   }
-  }
-  function updateFavUI() {
+   function updateFavUI() {
   document.querySelectorAll(".fav-btn").forEach(btn => {
     const id = Number(btn.dataset.id);
 
@@ -211,7 +210,6 @@ const cardHTML = `
     <p>Площа: ${d.area || "-"} м²</p>
     <strong>${d.price || "-"} $</strong>
   </div>
-`;
     grid.innerHTML += cardHTML;
   });
 
