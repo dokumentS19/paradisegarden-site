@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html<head><html lang="uk">
+<html lang="uk">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>АН Райський Сад</title>
@@ -46,13 +47,11 @@
   <h2>🏡 Про агентство</h2>
 
   <p>
-    АН "Райський Сад" — агентство нерухомості, яке допомагає клієнтам
-    безпечно та швидко купити або продати житло.
+    АН "Райський Сад" допомагає купити, продати або орендувати нерухомість.
   </p>
 
   <p>
-    Ми працюємо з квартирами, будинками та земельними ділянками,
-    та забезпечуємо повний супровід угоди.
+    Працюємо тільки з перевіреними об'єктами та супроводжуємо угоду.
   </p>
 
   <div class="list">
@@ -68,10 +67,10 @@
   <h2>Чому обирають нас</h2>
 
   <div class="grid">
-    <div>✅ Велика база об'єктів</div>
-    <div>⚡ Швидкий підбір</div>
-    <div>📞 Завжди на зв'язку</div>
-    <div>💬 Повний супровід</div>
+    <div>✅ Велика база</div>
+    <div>⚡ Швидко</div>
+    <div>📞 Завжди онлайн</div>
+    <div>💬 Підтримка</div>
   </div>
 </section>
 
@@ -80,20 +79,9 @@
   <h2>⭐ Відгуки клієнтів</h2>
 
   <div class="reviews-grid">
-    <div class="review">
-      Дуже швидко допомогли купити квартиру 👍  
-      <strong>— Олексій</strong>
-    </div>
-
-    <div class="review">
-      Все прозоро і професійно  
-      <strong>— Ірина</strong>
-    </div>
-
-    <div class="review">
-      Найкраще агентство в Ірпені 🔥  
-      <strong>— Максим</strong>
-    </div>
+    <div class="review">Швидко продали квартиру 👍</div>
+    <div class="review">Все чітко і без ризиків</div>
+    <div class="review">Рекомендую 🔥</div>
   </div>
 </section>
 
@@ -107,10 +95,14 @@
 <section class="form fade-in">
   <h2>📩 Залишити заявку</h2>
 
-  <input placeholder="Ваше ім'я"><br><br>
-  <input placeholder="Телефон"><br><br>
+  <input id="name" placeholder="Ваше ім'я"><br><br>
+  <input id="phone" placeholder="Телефон"><br><br>
 
-  <button class="btn">Відправити</button>
+  <button onclick="sendForm()" class="btn">Відправити</button>
+
+  <!-- ✅ КНОПКА ДЗВІНКА -->
+  <br><br>
+  <button onclick="callNow()" class="btn">📞 Подзвонити зараз</button>
 </section>
 
 <!-- ✅ КОНТАКТИ -->
@@ -119,7 +111,7 @@
 
   <div class="contact-card">
     <p>📞 +38 095 3777196</p>
-    <p>📍 Ірпінь, Київська область</p>
+    <p>📍 Ірпінь</p>
     <p>📧 info@paradisegarden.com.ua</p>
   </div>
 </section>
@@ -147,5 +139,3 @@ window.addEventListener("scroll", () => {
 
 </body>
 </html>
-
-
