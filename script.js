@@ -442,18 +442,16 @@ setTimeout(()=> recommendBtn.textContent='Рекомендувати', 1800);
 }
 });
     // ===== Контакти =====
-const TELEGRAM_LINK = "https://t.me/RSOleg";
-const PHONE_NUMBER = "+380953777196"; 
+// ===== контакти (один раз!)// ===== контакти (const TELEGRAM_LINK = "https://t.me/RSOleg";
+const PHONE_NUMBER = "+380953777196";
 
 function setupTelegram(aTag){
   if (!aTag) return;
 
-  const url = TELEGRAM_LINK;
-
-  aTag.href = url || '#';
+  aTag.href = TELEGRAM_LINK;
 
   aTag.addEventListener("click", (e) => {
-    if (!url){
+    if (!TELEGRAM_LINK){
       e.preventDefault();
       alert("Telegram не вказаний");
     }
