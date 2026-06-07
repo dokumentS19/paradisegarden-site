@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>Адмінка</title>
 </head>
-<body>
+<body style="display:none;">
 
 <script>
 const password = prompt("Введіть пароль:");
@@ -12,8 +12,11 @@ const password = prompt("Введіть пароль:");
 if (password !== "1234") {
   alert("Невірний пароль!");
   window.location.href = "index.html";
+} else {
+  document.body.style.display = "block";
 }
 </script>
+``
 
 <h2>Додати об'єкт</h2>
 
