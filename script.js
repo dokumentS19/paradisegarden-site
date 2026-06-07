@@ -29,7 +29,7 @@ async function loadObjects() {
 
     const html = `
       <a href="object.html?id=${doc.id}" class="card">
-        <img src="${img}">
+       <img src="${img}" alt="">
         <h3>${d.title || "Без назви"}</h3>
         <p>Площа: ${d.area || "-"} м²</p>
         <strong>${d.price || "-"} $</strong>
