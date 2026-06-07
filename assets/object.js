@@ -92,3 +92,122 @@ async function loadObject() {
     return;
   }
 
+  const d = snap.data();
+
+  images = d.images || (d.image ? [d.image] : []);
+
+  document.getElementById("objectPage").innerHTML = `
+    <div class="object-page">
+
+      <div class="gallery">
+        <button class="nav left" onclick="changeSlide(-1)">◀</button>
+
+        <img id="mainImg" src="${images[0] || ""}">
+
+        <button class="nav right" onclick="changeSlide(1)">▶</button>
+
+        <div id="counter">1 / ${images.length}</div>
+      </div>
+
+      <div class="thumbs">
+        ${images.map((img, i) => `
+          <img src="${img}" onclick="selectImage(${i})">
+        `).join("")}
+      </div>
+
+      <h1>${d.title || "Без назви"}</h1>
+
+      <p>📐 ${d.area || "-"} м²</p>
+      <p>💰 ${d.price || "-"} $</p>
+
+      <button onclick="call()">📞 Подзвонити</button>
+
+      <!-- ✅ ЧАТ -->
+      <button onclick="startChat('${d.ownerId}')" style="
+        margin-top:10px;
+        padding:12px;
+        background:#3b82f6;
+        color:white;
+        border:none;
+        border-radius:8px;
+        cursor:pointer;
+      ">
+        💬 Написати продавцю
+      </button>
+
+      <!-- ✅ КАРТА -->
+      <div id="map" style="height:300px; margin-top:20px;"></div>
+
+    </div>
+  `;
+
+  updateImage();
+
+  setTimeout(() => {
+    initMap(d.lat, d.lng);
+  }, 300);
+}
+
+// ✅ ЗВОНОК
+window.call = () => {
+  window.location.href = "tel:+380674464705";
+};
+
+// ✅ ЧАТ
+window.startChat = async (ownerId) => {
+
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("Увійди!");
+    return;
+  }
+
+  const q = query(
+    collection(db, "chats"),
+    where("users", "array-contains", user.uid)
+  );
+
+  const snap = await getDocs(q);
+
+  let chatId = null;
+
+  snap.forEach(d => {
+    const users = d.data().users;
+
+    if (users.includes(ownerId)) {
+      chatId = d.id;
+    }
+  });
+
+  if (!chatId) {
+    const newChat = await addDoc(collection(db, "chats"), {
+      users: [user.uid, ownerId],
+      createdAt: new Date()
+    });
+
+    chatId = newChat.id;
+  }
+
+  window.location.href = `chat.html?chatId=${chatId}`;
+};
+
+// ✅ глобально
+window.changeSlide = changeSlide;
+window.selectImage = selectImage;
+
+// ✅ запуск
+loadObject();
+
+// ✅ свайп
+let startX = 0;
+
+document.addEventListener("touchstart", e => {
+  startX = e.touches[0].clientX;
+});
+
+document.addEventListener("touchend", e => {
+  let endX = e.changedTouches[0].clientX;
+
+  if (endX - startX > 50) changeSlide(-1);
+
