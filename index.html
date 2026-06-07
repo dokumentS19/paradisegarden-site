@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>АН Райський Сад</title>
- 
-  .css">
+
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -19,12 +19,15 @@
     <input id="minPrice" placeholder="від $" type="number">
     <input id="maxPrice" placeholder="до $" type="number">
 
-    #about
-    #contacts
+    <a href="#about">Про нас</a>
+    <a href="#contacts">Контакти</a>
     <a href="leads.html">📋 Заявки</a>
     <a href="favorites.html">❤️ Обране</a>
     <a href="dashboard.html">Кабінет</a>
     <a href="dialogs.html">💬 Діалоги</a>
+
+    <!-- ✅ КНОПКА ТЕМИ -->
+    <button onclick="toggleTheme()" class="btn">🌗</button>
   </div>
 </header>
 
@@ -39,7 +42,7 @@
       Продаж, купівля та оренда нерухомості в Ірпені та Київській області
     </p>
 
-    #objectsGrid class="btn">Переглянути об'єкти</a>
+    <a href="#objectsGrid" class="btn">Переглянути об'єкти</a>
   </div>
 </section>
 
@@ -139,7 +142,9 @@ window.addEventListener("scroll", () => {
 });
 </script>
 
+<!-- ✅ JS -->
 <script type="module" src="script.js"></script>
 
 </body>
 </html>
+``
