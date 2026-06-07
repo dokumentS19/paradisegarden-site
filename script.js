@@ -22,7 +22,7 @@ let allObjects = [];
 /* ================================
    ✅ TELEGRAM CONFIG
 ================================ */
-const TOKEN = "ТУТ_НОВИЙ_TOKEN"; // після /revoke
+const TOKEN = "ТУТ_НОВИЙ_TOKEN";
 const CHAT_ID = "598876080";
 
 /* ================================
@@ -32,6 +32,7 @@ async function load() {
   const snap = await getDocs(collection(db, "objects"));
 
   allObjects = [];
+
   snap.forEach(doc => {
     allObjects.push({ id: doc.id, ...doc.data() });
   });
@@ -70,7 +71,7 @@ function render(data) {
         ${d.vip ? `<div style="color:gold;">🔥 VIP</div>` : ""}
 
         <a href="object.html?id=${d.id}">
-          <img src="${img}">
+          ${img}
           <h3>${d.title || "Без назви"}</h3>
 
           <p>📐 ${d.area || "-"}</p>
@@ -145,7 +146,7 @@ if (search && minPrice && maxPrice) {
 }
 
 /* ================================
-   ✅ TELEGRAM + FIREBASE
+   ✅ TELEGRAM + FIREBASE (CRM)
 ================================ */
 window.sendForm = async () => {
 
@@ -165,7 +166,6 @@ window.sendForm = async () => {
 `;
 
   try {
-
     // ✅ Telegram
     await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
       method: "POST",
@@ -178,11 +178,15 @@ window.sendForm = async () => {
       })
     });
 
-    // ✅ Firebase CRM
+    // ✅ Firebase (CRM)
     await addDoc(collection(db, "leads"), {
       name,
       phone,
       status: "new",
+
+      // ✅ ДОХІД для аналітики
+      income: 1000,
+
       createdAt: new Date()
     });
 
