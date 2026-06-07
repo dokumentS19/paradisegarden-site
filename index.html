@@ -86,6 +86,19 @@
 
   <script type="module">
 
+// 🔥 ВСТАВ ТУТ Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
+  authDomain: "paradisegarden-site.firebaseapp.com",
+  projectId: "paradisegarden-site"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 let currentImages = [];
 let currentIndex = 0;
 
