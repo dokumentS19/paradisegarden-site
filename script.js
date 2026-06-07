@@ -441,7 +441,6 @@ setTimeout(()=> recommendBtn.textContent='Рекомендувати', 1800);
 }
 });
     // ===== Контакти =====
-
 const TELEGRAM_LINK = "https://t.me/RSOleg";
 const PHONE_NUMBER = "+380953777196"; 
 
