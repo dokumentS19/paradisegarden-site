@@ -121,8 +121,6 @@ document.querySelector(".modal-backdrop")?.addEventListener("click", closeGaller
 const tgBtn = document.getElementById("tgLink");
 
 // ✅ одна змінна
-const TELEGRAM_LINK = "https://t.me/RSOleg";
-
 if (tgBtn) {
   tgBtn.href = TELEGRAM_LINK;
 
