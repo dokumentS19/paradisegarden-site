@@ -5,7 +5,6 @@ import {
   getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// ✅ Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
   authDomain: "paradisegarden-site.firebaseapp.com",
@@ -15,14 +14,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ✅ отримуємо ID
 const id = new URLSearchParams(window.location.search).get("id");
 
-// ✅ галерея
+// ✅ дані галереї
 let images = [];
 let current = 0;
 
-// ✅ перемикання
+// ✅ змінити слайд
 function changeSlide(step) {
   current += step;
 
@@ -37,6 +35,11 @@ function updateImage() {
   document.getElementById("mainImg").src = images[current];
   document.getElementById("counter").textContent =
     `${current + 1} / ${images.length}`;
+
+  // ✅ активна мініатюра
+  document.querySelectorAll(".thumbs img").forEach((img, i) => {
+    img.classList.toggle("active", i === current);
+  });
 }
 
 // ✅ вибір мініатюри
@@ -55,7 +58,7 @@ function closeModal() {
   document.getElementById("modal").style.display = "none";
 }
 
-// ✅ загрузка об’єкта
+// ✅ загрузка об'єкта
 async function loadObject() {
   if (!id) return;
 
@@ -81,7 +84,7 @@ async function loadObject() {
 
         <button class="nav right" onclick="changeSlide(1)">▶</button>
 
-        <div id="counter">${1} / ${images.length}</div>
+        <div id="counter">1 / ${images.length}</div>
 
       </div>
 
@@ -111,7 +114,7 @@ window.call = () => {
   window.location.href = "tel:+380674464705";
 };
 
-// ✅ глобально
+// ✅ глобальні функції
 window.changeSlide = changeSlide;
 window.selectImage = selectImage;
 window.openModal = openModal;
