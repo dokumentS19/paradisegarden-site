@@ -30,7 +30,7 @@ async function loadObject() {
 
   document.getElementById("objectPage").innerHTML = `
     <div class="card">
-      <img src="${d.image || "https://via.placeholder.com/400"}">
+  const img = d.images?.[0] || d.image || "https://via.placeholder.com/400";
 
       <h1>${d.title}</h1>
 
