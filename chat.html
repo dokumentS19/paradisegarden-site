@@ -10,34 +10,73 @@
       font-family: Arial;
       background: #0f172a;
       color: white;
-      padding: 20px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
     }
 
+    /* ✅ HEADER */
+    .chat-header {
+      padding: 15px;
+      background: #111827;
+      border-bottom: 1px solid #1e293b;
+      font-size: 18px;
+    }
+
+    /* ✅ MESSAGES */
     #messages {
-      max-height: 400px;
+      flex: 1;
       overflow-y: auto;
-      margin-bottom: 10px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
     }
 
-    #messages div {
-      margin: 5px 0;
+    .msg {
+      max-width: 70%;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 12px;
+      word-wrap: break-word;
+    }
+
+    .mine {
+      background: #16a34a;
+      align-self: flex-end;
+      text-align: right;
+    }
+
+    .other {
+      background: #1e293b;
+      align-self: flex-start;
+    }
+
+    /* ✅ INPUT */
+    .chat-input {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #1e293b;
+      background: #0f172a;
+    }
+
+    .chat-input input {
+      flex: 1;
       padding: 10px;
       border-radius: 8px;
-    }
-
-    input {
-      padding: 10px;
-      width: 70%;
-      border-radius: 6px;
       border: none;
-    }
-
-    button {
-      padding: 10px;
-      background: #16a34a;
+      background: #1e293b;
       color: white;
+      outline: none;
+    }
+
+    .chat-input button {
+      margin-left: 10px;
+      padding: 10px 15px;
+      background: #16a34a;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
+      color: white;
       cursor: pointer;
     }
   </style>
@@ -45,12 +84,19 @@
 
 <body>
 
-<h2>💬 Чат</h2>
+<!-- ✅ HEADER -->
+<div class="chat-header">
+  💬 Чат з продавцем
+</div>
 
+<!-- ✅ MESSAGES -->
 <div id="messages"></div>
 
-<input id="msg" placeholder="Написати...">
-<button onclick="send()">Відправити</button>
+<!-- ✅ INPUT -->
+<div class="chat-input">
+  <input id="msg" placeholder="Написати...">
+  <button onclick="send()">Відправити</button>
+</div>
 
 <script type="module" src="chat.js"></script>
 
