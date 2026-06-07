@@ -1,9 +1,19 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 import {
   getFirestore,
   doc,
-  getDoc
+  getDoc,
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+  getAuth
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // ✅ Firebase
 const firebaseConfig = {
@@ -14,6 +24,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 // ✅ ID
 const id = new URLSearchParams(window.location.search).get("id");
@@ -22,7 +33,7 @@ const id = new URLSearchParams(window.location.search).get("id");
 let images = [];
 let current = 0;
 
-// ✅ Перемикання фото
+// ✅ Перемикання
 function changeSlide(step) {
   current += step;
 
@@ -32,7 +43,7 @@ function changeSlide(step) {
   updateImage();
 }
 
-// ✅ Оновлення фото
+// ✅ Оновлення
 function updateImage() {
   const img = document.getElementById("mainImg");
   if (!img) return;
@@ -49,7 +60,7 @@ function updateImage() {
   });
 }
 
-// ✅ Вибір знизу
+// ✅ Вибір фото
 function selectImage(index) {
   current = index;
   updateImage();
@@ -70,7 +81,7 @@ function initMap(lat, lng) {
   });
 }
 
-// ✅ Завантаження об'єкта
+// ✅ ЗАВАНТАЖЕННЯ ОБ'ЄКТА
 async function loadObject() {
   if (!id) return;
 
@@ -81,74 +92,3 @@ async function loadObject() {
     return;
   }
 
-  const d = snap.data();
-
-  images = d.images || (d.image ? [d.image] : []);
-
-  document.getElementById("objectPage").innerHTML = `
-    <div class="object-page">
-
-      <div class="gallery">
-
-        <button class="nav left" onclick="changeSlide(-1)">◀</button>
-
-        <img id="mainImg" src="${images[0] || ""}">
-
-        <button class="nav right" onclick="changeSlide(1)">▶</button>
-
-        <div id="counter">1 / ${images.length}</div>
-
-      </div>
-
-      <div class="thumbs">
-        ${images.map((img, i) => `
-          <img src="${img}" onclick="selectImage(${i})">
-        `).join("")}
-      </div>
-
-      <h1>${d.title || "Без назви"}</h1>
-
-      <p>📐 ${d.area || "-"} м²</p>
-      <p>💰 ${d.price || "-"} $</p>
-
-      <button onclick="call()">📞 Подзвонити</button>
-
-      <!-- ✅ КАРТА -->
-      <div id="map" style="height:300px; margin-top:20px;"></div>
-
-    </div>
-  `;
-
-  updateImage();
-
-  // ✅ запуск карти
-  setTimeout(() => {
-    initMap(d.lat, d.lng);
-  }, 300);
-}
-
-// ✅ Телефон
-window.call = () => {
-  window.location.href = "tel:+380674464705";
-};
-
-// ✅ глобальні функції
-window.changeSlide = changeSlide;
-window.selectImage = selectImage;
-
-// ✅ запуск
-loadObject();
-
-// ✅ свайп
-let startX = 0;
-
-document.addEventListener("touchstart", e => {
-  startX = e.touches[0].clientX;
-});
-
-document.addEventListener("touchend", e => {
-  let endX = e.changedTouches[0].clientX;
-
-  if (endX - startX > 50) changeSlide(-1);
-  if (startX - endX > 50) changeSlide(1);
-});
