@@ -13,15 +13,14 @@ import {
   getDownloadURL
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-// 🔥 ВСТАВ СВОЇ ДАНІ
+import {
+  getAuth,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+// ✅ CONFIG (виправлено)
 const firebaseConfig = {
   apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
-  authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site",
-  storageBucket: "paradisegarden-site.firebasestorage.app",
-  messagingSenderId: "452352075250",
-  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
-  measurementId: "G-6XHWE6Y0JE"
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site",
   storageBucket: "paradisegarden-site.appspot.com"
@@ -31,6 +30,14 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 const storage = getStorage(app);
+const auth = getAuth(app);
+
+let currentUser = null;
+
+// ✅ отримуємо юзера
+onAuthStateChanged(auth, user => {
+  currentUser = user;
+});
 
 // ✅ ПРЕВ’Ю ФОТО
 const input = document.getElementById("file");
@@ -56,6 +63,7 @@ input.addEventListener("change", () => {
 
 // ✅ ДОДАВАННЯ ОБ’ЄКТА
 window.addObject = async () => {
+
   const title = document.getElementById("title").value;
   const area = document.getElementById("area").value;
   const price = document.getElementById("price").value;
@@ -66,10 +74,15 @@ window.addObject = async () => {
     return;
   }
 
+  if (!currentUser) {
+    alert("Увійди в кабінет!");
+    return;
+  }
+
   try {
     const imageUrls = [];
 
-    // ✅ загрузка всіх фото
+    // ✅ загрузка фото
     for (let file of files) {
 
       const storageRef = ref(
@@ -84,12 +97,13 @@ window.addObject = async () => {
       imageUrls.push(url);
     }
 
-    // ✅ запис в Firestore
+    // ✅ запис у Firestore
     await addDoc(collection(db, "objects"), {
       title,
       area,
       price,
-      images: imageUrls, // ✅ масив фото
+      images: imageUrls,
+      ownerId: currentUser.uid, // ✅ ВАЖЛИВО!
       createdAt: new Date()
     });
 
