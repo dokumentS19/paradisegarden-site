@@ -19,7 +19,7 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// ✅ CONFIG (встав свій ключ)
+// ✅ CONFIG
 const firebaseConfig = {
   apiKey: "ТВОЙ_API_KEY",
   authDomain: "paradisegarden-site.firebaseapp.com",
@@ -33,7 +33,7 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 
-// ✅ LOGIN (БЕЗ ПОМИЛОК)
+// ✅ LOGIN
 window.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("loginBtn");
 
@@ -45,7 +45,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// ✅ СТЕЖЕННЯ ЗА ЮЗЕРОМ
+// ✅ СЛУХАЄМО ЮЗЕРА
 onAuthStateChanged(auth, user => {
 
   const info = document.getElementById("userInfo");
@@ -53,10 +53,10 @@ onAuthStateChanged(auth, user => {
   if (user) {
     console.log("✅ Увійшов:", user.uid);
 
-    // ✅ показ профілю
+    // ✅ профіль
     if (info) {
       info.innerHTML = `
-        <p>👤 ${user.displayName}</p>
+        <p>👤 ${user.displayName || "Користувач"}</p>
         <button onclick="logout()">Вийти</button>
       `;
     }
@@ -67,6 +67,8 @@ onAuthStateChanged(auth, user => {
     if (info) {
       info.innerHTML = `<p>❌ Не авторизований</p>`;
     }
+
+    document.getElementById("myAds").innerHTML = "";
   }
 });
 
@@ -81,19 +83,29 @@ window.addObject = async () => {
     return;
   }
 
-  const title = document.getElementById("title").value;
+  const title = document.getElementById("title").value.trim();
   const price = document.getElementById("price").value;
   const area = document.getElementById("area").value;
 
+  if (!title || !price) {
+    alert("Заповни назву і ціну");
+    return;
+  }
+
   await addDoc(collection(db, "objects"), {
     title,
-    price,
-    area,
+    price: Number(price),
+    area: area || "-",
     ownerId: user.uid,
     createdAt: new Date()
   });
 
   alert("✅ Додано");
+
+  // ✅ очищаємо поля
+  document.getElementById("title").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("area").value = "";
 
   loadMyAds(user.uid);
 };
@@ -112,13 +124,30 @@ async function loadMyAds(uid) {
   const el = document.getElementById("myAds");
   el.innerHTML = "";
 
+  if (snap.empty) {
+    el.innerHTML = "<p>Немає оголошень</p>";
+    return;
+  }
+
   snap.forEach(docu => {
     const d = docu.data();
 
     el.innerHTML += `
-      <div style="margin-bottom:10px;">
-        <strong>${d.title}</strong> - ${d.price} $
-        <button onclick="deleteAd('${docu.id}')">❌</button>
+      <div style="
+        background:#1e293b;
+        padding:10px;
+        margin-bottom:10px;
+        border-radius:8px;
+      ">
+        <strong>${d.title}</strong><br>
+        💰 ${d.price} $<br>
+        📐 ${d.area}
+
+        <br><br>
+
+        <button onclick="deleteAd('${docu.id}')" style="background:red;">
+          ❌ Видалити
+        </button>
       </div>
     `;
   });
@@ -127,7 +156,11 @@ async function loadMyAds(uid) {
 
 // ✅ ВИДАЛЕННЯ
 window.deleteAd = async (id) => {
+
+  if (!confirm("Видалити?")) return;
+
   await deleteDoc(doc(db, "objects", id));
+
   loadMyAds(auth.currentUser.uid);
 };
 
