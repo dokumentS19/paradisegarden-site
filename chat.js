@@ -18,7 +18,7 @@ import {
 const firebaseConfig = {
   apiKey: "ТВОЙ_API_KEY",
   authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site",
+  projectId: "paradisegarden-site", 
 };
 
 const app = initializeApp(firebaseConfig);
