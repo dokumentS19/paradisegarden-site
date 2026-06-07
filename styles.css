@@ -29,7 +29,7 @@ h1, h2 {
   align-items: center;
 }
 
-/* ✅ inputs */
+/* ✅ INPUTS */
 .topbar input {
   margin-right: 10px;
   padding: 8px;
@@ -43,7 +43,7 @@ h1, h2 {
   color: #94a3b8;
 }
 
-/* ✅ меню */
+/* ✅ MENU */
 .topbar a {
   padding: 10px;
   background: #16a34a;
@@ -59,7 +59,7 @@ h1, h2 {
   transform: scale(1.05);
 }
 
-/* ✅ HERO (ФОТО + OVERLAY) */
+/* ✅ HERO */
 .hero {
   position: relative;
   height: 420px;
@@ -69,7 +69,6 @@ h1, h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
 
 .hero-overlay {
@@ -85,15 +84,7 @@ h1, h2 {
   max-width: 700px;
 }
 
-.hero h1 {
-  font-size: 34px;
-}
-
-.hero p {
-  margin: 10px 0 20px;
-}
-
-/* ✅ кнопка */
+/* ✅ BUTTON */
 .btn {
   display: inline-block;
   background: #16a34a;
@@ -101,13 +92,15 @@ h1, h2 {
   border-radius: 8px;
   color: white;
   text-decoration: none;
+  border: none;
+  cursor: pointer;
 }
 
 .btn:hover {
   background: #22c55e;
 }
 
-/* ✅ БЛОКИ */
+/* ✅ SECTION BLOCKS */
 .about, .features, .contacts, .objects, .form {
   background: #1e293b;
   padding: 25px;
@@ -116,15 +109,14 @@ h1, h2 {
   max-width: 1000px;
 }
 
-/* ✅ список */
+/* ✅ LIST */
 .list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-  margin-top: 15px;
 }
 
-/* ✅ ЧОМУ МИ */
+/* ✅ FEATURES */
 .features .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -136,19 +128,9 @@ h1, h2 {
   padding: 15px;
   border-radius: 10px;
   text-align: center;
-  transition: 0.3s;
 }
 
-.features .grid div:hover {
-  transform: translateY(-5px);
-}
-
-/* ✅ ВІДГУКИ */
-.reviews {
-  max-width: 1000px;
-  margin: auto;
-}
-
+/* ✅ REVIEWS */
 .reviews-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -168,30 +150,57 @@ h1, h2 {
   border-radius: 10px;
 }
 
-/* ✅ ФОРМА */
+/* ✅ FORM */
 .form input {
   width: 100%;
   padding: 10px;
   border-radius: 6px;
-  border: none;
   background: #0f172a;
   color: white;
-  margin-bottom: 10px;
+  border: none;
 }
 
-/* ✅ GRID ОБʼЄКТІВ */
+/* ✅ CRM TEXTAREA */
+textarea {
+  width: 100%;
+  min-height: 70px;
+  background: #0f172a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+/* ✅ STATS */
+#stats {
+  background: #0f172a;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+/* ✅ CHART */
+canvas {
+  margin-top: 20px;
+  background: #1e293b;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* ✅ GRID OBJECTS */
 #objectsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 20px;
 }
 
-/* ✅ КАРТОЧКА */
+/* ✅ CARD */
 .card {
   position: relative;
   background: #1e293b;
   border-radius: 12px;
-  padding: 10px;
+  padding: 12px;
   transition: 0.25s;
 }
 
@@ -207,21 +216,28 @@ h1, h2 {
   border-radius: 10px;
 }
 
-.card strong {
-  color: #22c55e;
+/* ✅ CARD BUTTONS */
+.card button {
+  margin-top: 5px;
+  margin-right: 5px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
 }
 
-/* ✅ ❤️ */
+.card button:hover {
+  opacity: 0.8;
+}
+
+/* ✅ FAVORITE */
 .favorite {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: rgba(0,0,0,0.6);
-  padding: 6px;
-  border-radius: 50%;
 }
 
-/* ✅ Анімація */
+/* ✅ ANIMATION */
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
@@ -235,13 +251,14 @@ h1, h2 {
 
 /* ✅ FOOTER */
 .footer {
-  margin-top: 40px;
   text-align: center;
+  margin-top: 40px;
   opacity: 0.6;
 }
 
 /* ✅ MOBILE */
 @media (max-width: 600px) {
+
   .topbar {
     flex-direction: column;
   }
@@ -251,15 +268,14 @@ h1, h2 {
     width: 100%;
   }
 
-  .features .grid,
   .reviews-grid,
+  .features .grid,
   .list {
     grid-template-columns: 1fr;
   }
 
   .hero {
     height: auto;
-    padding: 30px 10px;
+    padding: 20px;
   }
 }
-
