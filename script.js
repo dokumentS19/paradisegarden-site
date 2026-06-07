@@ -6,6 +6,7 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// ✅ CONFIG
 const firebaseConfig = {
   apiKey: "ТВОЙ_KEY",
   authDomain: "paradisegarden-site.firebaseapp.com",
@@ -17,6 +18,7 @@ const db = getFirestore(app);
 
 let allObjects = [];
 
+// ✅ завантаження
 async function load() {
   const snap = await getDocs(collection(db, "objects"));
 
@@ -29,37 +31,48 @@ async function load() {
   render(allObjects);
 }
 
-// ✅ відображення
+// ✅ рендер
 function render(data) {
   const grid = document.getElementById("objectsGrid");
   grid.innerHTML = "";
+
+  if (data.length === 0) {
+    grid.innerHTML = "<p>Нічого не знайдено</p>";
+    return;
+  }
 
   data.forEach(d => {
 
     const img = d.images?.[0] || "https://via.placeholder.com/400";
 
+    const favs = JSON.parse(localStorage.getItem("favs")) || [];
+    const isFav = favs.includes(d.id);
+
     grid.innerHTML += `
       <div class="card">
 
-        object.html?id=${d.id}
+        <a href="object.html?id=${d.id}">
 
-          ${img}
+          <img src="${img}">
 
-          <h3>${d.title}</h3>
+          <h3>${d.title || "Без назви"}</h3>
+
           <p>${d.area || "-"} м²</p>
-          <strong>${d.price}$</strong>
+
+          <strong>${d.price || "-"} $</strong>
 
         </a>
 
-        ❤️
-        
+        <div onclick="toggleFav('${d.id}')" class="favorite">
+          ${isFav ? "❤️" : "🤍"}
+        </div>
 
       </div>
     `;
   });
 }
 
-// ❤️ обране
+// ✅ ОБРАНЕ
 function toggleFav(id) {
   let favs = JSON.parse(localStorage.getItem("favs")) || [];
 
@@ -70,30 +83,41 @@ function toggleFav(id) {
   }
 
   localStorage.setItem("favs", JSON.stringify(favs));
+
+  render(allObjects);
 }
 
 window.toggleFav = toggleFav;
 
 
-// ✅ пошук + фільтр
-document.getElementById("search").oninput =
-document.getElementById("minPrice").oninput =
-document.getElementById("maxPrice").oninput = () => {
+// ✅ ПОШУК + ФІЛЬТР
+const search = document.getElementById("search");
+const minPrice = document.getElementById("minPrice");
+const maxPrice = document.getElementById("maxPrice");
 
-  const text = document.getElementById("search").value.toLowerCase();
-  const min = Number(document.getElementById("minPrice").value);
-  const max = Number(document.getElementById("maxPrice").value);
+if (search && minPrice && maxPrice) {
 
-  const filtered = allObjects.filter(d => {
+  search.oninput =
+  minPrice.oninput =
+  maxPrice.oninput = () => {
 
-    const matchText = d.title?.toLowerCase().includes(text);
-    const matchMin = !min || d.price >= min;
-    const matchMax = !max || d.price <= max;
+    const text = search.value.toLowerCase();
+    const min = Number(minPrice.value);
+    const max = Number(maxPrice.value);
 
-    return matchText && matchMin && matchMax;
-  });
+    const filtered = allObjects.filter(d => {
 
-  render(filtered);
-};
+      const matchText = d.title?.toLowerCase().includes(text);
+      const matchMin = !min || Number(d.price) >= min;
+      const matchMax = !max || Number(d.price) <= max;
 
+      return matchText && matchMin && matchMax;
+    });
+
+    render(filtered);
+  };
+}
+
+// ✅ старт
 load();
+``
