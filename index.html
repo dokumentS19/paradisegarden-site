@@ -10,17 +10,17 @@
 
 <body>
 
-<header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+<header class="topbar">
   <h2>Paradise Garden</h2>
 
-  <a href="dashboard.html" style="
-    padding:10px 15px;
-    background:#16a34a;
-    color:white;
-    text-decoration:none;
-    border-radius:6px;">
-    Кабінет
-  </a>
+  <div class="actions">
+    <input id="search" placeholder="Пошук...">
+
+    <input id="minPrice" placeholder="від $" type="number">
+    <input id="maxPrice" placeholder="до $" type="number">
+
+    <a href="dashboard.html">Кабінет</a>
+  </div>
 </header>
 
 <h1>Об'єкти нерухомості</h1>
