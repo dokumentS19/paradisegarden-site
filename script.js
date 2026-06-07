@@ -71,7 +71,7 @@ function render(data) {
         ${d.vip ? `<div style="color:gold;">🔥 VIP</div>` : ""}
 
         <a href="object.html?id=${d.id}">
-          ${img}
+          <img src="${img}">
           <h3>${d.title || "Без назви"}</h3>
 
           <p>📐 ${d.area || "-"}</p>
@@ -146,7 +146,7 @@ if (search && minPrice && maxPrice) {
 }
 
 /* ================================
-   ✅ TELEGRAM + FIREBASE (CRM)
+   ✅ TELEGRAM + FIREBASE
 ================================ */
 window.sendForm = async () => {
 
@@ -166,6 +166,7 @@ window.sendForm = async () => {
 `;
 
   try {
+
     // ✅ Telegram
     await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
       method: "POST",
@@ -178,21 +179,17 @@ window.sendForm = async () => {
       })
     });
 
-    // ✅ Firebase (CRM)
+    // ✅ Firebase CRM
     await addDoc(collection(db, "leads"), {
       name,
       phone,
       status: "new",
-
-      // ✅ ДОХІД для аналітики
       income: 1000,
-
       createdAt: new Date()
     });
 
     alert("✅ Заявка відправлена!");
 
-    // очистка
     document.getElementById("name").value = "";
     document.getElementById("phone").value = "";
 
@@ -208,6 +205,27 @@ window.sendForm = async () => {
 window.callNow = () => {
   window.location.href = "tel:+380953777196";
 };
+
+/* ================================
+   ✅ THEME SWITCH
+================================ */
+window.toggleTheme = function () {
+
+  const current = document.body.classList.contains("light");
+
+  if (current) {
+    document.body.classList.remove("light");
+    localStorage.setItem("theme", "dark");
+  } else {
+    document.body.classList.add("light");
+    localStorage.setItem("theme", "light");
+  }
+};
+
+// ✅ LOAD THEME
+if (localStorage.getItem("theme") === "light") {
+  document.body.classList.add("light");
+}
 
 /* ================================
    ✅ START
