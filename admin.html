@@ -3,6 +3,24 @@
 <head> 
   <meta charset="UTF-8">
   <title>Адмін</title>
+
+  <style>
+    #preview {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    #preview img {
+      width: 100px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+  </style>
+
 </head>
 <body> 
 
@@ -18,11 +36,16 @@
 <input id="price"><br><br>
 
 <label>Фото</label><br>
-<input type="file" id="file" multiple><br><br>
+<input type="file" id="file" multiple><br>
 
+<div id="preview"></div>
+
+<br>
 <button onclick="addObject()">Додати</button>
 
 <script type="module" src="admin.js"></script>
 
+</body>
+</html>
 </body>
 </html>
