@@ -28,21 +28,22 @@ async function loadObject() {
 
   const d = snap.data();
 
-  document.getElementById("objectPage").innerHTML = `
-    <div class="card">
-    const img = d.images?.[0] || d.image || "https://via.placeholder.com/400";
- <img src="${img}">
+  const img = d.images?.[0] || d.image || "https://via.placeholder.com/400";
 
-      <h1>${d.title}</h1>
+document.getElementById("objectPage").innerHTML = `
+  <div class="card">
 
-      <p>📐 ${d.area || "-"} м²</p>
-      <p>💰 ${d.price || "-"} $</p>
+    <img src="${img}" alt="">
 
-      <button onclick="call()">📞 Подзвонити</button>
-    </div>
-  `;
-}
+    <h1>${d.title || "Без назви"}</h1>
 
+    <p>📐 ${d.area || "-"} м²</p>
+    <p>💰 ${d.price || "-"} $</p>
+
+    <button onclick="call()">📞 Подзвонити</button>
+
+  </div>
+`;
 window.call = () => {
   window.location.href = "tel:+380674464705";
 };
