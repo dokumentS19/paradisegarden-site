@@ -1,27 +1,101 @@
-
 <!DOCTYPE html>
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Кабінет</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    input {
+      padding: 10px;
+      width: 250px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    button {
+      padding: 10px 15px;
+      background: #16a34a;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #loginBtn {
+      background: #3b82f6;
+      margin-bottom: 20px;
+    }
+
+    #userInfo {
+      margin-bottom: 15px;
+    }
+
+    #myAds div {
+      background: #1e293b;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+    }
+
+    #myAds button {
+      background: red;
+      margin-left: 10px;
+    }
+  </style>
 </head>
+
 <body>
 
+<!-- ✅ Профіль -->
 <h2>Мій кабінет</h2>
 
-<button id="loginBtn">Увійти</button>
+<div id="userInfo">❌ Не авторизований</div>
 
+<button id="loginBtn">Увійти через Google</button>
+
+<hr>
+
+<!-- ✅ Додавання -->
 <h3>Додати оголошення</h3>
 
-<input id="title" placeholder="Назва"><br><br>
-<input id="price" placeholder="Ціна"><br><br>
-<input id="area" placeholder="Площа"><br><br>
+<input id="title" placeholder="Назва"><br>
+<input id="price" placeholder="Ціна"><br>
+<input id="area" placeholder="Площа"><br>
 
 <button onclick="addObject()">Додати</button>
 
+<hr>
+
+<!-- ✅ Мої оголошення -->
 <h3>Мої оголошення</h3>
 
 <div id="myAds"></div>
+
+<!-- ✅ кнопка діалогів -->
+<br>
+<a href="dialogs.html" style="
+  display:inline-block;
+  padding:10px;
+  background:#16a34a;
+  color:white;
+  border-radius:6px;
+  text-decoration:none;
+">
+  💬 Мої діалоги
+</a>
 
 <script type="module" src="dashboard.js"></script>
 
