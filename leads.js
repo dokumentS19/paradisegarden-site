@@ -136,19 +136,33 @@ function analytics(data) {
     <p>💰 Потенційний дохід: ${income}$</p>
     <p>🔥 Гарячі клієнти: ${hot}</p>
   `;
+
+  // ✅ KPI DASHBOARD
+  const totalEl = document.getElementById("kpi-total");
+  const doneEl = document.getElementById("kpi-done");
+  const incomeEl = document.getElementById("kpi-income");
+
+  if (totalEl) totalEl.innerText = total;
+  if (doneEl) doneEl.innerText = done;
+  if (incomeEl) incomeEl.innerText = income + "$";
 }
 
 /* ===================================
-   ✅ ГРАФІК
+   ✅ ГРАФІК (GRADIENT)
 =================================== */
 function drawChart(data) {
 
   const done = data.filter(l => l.status === "done").length;
   const newLeads = data.length - done;
 
-  const ctx = document.getElementById("leadsChart");
+  const canvas = document.getElementById("leadsChart");
+  if (!canvas) return;
 
-  if (!ctx) return;
+  const ctx = canvas.getContext("2d");
+
+  const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+  gradient.addColorStop(0, "#22c55e");
+  gradient.addColorStop(1, "#4ade80");
 
   new Chart(ctx, {
     type: "doughnut",
@@ -156,7 +170,7 @@ function drawChart(data) {
       labels: ["Нові", "Оброблені"],
       datasets: [{
         data: [newLeads, done],
-        backgroundColor: ["#facc15", "#22c55e"]
+        backgroundColor: ["#facc15", gradient]
       }]
     }
   });
@@ -228,6 +242,27 @@ window.saveNote = async (id) => {
 
   alert("✅ Збережено");
 };
+
+/* ===================================
+   ✅ THEME SWITCH
+=================================== */
+window.toggleTheme = function () {
+
+  const current = document.body.classList.contains("light");
+
+  if (current) {
+    document.body.classList.remove("light");
+    localStorage.setItem("theme", "dark");
+  } else {
+    document.body.classList.add("light");
+    localStorage.setItem("theme", "light");
+  }
+};
+
+// ✅ LOAD THEME
+if (localStorage.getItem("theme") === "light") {
+  document.body.classList.add("light");
+}
 
 /* ===================================
    ✅ START
