@@ -167,16 +167,12 @@ function renderMarkers(data) {
 const info = new google.maps.InfoWindow({
   content: `
     <div style="color:black; max-width:220px;">
-      ${d.images && d.images[0] 
-        ? `<img src="${d.images[0]}" style="width:100%; border-radius:10px;">`
-        : ""}
+      ${d.images && d.images[0] ? ('<img src="' + d.images[0] + '" style="width:100%; border-radius:10px;">') : ""}
       <strong>${d.title || ""}</strong><br>
       💰 ${d.price || "-"} $<br><br>
       <a href="object.html?id=${d.id}">Відкрити обʼєкт</a>
     </div>
-  `
 });
-``
     marker.addListener("click", () => {
       info.open(map, marker);
     });
