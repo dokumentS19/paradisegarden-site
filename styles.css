@@ -484,3 +484,19 @@ body.light #stats {
   padding: 12px;
   border-radius: 10px;
 }
+#about ul {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px;
+
+  list-style: none !important;
+  padding: 0 !important;
+}
+
+#about li {
+  background: #1e293b !important;
+  padding: 12px 15px !important;
+  border-radius: 8px !important;
+
+  min-width: 200px;
+}
