@@ -18,7 +18,7 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// ✅ CONFIG
+
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
@@ -38,12 +38,12 @@ const auth = getAuth(app);
 
 let currentUser = null;
 
-// ✅ USER
+
 onAuthStateChanged(auth, user => {
   currentUser = user;
 });
 
-// ✅ PREVIEW
+
 const input = document.getElementById("file");
 const preview = document.getElementById("preview");
 
@@ -65,7 +65,7 @@ input.addEventListener("change", () => {
   }
 });
 
-// ✅ ADD OBJECT
+
 window.addObject = async () => {
 
   const title = document.getElementById("title").value.trim();
@@ -100,22 +100,22 @@ window.addObject = async () => {
       imageUrls.push(url);
     }
 
-    // ✅ ЗАПИС В FIREBASE
+  
     await addDoc(collection(db, "objects"), {
       title,
       area: area || "-",
       price: Number(price),
       images: imageUrls,
 
-      // ✅ ✅ ✅ ОТ САМЕ ТУТ ДОДАНО
+     
       lat: 50.5215,
       lng: 30.2506,
 
-      // ✅ власник
+      
       ownerId: currentUser.uid,
       ownerName: currentUser.displayName || "Користувач",
 
-      // ✅ PRO ПОЛЯ
+    
       status: "active",
       views: 0,
       rating: 0,
@@ -127,7 +127,7 @@ window.addObject = async () => {
 
     alert("✅ Об'єкт створено!");
 
-    // ✅ очистка
+
     preview.innerHTML = "";
     input.value = "";
     document.getElementById("title").value = "";
@@ -135,13 +135,13 @@ window.addObject = async () => {
     document.getElementById("price").value = "";
 
   } catch (err) {
-✅ ІДЕАЛЬНО. ТИ ДАВ САМЕ ТОЙ ФАЙЛ, ЯКИЙ ТРЕБА 🔥  
+
 
 👉 Зараз я **поправлю ТІЛЬКИ потрібне**, нічого не видаляю, не змінюю логіку — просто додаю `lat/lng`.
 
 ---
 
-# ✅ ✅ ✅ ОНОВЛЕНИЙ `admin.js` (СКОПІЮЙ І ЗАМІНИ ПОВНІСТЮ)
+
 
 ```js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -163,12 +163,9 @@ import {
   getAuth,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-// ✅ CONFIG
-
 });
 
-// ✅ PREVIEW
+
 const input = document.getElementById("file");
 const preview = document.getElementById("preview");
 
@@ -190,7 +187,6 @@ input.addEventListener("change", () => {
   }
 });
 
-// ✅ ADD OBJECT
 window.addObject = async () => {
 
   const title = document.getElementById("title").value.trim();
