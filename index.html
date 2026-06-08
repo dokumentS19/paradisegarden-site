@@ -227,11 +227,11 @@ renderMarkers(filtered);
 renderGrid(filtered);
 };
 
-// ✅ ОСЬ ЦЕ ДОДАЙ
-document.querySelectorAll(".fade-in").forEach(el => {
-  el.classList.add("show");
+window.addEventListener("load", () => {
+  document.querySelectorAll(".fade-in").forEach(el => {
+    el.classList.add("show");
+  });
 });
-
 window.initMap = initMap;
 </script>
 
