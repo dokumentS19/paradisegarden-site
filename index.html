@@ -149,11 +149,11 @@ async function initMap() {
     d.id = doc.id;
     allData.push(d);
   });
-}
 
   renderMarkers(allData);
    renderGrid(allData);
-};
+}
+``
 function renderMarkers(data) {
 
   if (clusterer) clusterer.clearMarkers();
