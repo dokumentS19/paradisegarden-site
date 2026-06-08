@@ -7,13 +7,12 @@
 
   <link rel="stylesheet" href="styles.css">
 
-  <!-- ✅ cluster library -->
+  <!-- ✅ cluster -->
   <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
 </head>
 
 <body>
 
-<!-- ✅ HEADER -->
 <header class="topbar">
   <h2>🏡 Paradise Garden</h2>
 
@@ -33,7 +32,6 @@
   </div>
 </header>
 
-<!-- ✅ HERO -->
 <section class="hero">
   <div class="hero-overlay"></div>
 
@@ -44,28 +42,50 @@
   </div>
 </section>
 
-<!-- ✅ ПРО НАС -->
+<!-- ✅ ПРО НАС (ТЕКСТ 1:1) -->
 <section id="about" class="about fade-in">
+
   <h2>🏡 Про агентство</h2>
 
-  <p>Агенція нерухомості «Райський Сад» заснована у 2005 році та впевнено працює на ринку нерухомості Києва та Київської області.</p>
+  <p>Агенція нерухомості «Райський Сад» заснована у 2005 році та впевнено працює на ринку нерухомості Києва та Київської області. Ми допомагаємо клієнтам купувати, продавати та вигідно інвестувати в нерухомість.</p>
 
-  <p>Ми допомагаємо клієнтам купувати, продавати та вигідно інвестувати в нерухомість.</p>
+  <p>За роки роботи ми провели сотні успішних угод і зарекомендували себе як надійний партнер. Ми супроводжуємо клієнтів на кожному етапі — від підбору об'єкта до повного оформлення документів.</p>
 
-  <p>За роки роботи ми провели сотні успішних угод і зарекомендували себе як надійний партнер.</p>
+  <p>Наша команда працює чесно, прозоро та орієнтована на результат. Ми завжди ставимо інтереси клієнта на перше місце.</p>
+
+  <p>Ми віримо, що чесність, досвід і людяний підхід — основа довгострокових відносин з клієнтами.</p>
 
   <div class="list">
     <div>✅ Повний супровід угод під ключ</div>
     <div>✅ Юридична перевірка та безпека</div>
-    <div>✅ Аналітика ринку</div>
-    <div>✅ Індивідуальний підбір</div>
+    <div>✅ Актуальна аналітика ринку</div>
+    <div>✅ Індивідуальний підбір нерухомості</div>
   </div>
 
-  <br>
+  <br><br>
 
-  <h3>👤 Директор</h3>
+  <h3>Директор</h3>
   <p><strong>Іванчик Олег Степанович</strong></p>
-  <p>Засновник і керівник агентства</p>
+  <p>Засновник і керівник агентства. Орієнтований на результат і довіру в кожній угоді.</p>
+
+  <br><br>
+
+  <h3>Ваш надійний провідник у світі нерухомості</h3>
+
+  <p>З нами складні угоди стають простими, зрозумілими та безпечними. Досвід з 2005 року у Києві та Київській області.</p>
+
+  <br><br>
+
+  <h3>Про директора</h3>
+
+  <p>Іванчик Олег Степанович — засновник і директор АН «Райський Сад» з 2005 року. Сфокусований на прозорості угод, юридичній безпеці та індивідуальному підході до кожного клієнта.</p>
+
+  <div class="list">
+    <div>✅ Досвід керування агентством і супроводу угод понад 24 років</div>
+    <div>✅ Експертиза у купівлі/продажу, оренді та документальному супроводі</div>
+    <div>✅ Репутація порядності та відповідальності у партнерських відносинах</div>
+  </div>
+
 </section>
 
 <!-- ✅ КАРТА -->
@@ -75,9 +95,8 @@
 </section>
 
 <!-- ✅ ОБʼЄКТИ -->
-<section class="objects fade-in">
+<section id="objectsGrid" class="objects fade-in">
   <h2>Об'єкти нерухомості</h2>
-  <div id="objectsGrid"></div>
 </section>
 
 <!-- ✅ КОНТАКТИ -->
@@ -94,7 +113,6 @@
   © Paradise Garden
 </footer>
 
-<!-- ✅ SCRIPT -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -113,12 +131,10 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let map;
-let markers = [];
 let allData = [];
 let clusterer;
 
 window.initMap = async function () {
-
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 11,
     center: { lat: 50.5215, lng: 30.2506 }
@@ -128,7 +144,6 @@ window.initMap = async function () {
 
   snap.forEach(doc => {
     const d = doc.data();
-
     if (!d.lat || !d.lng) return;
 
     d.id = doc.id;
@@ -142,16 +157,18 @@ function renderMarkers(data) {
 
   if (clusterer) clusterer.clearMarkers();
 
-  markers = data.map(d => {
+  const markers = data.map(d => {
 
     const marker = new google.maps.Marker({
-      position: { lat: d.lat, lng: d.lng }
+      position: { lat: d.lat, lng: d.lng },
+      map: map
     });
 
     const info = new google.maps.InfoWindow({
       content: `
-        <div style="color:black; max-width:200px;">
-          <img src="${d.images?.[0] || ""}" style="width:100%; border-radius:6px=${d.id</a>
+        <div style="color:black; max-width:220px;">
+          ${d.images && d.images[0] ? `<img src="${d.images[0]}" style="width:100%; border-radius: ${d.price || "-"} $<br><br>
+          <a href="object.html?id=${d.id обʼєкт</a>
         </div>
       `
     });
@@ -175,22 +192,17 @@ window.filterMap = function () {
   const min = Number(document.getElementById("minPrice").value) || 0;
   const max = Number(document.getElementById("maxPrice").value) || 999999999;
 
-  const filtered = allData.filter(d => {
-    return (
-      d.title.toLowerCase().includes(search) &&
-      d.price >= min &&
-      d.price <= max
-    );
-  });
+  const filtered = allData.filter(d =>
+    d.title.toLowerCase().includes(search) &&
+    d.price >= min &&
+    d.price <= max
+  );
 
   renderMarkers(filtered);
 };
 </script>
 
-<!-- ✅ MAP SCRIPT -->
-https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I>
+<script async src="https://maps.googleapis.com/maps/api/js?AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I"></script>
 
 </body>
 </html>
-
-``
