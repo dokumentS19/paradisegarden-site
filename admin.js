@@ -184,7 +184,7 @@ const auth = getAuth(app);
 
 let currentUser = null;
 
-// ✅ USER
+// ✅ USER 
 onAuthStateChanged(auth, user => {
   currentUser = user;
 });
