@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="uk">
+<!DOCTYPE html><!DOCTYPE="uk">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,26 +6,147 @@
 
   <link rel="stylesheet" href="styles.css">
 
-  <!-- ✅ CHART.JS -->
+  <!-- ✅ CHART -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+    }
+
+    /* HEADER */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #020617;
+      padding: 15px 25px;
+    }
+
+    .topbar a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn {
+      background: #16a34a;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* KPI */
+    .kpi {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .kpi-box {
+      background: #1e293b;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .kpi-box strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 22px;
+      color: #22c55e;
+    }
+
+    /* SECTIONS */
+    .about, .objects {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #1e293b;
+      border-radius: 12px;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+    }
+
+    input {
+      border-radius: 8px;
+      border: none;
+    }
+
+    /* LEADS LIST */
+    #leads {
+      display: grid;
+      gap: 10px;
+    }
+
+    .lead-card {
+      background: #020617;
+      padding: 12px;
+      border-radius: 8px;
+      transition: 0.2s;
+    }
+
+    .lead-card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* CRM BOARD */
+    #crmBoard {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .column {
+      background: #020617;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .column h3 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    canvas {
+      background: #020617;
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+  </style>
 </head>
 
 <body>
 
-<!-- ✅ HEADER -->
+<!-- HEADER -->
 <header class="topbar">
   <h2>📋 CRM — Заявки</h2>
 
   <div class="actions">
     <a href="index.html">🏠 Головна</a>
-
-    <!-- ✅ КНОПКА ТЕМИ -->
     <button onclick="toggleTheme()" class="btn">🌗</button>
   </div>
 </header>
 
-<!-- ✅ KPI DASHBOARD -->
+<!-- KPI -->
 <div class="kpi">
+
   <div class="kpi-box">
     Заявки
     <strong id="kpi-total">0</strong>
@@ -41,19 +161,19 @@
     Дохід
     <strong id="kpi-income">0$</strong>
   </div>
+
 </div>
 
-<!-- ✅ АНАЛІТИКА -->
+<!-- АНАЛІТИКА -->
 <section class="about">
   <h2>📊 Аналітика</h2>
 
   <div id="stats"></div>
 
-  <!-- ✅ ГРАФІК -->
   <canvas id="leadsChart" height="120"></canvas>
 </section>
 
-<!-- ✅ ПОШУК -->
+<!-- ПОШУК -->
 <section class="about">
   <h2>🔍 Пошук</h2>
 
@@ -65,30 +185,47 @@
   >
 </section>
 
-<!-- ✅ ФІЛЬТРИ -->
+<!-- ФІЛЬТР -->
 <section class="about">
   <h2>📂 Фільтр</h2>
 
-  <button onclick="filterStatus('all')" class="btn">Усі</button>
-  <button onclick="filterStatus('new')" class="btn">Нові</button>
-  <button onclick="filterStatus('done')" class="btn">Оброблені</button>
+  <div style="display:flex; gap:10px;">
+    <button onclick="filterStatus('all')" class="btn">Усі</button>
+    <button onclick="filterStatus('new')" class="btn">Нові</button>
+    <button onclick="filterStatus('done')" class="btn">Оброблені</button>
+  </div>
 </section>
 
-<!-- ✅ СПИСОК ЗАЯВОК -->
+<!-- СПИСОК -->
 <section class="objects">
   <h2>📋 Список заявок</h2>
-
   <div id="leads"></div>
 </section>
 
-<!-- ✅ ✅ ✅ ДОДАНО (НЕ ЗАМІСТЬ, А ДОДАТКОВО) -->
+<!-- CRM BOARD -->
 <section class="about">
   <h2>📊 CRM Pipeline</h2>
-  <div id="crmBoard"></div>
+
+  <div id="crmBoard">
+    <div class="column">
+      <h3>🆕 Нові</h3>
+      <div id="col-new"></div>
+    </div>
+
+    <div class="column">
+      <h3>⏳ В роботі</h3>
+      <div id="col-work"></div>
+    </div>
+
+    <div class="column">
+      <h3>✅ Закриті</h3>
+      <div id="col-done"></div>
+    </div>
+  </div>
 </section>
 
-<!-- ✅ JS -->
 <script type="module" src="leads.js"></script>
 
 </body>
 </html>
+``
