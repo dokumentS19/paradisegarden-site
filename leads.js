@@ -28,6 +28,69 @@ let allLeads = [];
 // 🆕 CRM BOARD
 const STATUSES = ["new", "in_progress", "done"];
 
+/* ================================
+   ✅ ✅ ✅ ДОДАНО: АВТОНАГАДУВАННЯ
+================================ */
+// звук
+const audio = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
+
+// перевірка кожні 10 секунд
+setInterval(() => {
+  checkReminders();
+}, 10000);
+
+function checkReminders() {
+
+  const now = new Date().getTime();
+
+  allLeads.forEach(l => {
+
+    if (!l.reminder) return;
+
+    const time = new Date(l.reminder).getTime();
+
+    // якщо час прийшов (±30 секунд)
+    if (Math.abs(now - time) < 30000) {
+
+      showPopup(l);
+
+      // щоб не спамило
+      l.reminder = null;
+    }
+  });
+}
+
+function showPopup(lead) {
+
+  // звук
+  audio.play();
+
+  // popup
+  const div = document.createElement("div");
+
+  div.style.position = "fixed";
+  div.style.bottom = "20px";
+  div.style.right = "20px";
+  div.style.background = "#22c55e";
+  div.style.color = "white";
+  div.style.padding = "15px";
+  div.style.borderRadius = "10px";
+  div.style.zIndex = "9999";
+
+  div.innerHTML = `
+    🔔 Нагадування<br>
+    ${lead.name}<br>
+    ${lead.phone}
+  `;
+
+  document.body.appendChild(div);
+
+  // авто зникає
+  setTimeout(() => {
+    div.remove();
+  }, 5000);
+}
+
 /* ===================================
    ✅ AI ПРІОРИТЕТ
 =================================== */
@@ -113,12 +176,10 @@ ${d.note || ""}
                 : "🟡 Нова"}
           </p>
 
-          <!-- 🆕 МЕНЕДЖЕР -->
           <input placeholder="Менеджер"
                  value="${d.manager || ""}"
                  onchange="assignManager('${d.id}', this.value)">
 
-          <!-- 🆕 НАГАДУВАННЯ -->
           <input type="datetime-local"
                  onchange="setReminder('${d.id}', this.value)">
 
@@ -346,3 +407,4 @@ if (localStorage.getItem("theme") === "light") {
    ✅ START
 =================================== */
 loadLeads();
+``
