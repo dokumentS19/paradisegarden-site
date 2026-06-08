@@ -469,3 +469,18 @@ body.light #stats {
   padding: 12px;
   border-radius: 8px;
 }
+#about ul {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 20px 0;
+}
+
+#about li {
+  background: #1e293b;
+  padding: 12px;
+  border-radius: 10px;
+}
