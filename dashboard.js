@@ -131,18 +131,18 @@ async function loadMyAds(uid) {
     where("ownerId", "==", uid)
   );
 
- const snap = await getDocs(q);
-const el = document.getElementById("myAds");
+  const snap = await getDocs(q);
+  const el = document.getElementById("myAds");
 
-if (!el) return;   // ✅ ДОДАЛИ ОЦЕ
+  if (!el) return;
 
-el.innerHTML = "";
+  el.innerHTML = "";
 
-if (snap.empty) {
-  el.innerHTML = "<p>Немає оголошень</p>";
-  return;
-}
- 
+  if (snap.empty) {
+    el.innerHTML = "<p>Немає оголошень</p>";
+    return;
+  }
+
   snap.forEach(docu => {
     const d = docu.data();
 
