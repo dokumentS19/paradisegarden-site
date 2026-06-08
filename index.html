@@ -1,150 +1,23 @@
 <!DOCTYPE html>
 <html lang="uk">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+width=device-width, initial-scale=1"><head>
   <title>АН Райський Сад</title>
 
   <link rel="stylesheet" href="styles.css">
 
   <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: #0f172a;
-      color: white;
-    }
-
-    /* HEADER */
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 30px;
-      background: #020617;
-    }
-
-    .actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .topbar a {
-      color: white;
-      text-decoration: none;
-    }
-
-    .topbar input {
-      padding: 6px;
-      border-radius: 6px;
-      border: none;
-    }
-
-    .btn {
-      background: #16a34a;
-      padding: 8px 12px;
-      border-radius: 8px;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    /* HERO */
-    .hero {
-      position: relative;
-      height: 70vh;
-      background: url("https://images.unsplash.com/photo-1568605114967-8130f3a36994") center/cover;
-    }
-
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-    }
-
-    .hero-content {
-      position: relative;
-      text-align: center;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 1;
-    }
-
-    /* SECTION */
-    .about, .objects, .contacts {
-      max-width: 1100px;
-      margin: 40px auto;
-      background: #1e293b;
-      padding: 25px;
-      border-radius: 14px;
-    }
-
-    /* ADVANTAGES */
-    #about ul {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
-      gap: 10px;
-      list-style: none;
-      padding: 0;
-    }
-
-    #about li {
-      background: #020617;
-      padding: 10px;
-      border-radius: 8px;
-      text-align: center;
-    }
-
-    /* OBJECTS GRID */
-    #objectsGrid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px,1fr));
-      gap: 15px;
-    }
-
-    .card {
-      background: #020617;
-      padding: 10px;
-      border-radius: 10px;
-      transition: 0.2s;
-    }
-
-    .card:hover {
-      transform: translateY(-3px);
-    }
-
-    .card img {
-      width: 100%;
-      border-radius: 8px;
-    }
-
-    /* CONTACTS */
-    .contact-card {
-      background: #020617;
-      padding: 15px;
-      border-radius: 8px;
-    }
-
-    .footer {
-      text-align: center;
-      padding: 20px;
-      background: #020617;
-    }
-  </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <header class="topbar">
   <h2>🏡 Paradise Garden</h2>
 
   <div class="actions">
-    <input id="search" placeholder="Пошук..." oninput="filterMap()">
-    <input id="minPrice" placeholder="від $" type="number" oninput="filterMap()">
-    <input id="maxPrice" placeholder="до $" type="number" oninput="filterMap()">
+    <input id="search" placeholder="Пошук...">
+    <input id="minPrice" placeholder="від $" type="number">
+    <input id="maxPrice" placeholder="до $" type="number">
 
     <a href="#about">Про нас</a>
     <a href="#contacts">Контакти</a>
@@ -152,8 +25,6 @@
     <a href="favorites.html">❤️ Обране</a>
     <a href="dashboard.html">Кабінет</a>
     <a href="dialogs.html">💬 Діалоги</a>
-
-    <button class="btn">🌗</button>
   </div>
 </header>
 
@@ -161,7 +32,17 @@
 <section class="hero">
   <div class="hero-overlay"></div>
 
- flex-wrap:wrap;">  <div class="hero-content">
+  <div class="hero-content">
+
+    <h1 class="hero-title">
+      Агентство нерухомості "Райський Сад"
+    </h1>
+
+    <p class="hero-sub">
+      Надійний партнер з 2002 року. Купівля, продаж і оренда нерухомості.
+    </p>
+
+    <div style="margin-top:20px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
 
       <a href="#objectsGrid" class="btn">
         🔍 Переглянути об'єкти
@@ -177,33 +58,23 @@
   </div>
 </section>
 
-    <h1 class="hero-title">
-      Агентство нерухомості "Райський Сад"
-    </h1>
-
-    <p class="hero-sub">
-      Надійний партнер з 2002 року. Купівля, продаж і оренда нерухомості.
-    </p>
-
-
-
 <!-- ABOUT -->
 <section id="about" class="about">
+  <h2>🏡 Про агентство</h2>
 
-<h2>🏡 Про агентство</h2>
+  <p>
+    Агенція нерухомості «Райський Сад» заснована у 2005 році.
+    Ми допомагаємо клієнтам купувати, продавати та інвестувати.
+  </p>
 
-<p>
-Агенція нерухомості «Райський Сад» заснована у 2005 році...
-</p>
+  <h3>✅ Наші переваги</h3>
 
-<h3>✅ Наші переваги</h3>
-<ul>
-<li>Повний супровід угод під ключ</li>
-<li>Юридична безпека</li>
-<li>Аналітика ринку</li>
-<li>Індивідуальний підбір</li>
-</ul>
-
+  <ul>
+    <li>Повний супровід угод під ключ</li>
+    <li>Юридична безпека</li>
+    <li>Аналітика ринку</li>
+    <li>Індивідуальний підбір</li>
+  </ul>
 </section>
 
 <!-- MAP -->
@@ -217,13 +88,31 @@
   <h2>Об'єкти нерухомості</h2>
 </section>
 
+<!-- ✅ FORM -->
+<section id="form" class="form fade-in">
+
+  <h2>📞 Залишити заявку</h2>
+
+  <p style="opacity:0.8;">
+    Залиште контакт — ми звʼяжемося з вами
+  </p>
+
+  <input id="name" placeholder="Ваше імʼя"><br><br>
+  <input id="phone" placeholder="Телефон"><br><br>
+
+  <button onclick="sendForm()" class="btn">
+    ✅ Відправити
+  </button>
+
+</section>
+
 <!-- CONTACTS -->
 <section id="contacts" class="contacts">
   <h2>📞 Контакти</h2>
+
   <div class="contact-card">
     <p>📞 +38 095 3777196</p>
     <p>📍 Ірпінь</p>
-    <p>📧 info@paradisegarden.com.ua</p>
   </div>
 </section>
 
@@ -231,70 +120,109 @@
   © Paradise Garden
 </footer>
 
-<!-- JS -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<!-- ✅ STICKY BUTTON -->
+<div class="sticky-cta" onclick="window.location.href='tel:+www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = {
+const app = initializeApp({
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site"
-};
+});
 
-const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-let map;
 let allData = [];
+let map;
+let markers = [];
+let clusterer;
 
-window.initMap = async function () {
-
-  map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 11,
-    center: { lat: 50.5215, lng: 30.2506 }
-  });
-
+/* ✅ LOAD */
+async function load() {
   const snap = await getDocs(collection(db, "objects"));
 
-  allData = [];
+  allData = snap.docs.map(d => ({
+    id: d.id,
+    ...d.data()
+  }));
 
-  snap.forEach(doc => {
-    const d = doc.data();
-    d.id = doc.id;
-    allData.push(d);
-  });
+  render(allData);
+}
 
-  renderGrid(allData);
-};
+/* ✅ RENDER */
+function render(data) {
 
-function renderGrid(data) {
-  const container = document.getElementById("objectsGrid");
+  const grid = document.getElementById("objectsGrid");
+  grid.innerHTML = "<h2>Об'єкти нерухомості</h2>";
 
   data.forEach(d => {
-    const el = document.createElement("div");
-    el.className = "card";
 
-    el.innerHTML = `
-      ${d.images?.[0] ? `<img src="${d.images[0  <p>💰 ${d.price || "-"} $</p>
-      <a href="object.html?id=${d.id}" class="btn
+    const img = d.images?.[0]
+      ? `<img src="${d.images[ : `<img src="https://older.com/400`;
 
-    container.appendChild(el);
+    grid.innerHTML += `
+      <div class="card">
+
+        ${img}
+
+        <h3>${d.title || "Без назви"}</h3>
+        <p>💰 ${d.price || "-"} $</p>
+
+        <a href="object.html?id=${d.id}" Детальніше
+        </a>
+
+      </div>
+    `;
   });
 }
 
-window.filterMap = function () {
-  const search = document.getElementById("search").value.toLowerCase();
+/* ✅ FILTER */
+document.getElementById("search").oninput = () => {
+  const val = document.getElementById("search").value.toLowerCase();
 
-  const filtered = allData.filter(d =>
-    (d.title || "").toLowerCase().includes(search)
-  );
-
-  renderGrid(filtered);
+  render(allData.filter(d =>
+    (d.title || "").toLowerCase().includes(val)
+  ));
 };
+
+/* ✅ FORM */
+window.sendForm = async () => {
+
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+
+  if (!name || !phone) return alert("Заповни поля");
+
+  await addDoc(collection(db, "leads"), {
+    name,
+    phone,
+    createdAt: new Date()
+  });
+
+  alert("✅ Заявка відправлена");
+};
+
+/* ✅ MAP */
+window.initMap = function () {
+  map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 11,
+    center: { lat: 50.52, lng: 30.25 }
+  });
+};
+
+load();
+
 </script>
 
-<script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I&callback=initMap"></script>
+<script defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I&callback=initMap">
+</script>
 
 </body>
 </html>
+  <meta charset="UTF-8">
