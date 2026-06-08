@@ -388,13 +388,13 @@ async function loadSimilar() {
       const img = o.images?.[0] || "";
 
       grid.innerHTML += `
-        <a href="object.html?id=${docu.id}">
-          <img src="${img}" style="height:100px;width:100%;object-fit:cover;">
-          <p>${o.title}</p>
-          <strong>${o.price}$</strong>
-        </a>
-      `;
-    }
+     <a href="assets/object.html?id=${docu.id}">
+     <img src="${img}" style="height:100px;width:100%;object-fit:cover;">
+      <p>${o.title}</p>
+     <strong>${o.price}$</strong>
+     </a>
+    `;
+     }
 
   });
 }
