@@ -132,7 +132,7 @@ function render(data) {
 /* ================================
    ✅ MAP INIT (ДОДАНО)
 ================================ */
-window.initMap = function () {
+window.initMap = async function () {
 
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 11,
