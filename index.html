@@ -164,7 +164,7 @@ function renderMarkers(data) {
       map: map
     });
 
-   const info = new google.maps.InfoWindow({
+  const info = new google.maps.InfoWindow({
   content: `
     <div style="color:black; max-width:220px;">
       ${d.images && d.images[0] 
@@ -176,7 +176,6 @@ function renderMarkers(data) {
     </div>
   `
 });
-``
 
     marker.addListener("click", () => {
       info.open(map, marker);
