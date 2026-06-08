@@ -164,14 +164,14 @@ window.initMap = async function () {
 console.log("SNAP SIZE:", snap.size);
   allData = [];
 
+snap.forEach(doc => {
+  const d = doc.data();
 
-snap.forEach(doc => {snap.forEach(doc d = doc.data();
   if (typeof d.lat !== "number" || typeof d.lng !== "number") return;
 
   d.id = doc.id;
   allData.push(d);
 });
-
 // ✅ правильно
 await fixOldObjects();
 
