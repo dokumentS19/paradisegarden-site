@@ -67,7 +67,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// ✅ ВСТАВ СВІЙ FIREBASE KEY
 const firebaseConfig = {
   apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
   authDomain: "paradisegarden-site.firebaseapp.com",
@@ -76,7 +75,6 @@ const firebaseConfig = {
   messagingSenderId: "452352075250",
   appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
   measurementId: "G-6XHWE6Y0JE"
-};
 };
 
 const app = initializeApp(firebaseConfig);
@@ -105,7 +103,6 @@ async function loadObjects() {
   snap.forEach(doc => {
     const d = doc.data();
 
-    // якщо немає координат — пропускаємо
     if (!d.lat || !d.lng) return;
 
     const marker = new google.maps.Marker({
@@ -125,13 +122,18 @@ async function loadObjects() {
     marker.addListener("click", () => {
       info.open(map, marker);
     });
-
   });
 }
 </script>
 
-<!-- ✅ GOOGLE MAPS -->
+<!-- ✅ GOOGLE MAPS (ФІКС ✅) -->
 <script async
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQIoB0ErhfB4zrh1GWgd90BCI2I&callback=initMap">
+</script>
+
+</body>
+</html>
+``
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I">
 </script>
 
