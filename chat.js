@@ -54,8 +54,10 @@ onAuthStateChanged(auth, user => {
 const messagesDiv = document.getElementById("messages");
 
 // ✅ запит
+
 const q = query(
   collection(db, "messages"),
+  where("chatId", "==", chatId),
   orderBy("createdAt")
 );
 
