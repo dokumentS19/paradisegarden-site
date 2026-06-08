@@ -26,7 +26,6 @@
     <a href="dashboard.html">Кабінет</a>
     <a href="dialogs.html">💬 Діалоги</a>
 
-    <!-- ✅ КНОПКА ТЕМИ -->
     <button onclick="toggleTheme()" class="btn">🌗</button>
   </div>
 </header>
@@ -46,47 +45,10 @@
   </div>
 </section>
 
-<!-- ✅ ПРО НАС -->
-<section id="about" class="about fade-in">
-  <h2>🏡 Про агентство</h2>
-
-  <p>
-    АН "Райський Сад" допомагає купити, продати або орендувати нерухомість.
-  </p>
-
-  <p>
-    Працюємо тільки з перевіреними об'єктами та супроводжуємо угоду.
-  </p>
-
-  <div class="list">
-    <div>✅ перевірені об'єкти</div>
-    <div>✅ супровід угоди</div>
-    <div>✅ консультації</div>
-    <div>✅ підбір під бюджет</div>
-  </div>
-</section>
-
-<!-- ✅ ЧОМУ МИ -->
-<section class="features fade-in">
-  <h2>Чому обирають нас</h2>
-
-  <div class="grid">
-    <div>✅ Велика база</div>
-    <div>⚡ Швидко</div>
-    <div>📞 Завжди онлайн</div>
-    <div>💬 Підтримка</div>
-  </div>
-</section>
-
-<!-- ✅ ВІДГУКИ -->
-<section class="reviews fade-in">
-  <h2>⭐ Відгуки клієнтів</h2>
-
-  <div class="reviews-grid">
-    <div class="review">Швидко продали квартиру 👍</div>
-    <div class="review">Все чітко і без ризиків</div>
-    <div class="review">Рекомендую 🔥</div>
-  </div>
+<!-- ✅ КАРТА -->
+<section class="about fade-in">
+  <h2>📍 Обʼєкти на карті</h2>
+  <div id="map" style="height:500px; width:100%; border-radius:12px;"></div>
 </section>
 
 <!-- ✅ ОБʼЄКТИ -->
@@ -95,55 +57,78 @@
   <div id="objectsGrid"></div>
 </section>
 
-<!-- ✅ ФОРМА -->
-<section class="form fade-in">
-  <h2>📩 Залишити заявку</h2>
-
-  <input id="name" placeholder="Ваше ім'я">
-  <br><br>
-
-  <input id="phone" placeholder="Телефон">
-  <br><br>
-
-  <button onclick="sendForm()" class="btn">Відправити</button>
-
-  <br><br>
-
-  <button onclick="callNow()" class="btn">📞 Подзвонити зараз</button>
-</section>
-
-<!-- ✅ КОНТАКТИ -->
-<section id="contacts" class="contacts fade-in">
-  <h2>📞 Контакти</h2>
-
-  <div class="contact-card">
-    <p>📞 +38 095 3777196</p>
-    <p>📍 Ірпінь</p>
-    <p>📧 info@paradisegarden.com.ua</p>
-  </div>
-</section>
-
 <!-- ✅ FOOTER -->
 <footer class="footer">
   © Paradise Garden — всі права захищені
 </footer>
 
-<!-- ✅ Анімації -->
-<script>
-const els = document.querySelectorAll(".fade-in");
+<!-- ✅ Firebase + MAPS -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-window.addEventListener("scroll", () => {
-  els.forEach(el => {
-    const top = el.getBoundingClientRect().top;
-    if (top < window.innerHeight - 100) {
-      el.classList.add("show");
-    }
+// ✅ ВСТАВ СВІЙ FIREBASE KEY
+const firebaseConfig = {
+  apiKey: "ТУТ_FIREBASE_KEY",
+  authDomain: "paradisegarden-site.firebaseapp.com",
+  projectId: "paradisegarden-site",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let map;
+
+// ✅ ІНІЦІАЛІЗАЦІЯ КАРТИ
+window.initMap = async function () {
+
+  const center = { lat: 50.5215, lng: 30.2506 };
+
+  map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 12,
+    center: center
   });
-});
+
+  loadObjects();
+};
+
+// ✅ ЗАВАНТАЖЕННЯ ОБʼЄКТІВ
+async function loadObjects() {
+
+  const snap = await getDocs(collection(db, "objects"));
+
+  snap.forEach(doc => {
+    const d = doc.data();
+
+    // якщо немає координат — пропускаємо
+    if (!d.lat || !d.lng) return;
+
+    const marker = new google.maps.Marker({
+      position: { lat: d.lat, lng: d.lng },
+      map: map
+    });
+
+    const info = new google.maps.InfoWindow({
+      content: `
+        <div style="color:black;">
+          <strong>${d.title || "Без назви"}</strong><br>
+          💰 ${d.price || "-"} $
+        </div>
+      `
+    });
+
+    marker.addListener("click", () => {
+      info.open(map, marker);
+    });
+
+  });
+}
 </script>
 
-<!-- ✅ JS -->
-<script type="module" src="script.js"></script>
+<!-- ✅ GOOGLE MAPS -->
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key=ТУТ_GOOGLE_MAPS_KEY&callback=initMap">
+</script>
 
 </body>
 </html>
