@@ -20,6 +20,13 @@ const db = getFirestore(app);
 let allObjects = [];
 
 /* ================================
+   ✅ MAP VARIABLES (ДОДАНО)
+================================ */
+let map;
+let mapMarkers = [];
+let clusterer;
+
+/* ================================
    ✅ TELEGRAM CONFIG
 ================================ */
 const TOKEN = "ТУТ_НОВИЙ_TOKEN";
@@ -38,10 +45,13 @@ async function load() {
   });
 
   render(allObjects);
+
+  // ✅ карта теж оновлюється
+  updateMap(allObjects);
 }
 
 /* ================================
-   ✅ RENDER
+   ✅ RENDER (НЕ ЧІПАВ)
 ================================ */
 function render(data) {
 
@@ -55,7 +65,6 @@ function render(data) {
     return;
   }
 
-  // ✅ VIP зверху
   data.sort((a, b) => (b.vip === true) - (a.vip === true));
 
   data.forEach(d => {
@@ -98,6 +107,65 @@ function render(data) {
 }
 
 /* ================================
+   ✅ MAP INIT (ДОДАНО)
+================================ */
+window.initMap = function () {
+
+  map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 11,
+    center: { lat: 50.5215, lng: 30.2506 }
+  });
+
+  updateMap(allObjects);
+};
+
+/* ================================
+   ✅ UPDATE MAP (ГОЛОВНЕ)
+================================ */
+function updateMap(data) {
+
+  if (!map) return;
+
+  // очистка
+  if (clusterer) clusterer.clearMarkers();
+  mapMarkers.forEach(m => m.setMap(null));
+  mapMarkers = [];
+
+  const markers = data
+    .filter(d => d.lat && d.lng)
+    .map(d => {
+
+      const marker = new google.maps.Marker({
+        position: { lat: d.lat, lng: d.lng },
+        map: map
+      });
+
+      const info = new google.maps.InfoWindow({
+        content: `
+          <div style="color:black; max-width:220px;">
+            ${d.images?.[0] ? `<img src="${d.images[0]}" style="width:100%;">` : ""}
+            <strong>${d.title}</strong><br>
+            💰 ${d.price}$<br><br>
+            <a href="object.html?id=${d.id}">Відкрити</a>
+          </div>
+        `
+      });
+
+      marker.addListener("click", () => {
+        info.open(map, marker);
+      });
+
+      mapMarkers.push(marker);
+      return marker;
+    });
+
+  clusterer = new markerClusterer.MarkerClusterer({
+    map,
+    markers
+  });
+}
+
+/* ================================
    ✅ FAVORITES
 ================================ */
 function toggleFav(id) {
@@ -116,7 +184,7 @@ function toggleFav(id) {
 window.toggleFav = toggleFav;
 
 /* ================================
-   ✅ FILTER
+   ✅ FILTER (РОЗШИРЕНО ДЛЯ КАРТИ)
 ================================ */
 const search = document.getElementById("search");
 const minPrice = document.getElementById("minPrice");
@@ -142,6 +210,9 @@ if (search && minPrice && maxPrice) {
     });
 
     render(filtered);
+
+    // ✅ КАРТА ФІЛЬТРУЄТЬСЯ ТОЖ
+    updateMap(filtered);
   };
 }
 
@@ -167,19 +238,15 @@ window.sendForm = async () => {
 
   try {
 
-    // ✅ Telegram
     await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         chat_id: CHAT_ID,
         text: text
       })
     });
 
-    // ✅ Firebase CRM
     await addDoc(collection(db, "leads"), {
       name,
       phone,
