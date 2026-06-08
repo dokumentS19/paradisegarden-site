@@ -361,3 +361,45 @@ body.light #stats {
   object-fit: cover;
   border-radius: 10px;
 }
+.about-section {
+  padding: 60px 20px;
+  background: #0f172a;
+  color: #fff;
+}
+
+.about-container {
+  max-width: 1100px;
+  margin: auto;
+}
+
+.about-text {
+  margin-bottom: 15px;
+  line-height: 1.6;
+  color: #cbd5f5;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.about-card {
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.about-card:hover {
+  transform: translateY(-5px);
+  background: #334155;
+}
+
+.director-block {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+  margin: 30px 0;
+}
