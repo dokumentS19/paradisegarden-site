@@ -149,13 +149,10 @@ async function initMap() {
     d.id = doc.id;
     allData.push(d);
   });
-
-  // ✅ ДОДАЄШ ОЦЕ
-  renderMarkers(allData);
-  renderGrid(allData);
 }
 
   renderMarkers(allData);
+   renderGrid(allData);
 };
 function renderMarkers(data) {
 
@@ -238,12 +235,7 @@ window.filterMap = function () {
     d.title.toLowerCase().includes(search) &&
     d.price >= min &&
     d.price <= max
-  );
-
-renderMarkers(filtered);
-renderGrid(filtered);
-
-  
+ 
 };
   window.initMap = initMap;
 </script>
