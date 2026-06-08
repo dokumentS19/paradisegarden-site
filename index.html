@@ -153,7 +153,16 @@ window.initMap = async function () {
   });
 
   console.log("DATA:", allData);
-
+if (allData.length === 0) {
+  allData.push({
+    id: "test1",
+    title: "Тестовий об'єкт",
+    price: 50000,
+    lat: 50.5215,
+    lng: 30.2506,
+    images: ["https://via.placeholder.com/300"]
+  });
+}
   renderMarkers(allData);
   renderGrid(allData);
 }
