@@ -10,7 +10,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // ✅ CONFIG
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
   authDomain: "paradisegarden-site.firebaseapp.com",
@@ -20,10 +19,14 @@ const firebaseConfig = {
   appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
   measurementId: "G-6XHWE6Y0JE"
 };
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let allLeads = [];
+
+// 🆕 CRM BOARD
+const STATUSES = ["new", "in_progress", "done"];
 
 /* ===================================
    ✅ AI ПРІОРИТЕТ
@@ -87,7 +90,9 @@ function render(data) {
       else if (priority > 3) badge = "⚡ ТЕПЛИЙ";
 
       container.innerHTML += `
-        <div class="card">
+        <div class="card"
+             draggable="true"
+             ondragstart="dragStart(event, '${d.id}')">
 
           <h3>👤 ${d.name}</h3>
           <p>📞 ${d.phone}</p>
@@ -103,8 +108,19 @@ ${d.note || ""}
           <p>
             ${d.status === "done"
               ? "✅ Оброблено"
-              : "🟡 Нова"}
+              : d.status === "in_progress"
+                ? "🟠 В роботі"
+                : "🟡 Нова"}
           </p>
+
+          <!-- 🆕 МЕНЕДЖЕР -->
+          <input placeholder="Менеджер"
+                 value="${d.manager || ""}"
+                 onchange="assignManager('${d.id}', this.value)">
+
+          <!-- 🆕 НАГАДУВАННЯ -->
+          <input type="datetime-local"
+                 onchange="setReminder('${d.id}', this.value)">
 
           <button onclick="markDone('${d.id}')">✅</button>
           <button onclick="removeLead('${d.id}')">❌</button>
@@ -112,7 +128,70 @@ ${d.note || ""}
         </div>
       `;
     });
+
+  renderBoard(data);
 }
+
+/* ===================================
+   ✅ DRAG DROP CRM
+=================================== */
+window.dragStart = (e, id) => {
+  e.dataTransfer.setData("id", id);
+};
+
+window.allowDrop = (e) => e.preventDefault();
+
+window.dropLead = async (e, status) => {
+  e.preventDefault();
+
+  const id = e.dataTransfer.getData("id");
+
+  await updateDoc(doc(db, "leads", id), {
+    status
+  });
+
+  loadLeads();
+};
+
+/* ===================================
+   ✅ CRM BOARD
+=================================== */
+function renderBoard(data) {
+
+  const board = document.getElementById("crmBoard");
+  if (!board) return;
+
+  board.innerHTML = STATUSES.map(status => `
+    <div class="column"
+      ondrop="dropLead(event,'${status}')"
+      ondragover="allowDrop(event)">
+
+      <h3>${status}</h3>
+
+      ${data.filter(l => l.status === status)
+        .map(l => `<div class="mini">${l.name}</div>`)
+        .join("")}
+    </div>
+  `).join("");
+}
+
+/* ===================================
+   ✅ МЕНЕДЖЕР
+=================================== */
+window.assignManager = async (id, name) => {
+  await updateDoc(doc(db, "leads", id), {
+    manager: name
+  });
+};
+
+/* ===================================
+   ✅ НАГАДУВАННЯ
+=================================== */
+window.setReminder = async (id, date) => {
+  await updateDoc(doc(db, "leads", id), {
+    reminder: new Date(date)
+  });
+};
 
 /* ===================================
    ✅ АНАЛІТИКА + KPI
@@ -141,14 +220,13 @@ function analytics(data) {
     <p>🔥 Гарячі клієнти: ${hot}</p>
   `;
 
-  // ✅ KPI
   document.getElementById("kpi-total").innerText = total;
   document.getElementById("kpi-done").innerText = done;
   document.getElementById("kpi-income").innerText = income + "$";
 }
 
 /* ===================================
-   ✅ ГРАФІК (GRADIENT)
+   ✅ ГРАФІК
 =================================== */
 function drawChart(data) {
 
@@ -160,7 +238,6 @@ function drawChart(data) {
 
   const ctx = canvas.getContext("2d");
 
-  // ✅ GRADIENT
   const gradient = ctx.createLinearGradient(0, 0, 0, 200);
   gradient.addColorStop(0, "#22c55e");
   gradient.addColorStop(1, "#4ade80");
