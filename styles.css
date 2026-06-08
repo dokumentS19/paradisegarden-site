@@ -529,3 +529,59 @@ body.light #stats {
   padding: 10px 14px;
   border-radius: 8px;
 }
+#about ul:first-of-type {#about ul:first-of: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+
+  list-style: none;
+  padding: 0;
+}
+
+#about ul:first-of-type li {
+  background: #0f172a;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+}
+#about ul:first-of-type {#about ul:first-of: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+
+  list-style: none;
+  padding: 0;
+}
+
+#about ul:first-of-type li {
+  background: #0f172a;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+}
+#about ul:first-of-type {#about ul:first-of: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+
+  list-style: none;
+  padding: 0;
+}
+
+#about ul:first-of-type li {
+  background: #0f172a;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+}
+#about ul:first-of-type {#about ul:first-of: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+
+  list-style: none;
+  padding: 0;
+}
+
+#about ul:first-of-type li {
+  background: #0f172a;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+}
