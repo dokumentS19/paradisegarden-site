@@ -53,13 +53,21 @@ window.addEventListener("DOMContentLoaded", () => {
 ``
 
 
-// ✅ СЛУХАЄМО ЮЗЕРА
-onAuthStateChanged(auth, user => {
+getRedirectResult(auth)
+  .then((result) => {
+    if (result) {
+      console.log("✅ Успішний логін після redirect");
 
-  const info = document.getElementById("userInfo");
+      const user = result.user;
 
-  if (user) {
-    console.log("✅ Увійшов:", user.uid);
+      if (user) {
+        console.log("UID:", user.uid);
+      }
+    }
+  })
+  .catch((error) => {
+    console.error("❌ Помилка логіну:", error);
+  });
 
     // ✅ профіль
     if (info) {
