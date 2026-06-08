@@ -6,6 +6,9 @@
   <title>АН Райський Сад</title>
 
   <link rel="stylesheet" href="styles.css">
+
+  <!-- ✅ cluster library -->
+  <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
 </head>
 
 <body>
@@ -15,9 +18,9 @@
   <h2>🏡 Paradise Garden</h2>
 
   <div class="actions">
-    <input id="search" placeholder="Пошук...">
-    <input id="minPrice" placeholder="від $" type="number">
-    <input id="maxPrice" placeholder="до $" type="number">
+    <input id="search" placeholder="Пошук..." oninput="filterMap()">
+    <input id="minPrice" placeholder="від $" type="number" oninput="filterMap()">
+    <input id="maxPrice" placeholder="до $" type="number" oninput="filterMap()">
 
     <a href="#about">Про нас</a>
     <a href="#contacts">Контакти</a>
@@ -36,19 +39,39 @@
 
   <div class="hero-content">
     <h1>Агентство нерухомості "Райський Сад"</h1>
-
-    <p>
-      Продаж, купівля та оренда нерухомості в Ірпені та Київській області
-    </p>
-
+    <p>Продаж, купівля та оренда нерухомості в Ірпені та Київській області</p>
     <a href="#objectsGrid" class="btn">Переглянути об'єкти</a>
   </div>
+</section>
+
+<!-- ✅ ПРО НАС -->
+<section id="about" class="about fade-in">
+  <h2>🏡 Про агентство</h2>
+
+  <p>Агенція нерухомості «Райський Сад» заснована у 2005 році та впевнено працює на ринку нерухомості Києва та Київської області.</p>
+
+  <p>Ми допомагаємо клієнтам купувати, продавати та вигідно інвестувати в нерухомість.</p>
+
+  <p>За роки роботи ми провели сотні успішних угод і зарекомендували себе як надійний партнер.</p>
+
+  <div class="list">
+    <div>✅ Повний супровід угод під ключ</div>
+    <div>✅ Юридична перевірка та безпека</div>
+    <div>✅ Аналітика ринку</div>
+    <div>✅ Індивідуальний підбір</div>
+  </div>
+
+  <br>
+
+  <h3>👤 Директор</h3>
+  <p><strong>Іванчик Олег Степанович</strong></p>
+  <p>Засновник і керівник агентства</p>
 </section>
 
 <!-- ✅ КАРТА -->
 <section class="about fade-in">
   <h2>📍 Обʼєкти на карті</h2>
-  <div id="map" style="height:500px; width:100%; border-radius:12px;"></div>
+  <div id="map" style="height:500px;"></div>
 </section>
 
 <!-- ✅ ОБʼЄКТИ -->
@@ -57,12 +80,21 @@
   <div id="objectsGrid"></div>
 </section>
 
-<!-- ✅ FOOTER -->
+<!-- ✅ КОНТАКТИ -->
+<section id="contacts" class="contacts fade-in">
+  <h2>📞 Контакти</h2>
+  <div class="contact-card">
+    <p>📞 +38 095 3777196</p>
+    <p>📍 Ірпінь</p>
+    <p>📧 info@paradisegarden.com.ua</p>
+  </div>
+</section>
+
 <footer class="footer">
-  © Paradise Garden — всі права захищені
+  © Paradise Garden
 </footer>
 
-<!-- ✅ Firebase + MAPS -->
+<!-- ✅ SCRIPT -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -81,22 +113,16 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let map;
+let markers = [];
+let allData = [];
+let clusterer;
 
-// ✅ ІНІЦІАЛІЗАЦІЯ КАРТИ
 window.initMap = async function () {
 
-  const center = { lat: 50.5215, lng: 30.2506 };
-
   map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 12,
-    center: center
+    zoom: 11,
+    center: { lat: 50.5215, lng: 30.2506 }
   });
-
-  loadObjects();
-};
-
-// ✅ ЗАВАНТАЖЕННЯ ОБʼЄКТІВ
-async function loadObjects() {
 
   const snap = await getDocs(collection(db, "objects"));
 
@@ -105,16 +131,27 @@ async function loadObjects() {
 
     if (!d.lat || !d.lng) return;
 
+    d.id = doc.id;
+    allData.push(d);
+  });
+
+  renderMarkers(allData);
+};
+
+function renderMarkers(data) {
+
+  if (clusterer) clusterer.clearMarkers();
+
+  markers = data.map(d => {
+
     const marker = new google.maps.Marker({
-      position: { lat: d.lat, lng: d.lng },
-      map: map
+      position: { lat: d.lat, lng: d.lng }
     });
 
     const info = new google.maps.InfoWindow({
       content: `
-        <div style="color:black;">
-          <strong>${d.title || "Без назви"}</strong><br>
-          💰 ${d.price || "-"} $
+        <div style="color:black; max-width:200px;">
+          <img src="${d.images?.[0] || ""}" style="width:100%; border-radius:6px=${d.id</a>
         </div>
       `
     });
@@ -122,21 +159,38 @@ async function loadObjects() {
     marker.addListener("click", () => {
       info.open(map, marker);
     });
+
+    return marker;
+  });
+
+  clusterer = new markerClusterer.MarkerClusterer({
+    map,
+    markers
   });
 }
+
+window.filterMap = function () {
+
+  const search = document.getElementById("search").value.toLowerCase();
+  const min = Number(document.getElementById("minPrice").value) || 0;
+  const max = Number(document.getElementById("maxPrice").value) || 999999999;
+
+  const filtered = allData.filter(d => {
+    return (
+      d.title.toLowerCase().includes(search) &&
+      d.price >= min &&
+      d.price <= max
+    );
+  });
+
+  renderMarkers(filtered);
+};
 </script>
 
-<!-- ✅ GOOGLE MAPS (ФІКС ✅) -->
-<script async
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQIoB0ErhfB4zrh1GWgd90BCI2I&callback=initMap">
-</script>
+<!-- ✅ MAP SCRIPT -->
+https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I>
 
 </body>
 </html>
-``
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I">
-</script>
 
-</body>
-</html>
 ``
