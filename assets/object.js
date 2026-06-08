@@ -159,20 +159,7 @@ import {
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // ✅ Firebase
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
-  authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site",
-  storageBucket: "paradisegarden-site.firebasestorage.app",
-  messagingSenderId: "452352075250",
-  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
-  measurementId: "G-6XHWE6Y0JE"
-};
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
 
 // ✅ ID
 const id = new URLSearchParams(window.location.search).get("id");
