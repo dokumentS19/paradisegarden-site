@@ -119,7 +119,24 @@ import { getFirestore, collection, getDocs } from "https://www.gstatic.com/fireb
 
 import { updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 ``
+async function fixOldObjects() {
+  const snap = await getDocs(collection(db, "objects"));
 
+  for (const item of snap.docs) {
+    const d = item.data();
+
+    if (typeof d.lat !== "number" || typeof d.lng !== "number") {
+      console.log("FIX:", item.id);
+
+      await updateDoc(doc(db, "objects", item.id), {
+        lat: 50.5215,
+        lng: 30.2506
+      });
+    }
+  }
+
+  console.log("✅ DONE FIX");
+}
 const firebaseConfig = {
   apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
   authDomain: "paradisegarden-site.firebaseapp.com",
