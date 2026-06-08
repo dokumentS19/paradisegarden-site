@@ -387,11 +387,15 @@ body.light #stats {
 }
 
 .about-card {
-  background: #1e293b;
-  padding: 15px;
-  border-radius: 10px;
+  background: rgba(30, 41, 59, 0.8);
+  padding: 20px;
+  border-radius: 14px;
   transition: 0.3s;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  text-align: center;
+  backdrop-filter: blur(6px);
 }
+
 
 .about-card:hover {
   transform: translateY(-5px);
