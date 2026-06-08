@@ -50,24 +50,34 @@ window.addEventListener("DOMContentLoaded", () => {
     };
   }
 });
-``
 
-
+// ✅ ОБРОБКА ПІСЛЯ REDIRECT
 getRedirectResult(auth)
   .then((result) => {
-    if (result) {
+    if (result && result.user) {
       console.log("✅ Успішний логін після redirect");
-
-      const user = result.user;
-
-      if (user) {
-        console.log("UID:", user.uid);
-      }
+      console.log("UID:", result.user.uid);
     }
   })
   .catch((error) => {
     console.error("❌ Помилка логіну:", error);
   });
+
+// ✅ СЛУХАЄМО ЮЗЕРА (ГОЛОВНЕ)
+onAuthStateChanged(auth, (user) => {
+  const info = document.getElementById("userInfo");
+
+  if (user) {
+    console.log("✅ Увійшов:", user.uid);
+
+    if (info) {
+      info.innerText = user.displayName || user.email;
+    }
+
+  } else {
+    console.log("❌ Не увійшов");
+  }
+});
 
     // ✅ профіль
     if (info) {
