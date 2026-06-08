@@ -14,10 +14,12 @@ import {
 import {
   getAuth,
   GoogleAuthProvider,
-  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 
 // ✅ CONFIG
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
