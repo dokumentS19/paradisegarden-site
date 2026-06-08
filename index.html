@@ -42,7 +42,7 @@
   </div>
 </section>
 
-<!-- ✅ ПРО НАС (ТЕКСТ 1:1) -->
+<!-- ✅ ПРО НАС (НЕ ЗМІНЯВ) -->
 <section id="about" class="about fade-in">
 
   <h2>🏡 Про агентство</h2>
@@ -164,18 +164,15 @@ function renderMarkers(data) {
       map: map
     });
 
-  const info = new google.maps.InfoWindow({
-  content: `
-    <div style="color:black; max-width:220px;">
-      ${d.images && d.images[0] 
-        ? `<img src="${d.images[0]}" style="width:100%; border-radius:10px;">` 
-        : ""}
-      <strong>${d.title || ""}</strong><br>
-      💰 ${d.price || "-"} $<br><br>
-      <a href="object.html?id=${d.id}">Відкрити обʼєкт</a>
-    </div>
-  `
-});
+    const info = new google.maps.InfoWindow({
+      content: `
+        <div style="color:black; max-width:220px;">
+          ${d.images && d.images[0] 
+            ? `<img src="${d.images[0]}" style="width:100%; border-radius:10| "-"} $<br><br>
+          <a href="object.html?id=${dити обʼєкт</a>
+        </div>
+      `
+    });
 
     marker.addListener("click", () => {
       info.open(map, marker);
@@ -206,7 +203,7 @@ window.filterMap = function () {
 };
 </script>
 
-<script async src="https://maps.googleapis.com/maps/api/js?AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I&callback=initMap"></script>
 
 </body>
 </html>
