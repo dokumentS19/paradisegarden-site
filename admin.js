@@ -264,4 +264,3 @@ window.addObject = async () => {
     alert("❌ Помилка");
   }
 };
-``
