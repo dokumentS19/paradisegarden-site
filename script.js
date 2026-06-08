@@ -9,11 +9,14 @@ import {
 
 // ✅ CONFIG
 const firebaseConfig = {
-  apiKey: "ТВОЙ_KEY",
+  apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site",
+  storageBucket: "paradisegarden-site.firebasestorage.app",
+  messagingSenderId: "452352075250",
+  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
+  measurementId: "G-6XHWE6Y0JE"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
