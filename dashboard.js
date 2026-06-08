@@ -91,14 +91,19 @@ window.addObject = async () => {
     alert("Заповни назву і ціну");
     return;
   }
+await addDoc(collection(db, "objects"), {
+  title,
+  price: Number(price),
+  area: area || "-",
+  ownerId: user.uid,
+  createdAt: new Date(),
 
-  await addDoc(collection(db, "objects"), {
-    title,
-    price: Number(price),
-    area: area || "-",
-    ownerId: user.uid,
-    createdAt: new Date()
-  });
+  // ✅ ДОДАЙ ЦЕ
+  lat: 50.5215,
+  lng: 30.2506,
+
+  images: ["https://via.placeholder.com/300"]
+});
 
   alert("✅ Додано");
 
