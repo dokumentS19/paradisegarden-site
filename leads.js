@@ -28,67 +28,14 @@ let allLeads = [];
 // 🆕 CRM BOARD
 const STATUSES = ["new", "in_progress", "done"];
 
-/* ================================
-   ✅ ✅ ✅ ДОДАНО: АВТОНАГАДУВАННЯ
-================================ */
-// звук
-const audio = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
-
-// перевірка кожні 10 секунд
-setInterval(() => {
-  checkReminders();
-}, 10000);
-
-function checkReminders() {
-
-  const now = new Date().getTime();
-
-  allLeads.forEach(l => {
-
-    if (!l.reminder) return;
-
-    const time = new Date(l.reminder).getTime();
-
-    // якщо час прийшов (±30 секунд)
-    if (Math.abs(now - time) < 30000) {
-
-      showPopup(l);
-
-      // щоб не спамило
-      l.reminder = null;
-    }
-  });
-}
-
-function showPopup(lead) {
-
-  // звук
-  audio.play();
-
-  // popup
-  const div = document.createElement("div");
-
-  div.style.position = "fixed";
-  div.style.bottom = "20px";
-  div.style.right = "20px";
-  div.style.background = "#22c55e";
-  div.style.color = "white";
-  div.style.padding = "15px";
-  div.style.borderRadius = "10px";
-  div.style.zIndex = "9999";
-
-  div.innerHTML = `
-    🔔 Нагадування<br>
-    ${lead.name}<br>
-    ${lead.phone}
-  `;
-
-  document.body.appendChild(div);
-
-  // авто зникає
-  setTimeout(() => {
-    div.remove();
-  }, 5000);
+/* ===================================
+   ✅ ✅ ✅ НАЗВИ СТАДІЙ (ДОДАНО)
+=================================== */
+function getStatusName(status) {
+  if (status === "new") return "🟡 Новий";
+  if (status === "in_progress") return "🟠 В роботі";
+  if (status === "done") return "✅ Закритий";
+  return status;
 }
 
 /* ===================================
@@ -168,13 +115,7 @@ ${d.note || ""}
 
           <button onclick="saveNote('${d.id}')">💾 Зберегти</button>
 
-          <p>
-            ${d.status === "done"
-              ? "✅ Оброблено"
-              : d.status === "in_progress"
-                ? "🟠 В роботі"
-                : "🟡 Нова"}
-          </p>
+          <p>${getStatusName(d.status)}</p>
 
           <input placeholder="Менеджер"
                  value="${d.manager || ""}"
@@ -215,25 +156,36 @@ window.dropLead = async (e, status) => {
 };
 
 /* ===================================
-   ✅ CRM BOARD
+   ✅ CRM BOARD (UPGRADE)
 =================================== */
 function renderBoard(data) {
 
   const board = document.getElementById("crmBoard");
   if (!board) return;
 
-  board.innerHTML = STATUSES.map(status => `
-    <div class="column"
-      ondrop="dropLead(event,'${status}')"
-      ondragover="allowDrop(event)">
+  board.innerHTML = STATUSES.map(status => {
 
-      <h3>${status}</h3>
+    let color = "#334155";
+    if (status === "new") color = "#facc15";
+    if (status === "in_progress") color = "#fb923c";
+    if (status === "done") color = "#22c55e";
 
-      ${data.filter(l => l.status === status)
-        .map(l => `<div class="mini">${l.name}</div>`)
-        .join("")}
-    </div>
-  `).join("");
+    return `
+      <div class="column"
+        style="background:${color}; padding:10px; border-radius:10px;"
+        ondrop="dropLead(event,'${status}')"
+        ondragover="allowDrop(event)">
+
+        <h3>${getStatusName(status)}</h3>
+
+        ${data.filter(l => l.status === status)
+          .map(l => `<div class="mini">${l.name}</div>`)
+          .join("")}
+
+      </div>
+    `;
+    
+  }).join("");
 }
 
 /* ===================================
@@ -407,4 +359,3 @@ if (localStorage.getItem("theme") === "light") {
    ✅ START
 =================================== */
 loadLeads();
-``
