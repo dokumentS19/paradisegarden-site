@@ -103,6 +103,10 @@ window.addObject = async () => {
       price: Number(price),
       images: imageUrls,
 
+      // ✅ ✅ ✅ ОТ САМЕ ТУТ ДОДАНО
+      lat: 50.5215,
+      lng: 30.2506,
+
       // ✅ власник
       ownerId: currentUser.uid,
       ownerName: currentUser.displayName || "Користувач",
@@ -127,7 +131,28 @@ window.addObject = async () => {
     document.getElementById("price").value = "";
 
   } catch (err) {
-    console.error(err);
-    alert("❌ Помилка");
-  }
-};
+✅ ІДЕАЛЬНО. ТИ ДАВ САМЕ ТОЙ ФАЙЛ, ЯКИЙ ТРЕБА 🔥  
+
+👉 Зараз я **поправлю ТІЛЬКИ потрібне**, нічого не видаляю, не змінюю логіку — просто додаю `lat/lng`.
+
+---
+
+# ✅ ✅ ✅ ОНОВЛЕНИЙ `admin.js` (СКОПІЮЙ І ЗАМІНИ ПОВНІСТЮ)
+
+```js
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+import {
