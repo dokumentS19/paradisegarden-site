@@ -210,19 +210,6 @@ function renderGrid(data) {
   });
 }
 
-    marker.addListener("click", () => {
-      info.open(map, marker);
-    });
-
-    return marker;
-  });
-
-  clusterer = new markerClusterer.MarkerClusterer({
-    map,
-    markers
-  });
-}
-
 window.filterMap = function () {
 
   const search = document.getElementById("search").value.toLowerCase();
