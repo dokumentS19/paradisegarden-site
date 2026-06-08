@@ -39,7 +39,6 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-
 // ✅ LOGIN
 window.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("loginBtn");
@@ -78,6 +77,7 @@ onAuthStateChanged(auth, (user) => {
     console.log("❌ Не увійшов");
   }
 });
+
 
     // ✅ профіль
     if (info) {
