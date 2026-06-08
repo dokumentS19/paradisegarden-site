@@ -351,6 +351,7 @@ body.light #stats {
   background: #ffffff;
 }
 #objectsGrid {
-  display: block !important;
+  display: grid !important;
   opacity: 1 !important;
 }
+
