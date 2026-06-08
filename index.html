@@ -134,7 +134,7 @@ let map;
 let allData = [];
 let clusterer;
 
-async function initMap() {
+window.initMap = async function () {
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 11,
     center: { lat: 50.5215, lng: 30.2506 }
@@ -142,21 +142,20 @@ async function initMap() {
 
   const snap = await getDocs(collection(db, "objects"));
 
-// ✅ очистка масиву
-allData = [];
+  allData = [];
 
-snap.forEach(doc => {
-  const d = doc.data();
+  snap.forEach(doc => {
+    const d = doc.data();
+    if (typeof d.lat !== "number" || typeof d.lng !== "number") return;
 
-  // ✅ перевірка правильна
-  if (typeof d.lat !== "number" || typeof d.lng !== "number") return;
+    d.id = doc.id;
+    allData.push(d);
+  });
 
-  d.id = doc.id;
-  allData.push(d);
-});
-console.log("DATA:", allData);
+  console.log("DATA:", allData);
+
   renderMarkers(allData);
-   renderGrid(allData);
+  renderGrid(allData);
 }
 function renderMarkers(data) {
 
