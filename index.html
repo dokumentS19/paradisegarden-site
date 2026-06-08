@@ -141,7 +141,7 @@ window.initMap = async function () {
   });
 
   const snap = await getDocs(collection(db, "objects"));
-
+console.log("SNAP SIZE:", snap.size);
   allData = [];
 
   snap.forEach(doc => {
