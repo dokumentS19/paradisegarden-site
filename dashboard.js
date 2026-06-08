@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
- 
+
 import {
   getFirestore,
   collection,
@@ -17,72 +17,67 @@ import {
   signInWithRedirect,
   getRedirectResult,
   onAuthStateChanged,
-  signOut
+  signOut,
+  setPersistence,
+  browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // ✅ CONFIG
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site",
   storageBucket: "paradisegarden-site.firebasestorage.app",
   messagingSenderId: "452352075250",
-  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
-  measurementId: "G-6XHWE6Y0JE"
+  appId: "1:452352075250:web:049e1b3f10c44bc04c776b"
 };
 
+// ✅ INIT
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// ✅ LOGIN
+// ✅ СТАБІЛЬНИЙ ЛОГІН (НЕ ВИКИДАЄ)
+async function initAuth() {
+  await setPersistence(auth, browserLocalPersistence);
+}
+initAuth();
+
+// ✅ LOGIN BUTTON
 window.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("loginBtn");
 
   if (btn) {
     btn.onclick = () => {
-      signInWithRedirect(auth, provider);
+      if (auth.currentUser) {
+        signOut(auth);
+      } else {
+        signInWithRedirect(auth, provider);
+      }
     };
   }
 });
 
-// ✅ ОБРОБКА REDIRECT
-getRedirectResult(auth)
-  .then((result) => {
-    if (result && result.user) {
-      console.log("✅ Успішний логін");
-    }
-  })
-  .catch((error) => {
-    console.error("❌ Помилка логіну:", error);
-  });
+// ✅ REDIRECT (після Google)
+getRedirectResult(auth).catch(console.error);
 
-// ✅ AUTH STATE (ГОЛОВНЕ)
+// ✅ AUTH STATE
 onAuthStateChanged(auth, (user) => {
   const info = document.getElementById("userInfo");
 
   if (user) {
-    console.log("✅ Увійшов:", user.uid);
-
-    // ✅ профіль
     if (info) {
       info.innerHTML = `
         <p>👤 ${user.displayName || "Користувач"}</p>
-        <button onclick="logout()">Вийти</button>
       `;
     }
 
     loadMyAds(user.uid);
 
   } else {
-    console.log("❌ Не увійшов");
-
-    if (info) {
-      info.innerHTML = `<p>❌ Не авторизований</p>`;
-    }
-
+    if (info) info.innerHTML = "❌ Не авторизований";
+    
     const ads = document.getElementById("myAds");
     if (ads) ads.innerHTML = "";
   }
@@ -90,6 +85,7 @@ onAuthStateChanged(auth, (user) => {
 
 // ✅ ДОДАТИ ОГОЛОШЕННЯ
 window.addObject = async () => {
+
   const user = auth.currentUser;
 
   if (!user) {
@@ -110,15 +106,26 @@ window.addObject = async () => {
     title,
     price: Number(price),
     area: area || "-",
-    ownerId: user.uid,
-    createdAt: new Date(),
+
     lat: 50.5215,
     lng: 30.2506,
-    images: ["https://via.placeholder.com/300"]
+
+    ownerId: user.uid,
+    ownerName: user.displayName || "Користувач",
+
+    createdAt: new Date(),
+    images: ["https://via.placeholder.com/300"],
+
+    status: "active",
+    views: 0,
+    rating: 0,
+    ratingCount: 0,
+    vip: false
   });
 
-  alert("✅ Додано");
+  alert("✅ Додано!");
 
+  // ✅ очистка
   document.getElementById("title").value = "";
   document.getElementById("price").value = "";
   document.getElementById("area").value = "";
@@ -128,6 +135,7 @@ window.addObject = async () => {
 
 // ✅ МОЇ ОГОЛОШЕННЯ
 async function loadMyAds(uid) {
+
   const q = query(
     collection(db, "objects"),
     where("ownerId", "==", uid)
@@ -145,15 +153,15 @@ async function loadMyAds(uid) {
     return;
   }
 
-  snap.forEach(docu => {
-    const d = docu.data();
+  snap.forEach(docSnap => {
+    const d = docSnap.data();
 
     el.innerHTML += `
       <div style="background:#1e293b;padding:10px;margin-bottom:10px;border-radius:8px;">
         <strong>${d.title}</strong><br>
         💰 ${d.price} $<br>
         📐 ${d.area}<br><br>
-        <button onclick="deleteAd('${docu.id}')" style="background:red;">
+        <button onclick="deleteAd('${docSnap.id}')" style="background:red;">
           ❌ Видалити
         </button>
       </div>
@@ -161,15 +169,14 @@ async function loadMyAds(uid) {
   });
 }
 
-// ✅ ВИДАЛЕННЯ
+// ✅ DELETE
 window.deleteAd = async (id) => {
   if (!confirm("Видалити?")) return;
 
   await deleteDoc(doc(db, "objects", id));
-  loadMyAds(auth.currentUser.uid);
-};
 
-// ✅ LOGOUT
-window.logout = () => {
-  signOut(auth);
-}; 
+  if (auth.currentUser) {
+    loadMyAds(auth.currentUser.uid);
+  }
+};
+``
