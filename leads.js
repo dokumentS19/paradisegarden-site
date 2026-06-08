@@ -1,109 +1,116 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  doc,
-  updateDoc,
-  deleteDoc
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";import { initializeDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // ✅ CONFIG
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site",
   storageBucket: "paradisegarden-site.firebasestorage.app",
   messagingSenderId: "452352075250",
-  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
-  measurementId: "G-6XHWE6Y0JE"
+  appId: "1:452352075250:web:049e1b3f10c44bc04c776b"
 };
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// ✅ STATE
 let allLeads = [];
+let chartInstance = null;
 
-// 🆕 CRM BOARD
+// ✅ DOM CACHE
+const UI = {
+  leads: document.getElementById("leads"),
+  stats: document.getElementById("stats"),
+  chart: document.getElementById("leadsChart"),
+  search: document.getElementById("searchLead")
+};
+
 const STATUSES = ["new", "in_progress", "done"];
 
-/* ===================================
-   ✅ ✅ ✅ HISTORY (ДОДАНО)
-=================================== */
+/* ===========================
+   ✅ HISTORY
+=========================== */
 async function addHistory(id, action, comment = "") {
-
-  const time = new Date().toLocaleString();
-
-  await updateDoc(doc(db, "leads", id), {
-   history: arrayUnion({
-  action,
-  comment,
-  time
-})
-  });
+  try {
+    await updateDoc(doc(db, "leads", id), {
+      history: arrayUnion({
+        action,
+        comment,
+        time: new Date().toLocaleString()
+      })
+    });
+  } catch (e) {
+    console.error("History error:", e);
+  }
 }
 
-/* ===================================
-   ✅ ✅ ✅ НАЗВИ СТАДІЙ
-=================================== */
+/* ===========================
+   ✅ STATUS LABEL
+=========================== */
 function getStatusName(status) {
-  if (status === "new") return "🟡 Новий";
-  if (status === "in_progress") return "🟠 В роботі";
-  if (status === "done") return "✅ Закритий";
-  return status;
+  return {
+    new: "🟡 Новий",
+    in_progress: "🟠 В роботі",
+    done: "✅ Закритий"
+  }[status] || status;
 }
 
-/* ===================================
-   ✅ AI ПРІОРИТЕТ
-=================================== */
+/* ===========================
+   ✅ PRIORITY
+=========================== */
 function getPriority(lead) {
-
   let score = 0;
 
-  if (lead.status === "new") score += 2;
-  if (lead.note && lead.note.length > 5) score += 2;
+  if (lead?.status === "new") score += 2;
+  if (lead?.note?.length > 5) score += 2;
 
-  score += Math.min((lead.income || 0) / 1000, 5);
+  score += Math.min((lead?.income || 0) / 1000, 5);
 
-  if (lead.createdAt?.seconds) {
-    const days = (Date.now() - lead.createdAt.seconds * 1000) / (1000 * 60 * 60 * 24);
+  if (lead?.createdAt?.seconds) {
+    const days = (Date.now() - lead.createdAt.seconds * 1000) / 86400000;
     if (days < 2) score += 2;
   }
 
   return score;
 }
 
-/* ===================================
+/* ===========================
    ✅ LOAD
-=================================== */
+=========================== */
 async function loadLeads() {
+  try {
+    const snap = await getDocs(collection(db, "leads"));
 
-  const snap = await getDocs(collection(db, "leads"));
+    allLeads = snap.docs.map(d => ({
+      id: d.id,
+      ...d.data()
+    }));
 
-  allLeads = [];
+    render(allLeads);
+    analytics(allLeads);
+    drawChart(allLeads);
 
-  snap.forEach(docSnap => {
-    allLeads.push({ id: docSnap.id, ...docSnap.data() });
-  });
-
-  render(allLeads);
-  analytics(allLeads);
-  drawChart(allLeads);
+  } catch (e) {
+    console.error("Load error:", e);
+  }
 }
 
-/* ===================================
+/* ===========================
    ✅ RENDER
-=================================== */
+=========================== */
 function render(data) {
 
-  const container = document.getElementById("leads");
-  container.innerHTML = "";
+  if (!UI.leads) return;
 
-  if (data.length === 0) {
-    container.innerHTML = "<p>Немає заявок</p>";
+  UI.leads.innerHTML = "";
+
+  if (!data?.length) {
+    UI.leads.innerHTML = "<p>Немає заявок</p>";
     return;
   }
+
+  let html = "";
 
   data
     .sort((a, b) => getPriority(b) - getPriority(a))
@@ -112,282 +119,169 @@ function render(data) {
       const priority = getPriority(d);
 
       let badge = "🟡";
-      if (priority > 6) badge = "🔥 ГАРЯЧИЙ";
-      else if (priority > 3) badge = "⚡ ТЕПЛИЙ";
+      if (priority > 6) badge = "🔥";
+      else if (priority > 3) badge = "⚡";
 
-      container.innerHTML += `
-        <div class="card"
-             draggable="true"
-             ondragstart="dragStart(event, '${d.id}')">
+      const historyHtml = (d.history || [])
+        .slice(-5)
+        .map(h => `<div>📌 ${h.action} (${h.time})</div>`)
+        .join("");
 
-          <h3>👤 ${d.name}</h3>
-          <p>📞 ${d.phone}</p>
+      html += `
+        <div class="card" draggable="true"
+          ondragstart="dragStart(event,'${d.id}')">
 
-          <p><strong>${badge}</strong></p>
+          <h3>👤 ${d.name || "-"}</h3>
+          <p>📞 ${d.phone || "-"}</p>
 
-          <textarea id="note-${d.id}" placeholder="Коментар...">
-${d.note || ""}
-          </textarea>
+          <p>${badge}</p>
 
-          <button onclick="saveNote('${d.id}')">💾 Зберегти</button>
+          <textarea id="note-${d.id}">${d.note || ""}</textarea>
+
+          <button onclick="saveNote('${d.id}')">💾</button>
 
           <p>${getStatusName(d.status)}</p>
 
-          <input placeholder="Менеджер"
-                 value="${d.manager || ""}"
-                 onchange="assignManager('${d.id}', this.value)">
+          <input value="${d.manager || ""}"
+            onchange="assignManager('${d.id}',this.value)">
 
           <input type="datetime-local"
-                 onchange="setReminder('${d.id}', this.value)">
+            onchange="setReminder('${d.id}',this.value)">
 
           <button onclick="markDone('${d.id}')">✅</button>
           <button onclick="removeLead('${d.id}')">❌</button>
 
-          <!-- ✅ HISTORY VIEW -->
-          <div style="margin-top:10px; font-size:12px;">
-            ${(d.history || []).map(h => `
-              <div>📌 ${h.action} (${h.time}) ${h.comment}</div>
-            `).join("")}
-          </div>
+          <div>${historyHtml}</div>
 
         </div>
       `;
     });
 
+  UI.leads.innerHTML = html;
+
   renderBoard(data);
 }
 
-/* ===================================
-   ✅ DRAG DROP CRM
-=================================== */
-window.dragStart = (e, id) => {
-  e.dataTransfer.setData("id", id);
-};
-
-window.allowDrop = (e) => e.preventDefault();
-
-window.dropLead = async (e, status) => {
-  e.preventDefault();
-
-  const id = e.dataTransfer.getData("id");
-
-  await updateDoc(doc(db, "leads", id), {
-    status
-  });
-
-  await addHistory(id, "Зміна статусу", status);
-
-  loadLeads();
-};
-
-/* ===================================
-   ✅ CRM BOARD
-=================================== */
+/* ===========================
+   ✅ BOARD
+=========================== */
 function renderBoard(data) {
-
   const board = document.getElementById("crmBoard");
   if (!board) return;
 
-  board.innerHTML = STATUSES.map(status => {
-
-    let color = "#334155";
-    if (status === "new") color = "#facc15";
-    if (status === "in_progress") color = "#fb923c";
-    if (status === "done") color = "#22c55e";
-
-    return `
-      <div class="column"
-        style="background:${color}; padding:10px; border-radius:10px;"
-        ondrop="dropLead(event,'${status}')"
-        ondragover="allowDrop(event)">
-
-        <h3>${getStatusName(status)}</h3>
-
-        ${data.filter(l => l.status === status)
-          .map(l => `<div class="mini">${l.name}</div>`)
-          .join("")}
-
-      </div>
-    `;
-    
-  }).join("");
+  board.innerHTML = STATUSES.map(s => `
+    <div class="column"
+      ondrop="dropLead(event,'${s}')"
+      ondragover="allowDrop(event)">
+      <h3>${getStatusName(s)}</h3>
+      ${data.filter(l => l.status === s)
+        .map(l => `<div class="mini">${l.name}</div>`).join("")}
+    </div>
+  `).join("");
 }
 
-/* ===================================
-   ✅ МЕНЕДЖЕР
-=================================== */
-window.assignManager = async (id, name) => {
-  await updateDoc(doc(db, "leads", id), {
-    manager: name
-  });
-
-  await addHistory(id, "Менеджер", name);
-};
-
-/* ===================================
-   ✅ НАГАДУВАННЯ
-=================================== */
-window.setReminder = async (id, date) => {
-  await updateDoc(doc(db, "leads", id), {
-    reminder: new Date(date)
-  });
-
-  await addHistory(id, "Нагадування", date);
-};
-
-/* ===================================
-   ✅ STATUS
-=================================== */
+/* ===========================
+   ✅ ACTIONS
+=========================== */
 window.markDone = async (id) => {
-
-  await updateDoc(doc(db, "leads", id), {
-    status: "done"
-  });
-
+  await updateDoc(doc(db, "leads", id), { status: "done" });
   await addHistory(id, "Закрито");
-
   loadLeads();
 };
 
-/* ===================================
-   ✅ DELETE
-=================================== */
 window.removeLead = async (id) => {
-
-  if (!confirm("Видалити заявку?")) return;
-
+  if (!confirm("Видалити?")) return;
   await deleteDoc(doc(db, "leads", id));
-
   loadLeads();
 };
 
-/* ===================================
-   ✅ SAVE NOTE
-=================================== */
 window.saveNote = async (id) => {
-
-  const text = document.getElementById("note-" + id).value;
-
-  await updateDoc(doc(db, "leads", id), {
-    note: text
-  });
-
-  await addHistory(id, "Коментар", text);
-
-  alert("✅ Збережено");
+  const val = document.getElementById("note-" + id).value;
+  await updateDoc(doc(db, "leads", id), { note: val });
+  await addHistory(id, "Коментар", val);
 };
 
-/* ===================================
-   ✅ АНАЛІТИКА + KPI
-=================================== */
+window.assignManager = async (id, val) => {
+  await updateDoc(doc(db, "leads", id), { manager: val });
+  await addHistory(id, "Менеджер", val);
+};
+
+window.setReminder = async (id, val) => {
+  await updateDoc(doc(db, "leads", id), { reminder: new Date(val) });
+  await addHistory(id, "Нагадування", val);
+};
+
+/* ===========================
+   ✅ SEARCH (DEBOUNCE)
+=========================== */
+let searchTimer;
+
+window.searchLead = () => {
+  clearTimeout(searchTimer);
+
+  searchTimer = setTimeout(() => {
+    const val = UI.search.value.toLowerCase();
+
+    const filtered = allLeads.filter(l =>
+      (l.name || "").toLowerCase().includes(val) ||
+      (l.phone || "").includes(val)
+    );
+
+    render(filtered);
+  }, 250);
+};
+
+/* ===========================
+   ✅ ANALYTICS
+=========================== */
 function analytics(data) {
-
-  const total = data.length;
   const done = data.filter(l => l.status === "done").length;
-  const newLeads = total - done;
+  const income = data.reduce((s, l) => s + (l.income || 0), 0);
 
-  const conversion = total
-    ? Math.round((done / total) * 100)
-    : 0;
+  if (UI.stats) {
+    UI.stats.innerHTML = `
+      <p>Заявки: ${data.length}</p>
+      <p>Закриті: ${done}</p>
+      <p>Дохід: ${income}$</p>
+    `;
+  }
 
-  const income = data.reduce((sum, l) => sum + (l.income || 0), 0);
-
-  const hot = data.filter(l => getPriority(l) > 6).length;
-
-  document.getElementById("stats").innerHTML = `
-    <h3>📊 Аналітика агентства</h3>
-    <p>Всього заявок: ${total}</p>
-    <p>Нові: ${newLeads}</p>
-    <p>Оброблені: ${done}</p>
-    <p>📈 Конверсія: ${conversion}%</p>
-    <p>💰 Потенційний дохід: ${income}$</p>
-    <p>🔥 Гарячі клієнти: ${hot}</p>
-  `;
-
-  document.getElementById("kpi-total").innerText = total;
+  document.getElementById("kpi-total").innerText = data.length;
   document.getElementById("kpi-done").innerText = done;
   document.getElementById("kpi-income").innerText = income + "$";
 }
 
-/* ===================================
-   ✅ ГРАФІК
-=================================== */
+/* ===========================
+   ✅ CHART (FIXED)
+=========================== */
 function drawChart(data) {
 
+  if (!UI.chart) return;
+
+  if (chartInstance) chartInstance.destroy();
+
   const done = data.filter(l => l.status === "done").length;
-  const newLeads = data.length - done;
 
-  const canvas = document.getElementById("leadsChart");
-  if (!canvas) return;
-
-  const ctx = canvas.getContext("2d");
-
-  const gradient = ctx.createLinearGradient(0, 0, 0, 200);
-  gradient.addColorStop(0, "#22c55e");
-  gradient.addColorStop(1, "#4ade80");
-
-  new Chart(ctx, {
+  chartInstance = new Chart(UI.chart, {
     type: "doughnut",
     data: {
       labels: ["Нові", "Оброблені"],
       datasets: [{
-        data: [newLeads, done],
-        backgroundColor: ["#facc15", gradient]
+        data: [data.length - done, done],
+        backgroundColor: ["#facc15", "#22c55e"]
       }]
     }
   });
 }
 
-/* ===================================
-   ✅ FILTER
-=================================== */
-window.filterStatus = (status) => {
-
-  if (status === "all") {
-    render(allLeads);
-    return;
-  }
-
-  const filtered = allLeads.filter(l => l.status === status);
-  render(filtered);
-};
-
-/* ===================================
-   ✅ SEARCH
-=================================== */
-window.searchLead = () => {
-
-  const text = document.getElementById("searchLead").value.toLowerCase();
-
-  const filtered = allLeads.filter(l =>
-    l.name.toLowerCase().includes(text) ||
-    l.phone.includes(text)
-  );
-
-  render(filtered);
-};
-
-/* ===================================
-   ✅ THEME
-=================================== */
-window.toggleTheme = function () {
-
-  const current = document.body.classList.contains("light");
-
-  if (current) {
-    document.body.classList.remove("light");
-    localStorage.setItem("theme", "dark");
-  } else {
-    document.body.classList.add("light");
-    localStorage.setItem("theme", "light");
-  }
-};
-
-if (localStorage.getItem("theme") === "light") {
-  document.body.classList.add("light");
-}
-
-/* ===================================
+/* ===========================
    ✅ START
-=================================== */
+=========================== */
 loadLeads();
+import { arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
