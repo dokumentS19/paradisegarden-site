@@ -237,12 +237,17 @@ window.filterMap = function () {
     Number(d.price) <= max
   );
 
-  // ✅ ОБОВ'ЯЗКОВО
-  renderMarkers(filtered);
-  renderGrid(filtered);
+// ✅ ОБОВ'ЯЗКОВО
+renderMarkers(filtered);
+renderGrid(filtered);
 };
 
-  window.initMap = initMap;
+// ✅ ОСЬ ЦЕ ДОДАЙ
+document.querySelectorAll(".fade-in").forEach(el => {
+  el.classList.add("show");
+});
+
+window.initMap = initMap;
 </script>
 
 <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I&callback=initMap"></script>
