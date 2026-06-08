@@ -171,8 +171,10 @@ const info = new google.maps.InfoWindow({
       <strong>${d.title || ""}</strong><br>
       💰 ${d.price || "-"} $<br><br>
       <a href="object.html?id=${d.id}">Відкрити обʼєкт</a>
-    </div>
+  </div>
+`
 });
+
     marker.addListener("click", () => {
       info.open(map, marker);
     });
