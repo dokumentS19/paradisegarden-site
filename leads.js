@@ -36,11 +36,11 @@ async function addHistory(id, action, comment = "") {
   const time = new Date().toLocaleString();
 
   await updateDoc(doc(db, "leads", id), {
-    history: window.firebase.firestore.FieldValue.arrayUnion({
-      action,
-      comment,
-      time
-    })
+   history: arrayUnion({
+  action,
+  comment,
+  time
+})
   });
 }
 
