@@ -20,20 +20,25 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+
 // ✅ CONFIG
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site",
   storageBucket: "paradisegarden-site.firebasestorage.app",
   messagingSenderId: "452352075250",
-  appId: "1:452352075250:web:049e1b3f10c44bc04c776b"
+  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
+  measurementId: "G-6XHWE6Y0JE"
 };
 
 const app = initializeApp(firebaseConfig);
+
 const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+
 
 // ✅ LOGIN
 window.addEventListener("DOMContentLoaded", () => {
@@ -50,20 +55,31 @@ window.addEventListener("DOMContentLoaded", () => {
 getRedirectResult(auth)
   .then((result) => {
     if (result && result.user) {
-      console.log("✅ Успішний логін:", result.user.uid);
+      console.log("✅ Успішний логін після redirect");
+      console.log("UID:", result.user.uid);
     }
   })
   .catch((error) => {
     console.error("❌ Помилка логіну:", error);
   });
 
-// ✅ ГОЛОВНИЙ КОНТРОЛЬ КОРИСТУВАЧА
+// ✅ СЛУХАЄМО ЮЗЕРА (ГОЛОВНЕ)
 onAuthStateChanged(auth, (user) => {
   const info = document.getElementById("userInfo");
 
   if (user) {
     console.log("✅ Увійшов:", user.uid);
 
+    if (info) {
+      info.innerText = user.displayName || user.email;
+    }
+
+  } else {
+    console.log("❌ Не увійшов");
+  }
+});
+
+    // ✅ профіль
     if (info) {
       info.innerHTML = `
         <p>👤 ${user.displayName || "Користувач"}</p>
@@ -74,19 +90,18 @@ onAuthStateChanged(auth, (user) => {
     loadMyAds(user.uid);
 
   } else {
-    console.log("❌ Не увійшов");
-
     if (info) {
       info.innerHTML = `<p>❌ Не авторизований</p>`;
     }
 
-    const ads = document.getElementById("myAds");
-    if (ads) ads.innerHTML = "";
+    document.getElementById("myAds").innerHTML = "";
   }
 });
 
+
 // ✅ ДОДАТИ ОГОЛОШЕННЯ
 window.addObject = async () => {
+
   const user = auth.currentUser;
 
   if (!user) {
@@ -102,20 +117,23 @@ window.addObject = async () => {
     alert("Заповни назву і ціну");
     return;
   }
+await addDoc(collection(db, "objects"), {
+  title,
+  price: Number(price),
+  area: area || "-",
+  ownerId: user.uid,
+  createdAt: new Date(),
 
-  await addDoc(collection(db, "objects"), {
-    title,
-    price: Number(price),
-    area: area || "-",
-    ownerId: user.uid,
-    createdAt: new Date(),
-    lat: 50.5215,
-    lng: 30.2506,
-    images: ["https://via.placeholder.com/300"]
-  });
+  // ✅ ДОДАЙ ЦЕ
+  lat: 50.5215,
+  lng: 30.2506,
+
+  images: ["https://via.placeholder.com/300"]
+});
 
   alert("✅ Додано");
 
+  // ✅ очищаємо поля
   document.getElementById("title").value = "";
   document.getElementById("price").value = "";
   document.getElementById("area").value = "";
@@ -123,16 +141,18 @@ window.addObject = async () => {
   loadMyAds(user.uid);
 };
 
+
 // ✅ МОЇ ОГОЛОШЕННЯ
 async function loadMyAds(uid) {
+
   const q = query(
     collection(db, "objects"),
     where("ownerId", "==", uid)
   );
 
   const snap = await getDocs(q);
-  const el = document.getElementById("myAds");
 
+  const el = document.getElementById("myAds");
   el.innerHTML = "";
 
   if (snap.empty) {
@@ -144,10 +164,18 @@ async function loadMyAds(uid) {
     const d = docu.data();
 
     el.innerHTML += `
-      <div style="background:#1e293b;padding:10px;margin-bottom:10px;border-radius:8px;">
+      <div style="
+        background:#1e293b;
+        padding:10px;
+        margin-bottom:10px;
+        border-radius:8px;
+      ">
         <strong>${d.title}</strong><br>
-        💰 ${d.price}$<br>
-        📐 ${d.area}<br><br>
+        💰 ${d.price} $<br>
+        📐 ${d.area}
+
+        <br><br>
+
         <button onclick="deleteAd('${docu.id}')" style="background:red;">
           ❌ Видалити
         </button>
@@ -156,13 +184,17 @@ async function loadMyAds(uid) {
   });
 }
 
+
 // ✅ ВИДАЛЕННЯ
 window.deleteAd = async (id) => {
+
   if (!confirm("Видалити?")) return;
 
   await deleteDoc(doc(db, "objects", id));
+
   loadMyAds(auth.currentUser.uid);
 };
+
 
 // ✅ LOGOUT
 window.logout = () => {
