@@ -175,6 +175,26 @@ const info = new google.maps.InfoWindow({
 `
 });
 
+function renderGrid(data) {
+  const container = document.getElementById("objectsGrid");
+
+  container.innerHTML = "<h2>Об'єкти нерухомості</h2>";
+
+  data.forEach(d => {
+    const el = document.createElement("div");
+    el.className = "card";
+
+    el.innerHTML = `
+      ${d.images && d.images[0] ? `<img src="${d.images[0]}" class="card-img">` : ""}
+      <h3>${d.title || "Без назви"}</h3>
+      <p>💰 ${d.price || "-"} $</p>
+      <a href="object.html?id=${d.id}" class="btn">Детальніше</a>
+    `;
+
+    container.appendChild(el);
+  });
+}
+
     marker.addListener("click", () => {
       info.open(map, marker);
     });
