@@ -152,7 +152,6 @@ async function initMap() {
 
   renderMarkers(allData);
 };
-
 function renderMarkers(data) {
 
   if (clusterer) clusterer.clearMarkers();
@@ -164,17 +163,32 @@ function renderMarkers(data) {
       map: map
     });
 
-const info = new google.maps.InfoWindow({
-  content: `
-    <div style="color:black; max-width:220px;">
-      ${d.images && d.images[0] ? ('<img src="' + d.images[0] + '" style="width:100%; border-radius:10px;">') : ""}
-      <strong>${d.title || ""}</strong><br>
-      💰 ${d.price || "-"} $<br><br>
-      <a href="object.html?id=${d.id}">Відкрити обʼєкт</a>
-  </div>
-`
-});
+    const info = new google.maps.InfoWindow({
+      content: `
+        <div style="color:black; max-width:220px;">
+          ${d.images && d.images[0] ? ('<img src="' + d.images[0] + '" style="width:100%; border-radius:10px;">') : ""}
+          <strong>${d.title || ""}</strong><br>
+          💰 ${d.price || "-"} $<br><br>
+          <a href="object.html?id=${d.id}">Відкрити обʼєкт</a>
+        </div>
+      `
+    });
 
+    marker.addListener("click", () => {
+      info.open(map, marker);
+    });
+
+    return marker;
+  });
+
+  clusterer = new markerClusterer.MarkerClusterer({
+    map,
+    markers
+  });
+} ✅ ЗАКРИЛИ ФУНКЦІЮ
+
+
+// ✅ ТІЛЬКИ ПІСЛЯ ЦЬОГО нова функція
 function renderGrid(data) {
   const container = document.getElementById("objectsGrid");
 
@@ -194,6 +208,7 @@ function renderGrid(data) {
     container.appendChild(el);
   });
 }
+``
 
     marker.addListener("click", () => {
       info.open(map, marker);
