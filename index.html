@@ -150,6 +150,11 @@ async function initMap() {
     allData.push(d);
   });
 
+  // ✅ ДОДАЄШ ОЦЕ
+  renderMarkers(allData);
+  renderGrid(allData);
+}
+
   renderMarkers(allData);
 };
 function renderMarkers(data) {
