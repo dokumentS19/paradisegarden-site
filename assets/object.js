@@ -86,7 +86,7 @@ function selectImage(index) {
 
 // ✅ MAP
 function initMap(lat, lng) {
-  if (!lat || !lng) return;
+  if (lat == null || lng == null) return;
 
   const map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: Number(lat), lng: Number(lng) },
