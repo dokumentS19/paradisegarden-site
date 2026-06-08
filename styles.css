@@ -513,4 +513,20 @@ body.light #stats {
   padding: 10px 15px;
   border-radius: 8px;
 }
-``
+/* ✅ СПИСОК У БЛОЦІ ПРО НАС */
+#about ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+}
+
+#about li {
+  background: #0f172a;
+  padding: 10px 14px;
+  border-radius: 8px;
+}
+
