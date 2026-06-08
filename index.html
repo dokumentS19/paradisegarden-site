@@ -3,12 +3,137 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>АН Райський Сад</title> 
+  <title>АН Райський Сад</title>
 
   <link rel="stylesheet" href="styles.css">
 
-  <!-- ✅ cluster -->
   <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+    }
+
+    /* HEADER */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: #020617;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .topbar a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .topbar input {
+      padding: 6px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    .btn {
+      background: #16a34a;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      height: 70vh;
+      background: url("https://images.unsplash.com/photo-1568605114967-8130f3a36994") center/cover;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+    }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+
+    /* SECTION */
+    .about, .objects, .contacts {
+      max-width: 1100px;
+      margin: 40px auto;
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 14px;
+    }
+
+    /* ADVANTAGES */
+    #about ul {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+      gap: 10px;
+      list-style: none;
+      padding: 0;
+    }
+
+    #about li {
+      background: #020617;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    /* OBJECTS GRID */
+    #objectsGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px,1fr));
+      gap: 15px;
+    }
+
+    .card {
+      background: #020617;
+      padding: 10px;
+      border-radius: 10px;
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    /* CONTACTS */
+    .contact-card {
+      background: #020617;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background: #020617;
+    }
+  </style>
 </head>
 
 <body>
@@ -28,91 +153,53 @@
     <a href="dashboard.html">Кабінет</a>
     <a href="dialogs.html">💬 Діалоги</a>
 
-    <button onclick="toggleTheme()" class="btn">🌗</button>
+    <button class="btn">🌗</button>
   </div>
 </header>
 
+<!-- HERO -->
 <section class="hero">
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
     <h1>Агентство нерухомості "Райський Сад"</h1>
-    <p>Продаж, купівля та оренда нерухомості в Ірпені та Київській області</p>
+    <p>Надійний партнер з 2002 року. Купівля, продаж і оренда нерухомості.</p>
     <a href="#objectsGrid" class="btn">Переглянути об'єкти</a>
   </div>
 </section>
 
-<!-- ✅ ПРО НАС (НЕ ЗМІНЯВ) -->
-<section id="about" class="about fade-in"> 
+<!-- ABOUT -->
+<section id="about" class="about">
 
-  <h2>🏡 Про агентство</h2>
+<h2>🏡 Про агентство</h2>
 
-  <p>
-    Агенція нерухомості «Райський Сад» заснована у 2005 році та впевнено працює на ринку нерухомості Києва та Київської області. 
-    Ми допомагаємо клієнтам купувати, продавати та вигідно інвестувати в нерухомість.
-  </p>
+<p>
+Агенція нерухомості «Райський Сад» заснована у 2005 році...
+</p>
 
-  <p>
-    За роки роботи ми провели сотні успішних угод і зарекомендували себе як надійний партнер. 
-    Ми супроводжуємо клієнтів на кожному етапі — від підбору об'єкта до повного оформлення документів.
-  </p>
-
-  <p>
-    Наша команда працює чесно, прозоро та орієнтована на результат. 
-    Ми завжди ставимо інтереси клієнта на перше місце.
-  </p>
-
-  <p>
-    Ми віримо, що чесність, досвід і людяний підхід — основа довгострокових відносин з клієнтами.
-  </p>
-
-  <h3>✅ Наші переваги</h3>
-  <ul>
-    <li>Повний супровід угод під ключ</li>
-    <li>Юридична перевірка та безпека</li>
-    <li>Актуальна аналітика ринку</li>
-    <li>Індивідуальний підбір нерухомості</li>
-  </ul>
-
-  <h3>👤 Директор</h3>
-  <p><strong>Іванчик Олег Степанович</strong></p>
-  <p>
-    Засновник і керівник агентства. Орієнтований на результат і довіру в кожній угоді.
-  </p>
-
-  <h3>🏡 Ваш надійний провідник у світі нерухомості</h3>
-  <p>
-    З нами складні угоди стають простими, зрозумілими та безпечними. 
-    Досвід з 2002 року у Києві та Київській області.
-  </p>
-
-  <h3>📊 Про директора</h3>
-  <p>
-    Іванчик Олег Степанович — засновник і директор АН «Райський Сад» з 2002 року. 
-    Сфокусований на прозорості угод, юридичній безпеці та індивідуальному підході до кожного клієнта.
-  </p>
-
-  <ul>
-    <li>Досвід керування агентством і супроводу угод понад 24 років</li>
-    <li>Експертиза у купівлі/продажу, оренді та документальному супроводі</li>
-    <li>Репутація порядності та відповідальності у партнерських відносинах</li>
-  </ul>
+<h3>✅ Наші переваги</h3>
+<ul>
+<li>Повний супровід угод під ключ</li>
+<li>Юридична безпека</li>
+<li>Аналітика ринку</li>
+<li>Індивідуальний підбір</li>
+</ul>
 
 </section>
 
-<!-- ✅ КАРТА -->
-<section class="about fade-in">
+<!-- MAP -->
+<section class="about">
   <h2>📍 Обʼєкти на карті</h2>
   <div id="map" style="height:500px;"></div>
 </section>
 
-<!-- ✅ ОБʼЄКТИ -->
-<section id="objectsGrid" class="objects fade-in">
+<!-- OBJECTS -->
+<section id="objectsGrid" class="objects">
   <h2>Об'єкти нерухомості</h2>
 </section>
 
-<!-- ✅ КОНТАКТИ -->
-<section id="contacts" class="contacts fade-in">
+<!-- CONTACTS -->
+<section id="contacts" class="contacts">
   <h2>📞 Контакти</h2>
   <div class="contact-card">
     <p>📞 +38 095 3777196</p>
@@ -125,167 +212,70 @@
   © Paradise Garden
 </footer>
 
+<!-- JS -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import { updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-async function fixOldObjects() {
-  const snap = await getDocs(collection(db, "objects"));
-
-  for (const item of snap.docs) {
-    const d = item.data();
-
-    if (typeof d.lat !== "number" || typeof d.lng !== "number") {
-      console.log("FIX:", item.id);
-
-      await updateDoc(doc(db, "objects", item.id), {
-        lat: 50.5215,
-        lng: 30.2506
-      });
-    }
-  }
-
-  console.log("✅ DONE FIX");
-}
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site",
-  storageBucket: "paradisegarden-site.firebasestorage.app",
-  messagingSenderId: "452352075250",
-  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
-  measurementId: "G-6XHWE6Y0JE"
+  projectId: "paradisegarden-site"
 };
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let map;
 let allData = [];
-let clusterer;
 
 window.initMap = async function () {
+
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 11,
     center: { lat: 50.5215, lng: 30.2506 }
   });
 
   const snap = await getDocs(collection(db, "objects"));
-console.log("SNAP SIZE:", snap.size);
+
   allData = [];
 
-snap.forEach(doc => {
-  const d = doc.data();
-
-  if (typeof d.lat !== "number" || typeof d.lng !== "number") return;
-
-  d.id = doc.id;
-  allData.push(d);
-});
-// ✅ правильно
-await fixOldObjects();
-
-
-  console.log("DATA:", allData);
-if (allData.length === 0) {
-  allData.push({
-    id: "test1",
-    title: "Тестовий об'єкт",
-    price: 50000,
-    lat: 50.5215,
-    lng: 30.2506,
-   images: []
+  snap.forEach(doc => {
+    const d = doc.data();
+    d.id = doc.id;
+    allData.push(d);
   });
-}
-  renderMarkers(allData);
+
   renderGrid(allData);
-}
-function renderMarkers(data) {
+};
 
-  if (clusterer) clusterer.clearMarkers();
-
-  const markers = data.map(d => {
-
-    const marker = new google.maps.Marker({
-      position: { lat: d.lat, lng: d.lng },
-      map: map
-    });
-
-    const info = new google.maps.InfoWindow({
-      content: `
-        <div style="color:black; max-width:220px;">
-          ${d.images && d.images[0] ? ('<img src="' + d.images[0] + '" style="width:100%; border-radius:10px;">') : ""}
-          <strong>${d.title || ""}</strong><br>
-          💰 ${d.price || "-"} $<br><br>
-          <a href="object.html?id=${d.id}">Відкрити обʼєкт</a>
-        </div>
-      `
-    });
-
-    marker.addListener("click", () => {
-      info.open(map, marker);
-    });
-
-    return marker;
-  });
-
-  clusterer = new markerClusterer.MarkerClusterer({
-    map,
-    markers
-  });
-} //✅ ЗАКРИЛИ ФУНКЦІЮ
-
-
-// ✅ ТІЛЬКИ ПІСЛЯ ЦЬОГО нова функція
 function renderGrid(data) {
   const container = document.getElementById("objectsGrid");
-
-  container.innerHTML = "<h2>Об'єкти нерухомості</h2>";
 
   data.forEach(d => {
     const el = document.createElement("div");
     el.className = "card";
 
     el.innerHTML = `
-      ${d.images && d.images[0] ? `<img src="${d.images[0]}" class="card-img">` : ""}
-      <h3>${d.title || "Без назви"}</h3>
-      <p>💰 ${d.price || "-"} $</p>
-      <a href="object.html?id=${d.id}" class="btn">Детальніше</a>
-    `;
+      ${d.images?.[0] ? `<img src="${d.images[0  <p>💰 ${d.price || "-"} $</p>
+      <a href="object.html?id=${d.id}" class="btn
 
     container.appendChild(el);
   });
 }
 
 window.filterMap = function () {
-
   const search = document.getElementById("search").value.toLowerCase();
-  const min = Number(document.getElementById("minPrice").value) || 0;
-  const max = Number(document.getElementById("maxPrice").value) || 999999999;
 
   const filtered = allData.filter(d =>
-    (d.title || "").toLowerCase().includes(search) &&
-    Number(d.price) >= min &&
-    Number(d.price) <= max
+    (d.title || "").toLowerCase().includes(search)
   );
 
-// ✅ ОБОВ'ЯЗКОВО
-renderMarkers(filtered);
-renderGrid(filtered);
+  renderGrid(filtered);
 };
 </script>
-  
-<script>
-window.addEventListener("load", () => {
-  document.querySelectorAll(".fade-in").forEach(el => {
-    el.classList.add("show");
-  });
-});
-</script>
 
-<!-- Google Maps -->
-<script defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I&callback=initMap">
-</script>
+<script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I&callback=initMap"></script>
+
+</body>
+</html>
