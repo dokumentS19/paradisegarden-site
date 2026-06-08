@@ -46,10 +46,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
   if (btn) {
     btn.onclick = () => {
-      signInWithPopup(auth, provider);
+      signInWithRedirect(auth, provider);
     };
   }
 });
+``
 
 
 // ✅ СЛУХАЄМО ЮЗЕРА
