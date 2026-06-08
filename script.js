@@ -36,6 +36,26 @@ const TOKEN = "ТУТ_НОВИЙ_TOKEN";
 const CHAT_ID = "598876080";
 
 /* ================================
+   ✅ ✅ ✅ ДОДАНО: TELEGRAM ДЛЯ МЕНЕДЖЕРА
+================================ */
+async function sendToTelegram(message) {
+  try {
+    await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        chat_id: CHAT_ID,
+        text: message
+      })
+    });
+  } catch (e) {
+    console.error("Telegram error:", e);
+  }
+}
+
+/* ================================
    ✅ LOAD OBJECTS
 ================================ */
 async function load() {
@@ -129,7 +149,6 @@ function updateMap(data) {
 
   if (!map) return;
 
-  // очистка
   if (clusterer) clusterer.clearMarkers();
   mapMarkers.forEach(m => m.setMap(null));
   mapMarkers = [];
@@ -187,7 +206,7 @@ function toggleFav(id) {
 window.toggleFav = toggleFav;
 
 /* ================================
-   ✅ FILTER (РОЗШИРЕНО ДЛЯ КАРТИ)
+   ✅ FILTER
 ================================ */
 const search = document.getElementById("search");
 const minPrice = document.getElementById("minPrice");
@@ -213,8 +232,6 @@ if (search && minPrice && maxPrice) {
     });
 
     render(filtered);
-
-    // ✅ КАРТА ФІЛЬТРУЄТЬСЯ ТОЖ
     updateMap(filtered);
   };
 }
@@ -233,7 +250,7 @@ window.sendForm = async () => {
   }
 
   const text = `
-📩 Нова заявка
+📩 НОВА ЗАЯВКА
 
 👤 Імʼя: ${name}
 📞 Телефон: ${phone}
@@ -241,14 +258,8 @@ window.sendForm = async () => {
 
   try {
 
-    await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: text
-      })
-    });
+    // ✅ ТЕПЕР через універсальну функцію
+    await sendToTelegram(text);
 
     await addDoc(collection(db, "leads"), {
       name,
