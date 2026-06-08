@@ -142,8 +142,7 @@ if (snap.empty) {
   el.innerHTML = "<p>Немає оголошень</p>";
   return;
 }
-  }
-
+ 
   snap.forEach(docu => {
     const d = docu.data();
 
