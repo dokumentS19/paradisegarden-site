@@ -10,8 +10,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // ✅ CONFIG
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyB7Uu7Iq6X0471orSFgorzwwIqP5JMJeGk",
+  apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site",
   storageBucket: "paradisegarden-site.firebasestorage.app",
@@ -19,7 +20,6 @@ const firebaseConfig = {
   appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
   measurementId: "G-6XHWE6Y0JE"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
