@@ -29,7 +29,23 @@ let allLeads = [];
 const STATUSES = ["new", "in_progress", "done"];
 
 /* ===================================
-   ✅ ✅ ✅ НАЗВИ СТАДІЙ (ДОДАНО)
+   ✅ ✅ ✅ HISTORY (ДОДАНО)
+=================================== */
+async function addHistory(id, action, comment = "") {
+
+  const time = new Date().toLocaleString();
+
+  await updateDoc(doc(db, "leads", id), {
+    history: window.firebase.firestore.FieldValue.arrayUnion({
+      action,
+      comment,
+      time
+    })
+  });
+}
+
+/* ===================================
+   ✅ ✅ ✅ НАЗВИ СТАДІЙ
 =================================== */
 function getStatusName(status) {
   if (status === "new") return "🟡 Новий";
@@ -127,6 +143,13 @@ ${d.note || ""}
           <button onclick="markDone('${d.id}')">✅</button>
           <button onclick="removeLead('${d.id}')">❌</button>
 
+          <!-- ✅ HISTORY VIEW -->
+          <div style="margin-top:10px; font-size:12px;">
+            ${(d.history || []).map(h => `
+              <div>📌 ${h.action} (${h.time}) ${h.comment}</div>
+            `).join("")}
+          </div>
+
         </div>
       `;
     });
@@ -152,11 +175,13 @@ window.dropLead = async (e, status) => {
     status
   });
 
+  await addHistory(id, "Зміна статусу", status);
+
   loadLeads();
 };
 
 /* ===================================
-   ✅ CRM BOARD (UPGRADE)
+   ✅ CRM BOARD
 =================================== */
 function renderBoard(data) {
 
@@ -195,6 +220,8 @@ window.assignManager = async (id, name) => {
   await updateDoc(doc(db, "leads", id), {
     manager: name
   });
+
+  await addHistory(id, "Менеджер", name);
 };
 
 /* ===================================
@@ -204,6 +231,50 @@ window.setReminder = async (id, date) => {
   await updateDoc(doc(db, "leads", id), {
     reminder: new Date(date)
   });
+
+  await addHistory(id, "Нагадування", date);
+};
+
+/* ===================================
+   ✅ STATUS
+=================================== */
+window.markDone = async (id) => {
+
+  await updateDoc(doc(db, "leads", id), {
+    status: "done"
+  });
+
+  await addHistory(id, "Закрито");
+
+  loadLeads();
+};
+
+/* ===================================
+   ✅ DELETE
+=================================== */
+window.removeLead = async (id) => {
+
+  if (!confirm("Видалити заявку?")) return;
+
+  await deleteDoc(doc(db, "leads", id));
+
+  loadLeads();
+};
+
+/* ===================================
+   ✅ SAVE NOTE
+=================================== */
+window.saveNote = async (id) => {
+
+  const text = document.getElementById("note-" + id).value;
+
+  await updateDoc(doc(db, "leads", id), {
+    note: text
+  });
+
+  await addHistory(id, "Коментар", text);
+
+  alert("✅ Збережено");
 };
 
 /* ===================================
@@ -297,45 +368,7 @@ window.searchLead = () => {
 };
 
 /* ===================================
-   ✅ STATUS
-=================================== */
-window.markDone = async (id) => {
-
-  await updateDoc(doc(db, "leads", id), {
-    status: "done"
-  });
-
-  loadLeads();
-};
-
-/* ===================================
-   ✅ DELETE
-=================================== */
-window.removeLead = async (id) => {
-
-  if (!confirm("Видалити заявку?")) return;
-
-  await deleteDoc(doc(db, "leads", id));
-
-  loadLeads();
-};
-
-/* ===================================
-   ✅ SAVE NOTE
-=================================== */
-window.saveNote = async (id) => {
-
-  const text = document.getElementById("note-" + id).value;
-
-  await updateDoc(doc(db, "leads", id), {
-    note: text
-  });
-
-  alert("✅ Збережено");
-};
-
-/* ===================================
-   ✅ THEME SWITCH
+   ✅ THEME
 =================================== */
 window.toggleTheme = function () {
 
@@ -350,7 +383,6 @@ window.toggleTheme = function () {
   }
 };
 
-// ✅ LOAD THEME
 if (localStorage.getItem("theme") === "light") {
   document.body.classList.add("light");
 }
