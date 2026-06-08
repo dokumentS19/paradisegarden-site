@@ -543,45 +543,7 @@ body.light #stats {
   border-radius: 10px;
   text-align: center;
 }
-#about ul:first-of-type {#about ul:first-of: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
-
-  list-style: none;
-  padding: 0;
-}
-
-#about ul:first-of-type li {
-  background: #0f172a;
-  padding: 12px;
-  border-radius: 10px;
-  text-align: center;
-}
-#about ul:first-of-type {#about ul:first-of: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
-
-  list-style: none;
-  padding: 0;
-}
-
-#about ul:first-of-type li {
-  background: #0f172a;
-  padding: 12px;
-  border-radius: 10px;
-  text-align: center;
-}
-#about ul:first-of-type {#about ul:first-of: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
-
-  list-style: none;
-  padding: 0;
-}
-
-#about ul:first-of-type li {
-  background: #0f172a;
-  padding: 12px;
-  border-radius: 10px;
-  text-align: center;
+#about ul:last-of-type {
+  list-style: disc;
+  padding-left: 20px;
 }
