@@ -16,7 +16,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // ✅ CONFIG
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
@@ -28,7 +27,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
 const db = getFirestore(app);
 const auth = getAuth(app);
 
@@ -60,14 +58,13 @@ onAuthStateChanged(auth, user => {
 const messagesDiv = document.getElementById("messages");
 
 // ✅ запит
-
 const q = query(
   collection(db, "messages"),
   where("chatId", "==", chatId),
   orderBy("createdAt")
 );
 
-// ✅ слухаємо
+// ✅ слухаємо повідомлення
 onSnapshot(q, snap => {
 
   messagesDiv.innerHTML = "";
@@ -75,10 +72,6 @@ onSnapshot(q, snap => {
   snap.forEach(doc => {
     const d = doc.data();
 
-    // ✅ тільки цей чат
-    if (d.chatId !== chatId) return;
-
-    // ✅ ВАЖЛИВО — твій UI
     const isMine = d.senderId === currentUser?.uid;
 
     messagesDiv.innerHTML += `
@@ -87,20 +80,17 @@ onSnapshot(q, snap => {
       </div>
     `;
 
-    // ✅ push
+    // ✅ push (тільки якщо не твоє повідомлення)
     if (currentUser && d.senderId !== currentUser.uid) {
       notify(d.text);
     }
   });
 
   // ✅ автоскрол вниз
-  setTimeout(() => {
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  }, 100);
-
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
 
-// ✅ відправка
+// ✅ відправка повідомлення
 window.send = async () => {
 
   const input = document.getElementById("msg");
@@ -108,10 +98,16 @@ window.send = async () => {
 
   if (!text) return;
 
+  // ✅ перевірка логіну
+  if (!currentUser) {
+    alert("Увійди!");
+    return;
+  }
+
   await addDoc(collection(db, "messages"), {
     text: text,
     chatId: chatId,
-    senderId: currentUser?.uid,
+    senderId: currentUser.uid,
     createdAt: new Date()
   });
 
