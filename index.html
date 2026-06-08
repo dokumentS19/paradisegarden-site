@@ -232,11 +232,16 @@ window.filterMap = function () {
   const max = Number(document.getElementById("maxPrice").value) || 999999999;
 
   const filtered = allData.filter(d =>
-    d.title.toLowerCase().includes(search) &&
-    d.price >= min &&
-    d.price <= max
- 
+    (d.title || "").toLowerCase().includes(search) &&
+    Number(d.price) >= min &&
+    Number(d.price) <= max
+  );
+
+  // ✅ ОБОВ'ЯЗКОВО
+  renderMarkers(filtered);
+  renderGrid(filtered);
 };
+
   window.initMap = initMap;
 </script>
 
