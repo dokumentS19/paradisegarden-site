@@ -500,3 +500,17 @@ body.light #stats {
 
   min-width: 200px;
 }
+#about ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+#about li {
+  background: #1e293b;
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+``
