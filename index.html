@@ -134,7 +134,7 @@ let map;
 let allData = [];
 let clusterer;
 
-window.initMap = async function () {
+async function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 11,
     center: { lat: 50.5215, lng: 30.2506 }
