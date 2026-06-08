@@ -1,6 +1,369 @@
+/* ✅ БАЗА */
+body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: white;
+  margin: 0;
+  padding: 20px;
+}
+
+h1, h2 {
+  margin-bottom: 15px;
+}
+
+/* ✅ HEADER */
+.topbar {
+  position: sticky;
+  top: 0;
+  background: #0f172a;
+  padding: 10px;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #1e293b;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+}
+
+/* ✅ INPUTS */
+.topbar input {
+  margin-right: 10px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: white;
+}
+
+.topbar input::placeholder {
+  color: #94a3b8;
+}
+
+/* ✅ MENU */
+.topbar a {
+  padding: 10px;
+  background: #16a34a;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  margin-left: 5px;
+  transition: 0.2s;
+}
+
+.topbar a:hover {
+  background: #22c55e;
+  transform: scale(1.05);
+}
+
+/* ✅ HERO */
+.hero {
+  position: relative;
+  height: 420px;
+  background: url("https://images.unsplash.com/photo-1564013799919-ab600027ffc6") center/cover no-repeat;
+  border-radius: 14px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(15,23,42,0.75);
+}
+
+.hero-content {
+  position: relative;
+  text-align: center;
+  max-width: 700px;
+}
+
+/* ✅ BUTTON */
+.btn {
+  display: inline-block;
+  background: #16a34a;
+  padding: 12px 22px;
+  border-radius: 8px;
+  color: white;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #22c55e;
+}
+
+/* ✅ SECTION BLOCKS */
+.about, .features, .contacts, .objects, .form {
+  background: #1e293b;
+  padding: 25px;
+  border-radius: 14px;
+  margin: 30px auto;
+  max-width: 1000px;
+}
+
+/* ✅ LIST */
+.list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+/* ✅ FEATURES */
+.features .grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.features .grid div {
+  background: #0f172a;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* ✅ REVIEWS */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.review {
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+/* ✅ CONTACT */
+.contact-card {
+  background: #0f172a;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+/* ✅ FORM */
+.form input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  background: #0f172a;
+  color: white;
+  border: none;
+}
+
+/* ✅ TEXTAREA */
+textarea {
+  width: 100%;
+  min-height: 70px;
+  background: #0f172a;
+  color: white;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 8px;
+  margin-top: 5px;
+  transition: 0.2s;
+}
+
+textarea:focus {
+  border-color: #22c55e;
+  outline: none;
+}
+
+/* ✅ STATS */
+#stats {
+  background: #0f172a;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border-left: 4px solid gold;
+}
+
+/* ✅ KPI DASHBOARD */
+.kpi {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.kpi-box {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.kpi-box strong {
+  display: block;
+  font-size: 22px;
+  margin-top: 5px;
+}
+
+/* ✅ CHART */
+canvas {
+  margin-top: 20px;
+  background: #1e293b;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* ✅ GRID OBJECTS */
+#objectsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* ✅ CARD (PREMIUM) */
+.card {
+  position: relative;
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 12px;
+  border-left: 4px solid #16a34a;
+  transition: all 0.3s ease;
+}
+ 
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+}
+
+/* ✅ IMAGE */
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* ✅ AI BADGE */
+.card strong {
+  color: gold;
+  font-weight: bold;
+}
+
+/* ✅ BUTTONS */
+.card button {
+  margin-top: 5px;
+  margin-right: 5px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #16a34a;
+  color: white;
+}
+
+.card button:hover {
+  background: #22c55e;
+}
+
+/* ✅ FAVORITE */
+.favorite {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* ✅ ANIMATION */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 0.6s;
+}
+
+.fade-in.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ✅ FOOTER */
+.footer {
+  text-align: center;
+  margin-top: 40px;
+  opacity: 0.6;
+}
+
+/* ✅ MOBILE */
+@media (max-width: 600px) {
+
+  .topbar {
+    flex-direction: column;
+  }
+
+  .actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .reviews-grid,
+  .features .grid,
+  .list {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    height: auto;
+    padding: 20px;
+  }
+}
+
+/* 🌞 LIGHT THEME */
+body.light {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+body.light .topbar {
+  background: #ffffff;
+  border-bottom: 1px solid #cbd5f5;
+}
+
+body.light .about,
+body.light .features,
+body.light .objects,
+body.light .form,
+body.light .contacts {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+body.light .card {
+  background: #f1f5f9;
+}
+
+body.light textarea {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+body.light #stats {
+  background: #ffffff;
+}
+#objectsGrid {
+  display: grid !important;
+  opacity: 1 !important;
+}
+
+.card-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+}
 .about-section {
-  padding: 100px 20px;
-  background: radial-gradient(circle at top, #1e293b, #020617);
+  padding: 60px 20px;
+  background: #0f172a;
   color: #fff;
 }
 
@@ -9,59 +372,34 @@
   margin: auto;
 }
 
-.about-section h2 {
-  text-align: center;
-  font-size: 36px;
-  margin-bottom: 30px;
-  background: linear-gradient(90deg, #22c55e, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
 .about-text {
-  text-align: center;
-  margin-bottom: 20px;
-  line-height: 1.8;
+  margin-bottom: 15px;
+  line-height: 1.6;
   color: #cbd5f5;
-  max-width: 750px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
-/* GRID */
 .about-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  margin: 40px 0;
+  gap: 15px;
+  margin: 20px 0;
 }
 
-/* КАРТКИ */
 .about-card {
-  background: rgba(30, 41, 59, 0.7);
-  padding: 20px;
-  border-radius: 15px;
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 10px;
   transition: 0.3s;
-  text-align: center;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.05);
 }
 
-/* HOVER */
 .about-card:hover {
-  transform: translateY(-10px) scale(1.05);
-  border: 1px solid #22c55e;
-  box-shadow: 0 0 25px rgba(34,197,94,0.4);
+  transform: translateY(-5px);
+  background: #334155;
 }
 
-/* директор */
 .director-block {
-  background: rgba(30, 41, 59, 0.8);
-  padding: 30px;
-  border-radius: 18px;
-  margin: 50px auto;
-  text-align: center;
-  max-width: 700px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+  margin: 30px 0;
 }
