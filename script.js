@@ -1,139 +1,149 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  addDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// ✅ CONFIG
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";import { initializeApp } fromRK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site",
-  storageBucket: "paradisegarden-site.firebasestorage.app",
-  messagingSenderId: "452352075250",
-  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
-  measurementId: "G-6XHWE6Y0JE"
+  projectId: "paradisegarden-site"
 };
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// ✅ STATE
 let allObjects = [];
-
-/* ================================
-   ✅ MAP VARIABLES (ДОДАНО)
-================================ */
 let map;
-let mapMarkers = [];
+let markers = [];
 let clusterer;
+let renderTimer;
 
-/* ================================
-   ✅ TELEGRAM CONFIG
-================================ */
+// ✅ FAVORITES CACHE
+let favs = JSON.parse(localStorage.getItem("favs")) || [];
+
+// ✅ TELEGRAM
 const TOKEN = "ТУТ_НОВИЙ_TOKEN";
 const CHAT_ID = "598876080";
 
-/* ================================
-   ✅ ✅ ✅ ДОДАНО: TELEGRAM ДЛЯ МЕНЕДЖЕРА
-================================ */
-async function sendToTelegram(message) {
+/* =======================
+   ✅ SAFE TELEGRAM
+======================= */
+async function sendToTelegram(msg) {
   try {
-    await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+    fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
       body: JSON.stringify({
         chat_id: CHAT_ID,
-        text: message
-      })
+        text: msg
+      }),
+      headers: { "Content-Type": "application/json" }
     });
   } catch (e) {
-    console.error("Telegram error:", e);
+    console.warn("TG fail:", e);
   }
 }
 
-/* ================================
-   ✅ LOAD OBJECTS
-================================ */
-async function load() {
-  const snap = await getDocs(collection(db, "objects"));
+/* =======================
+   ✅ PRELOADER
+======================= */
+function showLoader(show) {
+  let el = document.getElementById("loader");
+  if (!el) return;
 
-  allObjects = [];
-
-  snap.forEach(doc => {
-    allObjects.push({ id: doc.id, ...doc.data() });
-  });
-
-  render(allObjects);
-
-  // ✅ карта теж оновлюється
-  updateMap(allObjects);
+  el.style.display = show ? "block" : "none";
 }
 
-/* ================================
-   ✅ RENDER (НЕ ЧІПАВ)
-================================ */
+/* =======================
+   ✅ LOAD DATA
+======================= */
+async function load() {
+
+  try {
+    showLoader(true);
+
+    const snap = await getDocs(collection(db, "objects"));
+
+    allObjects = snap.docs.map(d => ({
+      id: d.id,
+      ...d.data()
+    }));
+
+    safeRender(allObjects);
+    updateMap(allObjects);
+
+  } catch (e) {
+    console.error("LOAD ERROR:", e);
+  }
+
+  showLoader(false);
+}
+
+/* =======================
+   ✅ SMART RENDER (DEBOUNCE)
+======================= */
+function safeRender(data) {
+  clearTimeout(renderTimer);
+  renderTimer = setTimeout(() => {
+    render(data);
+  }, 80);
+}
+
+/* =======================
+   ✅ RENDER GRID
+======================= */
 function render(data) {
 
   const grid = document.getElementById("objectsGrid");
   if (!grid) return;
 
-  grid.innerHTML = "";
-
-  if (data.length === 0) {
+  if (!data?.length) {
     grid.innerHTML = "<p>Нічого не знайдено</p>";
     return;
   }
 
-  data.sort((a, b) => (b.vip === true) - (a.vip === true));
+  let html = "";
 
-  data.forEach(d => {
+  data
+    .sort((a, b) => (b.vip === true) - (a.vip === true))
+    .forEach(d => {
 
-    const img = d.images?.[0] || "https://via.placeholder.com/400";
+      const img = d?.images?.[0]
+        ? `<img src="${d.images[0]}" loading="lazy">`
+        : `<img src="https://via.placeholder.com/400">`;
 
-    const favs = JSON.parse(localStorage.getItem("favs")) || [];
-    const isFav = favs.includes(d.id);
+      const isFav = favs.includes(d.id);
 
-    grid.innerHTML += `
-      <div class="card">
+      html += `
+      <div class="card leaderboard">
 
-        ${d.vip ? `<div style="color:gold;">🔥 VIP</div>` : ""}
+        ${d.vip ? `<div class="vip-badge">🔥 VIP</div>` : ""}
 
         <a href="object.html?id=${d.id}">
-          <img src="${img}">
+          ${img}
+
           <h3>${d.title || "Без назви"}</h3>
 
           <p>📐 ${d.area || "-"}</p>
           <strong>💰 ${d.price || "-"} $</strong>
 
           <p>👁 ${d.views || 0}</p>
+          <p>${d.status === "sold" ? "❌ Продано" : "✅ Активне"}</p>
 
-          <p>
-            ${d.status === "sold"
-              ? "❌ Продано"
-              : "✅ Активне"}
-          </p>
+          <p>⭐ ${d.rating || 0} (${d.ratingCount || 0})</p>
 
-          <p>⭐ ${(d.rating || 0)} (${d.ratingCount || 0})</p>
         </a>
 
-        <div onclick="toggleFav('${d.id}')" class="favorite">
+        <div onclick="toggleFav('${d.id}')"
+             class="fav-btn">
           ${isFav ? "❤️" : "🤍"}
         </div>
 
       </div>
-    `;
-  });
+      `;
+    });
+
+  grid.innerHTML = html;
 }
 
-/* ================================
-   ✅ MAP INIT (ДОДАНО)
-================================ */
-window.initMap = async function () {
+/* =======================
+   ✅ MAP INIT
+======================= */
+window.initMap = function () {
 
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 11,
@@ -143,56 +153,53 @@ window.initMap = async function () {
   updateMap(allObjects);
 };
 
-/* ================================
-   ✅ UPDATE MAP (ГОЛОВНЕ)
-================================ */
+/* =======================
+   ✅ UPDATE MAP
+======================= */
 function updateMap(data) {
 
   if (!map) return;
 
   if (clusterer) clusterer.clearMarkers();
-  mapMarkers.forEach(m => m.setMap(null));
-  mapMarkers = [];
 
-  const markers = data
-    .filter(d => d.lat && d.lng)
-    .map(d => {
+  markers.forEach(m => m.setMap(null));
+  markers = [];
 
-      const marker = new google.maps.Marker({
-        position: { lat: d.lat, lng: d.lng },
-        map: map
-      });
+  const valid = data.filter(d => d.lat && d.lng);
 
-      const info = new google.maps.InfoWindow({
-        content: `
-          <div style="color:black; max-width:220px;">
-            ${d.images?.[0] ? `<img src="${d.images[0]}" style="width:100%;">` : ""}
-            <strong>${d.title}</strong><br>
-            💰 ${d.price}$<br><br>
-            <a href="object.html?id=${d.id}">Відкрити</a>
-          </div>
-        `
-      });
+  const newMarkers = valid.map(d => {
 
-      marker.addListener("click", () => {
-        info.open(map, marker);
-      });
-
-      mapMarkers.push(marker);
-      return marker;
+    const m = new google.maps.Marker({
+      position: { lat: d.lat, lng: d.lng },
+      map
     });
+
+    const info = new google.maps.InfoWindow({
+      content: `
+        <div style="color:black">
+          ${d.images?.[0] ? `<img src="${d.images[0]}" width="200">` : ""}
+          <strong>${d.title}</strong><br>
+          💰 ${d.price}$
+        </div>
+      `
+    });
+
+    m.addListener("click", () => info.open(map, m));
+
+    markers.push(m);
+    return m;
+  });
 
   clusterer = new markerClusterer.MarkerClusterer({
     map,
-    markers
+    markers: newMarkers
   });
 }
 
-/* ================================
+/* =======================
    ✅ FAVORITES
-================================ */
-function toggleFav(id) {
-  let favs = JSON.parse(localStorage.getItem("favs")) || [];
+======================= */
+window.toggleFav = function (id) {
 
   if (favs.includes(id)) {
     favs = favs.filter(f => f !== id);
@@ -201,115 +208,95 @@ function toggleFav(id) {
   }
 
   localStorage.setItem("favs", JSON.stringify(favs));
-  render(allObjects);
-}
 
-window.toggleFav = toggleFav;
+  safeRender(allObjects);
+};
 
-/* ================================
-   ✅ FILTER
-================================ */
-const search = document.getElementById("search");
-const minPrice = document.getElementById("minPrice");
-const maxPrice = document.getElementById("maxPrice");
+/* =======================
+   ✅ FILTER (DEBOUNCE)
+======================= */
+function setupFilter() {
 
-if (search && minPrice && maxPrice) {
+  const s = document.getElementById("search");
+  const min = document.getElementById("minPrice");
+  const max = document.getElementById("maxPrice");
 
-  search.oninput =
-  minPrice.oninput =
-  maxPrice.oninput = () => {
+  if (!s || !min || !max) return;
 
-    const text = search.value.toLowerCase();
-    const min = Number(minPrice.value);
-    const max = Number(maxPrice.value);
+  let timer;
 
-    const filtered = allObjects.filter(d => {
+  const run = () => {
 
-      const matchText = d.title?.toLowerCase().includes(text);
-      const matchMin = !min || Number(d.price) >= min;
-      const matchMax = !max || Number(d.price) <= max;
+    clearTimeout(timer);
 
-      return matchText && matchMin && matchMax;
-    });
+    timer = setTimeout(() => {
 
-    render(filtered);
-    updateMap(filtered);
+      const text = s.value.toLowerCase();
+      const minVal = Number(min.value);
+      const maxVal = Number(max.value);
+
+      const filtered = allObjects.filter(d => {
+
+        return (
+          (d.title || "").toLowerCase().includes(text) &&
+          (!minVal || d.price >= minVal) &&
+          (!maxVal || d.price <= maxVal)
+        );
+      });
+
+      safeRender(filtered);
+      updateMap(filtered);
+
+    }, 200);
   };
+
+  s.oninput = run;
+  min.oninput = run;
+  max.oninput = run;
 }
 
-/* ================================
-   ✅ TELEGRAM + FIREBASE
-================================ */
+/* =======================
+   ✅ FORM
+======================= */
 window.sendForm = async () => {
 
-  const name = document.getElementById("name")?.value;
-  const phone = document.getElementById("phone")?.value;
+  const name = document.getElementById("name")?.value.trim();
+  const phone = document.getElementById("phone")?.value.trim();
 
-  if (!name || !phone) {
-    alert("Заповни всі поля!");
-    return;
-  }
+  if (!name || !phone) return alert("Заповни всі поля!");
 
-  const text = `
-📩 НОВА ЗАЯВКА
-
-👤 Імʼя: ${name}
-📞 Телефон: ${phone}
-`;
+  const text = `📩 ЗАЯВКА\n👤 ${name}\n📞 ${phone}`;
 
   try {
 
-    // ✅ ТЕПЕР через універсальну функцію
-    await sendToTelegram(text);
+    sendToTelegram(text);
 
     await addDoc(collection(db, "leads"), {
       name,
       phone,
       status: "new",
-      income: 1000,
       createdAt: new Date()
     });
 
-    alert("✅ Заявка відправлена!");
+    alert("✅ Відправлено");
 
-    document.getElementById("name").value = "";
-    document.getElementById("phone").value = "";
-
-  } catch (err) {
-    console.error(err);
+  } catch (e) {
+    console.error(e);
     alert("❌ Помилка");
   }
 };
 
-/* ================================
-   ✅ CALL BUTTON
-================================ */
-window.callNow = () => {
-  window.location.href = "tel:+380953777196";
-};
-
-/* ================================
-   ✅ THEME SWITCH
-================================ */
-window.toggleTheme = function () {
-
-  const current = document.body.classList.contains("light");
-
-  if (current) {
-    document.body.classList.remove("light");
-    localStorage.setItem("theme", "dark");
-  } else {
-    document.body.classList.add("light");
-    localStorage.setItem("theme", "light");
-  }
-};
-
-// ✅ LOAD THEME
-if (localStorage.getItem("theme") === "light") {
-  document.body.classList.add("light");
-}
-
-/* ================================
+/* =======================
    ✅ START
-================================ */
+======================= */
+setupFilter();
 load();
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ✅ CONFIG
+const firebaseConfig = {
