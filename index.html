@@ -142,13 +142,18 @@ async function initMap() {
 
   const snap = await getDocs(collection(db, "objects"));
 
-  snap.forEach(doc => {
-    const d = doc.data();
-    if (!d.lat || !d.lng) return;
+// ✅ очистка масиву
+allData = [];
 
-    d.id = doc.id;
-    allData.push(d);
-  });
+snap.forEach(doc => {
+  const d = doc.data();
+
+  // ✅ перевірка правильна
+  if (typeof d.lat !== "number" || typeof d.lng !== "number") return;
+
+  d.id = doc.id;
+  allData.push(d);
+});
 console.log("DATA:", allData);
   renderMarkers(allData);
    renderGrid(allData);
