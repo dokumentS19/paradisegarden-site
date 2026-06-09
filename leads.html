@@ -1,435 +1,338 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  doc,
-  updateDoc,
-  deleteDoc,
-  arrayUnion,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  <title>CRM — заявки | АН «Райський Сад»</title>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
-  authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site",
-  storageBucket: "paradisegarden-site.firebasestorage.app",
-  messagingSenderId: "452352075250",
-  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
-  measurementId: "G-6XHWE6Y0JE"
-};
+  <link rel="stylesheet" href="styles.css">
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-let allLeads = [];
-let visibleLeads = [];
-let chartInstance = null;
-let draggedLeadId = null;
-
-const STATUSES = ["new", "in_progress", "done"];
-
-const UI = {
-  leads: document.getElementById("leads"),
-  board: document.getElementById("crmBoard"),
-  stats: document.getElementById("stats"),
-  chart: document.getElementById("leadsChart"),
-  search: document.getElementById("searchLead"),
-  statusFilter: document.getElementById("statusFilter"),
-  sortFilter: document.getElementById("sortFilter"),
-  total: document.getElementById("kpi-total"),
-  new: document.getElementById("kpi-new"),
-  done: document.getElementById("kpi-done"),
-  income: document.getElementById("kpi-income")
-};
-
-function escapeHtml(value = "") {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-function getStatusName(status) {
-  return {
-    new: "🟡 Новий",
-    in_progress: "🟠 В роботі",
-    done: "✅ Закритий"
-  }[status] || "🟡 Новий";
-}
-
-function getStatusShort(status) {
-  return {
-    new: "Нові",
-    in_progress: "В роботі",
-    done: "Закриті"
-  }[status] || "Нові";
-}
-
-function getLeadDate(lead) {
-  if (lead.createdAt?.seconds) {
-    return new Date(lead.createdAt.seconds * 1000).toLocaleString("uk-UA");
-  }
-
-  return "-";
-}
-
-function getLeadTimeValue(lead) {
-  if (lead.createdAt?.seconds) {
-    return lead.createdAt.seconds * 1000;
-  }
-
-  return 0;
-}
-
-function getPriority(lead) {
-  let score = 0;
-
-  if ((lead.status || "new") === "new") score += 3;
-  if ((lead.message || "").length > 10) score += 2;
-  if ((lead.note || "").length > 5) score += 1;
-  if (Number(lead.income || 0) > 0) score += Math.min(Number(lead.income) / 1000, 5);
-
-  if (lead.createdAt?.seconds) {
-    const days = (Date.now() - lead.createdAt.seconds * 1000) / 86400000;
-    if (days < 1) score += 3;
-    else if (days < 3) score += 1;
-  }
-
-  return Math.round(score);
-}
-
-function getPriorityBadge(lead) {
-  const priority = getPriority(lead);
-
-  if (priority >= 8) return "🔥 Високий";
-  if (priority >= 4) return "⚡ Середній";
-
-  return "🟢 Звичайний";
-}
-
-async function addHistory(id, action, comment = "") {
-  await updateDoc(doc(db, "leads", id), {
-    history: arrayUnion({
-      action,
-      comment,
-      time: new Date().toLocaleString("uk-UA")
-    }),
-    updatedAt: serverTimestamp()
-  });
-}
-
-async function loadLeads() {
-  try {
-    const snap = await getDocs(collection(db, "leads"));
-
-    allLeads = snap.docs.map(item => ({
-      id: item.id,
-      ...item.data()
-    }));
-
-    applyFilters();
-  } catch (error) {
-    console.error("LOAD LEADS ERROR:", error);
-
-    if (UI.leads) {
-      UI.leads.innerHTML = "<p>❌ Не вдалося завантажити заявки.</p>";
-    }
-  }
-}
-
-function applyFilters() {
-  const text = UI.search ? UI.search.value.trim().toLowerCase() : "";
-  const status = UI.statusFilter ? UI.statusFilter.value : "all";
-  const sort = UI.sortFilter ? UI.sortFilter.value : "priority";
-
-  visibleLeads = allLeads.filter(lead => {
-    const name = String(lead.name || "").toLowerCase();
-    const phone = String(lead.phone || "").toLowerCase();
-    const message = String(lead.message || "").toLowerCase();
-    const note = String(lead.note || "").toLowerCase();
-
-    const matchesText =
-      !text ||
-      name.includes(text) ||
-      phone.includes(text) ||
-      message.includes(text) ||
-      note.includes(text);
-
-    const leadStatus = lead.status || "new";
-    const matchesStatus = status === "all" || leadStatus === status;
-
-    return matchesText && matchesStatus;
-  });
-
-  visibleLeads.sort((a, b) => {
-    if (sort === "newest") {
-      return getLeadTimeValue(b) - getLeadTimeValue(a);
+  <style>
+    .crm-shell {
+      max-width: 1280px;
+      margin: 34px auto;
+      padding: 0 16px;
+      display: grid;
+      gap: 24px;
     }
 
-    if (sort === "income") {
-      return Number(b.income || 0) - Number(a.income || 0);
+    .crm-hero {
+      background:
+        linear-gradient(135deg, rgba(34, 197, 94, 0.18), rgba(250, 204, 21, 0.1)),
+        rgba(15, 23, 42, 0.94);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 26px;
+      padding: 34px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
     }
 
-    return getPriority(b) - getPriority(a);
-  });
+    .crm-hero h1 {
+      margin: 14px 0 10px;
+      font-size: clamp(32px, 5vw, 54px);
+    }
 
-  renderLeads(visibleLeads);
-  renderBoard(allLeads);
-  updateAnalytics(allLeads);
-  drawChart(allLeads);
-}
+    .crm-hero p {
+      color: #cbd5e1;
+      line-height: 1.7;
+      max-width: 850px;
+    }
 
-function renderLeads(data) {
-  if (!UI.leads) return;
+    .crm-kpi {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
 
-  if (!data.length) {
-    UI.leads.innerHTML = "<p>Заявок не знайдено.</p>";
-    return;
-  }
+    .crm-kpi-card {
+      background: rgba(30, 41, 59, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.25);
+    }
 
-  UI.leads.innerHTML = data.map(lead => {
-    const id = escapeHtml(lead.id);
-    const name = escapeHtml(lead.name || "Без імені");
-    const phone = escapeHtml(lead.phone || "-");
-    const message = escapeHtml(lead.message || "");
-    const note = escapeHtml(lead.note || "");
-    const manager = escapeHtml(lead.manager || "");
-    const income = Number(lead.income || 0);
-    const status = lead.status || "new";
+    .crm-kpi-card span {
+      color: #cbd5e1;
+      font-size: 14px;
+    }
 
-    const history = Array.isArray(lead.history) ? lead.history.slice(-5) : [];
+    .crm-kpi-card strong {
+      display: block;
+      color: #22c55e;
+      font-size: 34px;
+      margin-top: 8px;
+    }
 
-    const historyHtml = history.length
-      ? history.map(item => {
-          return `<div>📌 ${escapeHtml(item.action || "")} ${item.comment ? "— " + escapeHtml(item.comment) : ""} <small>(${escapeHtml(item.time || "")})</small></div>`;
-        }).join("")
-      : "<div>Історії поки немає</div>";
+    .crm-panel {
+      background:
+        linear-gradient(180deg, rgba(30, 41, 59, 0.94), rgba(15, 23, 42, 0.94));
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.3);
+    }
 
-    return `
-      <article class="lead-card" draggable="true" ondragstart="dragStartLead(event, '${id}')">
-        <div class="lead-head">
-          <div>
-            <h3>👤 ${name}</h3>
-            <div class="lead-meta">
-              <span>📞 ${phone}</span>
-              <span>🕒 ${getLeadDate(lead)}</span>
-              <span>💬 ${message || "Без повідомлення"}</span>
-            </div>
-          </div>
+    .crm-panel h2 {
+      margin-top: 0;
+    }
 
-          <div style="display:grid;gap:8px;align-content:start;">
-            <span class="status-badge-crm">${getStatusName(status)}</span>
-            <span class="priority-badge">${getPriorityBadge(lead)}</span>
-          </div>
-        </div>
+    .crm-tools {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr 0.8fr auto;
+      gap: 12px;
+      align-items: center;
+    }
 
-        <label>Коментар</label>
-        <textarea id="note-${id}" placeholder="Коментар менеджера">${note}</textarea>
+    .crm-board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-          <div>
-            <label>Менеджер</label>
-            <input id="manager-${id}" value="${manager}" placeholder="Імʼя менеджера">
-          </div>
+    .crm-column {
+      min-height: 260px;
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 22px;
+      padding: 16px;
+    }
 
-          <div>
-            <label>Дохід, $</label>
-            <input id="income-${id}" type="number" value="${income}" placeholder="0">
-          </div>
-        </div>
+    .crm-column h3 {
+      margin-top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        <div class="lead-actions">
-          <button class="btn" type="button" onclick="saveLeadInfo('${id}')">💾 Зберегти</button>
-          <button class="cta-outline" type="button" onclick="changeLeadStatus('${id}', 'new')">🟡 Новий</button>
-          <button class="cta-outline" type="button" onclick="changeLeadStatus('${id}', 'in_progress')">🟠 В роботу</button>
-          <button class="btn" type="button" onclick="changeLeadStatus('${id}', 'done')">✅ Закрити</button>
-          <button class="danger-btn" type="button" onclick="deleteLead('${id}')">🗑 Видалити</button>
-        </div>
+    .lead-mini {
+      background: rgba(30, 41, 59, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 10px;
+      cursor: grab;
+      transition: 0.25s ease;
+    }
 
-        <div class="lead-history">
-          ${historyHtml}
-        </div>
-      </article>
-    `;
-  }).join("");
-}
+    .lead-mini:hover {
+      transform: translateY(-3px);
+      border-color: rgba(34, 197, 94, 0.45);
+    }
 
-function renderBoard(data) {
-  if (!UI.board) return;
+    .leads-grid {
+      display: grid;
+      gap: 16px;
+    }
 
-  UI.board.innerHTML = STATUSES.map(status => {
-    const items = data.filter(lead => (lead.status || "new") === status);
+    .lead-card {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 22px;
+      padding: 18px;
+      transition: 0.25s ease;
+    }
 
-    const cards = items.length
-      ? items.map(lead => {
-          return `
-            <div class="lead-mini" draggable="true" ondragstart="dragStartLead(event, '${escapeHtml(lead.id)}')">
-              <strong>${escapeHtml(lead.name || "Без імені")}</strong>
-              <div style="color:#cbd5e1;font-size:13px;margin-top:5px;">📞 ${escapeHtml(lead.phone || "-")}</div>
-              <div style="color:#bbf7d0;font-size:13px;margin-top:5px;">${getPriorityBadge(lead)}</div>
-            </div>
-          `;
-        }).join("")
-      : "<p style='color:#94a3b8;'>Порожньо</p>";
+    .lead-card:hover {
+      border-color: rgba(34, 197, 94, 0.45);
+      transform: translateY(-3px);
+    }
 
-    return `
-      <div class="crm-column" ondragover="allowLeadDrop(event)" ondrop="dropLead(event, '${status}')">
-        <h3>
-          <span>${getStatusName(status)}</span>
-          <small>${items.length}</small>
-        </h3>
+    .lead-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
 
-        ${cards}
-      </div>
-    `;
-  }).join("");
-}
+    .lead-head h3 {
+      margin: 0;
+      font-size: 22px;
+    }
 
-function updateAnalytics(data) {
-  const total = data.length;
-  const newCount = data.filter(item => (item.status || "new") === "new").length;
-  const doneCount = data.filter(item => item.status === "done").length;
-  const inProgressCount = data.filter(item => item.status === "in_progress").length;
-  const income = data.reduce((sum, item) => sum + Number(item.income || 0), 0);
+    .lead-meta {
+      color: #cbd5e1;
+      display: grid;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
 
-  if (UI.total) UI.total.textContent = total;
-  if (UI.new) UI.new.textContent = newCount;
-  if (UI.done) UI.done.textContent = doneCount;
-  if (UI.income) UI.income.textContent = `${income}$`;
+    .lead-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
 
-  if (UI.stats) {
-    UI.stats.innerHTML = `
-      <p>Усього заявок: <strong>${total}</strong></p>
-      <p>Нові: <strong>${newCount}</strong></p>
-      <p>В роботі: <strong>${inProgressCount}</strong></p>
-      <p>Закриті: <strong>${doneCount}</strong></p>
-      <p>Потенційний / зафіксований дохід: <strong>${income}$</strong></p>
-    `;
-  }
-}
+    .lead-history {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(2, 6, 23, 0.42);
+      color: #cbd5e1;
+      font-size: 14px;
+      display: grid;
+      gap: 6px;
+    }
 
-function drawChart(data) {
-  if (!UI.chart || typeof Chart === "undefined") return;
+    .priority-badge,
+    .status-badge-crm {
+      display: inline-flex;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.14);
+      border: 1px solid rgba(34, 197, 94, 0.28);
+      color: #bbf7d0;
+      font-size: 13px;
+    }
 
-  const counts = {
-    new: data.filter(item => (item.status || "new") === "new").length,
-    in_progress: data.filter(item => item.status === "in_progress").length,
-    done: data.filter(item => item.status === "done").length
-  };
+    .danger-btn {
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+      color: white;
+    }
 
-  if (chartInstance) {
-    chartInstance.destroy();
-  }
+    .chart-wrap {
+      max-width: 420px;
+      margin: 0 auto;
+    }
 
-  chartInstance = new Chart(UI.chart, {
-    type: "doughnut",
-    data: {
-      labels: ["Нові", "В роботі", "Закриті"],
-      datasets: [{
-        data: [counts.new, counts.in_progress, counts.done],
-        backgroundColor: ["#facc15", "#fb923c", "#22c55e"],
-        borderColor: "#0f172a",
-        borderWidth: 3
-      }]
-    },
-    options: {
-      plugins: {
-        legend: {
-          labels: {
-            color: "#ffffff"
-          }
-        }
+    @media (max-width: 1000px) {
+      .crm-kpi {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .crm-board {
+        grid-template-columns: 1fr;
+      }
+
+      .crm-tools {
+        grid-template-columns: 1fr 1fr;
       }
     }
-  });
-}
 
-window.saveLeadInfo = async function(id) {
-  const note = document.getElementById(`note-${id}`)?.value.trim() || "";
-  const manager = document.getElementById(`manager-${id}`)?.value.trim() || "";
-  const income = Number(document.getElementById(`income-${id}`)?.value || 0);
+    @media (max-width: 680px) {
+      .crm-kpi,
+      .crm-tools {
+        grid-template-columns: 1fr;
+      }
 
-  try {
-    await updateDoc(doc(db, "leads", id), {
-      note,
-      manager,
-      income,
-      updatedAt: serverTimestamp()
-    });
+      .crm-hero,
+      .crm-panel {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
 
-    await addHistory(id, "Оновлено дані заявки", `Менеджер: ${manager || "-"}, дохід: ${income}$`);
+<body>
 
-    await loadLeads();
-  } catch (error) {
-    console.error("SAVE LEAD ERROR:", error);
-    alert("❌ Не вдалося зберегти заявку.");
-  }
-};
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <span class="brand-icon">🌿</span>
+    <span>
+      <strong>Райський Сад</strong>
+      <small>CRM заявки</small>
+    </span>
+  </a>
 
-window.changeLeadStatus = async function(id, status) {
-  try {
-    await updateDoc(doc(db, "leads", id), {
-      status,
-      updatedAt: serverTimestamp()
-    });
+  <nav class="nav">
+    <a href="index.html">🏠 Головна</a>
+    <a href="admin.html">⚙️ Адмін</a>
+    <a href="dashboard.html">👤 Кабінет</a>
+    <a href="dialogs.html">💬 Діалоги</a>
+  </nav>
+</header>
 
-    await addHistory(id, "Змінено статус", getStatusShort(status));
+<main class="crm-shell">
 
-    await loadLeads();
-  } catch (error) {
-    console.error("CHANGE STATUS ERROR:", error);
-    alert("❌ Не вдалося змінити статус.");
-  }
-};
+  <section class="crm-hero">
+    <span class="section-label">CRM</span>
+    <h1>📋 Заявки клієнтів</h1>
+    <p>
+      Система обробки звернень клієнтів АН «Райський Сад».
+      Тут можна бачити нові заявки, переводити їх у роботу,
+      закривати, призначати менеджера, додавати коментарі,
+      вести історію та контролювати дохід.
+    </p>
+  </section>
 
-window.deleteLead = async function(id) {
-  if (!confirm("Видалити заявку?")) return;
+  <section class="crm-kpi">
+    <div class="crm-kpi-card">
+      <span>Усього заявок</span>
+      <strong id="kpi-total">0</strong>
+    </div>
 
-  try {
-    await deleteDoc(doc(db, "leads", id));
-    await loadLeads();
-  } catch (error) {
-    console.error("DELETE LEAD ERROR:", error);
-    alert("❌ Не вдалося видалити заявку.");
-  }
-};
+    <div class="crm-kpi-card">
+      <span>Нові</span>
+      <strong id="kpi-new">0</strong>
+    </div>
 
-window.dragStartLead = function(event, id) {
-  draggedLeadId = id;
-  event.dataTransfer.setData("text/plain", id);
-};
+    <div class="crm-kpi-card">
+      <span>Закриті</span>
+      <strong id="kpi-done">0</strong>
+    </div>
 
-window.allowLeadDrop = function(event) {
-  event.preventDefault();
-};
+    <div class="crm-kpi-card">
+      <span>Дохід</span>
+      <strong id="kpi-income">0$</strong>
+    </div>
+  </section>
 
-window.dropLead = async function(event, status) {
-  event.preventDefault();
+  <section class="crm-panel">
+    <h2>🔍 Пошук і фільтри</h2>
 
-  const id = draggedLeadId || event.dataTransfer.getData("text/plain");
+    <div class="crm-tools">
+      <input id="searchLead" type="text" placeholder="Пошук за імʼям, телефоном або коментарем">
 
-  if (!id) return;
+      <select id="statusFilter">
+        <option value="all">Усі статуси</option>
+        <option value="new">Нові</option>
+        <option value="in_progress">В роботі</option>
+        <option value="done">Закриті</option>
+      </select>
 
-  await window.changeLeadStatus(id, status);
+      <select id="sortFilter">
+        <option value="priority">За пріоритетом</option>
+        <option value="newest">Нові спочатку</option>
+        <option value="income">За доходом</option>
+      </select>
 
-  draggedLeadId = null;
-};
+      <button class="btn" type="button" onclick="resetLeadFilters()">Скинути</button>
+    </div>
+  </section>
 
-window.resetLeadFilters = function() {
-  if (UI.search) UI.search.value = "";
-  if (UI.statusFilter) UI.statusFilter.value = "all";
-  if (UI.sortFilter) UI.sortFilter.value = "priority";
+  <section class="crm-panel">
+    <h2>📊 Аналітика</h2>
 
-  applyFilters();
-};
+    <div id="stats"></div>
 
-if (UI.search) UI.search.addEventListener("input", applyFilters);
-if (UI.statusFilter) UI.statusFilter.addEventListener("change", applyFilters);
-if (UI.sortFilter) UI.sortFilter.addEventListener("change", applyFilters);
+    <div class="chart-wrap">
+      <canvas id="leadsChart" height="260"></canvas>
+    </div>
+  </section>
 
-loadLeads();
+  <section class="crm-panel">
+    <h2>📊 CRM Pipeline</h2>
+
+    <div id="crmBoard" class="crm-board"></div>
+  </section>
+
+  <section class="crm-panel">
+    <h2>📋 Список заявок</h2>
+
+    <div id="leads" class="leads-grid"></div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>© 2005–2026 АН «Райський Сад». CRM система заявок.</p>
+</footer>
+
+<script type="module" src="leads.js"></script>
+
+</body>
+</html>
