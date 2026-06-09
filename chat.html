@@ -3,100 +3,274 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Чат</title>
+
+  <title>Чат — АН «Райський Сад»</title>
+
+  <link rel="stylesheet" href="styles.css">
 
   <style>
     body {
-      font-family: Arial;
-      background: #0f172a;
-      color: white;
-      margin: 0;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(34, 197, 94, 0.16), transparent 34%),
+        radial-gradient(circle at top right, rgba(250, 204, 21, 0.10), transparent 28%),
+        #07111f;
     }
 
-    /* ✅ HEADER */
-    .chat-header {
-      padding: 15px;
-      background: #111827;
-      border-bottom: 1px solid #1e293b;
-      font-size: 18px;
-    }
-
-    /* ✅ MESSAGES */
-    #messages {
+    .chat-page {
       flex: 1;
+      max-width: 1100px;
+      width: 100%;
+      margin: 28px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 16px;
+    }
+
+    .chat-panel {
+      background:
+        linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.96));
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 26px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: calc(100vh - 180px);
+    }
+
+    .chat-header-box {
+      padding: 18px 22px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+      background:
+        linear-gradient(135deg, rgba(34, 197, 94, 0.16), rgba(250, 204, 21, 0.08)),
+        rgba(2, 6, 23, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .chat-title h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .chat-title p {
+      margin: 6px 0 0;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .chat-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 13px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.14);
+      border: 1px solid rgba(34, 197, 94, 0.28);
+      color: #bbf7d0;
+      font-size: 13px;
+    }
+
+    .messages {
+      padding: 22px;
       overflow-y: auto;
-      padding: 15px;
       display: flex;
       flex-direction: column;
+      gap: 12px;
+      background:
+        radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.08), transparent 32%),
+        rgba(2, 6, 23, 0.18);
     }
 
     .msg {
-      max-width: 70%;
-      padding: 10px;
-      margin-bottom: 8px;
-      border-radius: 12px;
+      max-width: 72%;
+      padding: 12px 14px;
+      border-radius: 18px;
       word-wrap: break-word;
+      line-height: 1.5;
+      position: relative;
+      animation: msgIn 0.2s ease;
     }
 
-    .mine {
-      background: #16a34a;
+    .msg.mine {
       align-self: flex-end;
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      color: #04130a;
+      border-bottom-right-radius: 6px;
+    }
+
+    .msg.other {
+      align-self: flex-start;
+      background: rgba(30, 41, 59, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      color: white;
+      border-bottom-left-radius: 6px;
+    }
+
+    .msg-text {
+      white-space: pre-line;
+    }
+
+    .msg-meta {
+      margin-top: 6px;
+      font-size: 11px;
+      opacity: 0.72;
       text-align: right;
     }
 
-    .other {
-      background: #1e293b;
-      align-self: flex-start;
+    .chat-input-box {
+      padding: 14px;
+      border-top: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(2, 6, 23, 0.58);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
     }
 
-    /* ✅ INPUT */
-    .chat-input {
-      display: flex;
-      padding: 10px;
-      border-top: 1px solid #1e293b;
-      background: #0f172a;
+    .chat-input-box textarea {
+      min-height: 52px;
+      max-height: 150px;
+      resize: vertical;
+      margin: 0;
     }
 
-    .chat-input input {
-      flex: 1;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      background: #1e293b;
+    .chat-input-box button {
+      min-width: 140px;
+    }
+
+    .chat-empty {
+      margin: auto;
+      text-align: center;
+      color: #cbd5e1;
+      max-width: 440px;
+    }
+
+    .chat-empty h2 {
       color: white;
-      outline: none;
     }
 
-    .chat-input button {
-      margin-left: 10px;
-      padding: 10px 15px;
-      background: #16a34a;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      cursor: pointer;
+    .chat-login-warning {
+      padding: 12px 16px;
+      border-radius: 16px;
+      background: rgba(250, 204, 21, 0.12);
+      border: 1px solid rgba(250, 204, 21, 0.28);
+      color: #fde68a;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .chat-login-warning.active {
+      display: block;
+    }
+
+    @keyframes msgIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .chat-page {
+        margin: 14px auto;
+        padding: 0 10px;
+      }
+
+      .chat-panel {
+        min-height: calc(100vh - 125px);
+        border-radius: 20px;
+      }
+
+      .messages {
+        padding: 14px;
+      }
+
+      .msg {
+        max-width: 88%;
+      }
+
+      .chat-input-box {
+        grid-template-columns: 1fr;
+      }
+
+      .chat-input-box button {
+        width: 100%;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<!-- ✅ HEADER -->
-<div class="chat-header">
-  💬 Чат з продавцем
-</div>
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <span class="brand-icon">🌿</span>
+    <span>
+      <strong>Райський Сад</strong>
+      <small>Чат з продавцем</small>
+    </span>
+  </a>
 
-<!-- ✅ MESSAGES -->
-<div id="messages"></div>
+  <nav class="nav">
+    <a href="index.html">🏠 Головна</a>
+    <a href="dashboard.html">👤 Кабінет</a>
+    <a href="dialogs.html">💬 Діалоги</a>
+    <a href="admin.html">⚙️ Адмін</a>
+  </nav>
+</header>
 
-<!-- ✅ INPUT -->
-<div class="chat-input">
-  <input id="msg" placeholder="Написати...">
-  <button onclick="send()">Відправити</button>
-</div>
+<main class="chat-page">
+
+  <section class="chat-panel">
+
+    <div class="chat-header-box">
+      <div class="chat-title">
+        <h1>💬 Чат</h1>
+        <p id="chatInfo">Завантаження інформації про чат...</p>
+      </div>
+
+      <div id="chatStatus" class="chat-status">
+        Очікування підключення
+      </div>
+    </div>
+
+    <div id="messages" class="messages">
+      <div class="chat-empty">
+        <h2>Завантаження повідомлень...</h2>
+        <p>Будь ласка, зачекайте.</p>
+      </div>
+    </div>
+
+    <div class="chat-input-wrap">
+      <div id="loginWarning" class="chat-login-warning">
+        Щоб писати повідомлення, увійдіть через Google у кабінеті.
+      </div>
+
+      <form class="chat-input-box" onsubmit="sendMessage(event)">
+        <textarea id="msg" placeholder="Напишіть повідомлення..." maxlength="1500"></textarea>
+        <button class="cta-big" type="submit">Відправити</button>
+      </form>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>© 2005–2026 АН «Райський Сад». Безпечний чат з продавцем.</p>
+</footer>
 
 <script type="module" src="chat.js"></script>
 
