@@ -1,302 +1,425 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";import { initializeApp } fromRK2EjQGnts",
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ================================
+   FIREBASE CONFIG
+================================ */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site"
+  projectId: "paradisegarden-site",
+  storageBucket: "paradisegarden-site.firebasestorage.app",
+  messagingSenderId: "452352075250",
+  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
+  measurementId: "G-6XHWE6Y0JE"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ✅ STATE
+/* ================================
+   STATE
+================================ */
+
 let allObjects = [];
-let map;
-let markers = [];
-let clusterer;
-let renderTimer;
+let filteredObjects = [];
+let renderTimer = null;
 
-// ✅ FAVORITES CACHE
-let favs = JSON.parse(localStorage.getItem("favs")) || [];
+let favs = [];
 
-// ✅ TELEGRAM
-const TOKEN = "ТУТ_НОВИЙ_TOKEN";
-const CHAT_ID = "598876080";
+try {
+  favs = JSON.parse(localStorage.getItem("favs")) || [];
+  if (!Array.isArray(favs)) favs = [];
+} catch {
+  favs = [];
+}
 
-/* =======================
-   ✅ SAFE TELEGRAM
-======================= */
-async function sendToTelegram(msg) {
-  try {
-    fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-      method: "POST",
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: msg
-      }),
-      headers: { "Content-Type": "application/json" }
-    });
-  } catch (e) {
-    console.warn("TG fail:", e);
+/* ================================
+   CONTACTS
+================================ */
+
+const COMPANY_PHONE_VISIBLE = "0953777196";
+const COMPANY_PHONE_TEL = "+380953777196";
+
+/*
+  Тут замініть your_bot_username на username Вашого Telegram-бота або каналу.
+  Наприклад:
+  const TELEGRAM_LINK = "https://t.me/RaiskiySadBot";
+*/
+const TELEGRAM_LINK = "https://t.me/your_bot_username";
+
+const VIBER_LINK = "viber://chat?number=%2B380953777196";
+
+/* ================================
+   DOM
+================================ */
+
+const loader = document.getElementById("loader");
+const grid = document.getElementById("objectsGrid");
+const searchInput = document.getElementById("search");
+const minPriceInput = document.getElementById("minPrice");
+const maxPriceInput = document.getElementById("maxPrice");
+const sortSelect = document.getElementById("sortSelect");
+const resetFiltersBtn = document.getElementById("resetFilters");
+const menuBtn = document.getElementById("menuBtn");
+const mainNav = document.getElementById("mainNav");
+
+/* ================================
+   HELPERS
+================================ */
+
+function escapeHtml(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function normalizePrice(value) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function formatPrice(value) {
+  const n = normalizePrice(value);
+
+  if (!n) return "-";
+
+  return new Intl.NumberFormat("uk-UA").format(n);
+}
+
+function getDateValue(item) {
+  if (item.createdAt?.seconds) {
+    return item.createdAt.seconds * 1000;
   }
+
+  if (item.createdAt instanceof Date) {
+    return item.createdAt.getTime();
+  }
+
+  return 0;
 }
 
-/* =======================
-   ✅ PRELOADER
-======================= */
 function showLoader(show) {
-  let el = document.getElementById("loader");
-  if (!el) return;
+  if (!loader) return;
 
-  el.style.display = show ? "block" : "none";
+  loader.classList.toggle("active", Boolean(show));
 }
 
-/* =======================
-   ✅ LOAD DATA
-======================= */
-async function load() {
+function getMainImage(item) {
+  if (Array.isArray(item.images) && item.images.length > 0 && item.images[0]) {
+    return item.images[0];
+  }
 
+  return "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80";
+}
+
+/* ================================
+   MOBILE MENU
+================================ */
+
+if (menuBtn && mainNav) {
+  menuBtn.addEventListener("click", () => {
+    mainNav.classList.toggle("open");
+    document.body.classList.toggle("no-scroll");
+  });
+
+  mainNav.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      mainNav.classList.remove("open");
+      document.body.classList.remove("no-scroll");
+    });
+  });
+}
+
+/* ================================
+   REVEAL ANIMATION
+================================ */
+
+const observer = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  },
+  {
+    threshold: 0.14
+  }
+);
+
+document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+/* ================================
+   LOAD OBJECTS
+================================ */
+
+async function loadObjects() {
   try {
     showLoader(true);
 
     const snap = await getDocs(collection(db, "objects"));
 
-    allObjects = snap.docs.map(d => ({
-      id: d.id,
-      ...d.data()
+    allObjects = snap.docs.map(docSnap => ({
+      id: docSnap.id,
+      ...docSnap.data()
     }));
 
-    safeRender(allObjects);
-    updateMap(allObjects);
+    filteredObjects = [...allObjects];
 
-  } catch (e) {
-    console.error("LOAD ERROR:", e);
+    applyFilters();
+  } catch (error) {
+    console.error("LOAD OBJECTS ERROR:", error);
+
+    if (grid) {
+      grid.innerHTML = `
+        <div class="empty-state">
+          <h3>❌ Не вдалося завантажити обʼєкти</h3>
+          <p>Перевірте підключення Firebase або правила доступу.</p>
+        </div>
+      `;
+    }
+  } finally {
+    showLoader(false);
   }
-
-  showLoader(false);
 }
 
-/* =======================
-   ✅ SMART RENDER (DEBOUNCE)
-======================= */
+/* ================================
+   FILTERS
+================================ */
+
+function applyFilters() {
+  const searchText = searchInput ? searchInput.value.trim().toLowerCase() : "";
+  const minPrice = minPriceInput ? Number(minPriceInput.value) : 0;
+  const maxPrice = maxPriceInput ? Number(maxPriceInput.value) : 0;
+  const sortValue = sortSelect ? sortSelect.value : "vip";
+
+  filteredObjects = allObjects.filter(item => {
+    const title = String(item.title || "").toLowerCase();
+    const description = String(item.description || "").toLowerCase();
+    const area = String(item.area || "").toLowerCase();
+    const price = normalizePrice(item.price);
+
+    const matchesText =
+      !searchText ||
+      title.includes(searchText) ||
+      description.includes(searchText) ||
+      area.includes(searchText);
+
+    const matchesMin = !minPrice || price >= minPrice;
+    const matchesMax = !maxPrice || price <= maxPrice;
+
+    return matchesText && matchesMin && matchesMax;
+  });
+
+  filteredObjects.sort((a, b) => {
+    if (sortValue === "priceAsc") {
+      return normalizePrice(a.price) - normalizePrice(b.price);
+    }
+
+    if (sortValue === "priceDesc") {
+      return normalizePrice(b.price) - normalizePrice(a.price);
+    }
+
+    if (sortValue === "newest") {
+      return getDateValue(b) - getDateValue(a);
+    }
+
+    return Number(Boolean(b.vip)) - Number(Boolean(a.vip));
+  });
+
+  safeRender(filteredObjects);
+}
+
+function setupFilters() {
+  const controls = [searchInput, minPriceInput, maxPriceInput, sortSelect];
+
+  controls.forEach(control => {
+    if (!control) return;
+
+    control.addEventListener("input", () => {
+      clearTimeout(renderTimer);
+      renderTimer = setTimeout(applyFilters, 180);
+    });
+
+    control.addEventListener("change", applyFilters);
+  });
+
+  if (resetFiltersBtn) {
+    resetFiltersBtn.addEventListener("click", () => {
+      if (searchInput) searchInput.value = "";
+      if (minPriceInput) minPriceInput.value = "";
+      if (maxPriceInput) maxPriceInput.value = "";
+      if (sortSelect) sortSelect.value = "vip";
+
+      applyFilters();
+    });
+  }
+}
+
+/* ================================
+   RENDER
+================================ */
+
 function safeRender(data) {
   clearTimeout(renderTimer);
+
   renderTimer = setTimeout(() => {
-    render(data);
-  }, 80);
+    renderObjects(data);
+  }, 60);
 }
 
-/* =======================
-   ✅ RENDER GRID
-======================= */
-function render(data) {
-
-  const grid = document.getElementById("objectsGrid");
+function renderObjects(data) {
   if (!grid) return;
 
-  if (!data?.length) {
-    grid.innerHTML = "<p>Нічого не знайдено</p>";
+  if (!data || data.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <h3>Нічого не знайдено</h3>
+        <p>Спробуйте змінити параметри пошуку або зверніться до нас напряму.</p>
+        <button class="btn" onclick="callCompany()">Подзвонити ${COMPANY_PHONE_VISIBLE}</button>
+      </div>
+    `;
     return;
   }
 
-  let html = "";
-
-  data
-    .sort((a, b) => (b.vip === true) - (a.vip === true))
-    .forEach(d => {
-
-      const img = d?.images?.[0]
-        ? `<img src="${d.images[0]}" loading="lazy">`
-        : `<img src="https://via.placeholder.com/400">`;
-
-      const isFav = favs.includes(d.id);
-
-      html += `
-      <div class="card leaderboard">
-
-        ${d.vip ? `<div class="vip-badge">🔥 VIP</div>` : ""}
-
-        <a href="object.html?id=${d.id}">
-          ${img}
-
-          <h3>${d.title || "Без назви"}</h3>
-
-          <p>📐 ${d.area || "-"}</p>
-          <strong>💰 ${d.price || "-"} $</strong>
-
-          <p>👁 ${d.views || 0}</p>
-          <p>${d.status === "sold" ? "❌ Продано" : "✅ Активне"}</p>
-
-          <p>⭐ ${d.rating || 0} (${d.ratingCount || 0})</p>
-
-        </a>
-
-        <div onclick="toggleFav('${d.id}')"
-             class="fav-btn">
-          ${isFav ? "❤️" : "🤍"}
-        </div>
-
-      </div>
-      `;
-    });
-
-  grid.innerHTML = html;
+  grid.innerHTML = data.map(item => createObjectCard(item)).join("");
 }
 
-/* =======================
-   ✅ MAP INIT
-======================= */
-window.initMap = function () {
+function createObjectCard(item) {
+  const id = escapeHtml(item.id);
+  const title = escapeHtml(item.title || "Обʼєкт нерухомості");
+  const area = escapeHtml(item.area || "-");
+  const price = formatPrice(item.price);
+  const image = escapeHtml(getMainImage(item));
+  const views = Number(item.views || 0);
+  const isVip = Boolean(item.vip);
+  const isSold = item.status === "sold";
+  const isFav = favs.includes(item.id);
 
-  map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 11,
-    center: { lat: 50.5215, lng: 30.2506 }
-  });
+  return `
+    <article class="card">
+      ${isVip ? `<div class="vip-badge">🔥 VIP</div>` : ""}
 
-  updateMap(allObjects);
-};
+      <button class="fav-btn" onclick="toggleFav('${id}')" title="Додати в обране">
+        ${isFav ? "❤️" : "🤍"}
+      </button>
 
-/* =======================
-   ✅ UPDATE MAP
-======================= */
-function updateMap(data) {
-
-  if (!map) return;
-
-  if (clusterer) clusterer.clearMarkers();
-
-  markers.forEach(m => m.setMap(null));
-  markers = [];
-
-  const valid = data.filter(d => d.lat && d.lng);
-
-  const newMarkers = valid.map(d => {
-
-    const m = new google.maps.Marker({
-      position: { lat: d.lat, lng: d.lng },
-      map
-    });
-
-    const info = new google.maps.InfoWindow({
-      content: `
-        <div style="color:black">
-          ${d.images?.[0] ? `<img src="${d.images[0]}" width="200">` : ""}
-          <strong>${d.title}</strong><br>
-          💰 ${d.price}$
+      <a href="assets/object.html?id=${id}" class="card-link">
+        <div class="card-img">
+          <img src="${image}" alt="${title}" loading="lazy">
+          <div class="status-badge">
+            ${isSold ? "❌ Продано" : "✅ Активне"}
+          </div>
         </div>
-      `
-    });
 
-    m.addListener("click", () => info.open(map, m));
+        <div class="card-body">
+          <h3>${title}</h3>
 
-    markers.push(m);
-    return m;
-  });
+          <div class="card-meta">
+            <span>📐 Площа: ${area}</span>
+            <span>👁 Переглядів: ${views}</span>
+          </div>
 
-  clusterer = new markerClusterer.MarkerClusterer({
-    map,
-    markers: newMarkers
-  });
+          <div class="price">💰 ${price} $</div>
+        </div>
+      </a>
+    </article>
+  `;
 }
 
-/* =======================
-   ✅ FAVORITES
-======================= */
-window.toggleFav = function (id) {
+/* ================================
+   FAVORITES
+================================ */
+
+window.toggleFav = function(id) {
+  if (!id) return;
 
   if (favs.includes(id)) {
-    favs = favs.filter(f => f !== id);
+    favs = favs.filter(item => item !== id);
   } else {
     favs.push(id);
   }
 
+  favs = [...new Set(favs)];
+
   localStorage.setItem("favs", JSON.stringify(favs));
 
-  safeRender(allObjects);
+  safeRender(filteredObjects);
 };
 
-/* =======================
-   ✅ FILTER (DEBOUNCE)
-======================= */
-function setupFilter() {
+/* ================================
+   REQUEST FORM
+================================ */
 
-  const s = document.getElementById("search");
-  const min = document.getElementById("minPrice");
-  const max = document.getElementById("maxPrice");
+window.sendForm = async function(event) {
+  if (event) event.preventDefault();
 
-  if (!s || !min || !max) return;
+  const nameInput = document.getElementById("name");
+  const phoneInput = document.getElementById("phone");
+  const messageInput = document.getElementById("message");
 
-  let timer;
+  const name = nameInput ? nameInput.value.trim() : "";
+  const phone = phoneInput ? phoneInput.value.trim() : "";
+  const message = messageInput ? messageInput.value.trim() : "";
 
-  const run = () => {
-
-    clearTimeout(timer);
-
-    timer = setTimeout(() => {
-
-      const text = s.value.toLowerCase();
-      const minVal = Number(min.value);
-      const maxVal = Number(max.value);
-
-      const filtered = allObjects.filter(d => {
-
-        return (
-          (d.title || "").toLowerCase().includes(text) &&
-          (!minVal || d.price >= minVal) &&
-          (!maxVal || d.price <= maxVal)
-        );
-      });
-
-      safeRender(filtered);
-      updateMap(filtered);
-
-    }, 200);
-  };
-
-  s.oninput = run;
-  min.oninput = run;
-  max.oninput = run;
-}
-
-/* =======================
-   ✅ FORM
-======================= */
-window.sendForm = async () => {
-
-  const name = document.getElementById("name")?.value.trim();
-  const phone = document.getElementById("phone")?.value.trim();
-
-  if (!name || !phone) return alert("Заповни всі поля!");
-
-  const text = `📩 ЗАЯВКА\n👤 ${name}\n📞 ${phone}`;
+  if (!name || !phone) {
+    alert("Будь ласка, заповніть імʼя та телефон.");
+    return;
+  }
 
   try {
-
-    sendToTelegram(text);
-
     await addDoc(collection(db, "leads"), {
       name,
       phone,
+      message,
+      source: "Головна сторінка",
       status: "new",
-      createdAt: new Date()
+      income: 0,
+      createdAt: serverTimestamp()
     });
 
-    alert("✅ Відправлено");
+    alert("✅ Дякуємо! Заявку прийнято. Ми з Вами звʼяжемось.");
 
-  } catch (e) {
-    console.error(e);
-    alert("❌ Помилка");
+    if (nameInput) nameInput.value = "";
+    if (phoneInput) phoneInput.value = "";
+    if (messageInput) messageInput.value = "";
+  } catch (error) {
+    console.error("SEND FORM ERROR:", error);
+    alert("❌ Помилка відправки заявки. Спробуйте ще раз або зателефонуйте нам.");
   }
 };
 
-/* =======================
-   ✅ START
-======================= */
-setupFilter();
-load();
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  addDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+/* ================================
+   CONTACT BUTTONS
+================================ */
 
-// ✅ CONFIG
-const firebaseConfig = {
+window.callCompany = function() {
+  window.location.href = `tel:${COMPANY_PHONE_TEL}`;
+};
+
+window.openTelegram = function() {
+  window.open(TELEGRAM_LINK, "_blank", "noopener,noreferrer");
+};
+
+window.openViber = function() {
+  window.location.href = VIBER_LINK;
+};
+
+/* ================================
+   START
+================================ */
+
+setupFilters();
+loadObjects();
