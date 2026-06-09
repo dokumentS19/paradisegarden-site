@@ -316,7 +316,7 @@ function createObjectCard(item) {
         ${isFav ? "❤️" : "🤍"}
       </button>
 
-      <a href="assets/object.html?id=${id}" class="card-link">
+      <a href="assets/object.html?id=${id}">
         <div class="card-img">
           <img src="${image}" alt="${title}" loading="lazy">
           <div class="status-badge">
