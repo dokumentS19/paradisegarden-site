@@ -10,12 +10,20 @@ import {
   where,
   addDoc,
   updateDoc,
-  increment
+  increment,
+  serverTimestamp,
+  limit
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getAuth,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// ✅ Firebase config
+/* ================================
+   FIREBASE CONFIG
+================================ */
+
 const firebaseConfig = {
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
@@ -27,124 +35,507 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// ✅ ID
-const id = new URLSearchParams(window.location.search).get("id");
+/* ================================
+   STATE
+================================ */
 
-// ✅ ГАЛЕРЕЯ
-let images = [];
-let current = 0;
+const objectId = new URLSearchParams(window.location.search).get("id");
+
+let currentUser = null;
 let currentObject = null;
+let images = [];
+let currentSlide = 0;
 
-function changeSlide(step) {
-  current += step;
-  if (current >= images.length) current = 0;
-  if (current < 0) current = images.length - 1;
-  updateImage();
+/* ================================
+   CONTACTS
+================================ */
+
+const COMPANY_PHONE_VISIBLE = "0953777196";
+const COMPANY_PHONE_TEL = "+380953777196";
+
+/*
+  Замініть your_bot_username на username Вашого Telegram-бота.
+  Наприклад:
+  const TELEGRAM_LINK = "https://t.me/RaiskiySadBot";
+*/
+const TELEGRAM_LINK = "https://t.me/your_bot_username";
+
+const VIBER_LINK = "viber://chat?number=%2B380953777196";
+
+/* ================================
+   DOM
+================================ */
+
+const page = document.getElementById("objectPage");
+
+/* ================================
+   AUTH
+================================ */
+
+onAuthStateChanged(auth, user => {
+  currentUser = user;
+});
+
+/* ================================
+   HELPERS
+================================ */
+
+function escapeHtml(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
-function updateImage() {
-  const img = document.getElementById("mainImg");
-  if (!img) return;
+function formatPrice(value) {
+  const n = Number(value);
 
-  img.src = images[current] || "https://via.placeholder.com/400";
+  if (!Number.isFinite(n) || n <= 0) {
+    return "-";
+  }
 
+  return new Intl.NumberFormat("uk-UA").format(n);
+}
+
+function getMainImage(item) {
+  if (Array.isArray(item.images) && item.images.length > 0 && item.images[0]) {
+    return item.images[0];
+  }
+
+  return "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80";
+}
+
+function getImages(item) {
+  if (Array.isArray(item.images) && item.images.length > 0) {
+    return item.images.slice(0, 10);
+  }
+
+  return [
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+  ];
+}
+
+function getCreatedDate(item) {
+  if (item.createdAt?.seconds) {
+    return new Date(item.createdAt.seconds * 1000).toLocaleDateString("uk-UA");
+  }
+
+  return "-";
+}
+
+/* ================================
+   GALLERY
+================================ */
+
+function updateGallery() {
+  const mainImg = document.getElementById("mainImg");
   const counter = document.getElementById("counter");
+
+  if (mainImg) {
+    mainImg.src = images[currentSlide] || getMainImage(currentObject || {});
+  }
+
   if (counter) {
-    counter.textContent = `${current + 1} / ${images.length}`;
-  }
-}
-
-function selectImage(index) {
-  current = index;
-  updateImage();
-}
-
-// ✅ MAP
-function initMap(lat, lng) {
-  if (lat == null || lng == null) return;
-
-  const map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: Number(lat), lng: Number(lng) },
-    zoom: 15,
-  });
-
-  new google.maps.Marker({
-    position: { lat: Number(lat), lng: Number(lng) },
-    map: map,
-  });
-}
-
-// ✅ CHAT
-window.startChat = async (ownerId) => {
-  const user = auth.currentUser;
-  if (!user) return alert("Увійди!");
-
-  const q = query(
-    collection(db, "chats"),
-    where("users", "array-contains", user.uid)
-  );
-
-  const snap = await getDocs(q);
-
-  let chatId = null;
-
-  snap.forEach(d => {
-    if (d.data().users.includes(ownerId)) {
-      chatId = d.id;
-    }
-  });
-
-  if (!chatId) {
-    const newChat = await addDoc(collection(db, "chats"), {
-      users: [user.uid, ownerId],
-      createdAt: new Date()
-    });
-    chatId = newChat.id;
+    counter.textContent = `${currentSlide + 1} / ${images.length}`;
   }
 
-  window.location.href = `chat.html?chatId=${chatId}`;
+  document.querySelectorAll(".thumbs img").forEach((img, index) => {
+    img.classList.toggle("active", index === currentSlide);
+  });
+}
+
+window.changeSlide = function(step) {
+  if (!images.length) return;
+
+  currentSlide += step;
+
+  if (currentSlide >= images.length) {
+    currentSlide = 0;
+  }
+
+  if (currentSlide < 0) {
+    currentSlide = images.length - 1;
+  }
+
+  updateGallery();
 };
 
-// ✅ CALL
-window.call = () => {
-  window.location.href = "tel:+380674464705";
+window.selectImage = function(index) {
+  if (index < 0 || index >= images.length) return;
+
+  currentSlide = index;
+  updateGallery();
 };
 
-// ✅ LOAD OBJECT
-async function loadObject() {
+document.addEventListener("keydown", event => {
+  if (event.key === "ArrowRight") {
+    window.changeSlide(1);
+  }
 
-  const snap = await getDoc(doc(db, "objects", id));
+  if (event.key === "ArrowLeft") {
+    window.changeSlide(-1);
+  }
+});
 
-  if (!snap.exists()) {
-    document.getElementById("objectPage").innerHTML = "❌ Не знайдено";
+/* ================================
+   CONTACT ACTIONS
+================================ */
+
+window.callCompany = function() {
+  window.location.href = `tel:${COMPANY_PHONE_TEL}`;
+};
+
+window.openTelegram = function() {
+  window.open(TELEGRAM_LINK, "_blank", "noopener,noreferrer");
+};
+
+window.openViber = function() {
+  window.location.href = VIBER_LINK;
+};
+
+/* ================================
+   CHAT
+================================ */
+
+window.startChat = async function(ownerId) {
+  if (!currentUser) {
+    alert("Для чату увійдіть у кабінет через Google.");
     return;
   }
 
-  const d = snap.data();
-  currentObject = d;
+  if (!ownerId) {
+    alert("Власника обʼєкта не знайдено.");
+    return;
+  }
 
-  await updateDoc(doc(db, "objects", id), {
-    views: increment(1)
+  try {
+    const chatsQuery = query(
+      collection(db, "chats"),
+      where("users", "array-contains", currentUser.uid)
+    );
+
+    const snap = await getDocs(chatsQuery);
+
+    let chatId = null;
+
+    snap.forEach(chatDoc => {
+      const data = chatDoc.data();
+
+      if (Array.isArray(data.users) && data.users.includes(ownerId)) {
+        chatId = chatDoc.id;
+      }
+    });
+
+    if (!chatId) {
+      const newChat = await addDoc(collection(db, "chats"), {
+        users: [currentUser.uid, ownerId],
+        objectId,
+        objectTitle: currentObject?.title || "",
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      });
+
+      chatId = newChat.id;
+    }
+
+    window.location.href = `../chat.html?chatId=${encodeURIComponent(chatId)}`;
+  } catch (error) {
+    console.error("START CHAT ERROR:", error);
+    alert("❌ Не вдалося відкрити чат.");
+  }
+};
+
+/* ================================
+   MAP
+================================ */
+
+function initMap(lat, lng) {
+  const mapEl = document.getElementById("map");
+
+  if (!mapEl) return;
+
+  if (!window.google || !google.maps) {
+    mapEl.innerHTML = "<p style='padding:16px;'>Карта тимчасово недоступна</p>";
+    return;
+  }
+
+  const position = {
+    lat: Number(lat || 50.5215),
+    lng: Number(lng || 30.2506)
+  };
+
+  const map = new google.maps.Map(mapEl, {
+    center: position,
+    zoom: 14,
+    mapTypeControl: false,
+    streetViewControl: false,
+    fullscreenControl: true
   });
 
-  images = d.images || [];
-
-  document.getElementById("objectPage").innerHTML = `
-    <h1>${d.title}</h1>
-    <img id="mainImg" src="${images[0] || ""}" style="width:100%">
-    <p>💰 ${d.price}$</p>
-    <div id="map" style="height:300px;"></div>
-  `;
-
-  updateImage();
-
-  setTimeout(() => {
-    initMap(d.lat, d.lng);
-  }, 300);
+  new google.maps.Marker({
+    position,
+    map,
+    title: currentObject?.title || "Обʼєкт нерухомості"
+  });
 }
 
-// ✅ START
+/* ================================
+   LOAD OBJECT
+================================ */
+
+async function loadObject() {
+  if (!page) return;
+
+  if (!objectId) {
+    page.innerHTML = `
+      <section class="object-hero-card">
+        <h1>❌ Обʼєкт не знайдено</h1>
+        <p>ID обʼєкта не передано в адресі сторінки.</p>
+        <a class="btn" href="../index.html">Повернутися на головну</a>
+      </section>
+    `;
+    return;
+  }
+
+  try {
+    const objectRef = doc(db, "objects", objectId);
+    const snap = await getDoc(objectRef);
+
+    if (!snap.exists()) {
+      page.innerHTML = `
+        <section class="object-hero-card">
+          <h1>❌ Обʼєкт не знайдено</h1>
+          <p>Можливо, оголошення було видалено або приховано.</p>
+          <a class="btn" href="../index.html">Повернутися на головну</a>
+        </section>
+      `;
+      return;
+    }
+
+    currentObject = {
+      id: snap.id,
+      ...snap.data()
+    };
+
+    images = getImages(currentObject);
+    currentSlide = 0;
+
+    await updateDoc(objectRef, {
+      views: increment(1),
+      updatedAt: serverTimestamp()
+    });
+
+    renderObject(currentObject);
+    updateGallery();
+
+    setTimeout(() => {
+      initMap(currentObject.lat, currentObject.lng);
+    }, 300);
+
+    loadSimilarObjects(currentObject);
+  } catch (error) {
+    console.error("LOAD OBJECT ERROR:", error);
+
+    page.innerHTML = `
+      <section class="object-hero-card">
+        <h1>❌ Помилка завантаження</h1>
+        <p>Перевірте підключення Firebase або правила доступу.</p>
+        <a class="btn" href="../index.html">Повернутися на головну</a>
+      </section>
+    `;
+  }
+}
+
+/* ================================
+   RENDER OBJECT
+================================ */
+
+function renderObject(item) {
+  const title = escapeHtml(item.title || "Обʼєкт нерухомості");
+  const price = formatPrice(item.price);
+  const area = escapeHtml(item.area || "-");
+  const address = escapeHtml(item.address || "Київ та Київська область");
+  const description = escapeHtml(item.description || "Детальний опис обʼєкта буде додано найближчим часом.");
+  const status = item.status === "sold" ? "Продано" : "Активне";
+  const views = Number(item.views || 0) + 1;
+  const createdDate = getCreatedDate(item);
+  const ownerName = escapeHtml(item.ownerName || "АН «Райський Сад»");
+  const ownerId = escapeHtml(item.ownerId || "");
+
+  const thumbsHtml = images.map((src, index) => {
+    return `
+      <img
+        src="${escapeHtml(src)}"
+        alt="Фото ${index + 1}"
+        onclick="selectImage(${index})"
+        class="${index === 0 ? "active" : ""}"
+      >
+    `;
+  }).join("");
+
+  page.innerHTML = `
+    <a class="back-link" href="../index.html">← Назад до обʼєктів</a>
+
+    <section class="object-hero-card">
+      <div class="object-title-row">
+        <div>
+          <span class="section-label">АН «Райський Сад»</span>
+          <h1>${title}</h1>
+
+          <div class="status-line">
+            <span class="pill">🏷️ ${status}</span>
+            ${item.vip ? `<span class="pill">🔥 VIP</span>` : ""}
+            <span class="pill">👁 ${views} переглядів</span>
+          </div>
+        </div>
+
+        <div class="object-price">💰 ${price} $</div>
+      </div>
+
+      <div class="gallery">
+        <div class="gallery-main">
+          <img id="mainImg" src="${escapeHtml(images[0])}" alt="${title}">
+
+          <button class="gallery-btn left" type="button" onclick="changeSlide(-1)">‹</button>
+          <button class="gallery-btn right" type="button" onclick="changeSlide(1)">›</button>
+
+          <div id="counter" class="counter">1 / ${images.length}</div>
+        </div>
+
+        <div class="thumbs">
+          ${thumbsHtml}
+        </div>
+      </div>
+    </section>
+
+    <section class="object-info-grid">
+      <div class="object-box">
+        <h2>Інформація про обʼєкт</h2>
+
+        <div class="feature-grid">
+          <div class="feature">
+            <small>Ціна</small>
+            <strong>${price} $</strong>
+          </div>
+
+          <div class="feature">
+            <small>Площа</small>
+            <strong>${area}</strong>
+          </div>
+
+          <div class="feature">
+            <small>Локація</small>
+            <strong>${address}</strong>
+          </div>
+
+          <div class="feature">
+            <small>Дата додавання</small>
+            <strong>${createdDate}</strong>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 24px;">Опис</h3>
+        <p class="object-description">${description}</p>
+      </div>
+
+      <aside class="seller-card">
+        <h3>Звʼязок з компанією</h3>
+
+        <p>
+          <strong>${ownerName}</strong><br>
+          Агенція нерухомості «Райський Сад»
+        </p>
+
+        <p>
+          Допоможемо з переглядом, перевіркою документів,
+          переговорами та повним супроводом угоди.
+        </p>
+
+        <p><strong>Телефон:</strong> ${COMPANY_PHONE_VISIBLE}</p>
+
+        <div class="seller-actions">
+          <button class="cta-big" type="button" onclick="callCompany()">📞 Подзвонити</button>
+          <button class="cta-outline" type="button" onclick="openTelegram()">✈️ Telegram</button>
+          <button class="cta-outline" type="button" onclick="openViber()">💜 Viber</button>
+          <button class="btn" type="button" onclick="startChat('${ownerId}')">💬 Чат з продавцем</button>
+        </div>
+      </aside>
+    </section>
+
+    <section class="object-box">
+      <h2>Локація на карті</h2>
+      <div id="map" class="map-box"></div>
+    </section>
+
+    <section class="object-box">
+      <h2>Схожі обʼєкти</h2>
+      <div id="similarGrid" class="similar-grid">
+        <p>Завантаження схожих обʼєктів...</p>
+      </div>
+    </section>
+  `;
+}
+
+/* ================================
+   SIMILAR OBJECTS
+================================ */
+
+async function loadSimilarObjects(item) {
+  const similarGrid = document.getElementById("similarGrid");
+
+  if (!similarGrid) return;
+
+  try {
+    const q = query(
+      collection(db, "objects"),
+      where("status", "==", "active"),
+      limit(6)
+    );
+
+    const snap = await getDocs(q);
+
+    const objects = snap.docs
+      .map(docSnap => ({
+        id: docSnap.id,
+        ...docSnap.data()
+      }))
+      .filter(obj => obj.id !== item.id)
+      .slice(0, 4);
+
+    if (!objects.length) {
+      similarGrid.innerHTML = "<p>Схожі обʼєкти поки відсутні.</p>";
+      return;
+    }
+
+    similarGrid.innerHTML = objects.map(obj => {
+      const image = getMainImage(obj);
+
+      return `
+        <a class="similar-card" href="object.html?id=${escapeHtml(obj.id)}">
+          <img src="${escapeHtml(image)}" alt="${escapeHtml(obj.title || "Обʼєкт")}">
+
+          <div>
+            <strong>${escapeHtml(obj.title || "Без назви")}</strong>
+            <p>📐 ${escapeHtml(obj.area || "-")}</p>
+            <p>💰 ${formatPrice(obj.price)} $</p>
+          </div>
+        </a>
+      `;
+    }).join("");
+  } catch (error) {
+    console.error("SIMILAR ERROR:", error);
+    similarGrid.innerHTML = "<p>Не вдалося завантажити схожі обʼєкти.</p>";
+  }
+}
+
+/* ================================
+   START
+================================ */
+
 loadObject();
