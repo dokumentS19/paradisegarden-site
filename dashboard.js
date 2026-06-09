@@ -8,7 +8,9 @@ import {
   where,
   getDocs,
   deleteDoc,
-  doc
+  doc,
+  updateDoc,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -22,161 +24,417 @@ import {
   browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// ✅ CONFIG
+/* ================================
+   FIREBASE CONFIG
+================================ */
+
 const firebaseConfig = {
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site",
   storageBucket: "paradisegarden-site.firebasestorage.app",
   messagingSenderId: "452352075250",
-  appId: "1:452352075250:web:049e1b3f10c44bc04c776b"
+  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
+  measurementId: "G-6XHWE6Y0JE"
 };
 
-// ✅ INIT
 const app = initializeApp(firebaseConfig);
+
 const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// ✅ СТАБІЛЬНИЙ ЛОГІН (НЕ ВИКИДАЄ)
-async function initAuth() {
-  await setPersistence(auth, browserLocalPersistence);
-}
-initAuth();
+/* ================================
+   STATE
+================================ */
 
-// ✅ LOGIN BUTTON
-window.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("loginBtn");
+let currentUser = null;
+let myAdsCache = [];
 
-  if (btn) {
-    btn.onclick = () => {
-      if (auth.currentUser) {
-        signOut(auth);
-      } else {
-        signInWithRedirect(auth, provider);
-      }
-    };
-  }
+/* ================================
+   DOM
+================================ */
+
+const loginBtn = document.getElementById("loginBtn");
+const userInfo = document.getElementById("userInfo");
+const profileAvatar = document.getElementById("profileAvatar");
+const myAds = document.getElementById("myAds");
+
+const statTotal = document.getElementById("statTotal");
+const statActive = document.getElementById("statActive");
+const statSold = document.getElementById("statSold");
+
+/* ================================
+   AUTH
+================================ */
+
+await setPersistence(auth, browserLocalPersistence);
+
+getRedirectResult(auth).catch(error => {
+  console.error("AUTH REDIRECT ERROR:", error);
 });
 
-// ✅ REDIRECT (після Google)
-getRedirectResult(auth).catch(console.error);
+if (loginBtn) {
+  loginBtn.addEventListener("click", () => {
+    if (auth.currentUser) {
+      signOut(auth);
+    } else {
+      signInWithRedirect(auth, provider);
+    }
+  });
+}
 
-// ✅ AUTH STATE
-onAuthStateChanged(auth, (user) => {
-  const info = document.getElementById("userInfo");
+onAuthStateChanged(auth, user => {
+  currentUser = user;
 
   if (user) {
-    if (info) {
-      info.innerHTML = `
-        <p>👤 ${user.displayName || "Користувач"}</p>
-      `;
-    }
-
+    renderUser(user);
     loadMyAds(user.uid);
-
   } else {
-    if (info) info.innerHTML = "❌ Не авторизований";
-    
-    const ads = document.getElementById("myAds");
-    if (ads) ads.innerHTML = "";
+    renderGuest();
   }
 });
 
-// ✅ ДОДАТИ ОГОЛОШЕННЯ
-window.addObject = async () => {
+/* ================================
+   HELPERS
+================================ */
 
-  const user = auth.currentUser;
+function escapeHtml(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
-  if (!user) {
-    alert("Увійди!");
-    return;
+function formatPrice(value) {
+  const n = Number(value);
+
+  if (!Number.isFinite(n) || n <= 0) {
+    return "-";
   }
 
-  const title = document.getElementById("title").value.trim();
-  const price = document.getElementById("price").value;
-  const area = document.getElementById("area").value;
+  return new Intl.NumberFormat("uk-UA").format(n);
+}
 
-  if (!title || !price) {
-    alert("Заповни назву і ціну");
-    return;
+function getMainImage(item) {
+  if (Array.isArray(item.images) && item.images.length > 0 && item.images[0]) {
+    return item.images[0];
   }
 
-  await addDoc(collection(db, "objects"), {
-    title,
-    price: Number(price),
-    area: area || "-",
+  return "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80";
+}
 
-    lat: 50.5215,
-    lng: 30.2506,
+function setStats(total = 0, active = 0, sold = 0) {
+  if (statTotal) statTotal.textContent = total;
+  if (statActive) statActive.textContent = active;
+  if (statSold) statSold.textContent = sold;
+}
 
-    ownerId: user.uid,
-    ownerName: user.displayName || "Користувач",
+/* ================================
+   PROFILE RENDER
+================================ */
 
-    createdAt: new Date(),
-    images: ["https://via.placeholder.com/300"],
-
-    status: "active",
-    views: 0,
-    rating: 0,
-    ratingCount: 0,
-    vip: false
-  });
-
-  alert("✅ Додано!");
-
-  // ✅ очистка
-  document.getElementById("title").value = "";
-  document.getElementById("price").value = "";
-  document.getElementById("area").value = "";
-
-  loadMyAds(user.uid);
-};
-
-// ✅ МОЇ ОГОЛОШЕННЯ
-async function loadMyAds(uid) {
-
-  const q = query(
-    collection(db, "objects"),
-    where("ownerId", "==", uid)
-  );
-
-  const snap = await getDocs(q);
-  const el = document.getElementById("myAds");
-
-  if (!el) return;
-
-  el.innerHTML = "";
-
-  if (snap.empty) {
-    el.innerHTML = "<p>Немає оголошень</p>";
-    return;
+function renderUser(user) {
+  if (loginBtn) {
+    loginBtn.textContent = "Вийти";
   }
 
-  snap.forEach(docSnap => {
-    const d = docSnap.data();
+  if (userInfo) {
+    userInfo.innerHTML = `
+      <p><strong>👤 ${escapeHtml(user.displayName || "Користувач")}</strong></p>
+      <p>✉️ ${escapeHtml(user.email || "-")}</p>
+      <p>🆔 ${escapeHtml(user.uid)}</p>
+    `;
+  }
 
-    el.innerHTML += `
-      <div style="background:#1e293b;padding:10px;margin-bottom:10px;border-radius:8px;">
-        <strong>${d.title}</strong><br>
-        💰 ${d.price} $<br>
-        📐 ${d.area}<br><br>
-        <button onclick="deleteAd('${docSnap.id}')" style="background:red;">
-          ❌ Видалити
-        </button>
+  if (profileAvatar) {
+    if (user.photoURL) {
+      profileAvatar.innerHTML = `<img src="${escapeHtml(user.photoURL)}" alt="avatar">`;
+    } else {
+      const initials = (user.displayName || user.email || "?")
+        .trim()
+        .slice(0, 2)
+        .toUpperCase();
+
+      profileAvatar.textContent = initials;
+    }
+  }
+}
+
+function renderGuest() {
+  currentUser = null;
+  myAdsCache = [];
+
+  if (loginBtn) {
+    loginBtn.textContent = "Увійти через Google";
+  }
+
+  if (userInfo) {
+    userInfo.innerHTML = `<p>❌ Не авторизований</p>`;
+  }
+
+  if (profileAvatar) {
+    profileAvatar.textContent = "?";
+  }
+
+  if (myAds) {
+    myAds.innerHTML = `
+      <div class="empty-dashboard">
+        Увійдіть через Google, щоб бачити свої оголошення.
       </div>
     `;
+  }
+
+  setStats(0, 0, 0);
+}
+
+/* ================================
+   QUICK ADD OBJECT
+================================ */
+
+window.addObject = async function(event) {
+  if (event) event.preventDefault();
+
+  if (!currentUser) {
+    alert("Спочатку увійдіть через Google.");
+    return;
+  }
+
+  const title = document.getElementById("title")?.value.trim();
+  const price = Number(document.getElementById("price")?.value);
+  const area = document.getElementById("area")?.value.trim();
+  const address = document.getElementById("address")?.value.trim();
+  const description = document.getElementById("description")?.value.trim();
+
+  if (!title) {
+    alert("Вкажіть назву оголошення.");
+    return;
+  }
+
+  if (!price || price <= 0) {
+    alert("Вкажіть коректну ціну.");
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, "objects"), {
+      title,
+      price,
+      area: area || "-",
+      address: address || "",
+      description: description || "",
+      images: [
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      lat: 50.5215,
+      lng: 30.2506,
+      ownerId: currentUser.uid,
+      ownerName: currentUser.displayName || currentUser.email || "Користувач",
+      ownerEmail: currentUser.email || "",
+      status: "active",
+      vip: false,
+      views: 0,
+      rating: 0,
+      ratingCount: 0,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+
+    alert("✅ Оголошення додано!");
+
+    clearQuickForm();
+    loadMyAds(currentUser.uid);
+  } catch (error) {
+    console.error("ADD QUICK OBJECT ERROR:", error);
+    alert("❌ Помилка додавання оголошення.");
+  }
+};
+
+function clearQuickForm() {
+  const ids = ["title", "price", "area", "address", "description"];
+
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+
+    if (el) {
+      el.value = "";
+    }
   });
 }
 
-// ✅ DELETE
-window.deleteAd = async (id) => {
-  if (!confirm("Видалити?")) return;
+/* ================================
+   LOAD MY ADS
+================================ */
 
-  await deleteDoc(doc(db, "objects", id));
+async function loadMyAds(uid) {
+  if (!myAds) return;
 
-  if (auth.currentUser) {
-    loadMyAds(auth.currentUser.uid);
+  myAds.innerHTML = `
+    <div class="empty-dashboard">
+      Завантаження Ваших оголошень...
+    </div>
+  `;
+
+  try {
+    const q = query(
+      collection(db, "objects"),
+      where("ownerId", "==", uid)
+    );
+
+    const snap = await getDocs(q);
+
+    myAdsCache = snap.docs.map(docSnap => ({
+      id: docSnap.id,
+      ...docSnap.data()
+    }));
+
+    renderMyAds(myAdsCache);
+    updateStats(myAdsCache);
+  } catch (error) {
+    console.error("LOAD MY ADS ERROR:", error);
+
+    myAds.innerHTML = `
+      <div class="empty-dashboard">
+        ❌ Не вдалося завантажити оголошення. Перевірте Firebase правила.
+      </div>
+    `;
+
+    setStats(0, 0, 0);
+  }
+}
+
+window.reloadMyAds = function() {
+  if (!currentUser) {
+    alert("Увійдіть через Google.");
+    return;
+  }
+
+  loadMyAds(currentUser.uid);
+};
+
+function updateStats(data) {
+  const total = data.length;
+  const active = data.filter(item => item.status !== "sold").length;
+  const sold = data.filter(item => item.status === "sold").length;
+
+  setStats(total, active, sold);
+}
+
+/* ================================
+   RENDER MY ADS
+================================ */
+
+function renderMyAds(data) {
+  if (!myAds) return;
+
+  if (!data.length) {
+    myAds.innerHTML = `
+      <div class="empty-dashboard">
+        <h3 style="color:white;margin-top:0;">Оголошень поки немає</h3>
+        <p>
+          Ви можете додати швидке оголошення у формі вище
+          або створити повноцінний обʼєкт з фото через адмін-панель.
+        </p>
+        <a class="btn" href="admin.html">Перейти в адмінку</a>
+      </div>
+    `;
+    return;
+  }
+
+  data.sort((a, b) => {
+    const aTime = a.createdAt?.seconds || 0;
+    const bTime = b.createdAt?.seconds || 0;
+
+    return bTime - aTime;
+  });
+
+  myAds.innerHTML = data.map(item => {
+    const id = escapeHtml(item.id);
+    const title = escapeHtml(item.title || "Без назви");
+    const area = escapeHtml(item.area || "-");
+    const address = escapeHtml(item.address || "Київ та Київська область");
+    const price = formatPrice(item.price);
+    const image = escapeHtml(getMainImage(item));
+    const status = item.status === "sold" ? "❌ Продано" : "✅ Активне";
+    const views = Number(item.views || 0);
+
+    return `
+      <article class="my-ad">
+        <div class="my-ad-img">
+          <img src="${image}" alt="${title}" loading="lazy">
+        </div>
+
+        <div class="my-ad-body">
+          <h3>${title}</h3>
+          <p>💰 ${price} $</p>
+          <p>📐 ${area}</p>
+          <p>📍 ${address}</p>
+          <p>${status}</p>
+          <p>👁 Переглядів: ${views}</p>
+
+          <div class="my-ad-actions">
+            <a class="btn" href="assets/object.html?id=${id}">👁 Переглянути</a>
+
+            ${
+              item.status === "sold"
+                ? `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'active')">✅ Зробити активним</button>`
+                : `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'sold')">❌ Позначити проданим</button>`
+            }
+
+            <button class="danger-btn" type="button" onclick="deleteAd('${id}')">🗑 Видалити</button>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+/* ================================
+   ACTIONS
+================================ */
+
+window.setAdStatus = async function(id, status) {
+  if (!currentUser) {
+    alert("Увійдіть через Google.");
+    return;
+  }
+
+  try {
+    await updateDoc(doc(db, "objects", id), {
+      status,
+      updatedAt: serverTimestamp()
+    });
+
+    await loadMyAds(currentUser.uid);
+  } catch (error) {
+    console.error("SET STATUS ERROR:", error);
+    alert("❌ Не вдалося змінити статус.");
   }
 };
-``
+
+window.deleteAd = async function(id) {
+  if (!currentUser) {
+    alert("Увійдіть через Google.");
+    return;
+  }
+
+  if (!confirm("Видалити це оголошення?")) {
+    return;
+  }
+
+  try {
+    await deleteDoc(doc(db, "objects", id));
+
+    myAdsCache = myAdsCache.filter(item => item.id !== id);
+
+    renderMyAds(myAdsCache);
+    updateStats(myAdsCache);
+
+    alert("✅ Оголошення видалено.");
+  } catch (error) {
+    console.error("DELETE AD ERROR:", error);
+    alert("❌ Не вдалося видалити оголошення.");
+  }
+};
