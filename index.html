@@ -1,228 +1,298 @@
 <!DOCTYPE html>
 <html lang="uk">
-width=device-width, initial-scale=1"><head>
-  <title>АН Райський Сад</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>АН «Райський Сад» — нерухомість Києва та Київської області</title>
+
+  <meta name="description" content="Агенція нерухомості «Райський Сад» — купівля, продаж, оренда та інвестиції в нерухомість Києва та Київської області. Досвід з 2005 року.">
+  <meta name="keywords" content="нерухомість Київ, нерухомість Київська область, купити будинок, купити ділянку, агенція нерухомості Райський Сад">
 
   <link rel="stylesheet" href="styles.css">
-
-  <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
 </head>
 
 <body>
 
-<!-- HEADER -->
+<div id="loader" class="loader">
+  <div class="loader-ring"></div>
+  <p>Завантаження обʼєктів...</p>
+</div>
+
 <header class="topbar">
-  <h2>🏡 Paradise Garden</h2>
+  <a href="index.html" class="brand">
+    <span class="brand-icon">🌿</span>
+    <span>
+      <strong>Райський Сад</strong>
+      <small>Агенція нерухомості</small>
+    </span>
+  </a>
 
-  <div class="actions">
-    <input id="search" placeholder="Пошук...">
-    <input id="minPrice" placeholder="від $" type="number">
-    <input id="maxPrice" placeholder="до $" type="number">
+  <button class="menu-btn" id="menuBtn" aria-label="Відкрити меню">☰</button>
 
-    <a href="#about">Про нас</a>
+  <nav class="nav" id="mainNav">
+    <a href="#about">Про агентство</a>
+    <a href="#objects">Обʼєкти</a>
+    <a href="#director">Директор</a>
     <a href="#contacts">Контакти</a>
-    <a href="leads.html">📋 Заявки</a>
     <a href="favorites.html">❤️ Обране</a>
-    <a href="dashboard.html">Кабінет</a>
-    <a href="dialogs.html">💬 Діалоги</a>
-  </div>
+    <a href="dashboard.html">👤 Кабінет</a>
+    <a href="admin.html">⚙️ Адмін</a>
+    <a href="leads.html">📋 CRM</a>
+  </nav>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-overlay"></div>
+<main>
 
-  <div class="hero-content">
+  <section class="hero">
+    <div class="hero-shade"></div>
 
-    <h1 class="hero-title">
-      Агентство нерухомості "Райський Сад"
-    </h1>
+    <div class="hero-content">
+      <div class="hero-badge">Преміальна нерухомість Києва та області</div>
 
-    <p class="hero-sub">
-      Надійний партнер з 2002 року. Купівля, продаж і оренда нерухомості.
-    </p>
+      <h1 class="hero-title">
+        Ваш надійний провідник<br>
+        у світі нерухомості
+      </h1>
 
-    <div style="margin-top:20px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <p class="hero-sub">
+        З нами складні угоди стають простими, зрозумілими та безпечними.
+        Досвід з 2005 року у Києві та Київській області.
+      </p>
 
-      <a href="#objectsGrid" class="btn">
-        🔍 Переглянути об'єкти
-      </a>
+      <div class="hero-actions">
+        <a href="#objects" class="cta-big">Переглянути обʼєкти</a>
+        <a href="#contacts" class="cta-outline">Отримати консультацію</a>
+      </div>
 
-      <button class="cta-big"
-        onclick="document.getElementById('form').scrollIntoView()">
-        📞 Залишити заявку
-      </button>
+      <div class="hero-stats">
+        <div>
+          <strong>2005</strong>
+          <span>рік заснування</span>
+        </div>
 
+        <div>
+          <strong>100+</strong>
+          <span>успішних угод</span>
+        </div>
+
+        <div>
+          <strong>24/7</strong>
+          <span>підтримка клієнтів</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="premium-banner reveal">
+    <div>
+      <span class="section-label">АН «Райський Сад»</span>
+      <h2>Нерухомість, де рішення приймаються впевнено</h2>
+      <p>
+        Ми працюємо для тих, хто цінує безпеку, прозорість, досвід
+        і людяний підхід у кожній угоді.
+      </p>
     </div>
 
-  </div>
-</section>
+    <a href="#request" class="banner-btn">Залишити заявку</a>
+  </section>
 
-<!-- ABOUT -->
-<section id="about" class="about">
-  <h2>🏡 Про агентство</h2>
+  <section id="about" class="about section reveal">
+    <div class="section-head">
+      <span class="section-label">Про агентство</span>
+      <h2>Агенція нерухомості «Райський Сад»</h2>
+    </div>
 
-  <p>
-    Агенція нерухомості «Райський Сад» заснована у 2005 році.
-    Ми допомагаємо клієнтам купувати, продавати та інвестувати.
-  </p>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          Агенція нерухомості «Райський Сад» заснована у 2005 році та
+          впевнено працює на ринку нерухомості Києва та Київської області.
+          Ми допомагаємо клієнтам купувати, продавати та вигідно
+          інвестувати в нерухомість.
+        </p>
 
-  <h3>✅ Наші переваги</h3>
+        <p>
+          За роки роботи ми провели сотні успішних угод і зарекомендували
+          себе як надійний партнер. Ми супроводжуємо клієнтів на кожному
+          етапі — від підбору об'єкта до повного оформлення документів.
+        </p>
 
-  <ul>
-    <li>Повний супровід угод під ключ</li>
-    <li>Юридична безпека</li>
-    <li>Аналітика ринку</li>
-    <li>Індивідуальний підбір</li>
-  </ul>
-</section>
+        <p>
+          Наша команда працює чесно, прозоро та орієнтована на результат.
+          Ми завжди ставимо інтереси клієнта на перше місце.
+        </p>
 
-<!-- MAP -->
-<section class="about">
-  <h2>📍 Обʼєкти на карті</h2>
-  <div id="map" style="height:500px;"></div>
-</section>
+        <p>
+          Ми віримо, що чесність, досвід і людяний підхід — основа
+          довгострокових відносин з клієнтами.
+        </p>
+      </div>
 
-<!-- OBJECTS -->
-<section id="objectsGrid" class="objects">
-  <h2>Об'єкти нерухомості</h2>
-</section>
+      <div class="about-card">
+        <h3>Наші переваги</h3>
 
-<!-- ✅ FORM -->
-<section id="form" class="form fade-in">
+        <ul class="check-list">
+          <li>Повний супровід угод під ключ</li>
+          <li>Юридична перевірка та безпека</li>
+          <li>Актуальна аналітика ринку</li>
+          <li>Індивідуальний підбір нерухомості</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-  <h2>📞 Залишити заявку</h2>
+  <section class="values section reveal">
+    <div class="value-card">
+      <div class="value-icon">🛡️</div>
+      <h3>Безпека</h3>
+      <p>Перевіряємо документи, ризики та юридичну чистоту обʼєктів.</p>
+    </div>
 
-  <p style="opacity:0.8;">
-    Залиште контакт — ми звʼяжемося з вами
-  </p>
+    <div class="value-card">
+      <div class="value-icon">🤝</div>
+      <h3>Довіра</h3>
+      <p>Працюємо відкрито, чесно та з повагою до кожного клієнта.</p>
+    </div>
 
-  <input id="name" placeholder="Ваше імʼя"><br><br>
-  <input id="phone" placeholder="Телефон"><br><br>
+    <div class="value-card">
+      <div class="value-icon">📈</div>
+      <h3>Результат</h3>
+      <p>Допомагаємо купувати, продавати та інвестувати вигідно.</p>
+    </div>
 
-  <button onclick="sendForm()" class="btn">
-    ✅ Відправити
-  </button>
+    <div class="value-card">
+      <div class="value-icon">🏡</div>
+      <h3>Підбір</h3>
+      <p>Підбираємо нерухомість під конкретну мету, бюджет і стиль життя.</p>
+    </div>
+  </section>
 
-</section>
+  <section id="objects" class="objects section reveal">
+    <div class="section-head">
+      <span class="section-label">База обʼєктів</span>
+      <h2>Актуальні пропозиції нерухомості</h2>
+      <p>
+        Перегляньте обʼєкти, додані в базу агентства. Натисніть на картку,
+        щоб відкрити детальну інформацію та фото.
+      </p>
+    </div>
 
-<!-- CONTACTS -->
-<section id="contacts" class="contacts">
-  <h2>📞 Контакти</h2>
+    <div class="filters">
+      <input id="search" type="text" placeholder="Пошук за назвою">
 
-  <div class="contact-card">
-    <p>📞 +38 095 3777196</p>
-    <p>📍 Ірпінь</p>
-  </div>
-</section>
+      <input id="minPrice" type="number" placeholder="Ціна від, $">
+
+      <input id="maxPrice" type="number" placeholder="Ціна до, $">
+
+      <select id="sortSelect">
+        <option value="vip">Спочатку VIP</option>
+        <option value="priceAsc">Ціна: від меншої</option>
+        <option value="priceDesc">Ціна: від більшої</option>
+        <option value="newest">Нові спочатку</option>
+      </select>
+
+      <button class="btn" id="resetFilters">Скинути</button>
+    </div>
+
+    <div id="objectsGrid" class="objects-grid"></div>
+  </section>
+
+  <section id="director" class="director section reveal">
+    <div class="director-card">
+      <div class="director-photo">
+        <div class="photo-placeholder">
+          <span>ОІ</span>
+        </div>
+      </div>
+
+      <div class="director-info">
+        <span class="section-label">Директор</span>
+
+        <h2>Іванчик Олег Степанович</h2>
+
+        <p class="director-sub">
+          Засновник і керівник агентства. Орієнтований на результат і довіру
+          в кожній угоді.
+        </p>
+
+        <h3>Про директора</h3>
+
+        <p>
+          Іванчик Олег Степанович — засновник і директор АН «Райський Сад»
+          з 2002 року. Сфокусований на прозорості угод, юридичній безпеці
+          та індивідуальному підході до кожного клієнта.
+        </p>
+
+        <ul class="check-list">
+          <li>Досвід керування агентством і супроводу угод понад 24 років</li>
+          <li>Експертиза у купівлі/продажу, оренді та документальному супроводі</li>
+          <li>Репутація порядності та відповідальності у партнерських відносинах</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="request" class="request section reveal">
+    <div class="request-content">
+      <span class="section-label">Заявка</span>
+      <h2>Отримайте консультацію щодо нерухомості</h2>
+      <p>
+        Залиште імʼя та номер телефону — ми звʼяжемося з Вами,
+        уточнимо задачу та запропонуємо найкраще рішення.
+      </p>
+    </div>
+
+    <form class="request-form" onsubmit="sendForm(event)">
+      <input id="name" type="text" placeholder="Ваше імʼя" required>
+      <input id="phone" type="tel" placeholder="Ваш телефон" required>
+      <textarea id="message" placeholder="Що Вас цікавить? Купівля, продаж, ділянка, будинок..."></textarea>
+
+      <button type="submit" class="cta-big">Відправити заявку</button>
+    </form>
+  </section>
+
+  <section id="contacts" class="contacts section reveal">
+    <div class="section-head">
+      <span class="section-label">Контакти</span>
+      <h2>Звʼязок з компанією</h2>
+      <p>
+        Оберіть зручний спосіб звʼязку. Ми відкриті до консультації,
+        підбору обʼєктів та супроводу угод.
+      </p>
+    </div>
+
+    <div class="contact-grid">
+      <button onclick="callCompany()" class="contact-card">
+        <span>📞</span>
+        <strong>Телефон</strong>
+        <small>0953777196</small>
+      </button>
+
+      <button onclick="openTelegram()" class="contact-card">
+        <span>✈️</span>
+        <strong>Telegram</strong>
+        <small>Написати в Telegram</small>
+      </button>
+
+      <button onclick="openViber()" class="contact-card">
+        <span>💜</span>
+        <strong>Viber</strong>
+        <small>Написати у Viber</small>
+      </button>
+    </div>
+  </section>
+
+</main>
+
+<a href="#request" class="sticky-cta">📩 Заявка</a>
 
 <footer class="footer">
-  © Paradise Garden
+  <p>© 2005–2026 АН «Райський Сад». Нерухомість Києва та Київської області.</p>
+  <p>Директор: Іванчик Олег Степанович</p>
 </footer>
 
-<!-- ✅ STICKY BUTTON -->
-<div class="sticky-cta" onclick="window.location.href='tel:+www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  addDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const app = initializeApp({
-  apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
-  authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site"
-});
-
-const db = getFirestore(app);
-
-let allData = [];
-let map;
-let markers = [];
-let clusterer;
-
-/* ✅ LOAD */
-async function load() {
-  const snap = await getDocs(collection(db, "objects"));
-
-  allData = snap.docs.map(d => ({
-    id: d.id,
-    ...d.data()
-  }));
-
-  render(allData);
-}
-
-/* ✅ RENDER */
-function render(data) {
-
-  const grid = document.getElementById("objectsGrid");
-  grid.innerHTML = "<h2>Об'єкти нерухомості</h2>";
-
-  data.forEach(d => {
-
-    const img = d.images?.[0]
-      ? `<img src="${d.images[ : `<img src="https://older.com/400`;
-
-    grid.innerHTML += `
-      <div class="card">
-
-        ${img}
-
-        <h3>${d.title || "Без назви"}</h3>
-        <p>💰 ${d.price || "-"} $</p>
-
-        <a href="object.html?id=${d.id}" Детальніше
-        </a>
-
-      </div>
-    `;
-  });
-}
-
-/* ✅ FILTER */
-document.getElementById("search").oninput = () => {
-  const val = document.getElementById("search").value.toLowerCase();
-
-  render(allData.filter(d =>
-    (d.title || "").toLowerCase().includes(val)
-  ));
-};
-
-/* ✅ FORM */
-window.sendForm = async () => {
-
-  const name = document.getElementById("name").value;
-  const phone = document.getElementById("phone").value;
-
-  if (!name || !phone) return alert("Заповни поля");
-
-  await addDoc(collection(db, "leads"), {
-    name,
-    phone,
-    createdAt: new Date()
-  });
-
-  alert("✅ Заявка відправлена");
-};
-
-/* ✅ MAP */
-window.initMap = function () {
-  map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 11,
-    center: { lat: 50.52, lng: 30.25 }
-  });
-};
-
-load();
-
-</script>
-
-<script defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I&callback=initMap">
-</script>
+<script type="module" src="script.js"></script>
 
 </body>
 </html>
-  <meta charset="UTF-8">
