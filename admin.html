@@ -1,69 +1,300 @@
 <!DOCTYPE html>
 <html lang="uk">
-<head> 
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Адмін</title>
+
+  <title>Адмін — АН «Райський Сад»</title>
+
+  <link rel="stylesheet" href="styles.css">
 
   <style>
-    body {
-      font-family: Arial;
-      background: #111;
-      color: white;
-      padding: 20px;
+    .admin-layout {
+      max-width: 1200px;
+      margin: 34px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 1fr 0.8fr;
+      gap: 24px;
     }
 
-    input {
-      padding: 8px;
-      width: 250px;
+    .admin-panel {
+      background:
+        linear-gradient(180deg, rgba(30, 41, 59, 0.94), rgba(15, 23, 42, 0.94));
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
     }
 
-    button {
-      padding: 10px 15px;
-      background: #16a34a;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
+    .admin-panel h1,
+    .admin-panel h2 {
+      margin-top: 0;
     }
 
-    #preview {
+    .admin-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .admin-form label {
+      color: #cbd5e1;
+      font-size: 14px;
+      margin-bottom: -6px;
+    }
+
+    .admin-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .admin-check {
       display: flex;
+      align-items: center;
       gap: 10px;
-      flex-wrap: wrap;
+      padding: 12px 14px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 14px;
+      color: #e2e8f0;
+    }
+
+    .admin-check input {
+      width: auto;
+      margin: 0;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+      gap: 10px;
       margin-top: 10px;
     }
 
-    #preview img {
-      width: 100px;
-      height: 80px;
+    .preview-item {
+      position: relative;
+      height: 90px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      background: #020617;
+    }
+
+    .preview-item img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+    }
+
+    .preview-item span {
+      position: absolute;
+      left: 6px;
+      bottom: 6px;
+      background: rgba(2, 6, 23, 0.72);
+      color: white;
+      padding: 3px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+    }
+
+    .upload-info {
+      color: #cbd5e1;
+      line-height: 1.6;
+      font-size: 14px;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      padding: 14px;
+      border-radius: 16px;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .progress-box {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.26);
+      color: #bbf7d0;
+    }
+
+    .progress-box.active {
+      display: block;
+    }
+
+    .admin-help-card {
+      background:
+        radial-gradient(circle at top right, rgba(250, 204, 21, 0.16), transparent 35%),
+        rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(250, 204, 21, 0.18);
+      border-radius: 22px;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .admin-help-card h3 {
+      margin-top: 0;
+    }
+
+    .admin-help-card p,
+    .admin-help-card li {
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .admin-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-row {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<h2>Додати об'єкт</h2>
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <span class="brand-icon">🌿</span>
+    <span>
+      <strong>Райський Сад</strong>
+      <small>Адмін-панель</small>
+    </span>
+  </a>
 
-<label>Назва</label><br>
-<input id="title"><br><br>
+  <nav class="nav">
+    <a href="index.html">🏠 Головна</a>
+    <a href="leads.html">📋 CRM</a>
+    <a href="dashboard.html">👤 Кабінет</a>
+    <a href="favorites.html">❤️ Обране</a>
+  </nav>
+</header>
 
-<label>Площа</label><br>
-<input id="area"><br><br>
+<main class="admin-layout">
 
-<label>Ціна</label><br>
-<input id="price"><br><br>
+  <section class="admin-panel">
+    <span class="section-label">Адміністрування</span>
+    <h1>Додати обʼєкт нерухомості</h1>
 
-<label>Фото</label><br>
-<input type="file" id="file" multiple><br>
+    <div class="upload-info">
+      <strong>Вимоги до фото:</strong><br>
+      максимум 10 фото на один обʼєкт, кожне фото до 1 МБ.
+      Перше фото буде головним у каталозі.
+    </div>
 
-<div id="preview"></div>
+    <div style="margin: 18px 0;">
+      <div id="userInfo">❌ Не авторизований</div>
+      <button id="loginBtn" class="btn" type="button">Увійти через Google</button>
+    </div>
 
-<br>
-<button onclick="addObject()">Додати</button>
+    <form class="admin-form" onsubmit="addObject(event)">
+
+      <label for="title">Назва обʼєкта</label>
+      <input id="title" type="text" placeholder="Наприклад: Елітний будинок біля лісу" required>
+
+      <div class="admin-row">
+        <div>
+          <label for="area">Площа ділянки / будинку</label>
+          <input id="area" type="text" placeholder="12 соток / 240 м²">
+        </div>
+
+        <div>
+          <label for="price">Ціна, $</label>
+          <input id="price" type="number" min="0" placeholder="250000" required>
+        </div>
+      </div>
+
+      <label for="address">Адреса / локація</label>
+      <input id="address" type="text" placeholder="Київська область, Ірпінь, Буча, Київ...">
+
+      <label for="description">Детальний опис</label>
+      <textarea id="description" placeholder="Опишіть переваги обʼєкта, стан, комунікації, документи, інфраструктуру..."></textarea>
+
+      <div class="admin-row">
+        <div>
+          <label for="lat">Широта</label>
+          <input id="lat" type="number" step="any" placeholder="50.5215">
+        </div>
+
+        <div>
+          <label for="lng">Довгота</label>
+          <input id="lng" type="number" step="any" placeholder="30.2506">
+        </div>
+      </div>
+
+      <div class="admin-row">
+        <label class="admin-check">
+          <input id="vip" type="checkbox">
+          VIP обʼєкт
+        </label>
+
+        <label class="admin-check">
+          <input id="sold" type="checkbox">
+          Позначити як продано
+        </label>
+      </div>
+
+      <label for="file">Фото обʼєкта</label>
+      <input id="file" type="file" accept="image/*" multiple required>
+
+      <div id="preview" class="preview-grid"></div>
+
+      <div id="progressBox" class="progress-box">
+        Завантаження обʼєкта... Будь ласка, не закривайте сторінку.
+      </div>
+
+      <div class="admin-actions">
+        <button class="cta-big" type="submit">✅ Додати обʼєкт</button>
+        <button class="cta-outline" type="button" onclick="clearForm()">Очистити форму</button>
+      </div>
+
+    </form>
+  </section>
+
+  <aside>
+    <div class="admin-help-card">
+      <h3>Що буде створено?</h3>
+      <p>
+        Після додавання обʼєкт автоматично зʼявиться на головній сторінці
+        в базі нерухомості.
+      </p>
+      <ul>
+        <li>Фото збережуться у Firebase Storage</li>
+        <li>Дані обʼєкта — у Firestore</li>
+        <li>VIP-обʼєкти показуються першими</li>
+        <li>Детальна сторінка відкривається по кліку на картку</li>
+      </ul>
+    </div>
+
+    <div class="admin-help-card">
+      <h3>Рекомендації</h3>
+      <p>
+        Для преміального вигляду додавайте горизонтальні фото хорошої якості.
+        Перше фото має бути найкращим — воно показується в каталозі.
+      </p>
+    </div>
+
+    <div class="admin-help-card">
+      <h3>Контакти компанії</h3>
+      <p>
+        На сторінці кожного обʼєкта автоматично будуть кнопки:
+        телефон, Telegram, Viber та чат.
+      </p>
+      <p><strong>Телефон:</strong> 0953777196</p>
+    </div>
+  </aside>
+
+</main>
 
 <script type="module" src="admin.js"></script>
 
