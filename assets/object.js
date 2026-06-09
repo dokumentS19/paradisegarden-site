@@ -517,7 +517,7 @@ async function loadSimilarObjects(item) {
       const image = getMainImage(obj);
 
       return `
-        <a class="similar-card" href="object.html?id=${escapeHtml(obj.id)}">
+       <a class="similar-card" href="object.html?id=${obj.id}">
           <img src="${escapeHtml(image)}" alt="${escapeHtml(obj.title || "Обʼєкт")}">
 
           <div>
