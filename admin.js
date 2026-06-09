@@ -3,7 +3,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import {
   getFirestore,
   collection,
-  addDoc
+  addDoc,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -15,10 +16,19 @@ import {
 
 import {
   getAuth,
-  onAuthStateChanged
+  GoogleAuthProvider,
+  signInWithRedirect,
+  getRedirectResult,
+  onAuthStateChanged,
+  signOut,
+  setPersistence,
+  browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// ✅ CONFIG
+/* ================================
+   FIREBASE CONFIG
+================================ */
+
 const firebaseConfig = {
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
@@ -34,103 +44,271 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+/* ================================
+   STATE
+================================ */
 
 let currentUser = null;
+let selectedFiles = [];
 
-// ✅ USER
-onAuthStateChanged(auth, user => {
-  currentUser = user;
+/* ================================
+   DOM
+================================ */
+
+const fileInput = document.getElementById("file");
+const preview = document.getElementById("preview");
+const loginBtn = document.getElementById("loginBtn");
+const userInfo = document.getElementById("userInfo");
+const progressBox = document.getElementById("progressBox");
+
+/* ================================
+   AUTH
+================================ */
+
+await setPersistence(auth, browserLocalPersistence);
+
+getRedirectResult(auth).catch(error => {
+  console.error("REDIRECT AUTH ERROR:", error);
 });
 
-// ✅ PREVIEW
-const input = document.getElementById("file");
-const preview = document.getElementById("preview");
+onAuthStateChanged(auth, user => {
+  currentUser = user;
 
-input.addEventListener("change", () => {
+  if (user) {
+    if (userInfo) {
+      userInfo.innerHTML = `👤 ${escapeHtml(user.displayName || user.email || "Користувач")}`;
+    }
+
+    if (loginBtn) {
+      loginBtn.textContent = "Вийти";
+    }
+  } else {
+    if (userInfo) {
+      userInfo.innerHTML = "❌ Не авторизований";
+    }
+
+    if (loginBtn) {
+      loginBtn.textContent = "Увійти через Google";
+    }
+  }
+});
+
+if (loginBtn) {
+  loginBtn.addEventListener("click", () => {
+    if (auth.currentUser) {
+      signOut(auth);
+    } else {
+      signInWithRedirect(auth, provider);
+    }
+  });
+}
+
+/* ================================
+   HELPERS
+================================ */
+
+function escapeHtml(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function showProgress(show) {
+  if (!progressBox) return;
+  progressBox.classList.toggle("active", Boolean(show));
+}
+
+function validateFiles(files) {
+  if (!files.length) {
+    alert("Додайте хоча б одне фото.");
+    return false;
+  }
+
+  if (files.length > 10) {
+    alert("Можна додати максимум 10 фото.");
+    return false;
+  }
+
+  for (const file of files) {
+    if (!file.type.startsWith("image/")) {
+      alert(`Файл "${file.name}" не є зображенням.`);
+      return false;
+    }
+
+    if (file.size > 1024 * 1024) {
+      alert(`Фото "${file.name}" більше 1 МБ. Зменшіть розмір фото.`);
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function renderPreview(files) {
+  if (!preview) return;
+
   preview.innerHTML = "";
 
-  const files = input.files;
-
-  for (let file of files) {
+  files.forEach((file, index) => {
     const reader = new FileReader();
 
-    reader.onload = e => {
-      const img = document.createElement("img");
-      img.src = e.target.result;
-      preview.appendChild(img);
+    reader.onload = event => {
+      const item = document.createElement("div");
+      item.className = "preview-item";
+
+      item.innerHTML = `
+        <img src="${event.target.result}" alt="Фото ${index + 1}">
+        <span>${index + 1}</span>
+      `;
+
+      preview.appendChild(item);
     };
 
     reader.readAsDataURL(file);
-  }
-});
+  });
+}
 
-// ✅ ADD OBJECT
-window.addObject = async () => {
+/* ================================
+   FILE INPUT
+================================ */
 
-  const title = document.getElementById("title").value.trim();
-  const area = document.getElementById("area").value;
-  const price = document.getElementById("price").value;
-  const files = input.files;
+if (fileInput) {
+  fileInput.addEventListener("change", () => {
+    const files = Array.from(fileInput.files || []);
 
-  if (!title || !price || files.length === 0) {
-    alert("Заповни всі поля і додай фото");
+    if (!validateFiles(files)) {
+      fileInput.value = "";
+      selectedFiles = [];
+      if (preview) preview.innerHTML = "";
+      return;
+    }
+
+    selectedFiles = files;
+    renderPreview(selectedFiles);
+  });
+}
+
+/* ================================
+   ADD OBJECT
+================================ */
+
+window.addObject = async function(event) {
+  if (event) event.preventDefault();
+
+  if (!currentUser) {
+    alert("Спочатку увійдіть через Google.");
     return;
   }
 
-  if (!currentUser) {
-    alert("Увійди!");
+  const title = document.getElementById("title")?.value.trim();
+  const area = document.getElementById("area")?.value.trim();
+  const price = Number(document.getElementById("price")?.value);
+  const address = document.getElementById("address")?.value.trim();
+  const description = document.getElementById("description")?.value.trim();
+  const latRaw = document.getElementById("lat")?.value;
+  const lngRaw = document.getElementById("lng")?.value;
+  const vip = document.getElementById("vip")?.checked || false;
+  const sold = document.getElementById("sold")?.checked || false;
+
+  const lat = latRaw ? Number(latRaw) : 50.5215;
+  const lng = lngRaw ? Number(lngRaw) : 30.2506;
+
+  if (!title) {
+    alert("Вкажіть назву обʼєкта.");
+    return;
+  }
+
+  if (!price || price <= 0) {
+    alert("Вкажіть коректну ціну.");
+    return;
+  }
+
+  if (!validateFiles(selectedFiles)) {
     return;
   }
 
   try {
+    showProgress(true);
+
     const imageUrls = [];
 
-    for (let file of files) {
-
-      const fileName =
-        Date.now() + "_" + Math.random().toString(36).slice(2);
-
-      const storageRef = ref(storage, "objects/" + fileName);
+    for (const file of selectedFiles) {
+      const safeName = file.name.replace(/[^\wа-яА-ЯіїєґІЇЄҐ.-]/g, "_");
+      const fileName = `${Date.now()}_${crypto.randomUUID()}_${safeName}`;
+      const storageRef = ref(storage, `objects/${fileName}`);
 
       await uploadBytes(storageRef, file);
-
       const url = await getDownloadURL(storageRef);
 
       imageUrls.push(url);
     }
 
-    // ✅ запис
     await addDoc(collection(db, "objects"), {
       title,
       area: area || "-",
-      price: Number(price),
+      price,
+      address: address || "",
+      description: description || "",
       images: imageUrls,
-
-      lat: 50.5215,
-      lng: 30.2506,
-
+      lat,
+      lng,
       ownerId: currentUser.uid,
-      ownerName: currentUser.displayName || "Користувач",
-
-      status: "active",
+      ownerName: currentUser.displayName || currentUser.email || "Адміністратор",
+      ownerEmail: currentUser.email || "",
+      status: sold ? "sold" : "active",
+      vip,
       views: 0,
       rating: 0,
       ratingCount: 0,
-      vip: false,
-
-      createdAt: new Date()
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
     });
 
-    alert("✅ Об'єкт створено!");
+    alert("✅ Обʼєкт успішно створено!");
 
-    preview.innerHTML = "";
-    input.value = "";
-    document.getElementById("title").value = "";
-    document.getElementById("area").value = "";
-    document.getElementById("price").value = "";
-
-  } catch (err) {
-    console.error(err);
-    alert("❌ Помилка");
+    clearForm();
+  } catch (error) {
+    console.error("ADD OBJECT ERROR:", error);
+    alert("❌ Помилка створення обʼєкта. Перевірте Firebase Storage / Firestore правила.");
+  } finally {
+    showProgress(false);
   }
+};
+
+/* ================================
+   CLEAR FORM
+================================ */
+
+window.clearForm = function() {
+  const ids = [
+    "title",
+    "area",
+    "price",
+    "address",
+    "description",
+    "lat",
+    "lng"
+  ];
+
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = "";
+  });
+
+  const vip = document.getElementById("vip");
+  const sold = document.getElementById("sold");
+
+  if (vip) vip.checked = false;
+  if (sold) sold.checked = false;
+
+  if (fileInput) fileInput.value = "";
+
+  selectedFiles = [];
+
+  if (preview) preview.innerHTML = "";
 };
