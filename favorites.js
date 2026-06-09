@@ -1,11 +1,15 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 import {
   getFirestore,
   doc,
   getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// ✅ CONFIG
+/* ================================
+   FIREBASE CONFIG
+================================ */
+
 const firebaseConfig = {
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
@@ -19,157 +23,234 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ✅ DOM
-const grid = document.getElementById("favGrid");
+/* ================================
+   STATE
+================================ */
 
-// ✅ SAFETY
-if (!grid) {
-  console.error("❌ favGrid не знайдений");
+let favIds = [];
+let favObjects = [];
+
+/* ================================
+   DOM
+================================ */
+
+const grid = document.getElementById("favGrid");
+const searchInput = document.getElementById("favSearch");
+
+/* ================================
+   HELPERS
+================================ */
+
+function escapeHtml(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
-// ✅ DATA
-const favs = JSON.parse(localStorage.getItem("favs")) || [];
+function formatPrice(value) {
+  const n = Number(value);
 
-// ✅ MAIN
-async function loadFavs() {
+  if (!Number.isFinite(n) || n <= 0) {
+    return "-";
+  }
 
+  return new Intl.NumberFormat("uk-UA").format(n);
+}
+
+function getMainImage(item) {
+  if (Array.isArray(item.images) && item.images.length > 0 && item.images[0]) {
+    return item.images[0];
+  }
+
+  return "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80";
+}
+
+function loadFavIds() {
+  try {
+    favIds = JSON.parse(localStorage.getItem("favs")) || [];
+
+    if (!Array.isArray(favIds)) {
+      favIds = [];
+    }
+
+    favIds = [...new Set(favIds)];
+  } catch {
+    favIds = [];
+  }
+}
+
+function saveFavIds() {
+  favIds = [...new Set(favIds)];
+  localStorage.setItem("favs", JSON.stringify(favIds));
+}
+
+/* ================================
+   LOAD FAVORITES
+================================ */
+
+async function loadFavorites() {
   if (!grid) return;
 
-  grid.innerHTML = "";
+  loadFavIds();
 
-  // ✅ empty state
-  if (favs.length === 0) {
-    grid.innerHTML = "<p>Немає обраних ❤️</p>";
+  if (!favIds.length) {
+    favObjects = [];
+    renderFavorites();
     return;
   }
+
+  grid.innerHTML = `
+    <div class="empty-favs" style="grid-column:1/-1;">
+      <h2>Завантаження...</h2>
+      <p>Отримуємо Ваші обрані обʼєкти.</p>
+    </div>
+  `;
 
   try {
+    const results = await Promise.all(
+      favIds.map(async id => {
+        const snap = await getDoc(doc(db, "objects", id));
 
-    // ✅ паралельна загрузка (ШВИДШЕ)
-    const snaps = await Promise.all(
-      favs.map(id => getDoc(doc(db, "objects", id)))
+        if (!snap.exists()) {
+          return null;
+        }
+
+        return {
+          id: snap.id,
+          ...snap.data()
+        };
+      })
     );
 
-    let html = "";
+    favObjects = results.filter(Boolean);
 
-    snaps.forEach((snap, index) => {
+    const existingIds = favObjects.map(item => item.id);
+    favIds = favIds.filter(id => existingIds.includes(id));
+    saveFavIds();
 
-      if (!snap.exists()) return;
+    renderFavorites();
+  } catch (error) {
+    console.error("LOAD FAVORITES ERROR:", error);
 
-      const d = snap.data();
-      const id = favs[index];
-
-      const img = d.images?.[0] || "https://via.placeholder.com/400";
-
-      html += `
-        <a href="object.html?id=${id}" class="card">
-
-          <img src="${img}" alt="img">
-
-          <h3>${d.title || "Без назви"}</h3>
-
-          <p>📐 ${d.area || "-"}</p>
-
-          <strong>${d.price || "-"} $</strong>
-
-        </a>
-      `;
-    });
-
-    grid.innerHTML✅ Все, я зробив те, що ти просив:  
-👉 **НЕ спрощував логіку**  
-👉 **НЕ міняв структуру**  
-👉 **прибрав ризики падіння + дубляжі + зробив стабільність**  
-👉 дав **чистий прогресивний код без багів**
-
----
-
-# ✅ ✅ ✅ ТВОЯ ВЕРСІЯ → ВИПРАВЛЕНА І СТАБІЛЬНА
-
-```js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getFirestore,
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// ✅ CONFIG
-const firebaseConfig = {
-  apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
-  authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site",
-  storageBucket: "paradisegarden-site.firebasestorage.app",
-  messagingSenderId: "452352075250",
-  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
-  measurementId: "G-6XHWE6Y0JE"
-};
-
-// ✅ INIT (захист від повторної ініціалізації)
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// ✅ DOM safety
-const grid = document.getElementById("favGrid");
-
-if (!grid) {
-  console.error("❌ favGrid не знайдено");
+    grid.innerHTML = `
+      <div class="empty-favs" style="grid-column:1/-1;">
+        <h2>❌ Помилка завантаження</h2>
+        <p>Не вдалося завантажити обрані обʼєкти. Перевірте Firebase або інтернет.</p>
+      </div>
+    `;
+  }
 }
 
-// ✅ отримуємо обране (захист від битого JSON)
-let favs = [];
-try {
-  favs = JSON.parse(localStorage.getItem("favs")) || [];
-  if (!Array.isArray(favs)) favs = [];
-} catch {
-  favs = [];
-}
+/* ================================
+   RENDER
+================================ */
 
-// ✅ завантаження
-async function loadFavs() {
-
+window.renderFavorites = function() {
   if (!grid) return;
 
-  grid.innerHTML = "";
+  const search = searchInput ? searchInput.value.trim().toLowerCase() : "";
 
-  // ✅ якщо пусто
-  if (favs.length === 0) {
-    grid.innerHTML = "<p>Немає обраних ❤️</p>";
+  let data = [...favObjects];
+
+  if (search) {
+    data = data.filter(item => {
+      const title = String(item.title || "").toLowerCase();
+      const area = String(item.area || "").toLowerCase();
+      const address = String(item.address || "").toLowerCase();
+      const description = String(item.description || "").toLowerCase();
+
+      return (
+        title.includes(search) ||
+        area.includes(search) ||
+        address.includes(search) ||
+        description.includes(search)
+      );
+    });
+  }
+
+  if (!favIds.length || !data.length) {
+    grid.innerHTML = `
+      <div class="empty-favs" style="grid-column:1/-1;">
+        <h2>❤️ Обране порожнє</h2>
+        <p>
+          Додайте обʼєкти з головної сторінки, натиснувши сердечко на картці.
+        </p>
+        <a class="btn" href="index.html">Перейти до обʼєктів</a>
+      </div>
+    `;
     return;
   }
 
-  // ✅ уникнення дубляжу ID
-  const uniqueFavs = [...new Set(favs)];
+  grid.innerHTML = data.map(item => {
+    const id = escapeHtml(item.id);
+    const title = escapeHtml(item.title || "Обʼєкт нерухомості");
+    const area = escapeHtml(item.area || "-");
+    const address = escapeHtml(item.address || "Київ та Київська область");
+    const price = formatPrice(item.price);
+    const image = escapeHtml(getMainImage(item));
+    const status = item.status === "sold" ? "❌ Продано" : "✅ Активне";
 
-  for (let id of uniqueFavs) {
+    return `
+      <article class="fav-card">
+        <button class="remove-fav" type="button" onclick="removeFavorite('${id}')" title="Прибрати з обраного">
+          ✕
+        </button>
 
-    try {
-      const snap = await getDoc(doc(db, "objects", id));
+        <a href="assets/object.html?id=${id}">
+          <div class="fav-card-img">
+            <img src="${image}" alt="${title}" loading="lazy">
+          </div>
 
-      if (!snap.exists()) continue;
-
-      const d = snap.data();
-
-      // ✅ безпечне зображення
-      const img = (d.images && d.images[0])
-        ? `<img src="${d.images[0]}" alt="img">`
-        : `<img src="https://via.placeholder.com/400" alt="img">`;
-
-      // ✅ вставка без крашу
-      grid.innerHTML += `
-        <a href="object.html?id=${id}" class="card">
-          ${img}
-          <h3>${d.title || "Без назви"}</h3>
-          <p>📐 ${d.area || "-"}</p>
-          <strong>${d.price || "-"} $</strong>
+          <div class="fav-card-body">
+            <h3>${title}</h3>
+            <p>📍 ${address}</p>
+            <p>📐 ${area}</p>
+            <p>${status}</p>
+            <div class="fav-price">💰 ${price} $</div>
+          </div>
         </a>
-      `;
+      </article>
+    `;
+  }).join("");
+};
 
-    } catch (err) {
-      console.error("🔥 Помилка об'єкта:", id, err);
-    }
+/* ================================
+   ACTIONS
+================================ */
+
+window.removeFavorite = function(id) {
+  favIds = favIds.filter(item => item !== id);
+  favObjects = favObjects.filter(item => item.id !== id);
+
+  saveFavIds();
+  renderFavorites();
+};
+
+window.clearFavorites = function() {
+  if (!favIds.length) return;
+
+  if (!confirm("Очистити всі обрані обʼєкти?")) {
+    return;
   }
+
+  favIds = [];
+  favObjects = [];
+
+  saveFavIds();
+  renderFavorites();
+};
+
+if (searchInput) {
+  searchInput.addEventListener("input", () => {
+    renderFavorites();
+  });
 }
 
-// ✅ запуск
-loadFavs();
+/* ================================
+   START
+================================ */
+
+loadFavorites();
