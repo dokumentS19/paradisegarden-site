@@ -469,6 +469,7 @@ if (UI.search) UI.search.addEventListener("input", applyFilters);
 if (UI.statusFilter) UI.statusFilter.addEventListener("change", applyFilters);
 if (UI.sortFilter) UI.sortFilter.addEventListener("change", applyFilters);
 
+
 onAuthStateChanged(auth, user => {
   console.log("CRM USER:", user ? user.email : "NO USER");
 
@@ -479,4 +480,3 @@ onAuthStateChanged(auth, user => {
 
   loadLeads();
 });
-
