@@ -412,7 +412,7 @@ function createObjectCard(item) {
             <span>👁 Переглядів: ${views}</span>
           </div>
 
-          <div class="price">💰 ${price} $</div>
+       <div class="price">💰 ${price}</div>
         </div>
       </a>
     </article>
