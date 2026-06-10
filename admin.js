@@ -274,6 +274,35 @@ if (!title) {
       ratingCount: 0,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
+await addDoc(collection(db, "objects"), {
+  title,
+  area: area || "-",
+  price,
+  address: address || "",
+  description: description || "",
+
+  dealType,
+  propertyType,
+  commercialType,
+
+  images: imageUrls,
+  lat,
+  lng,
+
+  ownerId: currentUser.uid,
+  ownerName: currentUser.displayName || currentUser.email || "Адміністратор",
+  ownerEmail: currentUser.email || "",
+
+  status: sold ? "sold" : "active",
+  vip,
+
+  views: 0,
+  rating: 0,
+  ratingCount: 0,
+
+  createdAt: serverTimestamp(),
+  updatedAt: serverTimestamp()
+});
     });
 
     alert("✅ Обʼєкт успішно створено!");
