@@ -369,7 +369,7 @@ function createObjectCard(item) {
   const id = escapeHtml(item.id);
   const title = escapeHtml(item.title || "Обʼєкт нерухомості");
   const area = escapeHtml(item.area || "-");
-  const price = formatPrice(item.price);
+ const price = formatPrice(item.price, item.dealType);
   const image = escapeHtml(getMainImage(item));
   const views = Number(item.views || 0);
   const isVip = Boolean(item.vip);
