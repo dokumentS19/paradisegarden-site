@@ -90,13 +90,16 @@ function normalizePrice(value) {
   const n = Number(value);
   return Number.isFinite(n) ? n : 0;
 }
+function formatPrice(value, dealType = "sale") {
+  const n = Number(value);
 
-function formatPrice(value) {
-  const n = normalizePrice(value);
+  if (!Number.isFinite(n) || n <= 0) {
+    return "-";
+  }
 
-  if (!n) return "-";
+  const currency = dealType === "rent" ? "грн" : "$";
 
-  return new Intl.NumberFormat("uk-UA").format(n);
+  return `${new Intl.NumberFormat("uk-UA").format(n)} ${currency}`;
 }
 
 function getDateValue(item) {
