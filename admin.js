@@ -270,7 +270,7 @@ if (!title) {
       status: sold ? "sold" : "active",
       vip,
       views: 0,
-      rating: 0,
+      rating: 0, 
       ratingCount: 0,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
