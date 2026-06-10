@@ -149,6 +149,10 @@
       line-height: 1.6;
     }
 
+    #commercialTypeBox {
+      display: none;
+    }
+
     @media (max-width: 900px) {
       .admin-layout {
         grid-template-columns: 1fr;
@@ -201,6 +205,40 @@
 
       <label for="title">Назва обʼєкта</label>
       <input id="title" type="text" placeholder="Наприклад: Елітний будинок біля лісу" required>
+
+      <div class="admin-row">
+        <div>
+          <label for="dealType">Тип угоди</label>
+          <select id="dealType" required>
+            <option value="sale">Продаж</option>
+            <option value="rent">Оренда</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="propertyType">Тип нерухомості</label>
+          <select id="propertyType" required onchange="toggleCommercialType()">
+            <option value="apartment">Квартира</option>
+            <option value="house">Будинок</option>
+            <option value="land">Земельна ділянка</option>
+            <option value="garage">Гараж</option>
+            <option value="commercial">Комерція</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="commercialTypeBox">
+        <label for="commercialType">Підтип комерції</label>
+        <select id="commercialType">
+          <option value="">Не вибрано</option>
+          <option value="office">Офіс</option>
+          <option value="hangar">Ангар</option>
+          <option value="warehouse">Склад</option>
+          <option value="shop">Магазин</option>
+          <option value="production">Виробниче приміщення</option>
+          <option value="other">Інше</option>
+        </select>
+      </div>
 
       <div class="admin-row">
         <div>
@@ -277,6 +315,22 @@
     </div>
 
     <div class="admin-help-card">
+      <h3>Категорії обʼєктів</h3>
+      <p>
+        Для кожного оголошення можна вибрати тип угоди:
+        продаж або оренда.
+      </p>
+      <p>
+        Також можна вибрати тип нерухомості:
+        квартира, будинок, земельна ділянка, гараж або комерція.
+      </p>
+      <p>
+        Для комерції доступні підтипи:
+        офіс, ангар, склад, магазин, виробниче приміщення або інше.
+      </p>
+    </div>
+
+    <div class="admin-help-card">
       <h3>Рекомендації</h3>
       <p>
         Для преміального вигляду додавайте горизонтальні фото хорошої якості.
@@ -295,6 +349,26 @@
   </aside>
 
 </main>
+
+<script>
+  function toggleCommercialType() {
+    const propertyType = document.getElementById("propertyType");
+    const commercialTypeBox = document.getElementById("commercialTypeBox");
+    const commercialType = document.getElementById("commercialType");
+
+    if (!propertyType || !commercialTypeBox) return;
+
+    if (propertyType.value === "commercial") {
+      commercialTypeBox.style.display = "block";
+    } else {
+      commercialTypeBox.style.display = "none";
+
+      if (commercialType) {
+        commercialType.value = "";
+      }
+    }
+  }
+</script>
 
 <script type="module" src="admin.js"></script>
 
