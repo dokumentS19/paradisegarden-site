@@ -19,63 +19,58 @@
       display: grid;
       gap: 24px;
     }
+.object-hero-card {
+  background:
+    linear-gradient(180deg, rgba(30, 41, 59, 0.94), rgba(15, 23, 42, 0.94));
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 26px;
+  padding: 18px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+}
 
-    .object-hero-card {
-      background:
-        linear-gradient(180deg, rgba(30, 41, 59, 0.94), rgba(15, 23, 42, 0.94));
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 26px;
-      padding: 26px;
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
-    }
+.object-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
 
-    .object-title-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      align-items: flex-start;
-      margin-bottom: 22px;
-    }
+.object-title-row h1 {
+  margin: 8px 0 0;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.1;
+}
 
-    .object-title-row h1 {
-      margin: 10px 0 0;
-      font-size: clamp(30px, 5vw, 54px);
-      line-height: 1.1;
-    }
+.object-price {
+  color: #22c55e;
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 900;
+  white-space: nowrap;
+}
 
-    .object-price {
-      color: #22c55e;
-      font-size: clamp(26px, 4vw, 42px);
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .gallery {
-      display: grid;
-      gap: 14px;
-    }
-
-  .gallery-main {
+.gallery-main {
   position: relative;
   width: 100%;
-  max-height: 720px;
+  height: auto;
+  max-height: 680px;
   border-radius: 24px;
   overflow: hidden;
   background: #020617;
   border: 1px solid rgba(148, 163, 184, 0.22);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-    }
+}
 
 .gallery-main img {
   width: 100%;
   height: auto;
-  max-height: 720px;
+  max-height: 680px;
   object-fit: contain;
   display: block;
   user-select: none;
-}
+}    .gallery {
+      display: grid;
+      gap: 14px;
+    }
 .gallery-main {
   position: relative;
   height: 525px;
