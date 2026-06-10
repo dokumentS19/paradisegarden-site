@@ -420,7 +420,7 @@ function renderMyAds(data) {
               : ""
           }
 
-          <p>💰 ${price} $</p>
+         <p>💰 ${price}</p>
           <p>📐 ${area}</p>
           <p>📍 ${address}</p>
           <p>${status}</p>
