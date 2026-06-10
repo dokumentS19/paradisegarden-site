@@ -37,7 +37,10 @@ const db = getFirestore(app);
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-
+const allowedEmails = [
+  "olegivanchik1234@gmail.com",
+  "rad202331@gmail.com"
+];
 await setPersistence(auth, browserLocalPersistence);
 
 
