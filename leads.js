@@ -34,6 +34,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+await setPersistence(auth, browserLocalPersistence);
+getRedirectResult(auth).catch(console.error);
+
 let allLeads = [];
 let visibleLeads = [];
 let chartInstance = null;
