@@ -68,6 +68,34 @@ function getMainImage(item) {
   return "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80";
 }
 
+function getDealTypeName(value) {
+  return {
+    sale: "Продаж",
+    rent: "Оренда"
+  }[value] || "Не вказано";
+}
+
+function getPropertyTypeName(value) {
+  return {
+    apartment: "Квартира",
+    house: "Будинок",
+    land: "Земельна ділянка",
+    garage: "Гараж",
+    commercial: "Комерція"
+  }[value] || "Не вказано";
+}
+
+function getCommercialTypeName(value) {
+  return {
+    office: "Офіс",
+    hangar: "Ангар",
+    warehouse: "Склад",
+    shop: "Магазин",
+    production: "Виробниче приміщення",
+    other: "Інше"
+  }[value] || "";
+}
+
 function loadFavIds() {
   try {
     favIds = JSON.parse(localStorage.getItem("favs")) || [];
@@ -129,8 +157,8 @@ async function loadFavorites() {
 
     const existingIds = favObjects.map(item => item.id);
     favIds = favIds.filter(id => existingIds.includes(id));
-    saveFavIds();
 
+    saveFavIds();
     renderFavorites();
   } catch (error) {
     console.error("LOAD FAVORITES ERROR:", error);
@@ -162,11 +190,18 @@ window.renderFavorites = function() {
       const address = String(item.address || "").toLowerCase();
       const description = String(item.description || "").toLowerCase();
 
+      const dealName = getDealTypeName(item.dealType).toLowerCase();
+      const propertyName = getPropertyTypeName(item.propertyType).toLowerCase();
+      const commercialName = getCommercialTypeName(item.commercialType).toLowerCase();
+
       return (
         title.includes(search) ||
         area.includes(search) ||
         address.includes(search) ||
-        description.includes(search)
+        description.includes(search) ||
+        dealName.includes(search) ||
+        propertyName.includes(search) ||
+        commercialName.includes(search)
       );
     });
   }
@@ -193,6 +228,10 @@ window.renderFavorites = function() {
     const image = escapeHtml(getMainImage(item));
     const status = item.status === "sold" ? "❌ Продано" : "✅ Активне";
 
+    const dealName = escapeHtml(getDealTypeName(item.dealType));
+    const propertyName = escapeHtml(getPropertyTypeName(item.propertyType));
+    const commercialName = escapeHtml(getCommercialTypeName(item.commercialType));
+
     return `
       <article class="fav-card">
         <button class="remove-fav" type="button" onclick="removeFavorite('${id}')" title="Прибрати з обраного">
@@ -201,11 +240,18 @@ window.renderFavorites = function() {
 
         <a href="assets/object.html?id=${id}">
           <div class="fav-card-img">
-            <img src="${image}" alt="${title}" loading="lazy">
+            <img src="${image}" alt="${title}">
           </div>
 
           <div class="fav-card-body">
             <h3>${title}</h3>
+            <p>🔑 ${dealName}</p>
+            <p>🏷️ ${propertyName}</p>
+            ${
+              item.propertyType === "commercial" && commercialName
+                ? `<p>📌 ${commercialName}</p>`
+                : ""
+            }
             <p>📍 ${address}</p>
             <p>📐 ${area}</p>
             <p>${status}</p>
