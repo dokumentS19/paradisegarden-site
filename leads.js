@@ -60,6 +60,26 @@ const UI = {
   done: document.getElementById("kpi-done"),
   income: document.getElementById("kpi-income")
 };
+function renderCrmLocked() {
+  const shell = document.querySelector(".crm-shell");
+
+  if (!shell) return;
+
+  shell.innerHTML = `
+    <section class="crm-panel>🔒 Доступ до CRM</h1>    <section class="crm-panel" style="text-align:center;">
+      <p>Увійдіть через Google для доступу до CRM.</p>
+      <button class="btn" onclick="loginCrm()">Увійти через Google</button>
+    </section>
+  `;
+}
+
+window.loginCrm = function() {
+  signInWithRedirect(auth, provider);
+};
+
+window.logoutCrm = function() {
+  signOut(auth);
+};
 
 function escapeHtml(value = "") {
   return String(value)
