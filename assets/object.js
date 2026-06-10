@@ -57,13 +57,7 @@ let currentSlide = 0;
 const COMPANY_PHONE_VISIBLE = "0953777196";
 const COMPANY_PHONE_TEL = "+380953777196";
 
-/*
-  Замініть your_bot_username на username Вашого Telegram-бота.
-  Наприклад:
-  const TELEGRAM_LINK = "https://t.me/RaiskiySadBot";
-*/
 const TELEGRAM_LINK = "https://t.me/paradisegarden_leads_bot";
-
 const VIBER_LINK = "viber://chat?number=%2B380953777196";
 
 /* ================================
@@ -127,6 +121,34 @@ function getCreatedDate(item) {
   }
 
   return "-";
+}
+
+function getDealTypeName(value) {
+  return {
+    sale: "Продаж",
+    rent: "Оренда"
+  }[value] || "Не вказано";
+}
+
+function getPropertyTypeName(value) {
+  return {
+    apartment: "Квартира",
+    house: "Будинок",
+    land: "Земельна ділянка",
+    garage: "Гараж",
+    commercial: "Комерція"
+  }[value] || "Не вказано";
+}
+
+function getCommercialTypeName(value) {
+  return {
+    office: "Офіс",
+    hangar: "Ангар",
+    warehouse: "Склад",
+    shop: "Магазин",
+    production: "Виробниче приміщення",
+    other: "Інше"
+  }[value] || "";
 }
 
 /* ================================
@@ -368,6 +390,10 @@ function renderObject(item) {
   const ownerName = escapeHtml(item.ownerName || "АН «Райський Сад»");
   const ownerId = escapeHtml(item.ownerId || "");
 
+  const dealName = getDealTypeName(item.dealType);
+  const propertyName = getPropertyTypeName(item.propertyType);
+  const commercialName = getCommercialTypeName(item.commercialType);
+
   const thumbsHtml = images.map((src, index) => {
     return `
       <img
@@ -419,6 +445,27 @@ function renderObject(item) {
         <h2>Інформація про обʼєкт</h2>
 
         <div class="feature-grid">
+          <div class="feature">
+            <small>Тип угоди</small>
+            <strong>${dealName}</strong>
+          </div>
+
+          <div class="feature">
+            <small>Тип нерухомості</small>
+            <strong>${propertyName}</strong>
+          </div>
+
+          ${
+            item.propertyType === "commercial" && commercialName
+              ? `
+                <div class="feature">
+                  <small>Підтип комерції</small>
+                  <strong>${commercialName}</strong>
+                </div>
+              `
+              : ""
+          }
+
           <div class="feature">
             <small>Ціна</small>
             <strong>${price} $</strong>
@@ -514,16 +561,24 @@ async function loadSimilarObjects(item) {
     }
 
     similarGrid.innerHTML = objects.map(obj => {
-      const image = getMainImage(obj);
+      const image = escapeHtml(getMainImage(obj));
+      const title = escapeHtml(obj.title || "Без назви");
+      const area = escapeHtml(obj.area || "-");
+      const price = formatPrice(obj.price);
+
+      const dealName = getDealTypeName(obj.dealType);
+      const propertyName = getPropertyTypeName(obj.propertyType);
 
       return `
-       <a class="similar-card" href="object.html?id=${obj.id}">
-          <img src="${escapeHtml(image)}" alt="${escapeHtml(obj.title || "Обʼєкт")}">
+        <a class="similar-card" href="object.html?id=${escapeHtml(obj.id)}">
+          <img src="${image}" alt="${title}">
 
           <div>
-            <strong>${escapeHtml(obj.title || "Без назви")}</strong>
-            <p>📐 ${escapeHtml(obj.area || "-")}</p>
-            <p>💰 ${formatPrice(obj.price)} $</p>
+            <strong>${title}</strong>
+            <p>🔑 ${dealName}</p>
+            <p>🏷️ ${propertyName}</p>
+            <p>📐 ${area}</p>
+            <p>💰 ${price} $</p>
           </div>
         </a>
       `;
