@@ -474,7 +474,7 @@ function renderObject(item) {
 
           <div class="feature">
             <small>Ціна</small>
-            <strong>${price} $</strong>
+       <strong>${price}</strong>
           </div>
 
           <div class="feature">
