@@ -394,7 +394,7 @@ function renderMyAds(data) {
     const title = escapeHtml(item.title || "Без назви");
     const area = escapeHtml(item.area || "-");
     const address = escapeHtml(item.address || "Київ та Київська область");
-    const price = formatPrice(item.price);
+    const price = formatPrice(item.price, item.dealType);
     const image = escapeHtml(getMainImage(item));
     const status = item.status === "sold" ? "❌ Продано" : "✅ Активне";
     const views = Number(item.views || 0);
