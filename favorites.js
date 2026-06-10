@@ -50,14 +50,16 @@ function escapeHtml(value = "") {
     .replaceAll("'", "&#039;");
 }
 
-function formatPrice(value) {
+function formatPrice(value, dealType = "sale") {
   const n = Number(value);
 
   if (!Number.isFinite(n) || n <= 0) {
     return "-";
   }
 
-  return new Intl.NumberFormat("uk-UA").format(n);
+  const currency = dealType === "rent" ? "грн" : "$";
+
+  return `${new Intl.NumberFormat("uk-UA").format(n)} ${currency}`;
 }
 
 function getMainImage(item) {
