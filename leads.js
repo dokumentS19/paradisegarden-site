@@ -75,7 +75,7 @@ function renderCrmLocked() {
 }
 
 window.loginCrm = function() {
-  signInWithRedirect(auth, provider);
+  signInWithPopup(auth, provider).catch(console.error);
 };
 
 window.logoutCrm = function() {
