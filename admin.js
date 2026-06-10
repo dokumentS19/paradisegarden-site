@@ -205,22 +205,29 @@ window.addObject = async function(event) {
     return;
   }
 
-  const title = document.getElementById("title")?.value.trim();
-  const area = document.getElementById("area")?.value.trim();
-  const price = Number(document.getElementById("price")?.value);
-  const address = document.getElementById("address")?.value.trim();
-  const description = document.getElementById("description")?.value.trim();
-  const latRaw = document.getElementById("lat")?.value;
-  const lngRaw = document.getElementById("lng")?.value;
-  const vip = document.getElementById("vip")?.checked || false;
-  const sold = document.getElementById("sold")?.checked || false;
+const title = document.getElementById("title")?.value.trim();
+const area = document.getElementById("area")?.value.trim();
+const price = Number(document.getElementById("price")?.value);
+const address = document.getElementById("address")?.value.trim();
+const description = document.getElementById("description")?.value.trim();
+const latRaw = document.getElementById("lat")?.value;
+const lngRaw = document.getElementById("lng")?.value;
+const vip = document.getElementById("vip")?.checked || false;
+const sold = document.getElementById("sold")?.checked || false;
 
-  const lat = latRaw ? Number(latRaw) : 50.5215;
-  const lng = lngRaw ? Number(lngRaw) : 30.2506;
+const dealType = document.getElementById("dealType")?.value || "sale";
+const propertyType = document.getElementById("propertyType")?.value || "apartment";
+const commercialType = propertyType === "commercial"
+  ? document.getElementById("commercialType")?.value || ""
+  : "";
 
-  if (!title) {
-    alert("Вкажіть назву обʼєкта.");
-    return;
+const lat = latRaw ? Number(latRaw) : 50.5215;
+const lng = lngRaw ? Number(lngRaw) : 30.2506;
+
+if (!title) {
+  alert("Вкажіть назву обʼєкта.");
+  return;
+}
   }
 
   if (!price || price <= 0) {
