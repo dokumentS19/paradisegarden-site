@@ -356,8 +356,6 @@ try {
 } catch (viewsError) {
   console.warn("Views update blocked:", viewsError);
 }
-    });
-
     renderObject(currentObject);
     updateGallery();
 
