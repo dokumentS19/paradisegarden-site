@@ -427,7 +427,7 @@ function renderObject(item) {
           </div>
         </div>
 
-        <div class="object-price">💰 ${price} $</div>
+       <div class="object-price">💰 ${price}</div>
       </div>
 
       <div class="gallery">
