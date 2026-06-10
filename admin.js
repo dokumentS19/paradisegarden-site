@@ -131,7 +131,7 @@ function validateFiles(files) {
 
   if (files.length > 10) {
     alert("Можна додати максимум 10 фото.");
-    return false; 
+    return false;
   }
 
   for (const file of files) {
@@ -174,6 +174,28 @@ function renderPreview(files) {
 }
 
 /* ================================
+   COMMERCIAL TYPE
+================================ */
+
+window.toggleCommercialType = function() {
+  const propertyType = document.getElementById("propertyType");
+  const commercialTypeBox = document.getElementById("commercialTypeBox");
+  const commercialType = document.getElementById("commercialType");
+
+  if (!propertyType || !commercialTypeBox) return;
+
+  if (propertyType.value === "commercial") {
+    commercialTypeBox.style.display = "block";
+  } else {
+    commercialTypeBox.style.display = "none";
+
+    if (commercialType) {
+      commercialType.value = "";
+    }
+  }
+};
+
+/* ================================
    FILE INPUT
 ================================ */
 
@@ -184,7 +206,11 @@ if (fileInput) {
     if (!validateFiles(files)) {
       fileInput.value = "";
       selectedFiles = [];
-      if (preview) preview.innerHTML = "";
+
+      if (preview) {
+        preview.innerHTML = "";
+      }
+
       return;
     }
 
@@ -205,33 +231,49 @@ window.addObject = async function(event) {
     return;
   }
 
-const title = document.getElementById("title")?.value.trim();
-const area = document.getElementById("area")?.value.trim();
-const price = Number(document.getElementById("price")?.value);
-const address = document.getElementById("address")?.value.trim();
-const description = document.getElementById("description")?.value.trim();
-const latRaw = document.getElementById("lat")?.value;
-const lngRaw = document.getElementById("lng")?.value;
-const vip = document.getElementById("vip")?.checked || false;
-const sold = document.getElementById("sold")?.checked || false;
+  const title = document.getElementById("title")?.value.trim();
+  const area = document.getElementById("area")?.value.trim();
+  const price = Number(document.getElementById("price")?.value);
+  const address = document.getElementById("address")?.value.trim();
+  const description = document.getElementById("description")?.value.trim();
 
-const dealType = document.getElementById("dealType")?.value || "sale";
-const propertyType = document.getElementById("propertyType")?.value || "apartment";
-const commercialType = propertyType === "commercial"
-  ? document.getElementById("commercialType")?.value || ""
-  : "";
+  const dealType = document.getElementById("dealType")?.value || "sale";
+  const propertyType = document.getElementById("propertyType")?.value || "apartment";
+  const commercialType = propertyType === "commercial"
+    ? document.getElementById("commercialType")?.value || ""
+    : "";
 
-const lat = latRaw ? Number(latRaw) : 50.5215;
-const lng = lngRaw ? Number(lngRaw) : 30.2506;
+  const latRaw = document.getElementById("lat")?.value;
+  const lngRaw = document.getElementById("lng")?.value;
 
-if (!title) {
-  alert("Вкажіть назву обʼєкта.");
-  return;
-}
+  const vip = document.getElementById("vip")?.checked || false;
+  const sold = document.getElementById("sold")?.checked || false;
+
+  const lat = latRaw ? Number(latRaw) : 50.5215;
+  const lng = lngRaw ? Number(lngRaw) : 30.2506;
+
+  if (!title) {
+    alert("Вкажіть назву обʼєкта.");
+    return;
   }
 
   if (!price || price <= 0) {
     alert("Вкажіть коректну ціну.");
+    return;
+  }
+
+  if (!dealType) {
+    alert("Виберіть тип угоди.");
+    return;
+  }
+
+  if (!propertyType) {
+    alert("Виберіть тип нерухомості.");
+    return;
+  }
+
+  if (propertyType === "commercial" && !commercialType) {
+    alert("Виберіть підтип комерції.");
     return;
   }
 
@@ -250,8 +292,8 @@ if (!title) {
       const storageRef = ref(storage, `objects/${fileName}`);
 
       await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(storageRef);
 
+      const url = await getDownloadURL(storageRef);
       imageUrls.push(url);
     }
 
@@ -261,48 +303,29 @@ if (!title) {
       price,
       address: address || "",
       description: description || "",
+
+      dealType,
+      propertyType,
+      commercialType,
+
       images: imageUrls,
+
       lat,
       lng,
+
       ownerId: currentUser.uid,
       ownerName: currentUser.displayName || currentUser.email || "Адміністратор",
       ownerEmail: currentUser.email || "",
+
       status: sold ? "sold" : "active",
       vip,
+
       views: 0,
-      rating: 0, 
+      rating: 0,
       ratingCount: 0,
+
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
-await addDoc(collection(db, "objects"), {
-  title,
-  area: area || "-",
-  price,
-  address: address || "",
-  description: description || "",
-
-  dealType,
-  propertyType,
-  commercialType,
-
-  images: imageUrls,
-  lat,
-  lng,
-
-  ownerId: currentUser.uid,
-  ownerName: currentUser.displayName || currentUser.email || "Адміністратор",
-  ownerEmail: currentUser.email || "",
-
-  status: sold ? "sold" : "active",
-  vip,
-
-  views: 0,
-  rating: 0,
-  ratingCount: 0,
-
-  createdAt: serverTimestamp(),
-  updatedAt: serverTimestamp()
-});
     });
 
     alert("✅ Обʼєкт успішно створено!");
@@ -333,8 +356,32 @@ window.clearForm = function() {
 
   ids.forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.value = "";
+
+    if (el) {
+      el.value = "";
+    }
   });
+
+  const dealType = document.getElementById("dealType");
+  const propertyType = document.getElementById("propertyType");
+  const commercialType = document.getElementById("commercialType");
+  const commercialTypeBox = document.getElementById("commercialTypeBox");
+
+  if (dealType) {
+    dealType.value = "sale";
+  }
+
+  if (propertyType) {
+    propertyType.value = "apartment";
+  }
+
+  if (commercialType) {
+    commercialType.value = "";
+  }
+
+  if (commercialTypeBox) {
+    commercialTypeBox.style.display = "none";
+  }
 
   const vip = document.getElementById("vip");
   const sold = document.getElementById("sold");
@@ -342,9 +389,13 @@ window.clearForm = function() {
   if (vip) vip.checked = false;
   if (sold) sold.checked = false;
 
-  if (fileInput) fileInput.value = "";
+  if (fileInput) {
+    fileInput.value = "";
+  }
 
   selectedFiles = [];
 
-  if (preview) preview.innerHTML = "";
+  if (preview) {
+    preview.innerHTML = "";
+  }
 };
