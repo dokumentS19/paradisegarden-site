@@ -448,4 +448,11 @@ if (UI.search) UI.search.addEventListener("input", applyFilters);
 if (UI.statusFilter) UI.statusFilter.addEventListener("change", applyFilters);
 if (UI.sortFilter) UI.sortFilter.addEventListener("change", applyFilters);
 
-loadLeads();
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    renderCrmLocked();
+    return;
+  }
+
+  loadLeads();
+});
