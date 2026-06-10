@@ -345,12 +345,17 @@ async function loadObject() {
       ...snap.data()
     };
 
-    images = getImages(currentObject);
-    currentSlide = 0;
+  images = getImages(currentObject);
+currentSlide = 0;
 
-    await updateDoc(objectRef, {
-      views: increment(1),
-      updatedAt: serverTimestamp()
+try {
+  await updateDoc(objectRef, {
+    views: increment(1),
+    updatedAt: serverTimestamp()
+  });
+} catch (viewsError) {
+  console.warn("Views update blocked:", viewsError);
+}
     });
 
     renderObject(currentObject);
