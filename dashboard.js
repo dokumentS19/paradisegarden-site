@@ -32,8 +32,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site",
-  storageBucket: "paradisegarden-site.firebasestorage.app",
-  messagingSenderId: "452352075250",
+  storageBucket: "paradisegarden352075250",  storageBucket: "paradisegarden-site.firebasestorage.app",
   appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
   measurementId: "G-6XHWE6Y0JE"
 };
@@ -124,6 +123,34 @@ function getMainImage(item) {
   }
 
   return "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80";
+}
+
+function getDealTypeName(value) {
+  return {
+    sale: "Продаж",
+    rent: "Оренда"
+  }[value] || "Не вказано";
+}
+
+function getPropertyTypeName(value) {
+  return {
+    apartment: "Квартира",
+    house: "Будинок",
+    land: "Земельна ділянка",
+    garage: "Гараж",
+    commercial: "Комерція"
+  }[value] || "Не вказано";
+}
+
+function getCommercialTypeName(value) {
+  return {
+    office: "Офіс",
+    hangar: "Ангар",
+    warehouse: "Склад",
+    shop: "Магазин",
+    production: "Виробниче приміщення",
+    other: "Інше"
+  }[value] || "";
 }
 
 function setStats(total = 0, active = 0, sold = 0) {
@@ -225,19 +252,29 @@ window.addObject = async function(event) {
       area: area || "-",
       address: address || "",
       description: description || "",
+
+      dealType: "sale",
+      propertyType: "house",
+      commercialType: "",
+
       images: [
         "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
       ],
+
       lat: 50.5215,
       lng: 30.2506,
+
       ownerId: currentUser.uid,
       ownerName: currentUser.displayName || currentUser.email || "Користувач",
       ownerEmail: currentUser.email || "",
+
       status: "active",
       vip: false,
+
       views: 0,
       rating: 0,
       ratingCount: 0,
+
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
@@ -360,14 +397,27 @@ function renderMyAds(data) {
     const status = item.status === "sold" ? "❌ Продано" : "✅ Активне";
     const views = Number(item.views || 0);
 
+    const dealName = escapeHtml(getDealTypeName(item.dealType));
+    const propertyName = escapeHtml(getPropertyTypeName(item.propertyType));
+    const commercialName = escapeHtml(getCommercialTypeName(item.commercialType));
+
     return `
       <article class="my-ad">
         <div class="my-ad-img">
-          <img src="${image}" alt="${title}" loading="lazy">
+          <img src="${image}" alt="${title}">
         </div>
 
         <div class="my-ad-body">
           <h3>${title}</h3>
+
+          <p>🔑 ${dealName}</p>
+          <p>🏷️ ${propertyName}</p>
+          ${
+            item.propertyType === "commercial" && commercialName
+              ? `<p>📌 ${commercialName}</p>`
+              : ""
+          }
+
           <p>💰 ${price} $</p>
           <p>📐 ${area}</p>
           <p>📍 ${address}</p>
