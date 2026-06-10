@@ -345,7 +345,7 @@ async function loadObject() {
       ...snap.data()
     };
 
-  images = getImages(currentObject);
+ images = getImages(currentObject);
 currentSlide = 0;
 
 try {
@@ -356,12 +356,13 @@ try {
 } catch (viewsError) {
   console.warn("Views update blocked:", viewsError);
 }
-    renderObject(currentObject);
-    updateGallery();
 
-    setTimeout(() => {
-      initMap(currentObject.lat, currentObject.lng);
-    }, 300);
+renderObject(currentObject);
+updateGallery();
+
+setTimeout(() => {
+  initMap(currentObject.lat, currentObject.lng);
+}, 300);
 
     loadSimilarObjects(currentObject);
   } catch (error) {
