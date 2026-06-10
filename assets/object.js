@@ -386,7 +386,7 @@ setTimeout(() => {
 
 function renderObject(item) {
   const title = escapeHtml(item.title || "Обʼєкт нерухомості");
- const price = formatPrice(item.price);
+const price = formatPrice(item.price, item.dealType);
   const area = escapeHtml(item.area || "-");
   const address = escapeHtml(item.address || "Київ та Київська область");
   const description = escapeHtml(item.description || "Детальний опис обʼєкта буде додано найближчим часом.");
