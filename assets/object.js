@@ -584,7 +584,7 @@ async function loadSimilarObjects(item) {
             <p>🔑 ${dealName}</p>
             <p>🏷️ ${propertyName}</p>
             <p>📐 ${area}</p>
-            <p>💰 ${price} $</p>
+           <p>💰 ${price}</p>
           </div>
         </a>
       `;
