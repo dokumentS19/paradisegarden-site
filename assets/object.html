@@ -128,12 +128,15 @@
     .gallery-main {
       position: relative;
       width: 100%;
-      height: min(72vh, 680px);
-      min-height: 430px;
+      height: min(62vh, 560px);
+      min-height: 360px;
       border-radius: 22px;
       overflow: hidden;
       background: #020617;
       border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .gallery-main::after {
@@ -143,17 +146,18 @@
       z-index: 2;
       pointer-events: none;
       background:
-        linear-gradient(180deg, rgba(2, 6, 23, 0.42), transparent 34%),
-        linear-gradient(0deg, rgba(2, 6, 23, 0.20), transparent 30%);
+        linear-gradient(180deg, rgba(2, 6, 23, 0.38), transparent 30%),
+        linear-gradient(0deg, rgba(2, 6, 23, 0.18), transparent 28%);
     }
 
     .gallery-main img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       object-position: center center;
       display: block;
       user-select: none;
+      background: #020617;
     }
 
     .gallery-btn {
@@ -385,8 +389,8 @@
       }
 
       .gallery-main {
-        height: 64vh;
-        min-height: 390px;
+        height: 58vh;
+        min-height: 340px;
       }
     }
 
@@ -427,8 +431,8 @@
       }
 
       .gallery-main {
-        height: 62vh;
-        min-height: 330px;
+        height: 54vh;
+        min-height: 300px;
         border-radius: 16px;
       }
 
