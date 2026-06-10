@@ -469,6 +469,8 @@ if (UI.statusFilter) UI.statusFilter.addEventListener("change", applyFilters);
 if (UI.sortFilter) UI.sortFilter.addEventListener("change", applyFilters);
 
 onAuthStateChanged(auth, user => {
+  console.log("CRM USER:", user ? user.email : "NO USER");
+
   if (!user) {
     renderCrmLocked();
     return;
@@ -476,3 +478,4 @@ onAuthStateChanged(auth, user => {
 
   loadLeads();
 });
+
