@@ -62,7 +62,7 @@ const COMPANY_PHONE_TEL = "+380953777196";
   Наприклад:
   const TELEGRAM_LINK = "https://t.me/RaiskiySadBot";
 */
-const TELEGRAM_LINK = "https://t.me/your_bot_username";
+const TELEGRAM_LINK = "https://t.me/paradisegarden_leads_bot";
 
 const VIBER_LINK = "viber://chat?number=%2B380953777196";
 
