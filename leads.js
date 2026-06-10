@@ -67,7 +67,8 @@ function renderCrmLocked() {
   if (!shell) return;
 
   shell.innerHTML = `
-    <section class="crm-panel>🔒 Доступ до CRM</h1>    <section class="crm-panel" style="text-align:center;">
+    <section class="crm-panel" style="text-align:center;">
+      <h1>🔒 Доступ до CRM</h1>
       <p>Увійдіть через Google для доступу до CRM.</p>
       <button class="btn" onclick="loginCrm()">Увійти через Google</button>
     </section>
