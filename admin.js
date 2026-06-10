@@ -131,7 +131,7 @@ function validateFiles(files) {
 
   if (files.length > 10) {
     alert("Можна додати максимум 10 фото.");
-    return false;
+    return false; 
   }
 
   for (const file of files) {
