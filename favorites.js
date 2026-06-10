@@ -257,7 +257,7 @@ window.renderFavorites = function() {
             <p>📍 ${address}</p>
             <p>📐 ${area}</p>
             <p>${status}</p>
-            <div class="fav-price">💰 ${price} $</div>
+   <div class="fav-price">💰 ${price}</div>
           </div>
         </a>
       </article>
