@@ -39,7 +39,7 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 await setPersistence(auth, browserLocalPersistence);
-getRedirectResult(auth).catch(console.error);
+
 
 let allLeads = [];
 let visibleLeads = [];
