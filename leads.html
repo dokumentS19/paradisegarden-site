@@ -4,318 +4,332 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>АН «Райський Сад» — нерухомість Києва та Київської області</title>
-
-  <meta name="description" content="Агенція нерухомості «Райський Сад» — купівля, продаж, оренда та інвестиції в нерухомість Києва та Київської області. Досвід з 2005 року.">
-  <meta name="keywords" content="нерухомість Київ, нерухомість Київська область, купити будинок, купити квартиру, оренда квартири, земельні ділянки, комерційна нерухомість, агенція нерухомості Райський Сад">
+  <title>CRM — заявки | АН «Райський Сад»</title>
 
   <link rel="stylesheet" href="styles.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    .crm-shell {
+      max-width: 1280px;
+      margin: 34px auto;
+      padding: 0 16px;
+      display: grid;
+      gap: 24px;
+    }
+
+    .crm-hero {
+      background:
+        linear-gradient(135deg, rgba(34, 197, 94, 0.18), rgba(250, 204, 21, 0.1)),
+        rgba(15, 23, 42, 0.94);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 26px;
+      padding: 34px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+    }
+
+    .crm-hero h1 {
+      margin: 14px 0 10px;
+      font-size: clamp(32px, 5vw, 54px);
+    }
+
+    .crm-hero p {
+      color: #cbd5e1;
+      line-height: 1.7;
+      max-width: 850px;
+    }
+
+    .crm-kpi {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .crm-kpi-card {
+      background: rgba(30, 41, 59, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.25);
+    }
+
+    .crm-kpi-card span {
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .crm-kpi-card strong {
+      display: block;
+      color: #22c55e;
+      font-size: 34px;
+      margin-top: 8px;
+    }
+
+    .crm-panel {
+      background:
+        linear-gradient(180deg, rgba(30, 41, 59, 0.94), rgba(15, 23, 42, 0.94));
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.3);
+    }
+
+    .crm-panel h2 {
+      margin-top: 0;
+    }
+
+    .crm-tools {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr 0.8fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .crm-board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .crm-column {
+      min-height: 260px;
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 22px;
+      padding: 16px;
+    }
+
+    .crm-column h3 {
+      margin-top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .lead-mini {
+      background: rgba(30, 41, 59, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 10px;
+      cursor: grab;
+      transition: 0.25s ease;
+    }
+
+    .lead-mini:hover {
+      transform: translateY(-3px);
+      border-color: rgba(34, 197, 94, 0.45);
+    }
+
+    .leads-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .lead-card {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 22px;
+      padding: 18px;
+      transition: 0.25s ease;
+    }
+
+    .lead-card:hover {
+      border-color: rgba(34, 197, 94, 0.45);
+      transform: translateY(-3px);
+    }
+
+    .lead-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .lead-head h3 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .lead-meta {
+      color: #cbd5e1;
+      display: grid;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .lead-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .lead-history {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(2, 6, 23, 0.42);
+      color: #cbd5e1;
+      font-size: 14px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .priority-badge,
+    .status-badge-crm {
+      display: inline-flex;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.14);
+      border: 1px solid rgba(34, 197, 94, 0.28);
+      color: #bbf7d0;
+      font-size: 13px;
+    }
+
+    .danger-btn {
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+      color: white;
+    }
+
+    .chart-wrap {
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 1000px) {
+      .crm-kpi {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .crm-board {
+        grid-template-columns: 1fr;
+      }
+
+      .crm-tools {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .crm-kpi,
+      .crm-tools {
+        grid-template-columns: 1fr;
+      }
+
+      .crm-hero,
+      .crm-panel {
+        padding: 22px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-
-<div id="loader" class="loader">
-  <div class="loader-ring"></div>
-  <p>Завантаження обʼєктів...</p>
-</div>
 
 <header class="topbar">
   <a href="index.html" class="brand">
     <span class="brand-icon">🌿</span>
     <span>
       <strong>Райський Сад</strong>
-      <small>Агенція нерухомості</small>
+      <small>CRM заявки</small>
     </span>
   </a>
 
-  <button class="menu-btn" id="menuBtn" aria-label="Відкрити меню">☰</button>
-
-  <nav class="nav" id="mainNav">
-    <a href="#about">Про агентство</a>
-    <a href="#objects">Обʼєкти</a>
-    <a href="#director">Директор</a>
-    <a href="#contacts">Контакти</a>
-    <a href="favorites.html">❤️ Обране</a>
-    <a href="dashboard.html">👤 Кабінет</a>
+  <nav class="nav">
+    <a href="index.html">🏠 Головна</a>
     <a href="admin.html">⚙️ Адмін</a>
-    <a href="leads.html">📋 CRM</a>
+    <a href="dashboard.html">👤 Кабінет</a>
+    <a href="dialogs.html">💬 Діалоги</a>
   </nav>
 </header>
 
-<main>
+<main class="crm-shell">
 
-  <section class="hero">
-    <div class="hero-shade"></div>
+  <section class="crm-hero">
+    <span class="section-label">CRM</span>
+    <h1>📋 Заявки клієнтів</h1>
+    <p>
+      Система обробки звернень клієнтів АН «Райський Сад».
+      Тут можна бачити нові заявки, переводити їх у роботу,
+      закривати, призначати менеджера, додавати коментарі,
+      вести історію та контролювати дохід.
+    </p>
+  </section>
 
-    <div class="hero-content">
-      <div class="hero-badge">Преміальна нерухомість Києва та області</div>
+  <section class="crm-kpi">
+    <div class="crm-kpi-card">
+      <span>Усього заявок</span>
+      <strong id="kpi-total">0</strong>
+    </div>
 
-      <h1 class="hero-title">
-        Ваш надійний провідник<br>
-        у світі нерухомості
-      </h1>
+    <div class="crm-kpi-card">
+      <span>Нові</span>
+      <strong id="kpi-new">0</strong>
+    </div>
 
-      <p class="hero-sub">
-        З нами складні угоди стають простими, зрозумілими та безпечними.
-        Досвід з 2005 року у Києві та Київській області.
-      </p>
+    <div class="crm-kpi-card">
+      <span>Закриті</span>
+      <strong id="kpi-done">0</strong>
+    </div>
 
-      <div class="hero-actions">
-        <a href="#objects" class="cta-big">Переглянути обʼєкти</a>
-        <a href="#contacts" class="cta-outline">Отримати консультацію</a>
-      </div>
-
-      <div class="hero-stats">
-        <div>
-          <strong>2005</strong>
-          <span>рік заснування</span>
-        </div>
-
-        <div>
-          <strong>100+</strong>
-          <span>успішних угод</span>
-        </div>
-
-        <div>
-          <strong>24/7</strong>
-          <span>підтримка клієнтів</span>
-        </div>
-      </div>
+    <div class="crm-kpi-card">
+      <span>Дохід</span>
+      <strong id="kpi-income">0$</strong>
     </div>
   </section>
 
-  <section class="premium-banner reveal">
-    <div>
-      <span class="section-label">АН «Райський Сад»</span>
-      <h2>Нерухомість, де рішення приймаються впевнено</h2>
-      <p>
-        Ми працюємо для тих, хто цінує безпеку, прозорість, досвід
-        і людяний підхід у кожній угоді.
-      </p>
-    </div>
+  <section class="crm-panel">
+    <h2>🔍 Пошук і фільтри</h2>
 
-    <a href="#request" class="banner-btn">Залишити заявку</a>
-  </section>
+    <div class="crm-tools">
+      <input id="searchLead" type="text" placeholder="Пошук за імʼям, телефоном або коментарем">
 
-  <section id="about" class="about section reveal">
-    <div class="section-head">
-      <span class="section-label">Про агентство</span>
-      <h2>Агенція нерухомості «Райський Сад»</h2>
-    </div>
-
-    <div class="about-grid">
-      <div class="about-text">
-        <p>
-          Агенція нерухомості «Райський Сад» заснована у 2005 році та
-          впевнено працює на ринку нерухомості Києва та Київської області.
-          Ми допомагаємо клієнтам купувати, продавати та вигідно
-          інвестувати в нерухомість.
-        </p>
-
-        <p>
-          За роки роботи ми провели сотні успішних угод і зарекомендували
-          себе як надійний партнер. Ми супроводжуємо клієнтів на кожному
-          етапі — від підбору об'єкта до повного оформлення документів.
-        </p>
-
-        <p>
-          Наша команда працює чесно, прозоро та орієнтована на результат.
-          Ми завжди ставимо інтереси клієнта на перше місце.
-        </p>
-
-        <p>
-          Ми віримо, що чесність, досвід і людяний підхід — основа
-          довгострокових відносин з клієнтами.
-        </p>
-      </div>
-
-      <div class="about-card">
-        <h3>Наші переваги</h3>
-
-        <ul class="check-list">
-          <li>Повний супровід угод під ключ</li>
-          <li>Юридична перевірка та безпека</li>
-          <li>Актуальна аналітика ринку</li>
-          <li>Індивідуальний підбір нерухомості</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="values section reveal">
-    <div class="value-card">
-      <div class="value-icon">🛡️</div>
-      <h3>Безпека</h3>
-      <p>Перевіряємо документи, ризики та юридичну чистоту обʼєктів.</p>
-    </div>
-
-    <div class="value-card">
-      <div class="value-icon">🤝</div>
-      <h3>Довіра</h3>
-      <p>Працюємо відкрито, чесно та з повагою до кожного клієнта.</p>
-    </div>
-
-    <div class="value-card">
-      <div class="value-icon">📈</div>
-      <h3>Результат</h3>
-      <p>Допомагаємо купувати, продавати, орендувати та інвестувати вигідно.</p>
-    </div>
-
-    <div class="value-card">
-      <div class="value-icon">🏡</div>
-      <h3>Підбір</h3>
-      <p>Підбираємо нерухомість під конкретну мету, бюджет і стиль життя.</p>
-    </div>
-  </section>
-
-  <section id="objects" class="objects section reveal">
-    <div class="section-head">
-      <span class="section-label">База обʼєктів</span>
-      <h2>Актуальні пропозиції нерухомості</h2>
-      <p>
-        Продаж та оренда квартир, будинків, земельних ділянок, гаражів
-        і комерційної нерухомості: офіси, ангари, склади, магазини,
-        виробничі приміщення та інші обʼєкти.
-      </p>
-    </div>
-
-    <div class="filters">
-      <input id="search" type="text" placeholder="Пошук за назвою, описом або адресою">
-
-      <input id="minPrice" type="number" placeholder="Ціна від, $">
-
-      <input id="maxPrice" type="number" placeholder="Ціна до, $">
-
-      <select id="dealTypeFilter">
-        <option value="all">Усі угоди</option>
-        <option value="sale">Продаж</option>
-        <option value="rent">Оренда</option>
+      <select id="statusFilter">
+        <option value="all">Усі статуси</option>
+        <option value="new">Нові</option>
+        <option value="in_progress">В роботі</option>
+        <option value="done">Закриті</option>
       </select>
 
-      <select id="propertyTypeFilter">
-        <option value="all">Уся нерухомість</option>
-        <option value="apartment">Квартири</option>
-        <option value="house">Будинки</option>
-        <option value="land">Земельні ділянки</option>
-        <option value="garage">Гаражі</option>
-        <option value="commercial">Комерція</option>
-      </select>
-
-      <select id="commercialTypeFilter">
-        <option value="all">Уся комерція</option>
-        <option value="office">Офіси</option>
-        <option value="hangar">Ангари</option>
-        <option value="warehouse">Склади</option>
-        <option value="shop">Магазини</option>
-        <option value="production">Виробничі приміщення</option>
-        <option value="other">Інше</option>
-      </select>
-
-      <select id="sortSelect">
-        <option value="vip">Спочатку VIP</option>
-        <option value="priceAsc">Ціна: від меншої</option>
-        <option value="priceDesc">Ціна: від більшої</option>
+      <select id="sortFilter">
+        <option value="priority">За пріоритетом</option>
         <option value="newest">Нові спочатку</option>
+        <option value="income">За доходом</option>
       </select>
 
-      <button class="btn" id="resetFilters" type="button">Скинути</button>
-    </div>
-
-    <div id="objectsGrid" class="objects-grid"></div>
-  </section>
-
-  <section id="director" class="director section reveal">
-    <div class="director-card">
-      <div class="director-photo">
-        <div class="photo-placeholder">
-          <span>ОІ</span>
-        </div>
-      </div>
-
-      <div class="director-info">
-        <span class="section-label">Директор</span>
-
-        <h2>Іванчик Олег Степанович</h2>
-
-        <p class="director-sub">
-          Засновник і керівник агентства. Орієнтований на результат і довіру
-          в кожній угоді.
-        </p>
-
-        <h3>Про директора</h3>
-
-        <p>
-          Іванчик Олег Степанович — засновник і директор АН «Райський Сад»
-          з 2002 року. Сфокусований на прозорості угод, юридичній безпеці
-          та індивідуальному підході до кожного клієнта.
-        </p>
-
-        <ul class="check-list">
-          <li>Досвід керування агентством і супроводу угод понад 24 років</li>
-          <li>Експертиза у купівлі/продажу, оренді та документальному супроводі</li>
-          <li>Репутація порядності та відповідальності у партнерських відносинах</li>
-        </ul>
-      </div>
+      <button class="btn" type="button" onclick="resetLeadFilters()">Скинути</button>
     </div>
   </section>
 
-  <section id="request" class="request section reveal">
-    <div class="request-content">
-      <span class="section-label">Заявка</span>
-      <h2>Отримайте консультацію щодо нерухомості</h2>
-      <p>
-        Залиште імʼя та номер телефону — ми звʼяжемося з Вами,
-        уточнимо задачу та запропонуємо найкраще рішення.
-      </p>
+  <section class="crm-panel">
+    <h2>📊 Аналітика</h2>
+
+    <div id="stats"></div>
+
+    <div class="chart-wrap">
+      <canvas id="leadsChart" height="260"></canvas>
     </div>
-
-    <form class="request-form" onsubmit="sendForm(event)">
-      <input id="name" type="text" placeholder="Ваше імʼя" required>
-      <input id="phone" type="tel" placeholder="Ваш телефон" required>
-      <textarea id="message" placeholder="Що Вас цікавить? Купівля, продаж, оренда, квартира, будинок, ділянка, комерція..."></textarea>
-
-      <button type="submit" class="cta-big">Відправити заявку</button>
-    </form>
   </section>
 
-  <section id="contacts" class="contacts section reveal">
-    <div class="section-head">
-      <span class="section-label">Контакти</span>
-      <h2>Звʼязок з компанією</h2>
-      <p>
-        Оберіть зручний спосіб звʼязку. Ми відкриті до консультації,
-        підбору обʼєктів та супроводу угод.
-      </p>
-    </div>
+  <section class="crm-panel">
+    <h2>📊 CRM Pipeline</h2>
 
-    <div class="contact-grid">
-      <button onclick="callCompany()" class="contact-card" type="button">
-        <span>📞</span>
-        <strong>Телефон</strong>
-        <small>0953777196</small>
-      </button>
+    <div id="crmBoard" class="crm-board"></div>
+  </section>
 
-      <button onclick="openTelegram()" class="contact-card" type="button">
-        <span>✈️</span>
-        <strong>Telegram</strong>
-        <small>Написати в Telegram</small>
-      </button>
+  <section class="crm-panel">
+    <h2>📋 Список заявок</h2>
 
-      <button onclick="openViber()" class="contact-card" type="button">
-        <span>💜</span>
-        <strong>Viber</strong>
-        <small>Написати у Viber</small>
-      </button>
-    </div>
+    <div id="leads" class="leads-grid"></div>
   </section>
 
 </main>
 
-<a href="#request" class="sticky-cta">📩 Заявка</a>
-
 <footer class="footer">
-  <p>© 2005–2026 АН «Райський Сад». Нерухомість Києва та Київської області.</p>
-  <p>Директор: Іванчик Олег Степанович</p>
+  <p>© 2005–2026 АН «Райський Сад». CRM система заявок.</p>
 </footer>
 
 <script type="module" src="leads.js"></script>
