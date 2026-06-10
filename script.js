@@ -49,13 +49,7 @@ try {
 const COMPANY_PHONE_VISIBLE = "0953777196";
 const COMPANY_PHONE_TEL = "+380953777196";
 
-/*
-  Тут замініть your_bot_username на username Вашого Telegram-бота або каналу.
-  Наприклад:
-  const TELEGRAM_LINK = "https://t.me/RaiskiySadBot";
-*/
 const TELEGRAM_LINK = "https://t.me/paradisegarden_leads_bot";
-
 const VIBER_LINK = "viber://chat?number=%2B380953777196";
 
 /* ================================
@@ -64,11 +58,18 @@ const VIBER_LINK = "viber://chat?number=%2B380953777196";
 
 const loader = document.getElementById("loader");
 const grid = document.getElementById("objectsGrid");
+
 const searchInput = document.getElementById("search");
 const minPriceInput = document.getElementById("minPrice");
 const maxPriceInput = document.getElementById("maxPrice");
 const sortSelect = document.getElementById("sortSelect");
+
+const dealTypeFilter = document.getElementById("dealTypeFilter");
+const propertyTypeFilter = document.getElementById("propertyTypeFilter");
+const commercialTypeFilter = document.getElementById("commercialTypeFilter");
+
 const resetFiltersBtn = document.getElementById("resetFilters");
+
 const menuBtn = document.getElementById("menuBtn");
 const mainNav = document.getElementById("mainNav");
 
@@ -122,6 +123,34 @@ function getMainImage(item) {
   }
 
   return "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80";
+}
+
+function getDealTypeName(value) {
+  return {
+    sale: "Продаж",
+    rent: "Оренда"
+  }[value] || "Не вказано";
+}
+
+function getPropertyTypeName(value) {
+  return {
+    apartment: "Квартира",
+    house: "Будинок",
+    land: "Земельна ділянка",
+    garage: "Гараж",
+    commercial: "Комерція"
+  }[value] || "Не вказано";
+}
+
+function getCommercialTypeName(value) {
+  return {
+    office: "Офіс",
+    hangar: "Ангар",
+    warehouse: "Склад",
+    shop: "Магазин",
+    production: "Виробниче приміщення",
+    other: "Інше"
+  }[value] || "";
 }
 
 /* ================================
@@ -205,22 +234,46 @@ function applyFilters() {
   const maxPrice = maxPriceInput ? Number(maxPriceInput.value) : 0;
   const sortValue = sortSelect ? sortSelect.value : "vip";
 
+  const dealValue = dealTypeFilter ? dealTypeFilter.value : "all";
+  const propertyValue = propertyTypeFilter ? propertyTypeFilter.value : "all";
+  const commercialValue = commercialTypeFilter ? commercialTypeFilter.value : "all";
+
   filteredObjects = allObjects.filter(item => {
     const title = String(item.title || "").toLowerCase();
     const description = String(item.description || "").toLowerCase();
     const area = String(item.area || "").toLowerCase();
+    const address = String(item.address || "").toLowerCase();
+
     const price = normalizePrice(item.price);
 
     const matchesText =
       !searchText ||
       title.includes(searchText) ||
       description.includes(searchText) ||
-      area.includes(searchText);
+      area.includes(searchText) ||
+      address.includes(searchText);
 
     const matchesMin = !minPrice || price >= minPrice;
     const matchesMax = !maxPrice || price <= maxPrice;
 
-    return matchesText && matchesMin && matchesMax;
+    const matchesDeal =
+      dealValue === "all" || item.dealType === dealValue;
+
+    const matchesProperty =
+      propertyValue === "all" || item.propertyType === propertyValue;
+
+    const matchesCommercial =
+      commercialValue === "all" ||
+      item.commercialType === commercialValue;
+
+    return (
+      matchesText &&
+      matchesMin &&
+      matchesMax &&
+      matchesDeal &&
+      matchesProperty &&
+      matchesCommercial
+    );
   });
 
   filteredObjects.sort((a, b) => {
@@ -243,7 +296,15 @@ function applyFilters() {
 }
 
 function setupFilters() {
-  const controls = [searchInput, minPriceInput, maxPriceInput, sortSelect];
+  const controls = [
+    searchInput,
+    minPriceInput,
+    maxPriceInput,
+    sortSelect,
+    dealTypeFilter,
+    propertyTypeFilter,
+    commercialTypeFilter
+  ];
 
   controls.forEach(control => {
     if (!control) return;
@@ -262,6 +323,10 @@ function setupFilters() {
       if (minPriceInput) minPriceInput.value = "";
       if (maxPriceInput) maxPriceInput.value = "";
       if (sortSelect) sortSelect.value = "vip";
+
+      if (dealTypeFilter) dealTypeFilter.value = "all";
+      if (propertyTypeFilter) propertyTypeFilter.value = "all";
+      if (commercialTypeFilter) commercialTypeFilter.value = "all";
 
       applyFilters();
     });
@@ -308,6 +373,10 @@ function createObjectCard(item) {
   const isSold = item.status === "sold";
   const isFav = favs.includes(item.id);
 
+  const dealName = getDealTypeName(item.dealType);
+  const propertyName = getPropertyTypeName(item.propertyType);
+  const commercialName = getCommercialTypeName(item.commercialType);
+
   return `
     <article class="card">
       ${isVip ? `<div class="vip-badge">🔥 VIP</div>` : ""}
@@ -316,9 +385,10 @@ function createObjectCard(item) {
         ${isFav ? "❤️" : "🤍"}
       </button>
 
-      <a href="assets/object.html?id=${id}">
+      <a href="assets/object.html?id=${id}" class="card-link">
         <div class="card-img">
           <img src="${image}" alt="${title}" loading="lazy">
+
           <div class="status-badge">
             ${isSold ? "❌ Продано" : "✅ Активне"}
           </div>
@@ -328,6 +398,13 @@ function createObjectCard(item) {
           <h3>${title}</h3>
 
           <div class="card-meta">
+            <span>🔑 ${dealName}</span>
+            <span>🏷️ ${propertyName}</span>
+            ${
+              item.propertyType === "commercial" && commercialName
+                ? `<span>📌 ${commercialName}</span>`
+                : ""
+            }
             <span>📐 Площа: ${area}</span>
             <span>👁 Переглядів: ${views}</span>
           </div>
@@ -390,7 +467,7 @@ window.sendForm = async function(event) {
       createdAt: serverTimestamp()
     });
 
-    alert("✅ Дякуємо! Заявку прийнято. Ми з Вами звʼяжемось.");
+    alert("✅ Прийнято. Ми з Вами звʼяжимося.");
 
     if (nameInput) nameInput.value = "";
     if (phoneInput) phoneInput.value = "";
