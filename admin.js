@@ -314,7 +314,7 @@ window.addObject = async function(event) {
       lng,
 
       ownerId: currentUser.uid,
-      ownerName: currentUser.displayName || currentUser.email || "Адміністратор",
+      ownerName: "Олег Іванчик",
       ownerEmail: currentUser.email || "",
 
       status: sold ? "sold" : "active",
