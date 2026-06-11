@@ -164,9 +164,11 @@ function updateGallery() {
 
   const currentSrc = images[currentSlide] || getMainImage(currentObject || {});
 
-  if (mainImg) {
-    mainImg.src = currentSrc;
+  if (galleryMain) {
+    galleryMain.style.setProperty("--gallery-bg", `url("${currentSrc}")`);
+  }
 
+  if (mainImg) {
     mainImg.onload = function() {
       mainImg.classList.remove("horizontal", "vertical");
 
@@ -176,10 +178,8 @@ function updateGallery() {
         mainImg.classList.add("vertical");
       }
     };
-  }
 
-  if (galleryMain) {
-    galleryMain.style.setProperty("--gallery-bg", `url("${currentSrc}")`);
+    mainImg.src = currentSrc;
   }
 
   if (counter) {
@@ -190,6 +190,7 @@ function updateGallery() {
     img.classList.toggle("active", index === currentSlide);
   });
 }
+
 window.changeSlide = function(step) {
   if (!images.length) return;
 
@@ -363,24 +364,24 @@ async function loadObject() {
       ...snap.data()
     };
 
- images = getImages(currentObject);
-currentSlide = 0;
+    images = getImages(currentObject);
+    currentSlide = 0;
 
-try {
-  await updateDoc(objectRef, {
-    views: increment(1),
-    updatedAt: serverTimestamp()
-  });
-} catch (viewsError) {
-  console.warn("Views update blocked:", viewsError);
-}
+    try {
+      await updateDoc(objectRef, {
+        views: increment(1),
+        updatedAt: serverTimestamp()
+      });
+    } catch (viewsError) {
+      console.warn("Views update blocked:", viewsError);
+    }
 
-renderObject(currentObject);
-updateGallery();
+    renderObject(currentObject);
+    updateGallery();
 
-setTimeout(() => {
-  initMap(currentObject.lat, currentObject.lng);
-}, 300);
+    setTimeout(() => {
+      initMap(currentObject.lat, currentObject.lng);
+    }, 300);
 
     loadSimilarObjects(currentObject);
   } catch (error) {
@@ -402,7 +403,7 @@ setTimeout(() => {
 
 function renderObject(item) {
   const title = escapeHtml(item.title || "Обʼєкт нерухомості");
-const price = formatPrice(item.price, item.dealType);
+  const price = formatPrice(item.price, item.dealType);
   const area = escapeHtml(item.area || "-");
   const address = escapeHtml(item.address || "Київ та Київська область");
   const description = escapeHtml(item.description || "Детальний опис обʼєкта буде додано найближчим часом.");
@@ -443,7 +444,7 @@ const price = formatPrice(item.price, item.dealType);
           </div>
         </div>
 
-       <div class="object-price">💰 ${price}</div>
+        <div class="object-price">💰 ${price}</div>
       </div>
 
       <div class="gallery">
@@ -490,7 +491,7 @@ const price = formatPrice(item.price, item.dealType);
 
           <div class="feature">
             <small>Ціна</small>
-       <strong>${price}</strong>
+            <strong>${price}</strong>
           </div>
 
           <div class="feature">
@@ -509,7 +510,7 @@ const price = formatPrice(item.price, item.dealType);
           </div>
         </div>
 
-        <h3 style="margin-top: 24px;">Опис</h3>
+        <h3 style="margin-top: 20px;">Опис</h3>
         <p class="object-description">${description}</p>
       </div>
 
@@ -586,7 +587,7 @@ async function loadSimilarObjects(item) {
       const image = escapeHtml(getMainImage(obj));
       const title = escapeHtml(obj.title || "Без назви");
       const area = escapeHtml(obj.area || "-");
-      const price = formatPrice(obj.price);
+      const price = formatPrice(obj.price, obj.dealType);
 
       const dealName = getDealTypeName(obj.dealType);
       const propertyName = getPropertyTypeName(obj.propertyType);
@@ -600,7 +601,7 @@ async function loadSimilarObjects(item) {
             <p>🔑 ${dealName}</p>
             <p>🏷️ ${propertyName}</p>
             <p>📐 ${area}</p>
-           <p>💰 ${price}</p>
+            <p>💰 ${price}</p>
           </div>
         </a>
       `;
