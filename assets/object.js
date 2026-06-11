@@ -338,7 +338,7 @@ async function loadObject() {
       <section class="object-hero-card">
         <h1>❌ Обʼєкт не знайдено</h1>
         <p>ID обʼєкта не передано в адресі сторінки.</p>
-        ../index.htmlПовернутися на головну</a>
+        <a class="btn" href="../index.html">Повернутися на головну</a>
       </section>
     `;
     return;
@@ -353,7 +353,7 @@ async function loadObject() {
         <section class="object-hero-card">
           <h1>❌ Обʼєкт не знайдено</h1>
           <p>Можливо, оголошення було видалено або приховано.</p>
-          ../index.htmlПовернутися на головну</a>
+          <a class="btn" href="../index.html">Повернутися на головну</a>
         </section>
       `;
       return;
@@ -391,7 +391,7 @@ async function loadObject() {
       <section class="object-hero-card">
         <h1>❌ Помилка завантаження</h1>
         <p>Перевірте підключення Firebase або правила доступу.</p>
-        ../index.htmlПовернутися на головну</a>
+        <a class="btn" href="../index.html">Повернутися на головну</a>
       </section>
     `;
   }
@@ -418,8 +418,11 @@ function renderObject(item) {
   const commercialName = getCommercialTypeName(item.commercialType);
 
   const thumbsHtml = images.map((src, index) => {
+    const safeSrc = escapeHtml(src);
+
     return `
-      "
+      <img
+        src="${safeSrc}"
         alt="Фото ${index + 1}"
         onclick="selectImage(${index})"
         class="${index === 0 ? "active" : ""}"
@@ -428,7 +431,7 @@ function renderObject(item) {
   }).join("");
 
   page.innerHTML = `
-    ../index.html← Назад до обʼєктів</a>
+    <a class="back-link" href="../index.html">← Назад до обʼєктів</a>
 
     <section class="object-hero-card">
       <div class="object-title-row">
@@ -448,7 +451,7 @@ function renderObject(item) {
 
       <div class="gallery">
         <div class="gallery-main">
-          }" alt="${title}">
+          <img id="mainImg" src="${escapeHtml(images[0])}" alt="${title}">
 
           <button class="gallery-btn left" type="button" onclick="changeSlide(-1)">‹</button>
           <button class="gallery-btn right" type="button" onclick="changeSlide(1)">›</button>
@@ -592,8 +595,8 @@ async function loadSimilarObjects(item) {
       const propertyName = getPropertyTypeName(obj.propertyType);
 
       return `
-        ">
-          ${image}
+        <a class="similar-card" href="object.html?id=${escapeHtml(obj.id)}">
+          <img src="${image}" alt="${title}">
 
           <div>
             <strong>${title}</strong>
