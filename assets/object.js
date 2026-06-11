@@ -166,7 +166,17 @@ function updateGallery() {
 
   if (mainImg) {
     mainImg.src = currentSrc;
-  } 
+
+    mainImg.onload = function() {
+      mainImg.classList.remove("horizontal", "vertical");
+
+      if (mainImg.naturalWidth >= mainImg.naturalHeight) {
+        mainImg.classList.add("horizontal");
+      } else {
+        mainImg.classList.add("vertical");
+      }
+    };
+  }
 
   if (galleryMain) {
     galleryMain.style.setProperty("--gallery-bg", `url("${currentSrc}")`);
