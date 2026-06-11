@@ -166,7 +166,7 @@ function updateGallery() {
 
   if (mainImg) {
     mainImg.src = currentSrc;
-  }
+  } 
 
   if (galleryMain) {
     galleryMain.style.setProperty("--gallery-bg", `url("${currentSrc}")`);
