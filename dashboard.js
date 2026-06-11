@@ -426,9 +426,12 @@ function renderMyAds(data) {
           <p>${status}</p>
           <p>👁 Переглядів: ${views}</p>
 
-         
-<div class="my-ad-actions">
+ <div class="my-ad-actions">
   assets/object.html?id=${id}👁 Переглянути</a>
+
+  <button class="cta-outline" type="button" onclick="editAd('${id}')">
+    ✏️ Редагувати
+  </button>
 
   ${
     item.status === "sold"
