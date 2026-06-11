@@ -160,9 +160,16 @@ function getCommercialTypeName(value) {
 function updateGallery() {
   const mainImg = document.getElementById("mainImg");
   const counter = document.getElementById("counter");
+  const galleryMain = document.querySelector(".gallery-main");
+
+  const currentSrc = images[currentSlide] || getMainImage(currentObject || {});
 
   if (mainImg) {
-    mainImg.src = images[currentSlide] || getMainImage(currentObject || {});
+    mainImg.src = currentSrc;
+  }
+
+  if (galleryMain) {
+    galleryMain.style.setProperty("--gallery-bg", `url("${currentSrc}")`);
   }
 
   if (counter) {
@@ -173,7 +180,6 @@ function updateGallery() {
     img.classList.toggle("active", index === currentSlide);
   });
 }
-
 window.changeSlide = function(step) {
   if (!images.length) return;
 
