@@ -157,6 +157,18 @@ function getCommercialTypeName(value) {
    GALLERY
 ================================ */
 
+function applyImageOrientation(img) {
+  if (!img) return;
+
+  img.classList.remove("horizontal", "vertical");
+
+  if (img.naturalWidth >= img.naturalHeight) {
+    img.classList.add("horizontal");
+  } else {
+    img.classList.add("vertical");
+  }
+}
+
 function updateGallery() {
   const mainImg = document.getElementById("mainImg");
   const counter = document.getElementById("counter");
@@ -170,16 +182,14 @@ function updateGallery() {
 
   if (mainImg) {
     mainImg.onload = function() {
-      mainImg.classList.remove("horizontal", "vertical");
-
-      if (mainImg.naturalWidth >= mainImg.naturalHeight) {
-        mainImg.classList.add("horizontal");
-      } else {
-        mainImg.classList.add("vertical");
-      }
+      applyImageOrientation(mainImg);
     };
 
     mainImg.src = currentSrc;
+
+    if (mainImg.complete && mainImg.naturalWidth) {
+      applyImageOrientation(mainImg);
+    }
   }
 
   if (counter) {
