@@ -494,3 +494,89 @@ window.deleteAd = async function(id) {
     alert("❌ Не вдалося видалити оголошення.");
   }
 };
+window.editAd = async function(id) {
+  if (!currentUser) {
+    alert("Увійдіть через Google.");
+    return;
+  }
+
+  const item = myAdsCache.find(ad => ad.id === id);
+
+  if (!item) {
+    alert("Оголошення не знайдено.");
+    return;
+  }
+
+  const title = prompt("Назва обʼєкта:", item.title || "");
+  if (title === null) return;
+
+  const priceRaw = prompt("Ціна:", item.price || "");
+  if (priceRaw === null) return;
+
+  const area = prompt("Площа:", item.area || "");
+  if (area === null) return;
+
+  const address = prompt("Адреса / локація:", item.address || "");
+  if (address === null) return;
+
+  const description = prompt("Опис:", item.description || "");
+  if (description === null) return;
+
+  const dealType = prompt(
+    "Тип угоди: sale = Продаж, rent = Оренда",
+    item.dealType || "sale"
+  );
+  if (dealType === null) return;
+
+  const propertyType = prompt(
+    "Тип нерухомості: apartment, house, land, garage, commercial",
+    item.propertyType || "apartment"
+  );
+  if (propertyType === null) return;
+
+  let commercialType = item.commercialType || "";
+
+  if (propertyType === "commercial") {
+    commercialType = prompt(
+      "Підтип комерції: office, hangar, warehouse, shop, production, other",
+      item.commercialType || ""
+    );
+
+    if (commercialType === null) return;
+  } else {
+    commercialType = "";
+  }
+
+  const price = Number(priceRaw);
+
+  if (!title.trim()) {
+    alert("Назва не може бути порожньою.");
+    return;
+  }
+
+  if (!price || price <= 0) {
+    alert("Вкажіть коректну ціну.");
+    return;
+  }
+
+  try {
+    await updateDoc(doc(db, "objects", id), {
+      title: title.trim(),
+      price,
+      area: area.trim() || "-",
+      address: address.trim() || "",
+      description: description.trim() || "",
+      dealType,
+      propertyType,
+      commercialType,
+      updatedAt: serverTimestamp()
+    });
+
+    alert("✅ Оголошення оновлено.");
+
+    await loadMyAds(currentUser.uid);
+  } catch (error) {
+    console.error("EDIT AD ERROR:", error);
+    alert("❌ Не вдалося оновити оголошення.");
+  }
+};
