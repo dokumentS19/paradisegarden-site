@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
- 
+
 import {
   getFirestore,
   doc,
@@ -338,7 +338,7 @@ async function loadObject() {
       <section class="object-hero-card">
         <h1>❌ Обʼєкт не знайдено</h1>
         <p>ID обʼєкта не передано в адресі сторінки.</p>
-        <a class="btn" href="../index.html">Повернутися на головну</a>
+        ../index.htmlПовернутися на головну</a>
       </section>
     `;
     return;
@@ -353,7 +353,7 @@ async function loadObject() {
         <section class="object-hero-card">
           <h1>❌ Обʼєкт не знайдено</h1>
           <p>Можливо, оголошення було видалено або приховано.</p>
-          <a class="btn" href="../index.html">Повернутися на головну</a>
+          ../index.htmlПовернутися на головну</a>
         </section>
       `;
       return;
@@ -391,7 +391,7 @@ async function loadObject() {
       <section class="object-hero-card">
         <h1>❌ Помилка завантаження</h1>
         <p>Перевірте підключення Firebase або правила доступу.</p>
-        <a class="btn" href="../index.html">Повернутися на головну</a>
+        ../index.htmlПовернутися на головну</a>
       </section>
     `;
   }
@@ -419,8 +419,7 @@ function renderObject(item) {
 
   const thumbsHtml = images.map((src, index) => {
     return `
-      <img
-        src="${escapeHtml(src)}"
+      "
         alt="Фото ${index + 1}"
         onclick="selectImage(${index})"
         class="${index === 0 ? "active" : ""}"
@@ -429,7 +428,7 @@ function renderObject(item) {
   }).join("");
 
   page.innerHTML = `
-    <a class="back-link" href="../index.html">← Назад до обʼєктів</a>
+    ../index.html← Назад до обʼєктів</a>
 
     <section class="object-hero-card">
       <div class="object-title-row">
@@ -449,7 +448,7 @@ function renderObject(item) {
 
       <div class="gallery">
         <div class="gallery-main">
-          <img id="mainImg" src="${escapeHtml(images[0])}" alt="${title}">
+          }" alt="${title}">
 
           <button class="gallery-btn left" type="button" onclick="changeSlide(-1)">‹</button>
           <button class="gallery-btn right" type="button" onclick="changeSlide(1)">›</button>
@@ -593,8 +592,8 @@ async function loadSimilarObjects(item) {
       const propertyName = getPropertyTypeName(obj.propertyType);
 
       return `
-        <a class="similar-card" href="object.html?id=${escapeHtml(obj.id)}">
-          <img src="${image}" alt="${title}">
+        ">
+          ${image}
 
           <div>
             <strong>${title}</strong>
