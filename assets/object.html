@@ -42,36 +42,34 @@
 
     .object-hero-card {
       position: relative;
-      background: #111827;
+      background:
+        linear-gradient(180deg, rgba(24, 34, 52, 0.96), rgba(11, 18, 32, 0.96));
       border: 1px solid rgba(148, 163, 184, 0.22);
       border-radius: 22px;
-      padding: 0;
+      padding: 14px;
       overflow: hidden;
-      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.34);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.34);
     }
 
     .object-title-row {
-      position: absolute;
-      z-index: 20;
-      top: 16px;
-      left: 16px;
-      right: 16px;
+      position: static;
       display: grid;
       grid-template-columns: 1fr auto;
-      gap: 12px;
+      gap: 14px;
       align-items: start;
-      pointer-events: none;
+      margin-bottom: 14px;
+      pointer-events: auto;
     }
 
     .object-title-row > div {
-      width: fit-content;
-      max-width: 72%;
-      padding: 10px 12px;
-      border-radius: 16px;
-      background: rgba(15, 23, 42, 0.74);
-      border: 1px solid rgba(148, 163, 184, 0.26);
-      backdrop-filter: blur(14px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
+      width: auto;
+      max-width: none;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      border: none;
+      backdrop-filter: none;
+      box-shadow: none;
     }
 
     .object-hero-card .section-label {
@@ -82,25 +80,23 @@
 
     .object-title-row h1 {
       margin: 6px 0 0;
-      font-size: clamp(18px, 1.55vw, 25px);
+      font-size: clamp(18px, 1.8vw, 26px);
       line-height: 1.15;
-      letter-spacing: -0.15px;
       font-weight: 700;
+      letter-spacing: -0.15px;
     }
 
     .object-price {
       color: #4ade80;
-      font-size: clamp(17px, 1.55vw, 25px);
+      font-size: clamp(18px, 1.8vw, 26px);
       font-weight: 800;
       white-space: nowrap;
       line-height: 1;
-      padding: 11px 13px;
-      border-radius: 16px;
-      background: rgba(15, 23, 42, 0.76);
-      border: 1px solid rgba(74, 222, 128, 0.28);
-      backdrop-filter: blur(14px);
+      padding: 8px 12px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(74, 222, 128, 0.26);
       text-align: right;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
     }
 
     .status-line {
@@ -113,12 +109,12 @@
     .pill {
       display: inline-flex;
       align-items: center;
-      padding: 4px 7px;
+      padding: 4px 8px;
       border-radius: 999px;
-      background: rgba(34, 197, 94, 0.15);
-      border: 1px solid rgba(34, 197, 94, 0.28);
+      background: rgba(34, 197, 94, 0.14);
+      border: 1px solid rgba(34, 197, 94, 0.26);
       color: #bbf7d0;
-      font-size: 10px;
+      font-size: 11px;
       line-height: 1.15;
     }
 
@@ -130,27 +126,19 @@
     .gallery-main {
       position: relative;
       width: 100%;
-      height: min(66vh, 640px);
-      min-height: 420px;
-      border-radius: 22px;
+      height: min(62vh, 580px);
+      min-height: 360px;
+      border-radius: 20px;
       overflow: hidden;
-      background:
-        radial-gradient(circle at center, #374151 0%, #1f2937 42%, #111827 100%);
-      border: none;
+      background: linear-gradient(135deg, #1f2937, #111827);
+      border: 1px solid rgba(148, 163, 184, 0.18);
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .gallery-main::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-      background:
-        linear-gradient(180deg, rgba(15, 23, 42, 0.34), transparent 32%),
-        linear-gradient(0deg, rgba(15, 23, 42, 0.20), transparent 28%);
+      display: none;
     }
 
     .gallery-main img {
@@ -159,8 +147,8 @@
       object-fit: contain;
       object-position: center center;
       display: block;
-      user-select: none;
       background: transparent;
+      user-select: none;
     }
 
     .gallery-btn {
@@ -405,39 +393,22 @@
       }
 
       .object-title-row {
-        top: 10px;
-        left: 10px;
-        right: 10px;
         grid-template-columns: 1fr;
       }
 
-      .object-title-row > div {
-        max-width: 100%;
-        padding: 8px 10px;
-        border-radius: 13px;
-      }
-
       .object-title-row h1 {
-        font-size: 16px;
+        font-size: 18px;
       }
 
       .object-price {
         width: fit-content;
-        font-size: 15px;
-        padding: 8px 10px;
+        font-size: 17px;
         text-align: left;
-        border-radius: 13px;
-      }
-
-      .pill {
-        font-size: 9px;
-        padding: 3px 6px;
       }
 
       .gallery-main {
         height: 54vh;
         min-height: 300px;
-        border-radius: 16px;
       }
 
       .gallery-btn {
