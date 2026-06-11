@@ -10,14 +10,14 @@
 
   <style>
     .object-shell {
-      max-width: 1100px;
-      margin: 18px auto 32px;
-      padding: 0 16px;
+      max-width: 1120px;
+      margin: 8px auto 28px;
+      padding: 0 14px;
     }
 
     .object-page {
       display: grid;
-      gap: 18px;
+      gap: 12px;
     }
 
     .back-link {
@@ -26,12 +26,13 @@
       width: fit-content;
       text-decoration: none;
       color: #d1fae5;
-      margin-bottom: 10px;
-      padding: 8px 14px;
+      margin: 0 0 8px;
+      padding: 7px 13px;
       border-radius: 999px;
       background: rgba(15, 23, 42, 0.82);
       border: 1px solid rgba(148, 163, 184, 0.26);
-      font-size: 14px;
+      font-size: 13px;
+      line-height: 1.2;
       transition: 0.25s ease;
     }
 
@@ -41,46 +42,36 @@
     }
 
     .object-hero-card {
-      position: relative;
       background:
         linear-gradient(180deg, rgba(24, 34, 52, 0.96), rgba(11, 18, 32, 0.96));
       border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 22px;
-      padding: 14px;
+      border-radius: 18px;
+      padding: 12px;
       overflow: hidden;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.34);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.30);
     }
 
     .object-title-row {
-      position: static;
       display: grid;
       grid-template-columns: 1fr auto;
-      gap: 14px;
+      gap: 12px;
       align-items: start;
-      margin-bottom: 14px;
-      pointer-events: auto;
+      margin-bottom: 10px;
     }
 
     .object-title-row > div {
-      width: auto;
-      max-width: none;
-      padding: 0;
-      border-radius: 0;
-      background: transparent;
-      border: none;
-      backdrop-filter: none;
-      box-shadow: none;
+      min-width: 0;
     }
 
     .object-hero-card .section-label {
-      font-size: 10px;
+      font-size: 9px;
       padding: 4px 8px;
       letter-spacing: 0.02em;
     }
 
     .object-title-row h1 {
-      margin: 6px 0 0;
-      font-size: clamp(18px, 1.8vw, 26px);
+      margin: 5px 0 0;
+      font-size: clamp(17px, 1.55vw, 23px);
       line-height: 1.15;
       font-weight: 700;
       letter-spacing: -0.15px;
@@ -88,12 +79,12 @@
 
     .object-price {
       color: #4ade80;
-      font-size: clamp(18px, 1.8vw, 26px);
+      font-size: clamp(17px, 1.55vw, 23px);
       font-weight: 800;
       white-space: nowrap;
       line-height: 1;
-      padding: 8px 12px;
-      border-radius: 14px;
+      padding: 7px 11px;
+      border-radius: 12px;
       background: rgba(15, 23, 42, 0.72);
       border: 1px solid rgba(74, 222, 128, 0.26);
       text-align: right;
@@ -101,34 +92,33 @@
 
     .status-line {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       flex-wrap: wrap;
-      margin-top: 8px;
+      margin-top: 7px;
     }
 
     .pill {
       display: inline-flex;
       align-items: center;
-      padding: 4px 8px;
+      padding: 3px 7px;
       border-radius: 999px;
       background: rgba(34, 197, 94, 0.14);
       border: 1px solid rgba(34, 197, 94, 0.26);
       color: #bbf7d0;
-      font-size: 11px;
+      font-size: 10px;
       line-height: 1.15;
     }
 
     .gallery {
       display: grid;
-      gap: 0;
+      gap: 8px;
     }
 
     .gallery-main {
       position: relative;
       width: 100%;
-      height: min(62vh, 580px);
-      min-height: 360px;
-      border-radius: 20px;
+      height: clamp(300px, 45vh, 460px);
+      border-radius: 16px;
       overflow: hidden;
       background: #111827;
       border: 1px solid rgba(148, 163, 184, 0.18);
@@ -144,9 +134,9 @@
       background-image: var(--gallery-bg);
       background-size: cover;
       background-position: center;
-      filter: blur(24px);
+      filter: blur(22px);
       transform: scale(1.08);
-      opacity: 0.32;
+      opacity: 0.28;
       z-index: 1;
     }
 
@@ -156,7 +146,7 @@
       inset: 0;
       z-index: 2;
       pointer-events: none;
-      background: rgba(15, 23, 42, 0.34);
+      background: rgba(15, 23, 42, 0.32);
     }
 
     .gallery-main img {
@@ -178,13 +168,13 @@
       top: 50%;
       transform: translateY(-50%);
       z-index: 30;
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       border: 1px solid rgba(255, 255, 255, 0.26);
       background: rgba(15, 23, 42, 0.72);
       color: white;
-      font-size: 25px;
+      font-size: 22px;
       cursor: pointer;
       backdrop-filter: blur(12px);
       transition: 0.25s ease;
@@ -199,39 +189,38 @@
     }
 
     .gallery-btn.left {
-      left: 14px;
+      left: 12px;
     }
 
     .gallery-btn.right {
-      right: 14px;
+      right: 12px;
     }
 
     .counter {
       position: absolute;
       z-index: 30;
       left: 50%;
-      bottom: 14px;
+      bottom: 10px;
       transform: translateX(-50%);
       background: rgba(15, 23, 42, 0.78);
       color: white;
-      padding: 6px 11px;
+      padding: 5px 10px;
       border-radius: 999px;
       backdrop-filter: blur(12px);
-      font-size: 12px;
+      font-size: 11px;
     }
 
     .thumbs {
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      padding: 10px 6px 6px;
-      background: #111827;
-      border-top: 1px solid rgba(148, 163, 184, 0.14);
+      padding: 4px 2px 4px;
+      background: transparent;
     }
 
     .thumbs img {
-      width: 94px;
-      height: 64px;
+      width: 86px;
+      height: 58px;
       object-fit: cover;
       border-radius: 9px;
       border: 2px solid transparent;
@@ -252,16 +241,16 @@
     .object-info-grid {
       display: grid;
       grid-template-columns: 1.18fr 0.82fr;
-      gap: 18px;
+      gap: 16px;
     }
 
     .object-box {
       background:
         linear-gradient(180deg, rgba(24, 34, 52, 0.96), rgba(11, 18, 32, 0.96));
       border: 1px solid rgba(148, 163, 184, 0.20);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.24);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
     }
 
     .object-box h2,
@@ -270,11 +259,11 @@
     }
 
     .object-box h2 {
-      font-size: 21px;
+      font-size: 20px;
     }
 
     .object-box h3 {
-      font-size: 17px;
+      font-size: 16px;
     }
 
     .object-description {
@@ -287,14 +276,14 @@
     .feature-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 9px;
+      gap: 8px;
       margin-top: 12px;
     }
 
     .feature {
       background: rgba(15, 23, 42, 0.80);
       border: 1px solid rgba(148, 163, 184, 0.17);
-      border-radius: 12px;
+      border-radius: 11px;
       padding: 10px;
     }
 
@@ -316,13 +305,13 @@
         radial-gradient(circle at top right, rgba(34, 197, 94, 0.12), transparent 36%),
         rgba(11, 18, 32, 0.96);
       border: 1px solid rgba(34, 197, 94, 0.20);
-      border-radius: 18px;
-      padding: 18px;
+      border-radius: 16px;
+      padding: 16px;
     }
 
     .seller-card h3 {
       margin-top: 0;
-      font-size: 19px;
+      font-size: 18px;
     }
 
     .seller-card p {
@@ -345,8 +334,8 @@
     }
 
     .map-box {
-      height: 300px;
-      border-radius: 16px;
+      height: 280px;
+      border-radius: 14px;
       overflow: hidden;
       border: 1px solid rgba(148, 163, 184, 0.22);
       background: #1f2937;
@@ -393,50 +382,43 @@
         grid-template-columns: 1fr;
       }
 
-      .object-title-row > div {
-        max-width: 100%;
-      }
-
       .object-price {
         width: fit-content;
         text-align: left;
       }
 
       .gallery-main {
-        height: 58vh;
-        min-height: 360px;
+        height: 48vh;
+        min-height: 320px;
       }
     }
 
     @media (max-width: 620px) {
       .object-shell {
-        margin: 10px auto;
+        margin: 8px auto;
         padding: 0 8px;
       }
 
-      .object-title-row {
-        grid-template-columns: 1fr;
-      }
-
       .object-title-row h1 {
-        font-size: 18px;
+        font-size: 17px;
       }
 
       .object-price {
         width: fit-content;
-        font-size: 17px;
+        font-size: 16px;
         text-align: left;
       }
 
       .gallery-main {
-        height: 54vh;
-        min-height: 300px;
+        height: 44vh;
+        min-height: 280px;
+        border-radius: 14px;
       }
 
       .gallery-btn {
-        width: 34px;
-        height: 34px;
-        font-size: 20px;
+        width: 32px;
+        height: 32px;
+        font-size: 19px;
       }
 
       .feature-grid {
@@ -444,8 +426,8 @@
       }
 
       .thumbs img {
-        width: 82px;
-        height: 58px;
+        width: 78px;
+        height: 54px;
       }
 
       .object-box,
