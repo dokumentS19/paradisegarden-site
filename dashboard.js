@@ -427,7 +427,7 @@ function renderMyAds(data) {
           <p>👁 Переглядів: ${views}</p>
 
  <div class="my-ad-actions">
-  assets/object.html?id=${id}👁 Переглянути</a>
+  <a class="cta-outline" href="assets/object.html?id=${id}">👁 Переглянути</a>
 
   <button class="cta-outline" type="button" onclick="editAd('${id}')">
     ✏️ Редагувати
