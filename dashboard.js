@@ -426,18 +426,19 @@ function renderMyAds(data) {
           <p>${status}</p>
           <p>👁 Переглядів: ${views}</p>
 
-          <div class="my-ad-actions">
-            <a class="btn" href="assets/object.html?id=${id}">👁 Переглянути</a>
+         
+<div class="my-ad-actions">
+  assets/object.html?id=${id}👁 Переглянути</a>
 
-            ${
-              item.status === "sold"
-                ? `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'active')">✅ Зробити активним</button>`
-                : `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'sold')">❌ Позначити проданим</button>`
-            }
+  ${
+    item.status === "sold"
+      ? `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'active')">✅ Зробити активним</button>`
+      : `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'sold')">❌ Позначити проданим</button>`
+  }
 
-            <button class="danger-btn" type="button" onclick="deleteAd('${id}')">🗑 Видалити</button>
-          </div>
-        </div>
+  <button class="danger-btn" type="button" onclick="deleteAd('${id}')">🗑 Видалити</button>
+</div>
+</div>
       </article>
     `;
   }).join("");
