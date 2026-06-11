@@ -941,65 +941,74 @@ select:focus {
     padding: 13px 16px;
   }
 }
+
 /* ================================
    OBJECT PAGE COMPACT HEADER
    Only for assets/object.html
 ================================ */
 
 .object-page-body .topbar {
-  min-height: 58px;
-  padding: 8px 28px;
+  min-height: 52px;
+  padding: 6px 26px;
 }
 
 .object-page-body .brand {
-  gap: 10px;
+  gap: 9px;
 }
 
 .object-page-body .brand-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 14px;
-  font-size: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  font-size: 18px;
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.32);
 }
 
 .object-page-body .brand strong {
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.05;
 }
 
 .object-page-body .brand small {
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.1;
   margin-top: 1px;
 }
 
 .object-page-body .nav {
-  gap: 6px;
+  gap: 5px;
 }
 
 .object-page-body .nav a {
-  font-size: 13px;
-  padding: 8px 10px;
+  font-size: 12.5px;
+  padding: 7px 9px;
+}
+
+@media (max-width: 1050px) {
+  .object-page-body .nav {
+    top: 52px;
+    height: calc(100vh - 52px);
+  }
 }
 
 @media (max-width: 680px) {
   .object-page-body .topbar {
-    min-height: 52px;
-    padding: 7px 14px;
+    min-height: 48px;
+    padding: 6px 12px;
   }
 
   .object-page-body .brand-icon {
-    width: 36px;
-    height: 36px;
-    font-size: 18px;
+    width: 34px;
+    height: 34px;
+    font-size: 17px;
   }
 
   .object-page-body .brand strong {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .object-page-body .brand small {
-    font-size: 10px;
+    font-size: 9.5px;
   }
 
   .object-page-body .nav a {
