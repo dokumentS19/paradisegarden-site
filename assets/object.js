@@ -393,7 +393,7 @@ const price = formatPrice(item.price, item.dealType);
   const status = item.status === "sold" ? "Продано" : "Активне";
   const views = Number(item.views || 0) + 1;
   const createdDate = getCreatedDate(item);
-  const ownerName = escapeHtml(item.ownerName || "АН «Райський Сад»");
+  const ownerName = "Олег Іванчик";
   const ownerId = escapeHtml(item.ownerId || "");
 
   const dealName = getDealTypeName(item.dealType);
