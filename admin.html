@@ -1,1185 +1,1197 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  doc,
-  getDoc,
-  updateDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  onAuthStateChanged,
-  signOut,
-  setPersistence,
-  browserLocalPersistence
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-/* ================================
-   FIREBASE CONFIG
-================================ */
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
-  authDomain: "paradisegarden-site.firebaseapp.com",
-  projectId: "paradisegarden-site",
-  storageBucket: "paradisegarden-site.firebasestorage.app",
-  messagingSenderId: "452352075250",
-  appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
-  measurementId: "G-6XHWE6Y0JE"
-};
-
-/* ================================
-   GOOGLE MAPS / GEOCODING
-   Вставте свій Google API key нижче
-================================ */
-
-const GOOGLE_MAPS_API_KEY = "ВСТАВТЕ_СВІЙ_КЛЮЧ_ТУТ";
-
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
-const storage = getStorage(app);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-
-/* ================================
-   ACCESS
-================================ */
-
-const allowedEmails = [
-  "olegivanchik1234@gmail.com",
-  "rad202331@gmail.com"
-];
-
-/* ================================
-   STATE
-================================ */
-
-let currentUser = null;
-let selectedFiles = [];
-let currentImageUrls = [];
-let editObjectId = null;
-let editLoaded = false;
-
-/* ================================
-   DOM
-================================ */
-
-const fileInput = document.getElementById("file");
-const preview = document.getElementById("preview");
-const loginBtn = document.getElementById("loginBtn");
-const userInfo = document.getElementById("userInfo");
-const progressBox = document.getElementById("progressBox");
-
-const photoManager = document.getElementById("photoManager");
-const formTitle = document.getElementById("formTitle");
-const submitBtn = document.getElementById("submitBtn");
-
-const urlParams = new URLSearchParams(window.location.search);
-editObjectId = urlParams.get("edit");
-
-/* ================================
-   HELPERS
-================================ */
-
-function isAllowedAdmin(user) {
-  return Boolean(user && allowedEmails.includes(user.email));
-}
-
-function $(id) {
-  return document.getElementById(id);
-}
-
-function value(id) {
-  return $(id)?.value?.trim() || "";
-}
-
-function numberValue(id) {
-  const raw = value(id);
-
-  if (raw === "") {
-    return null;
-  }
-
-  const n = Number(raw);
-
-  return Number.isFinite(n) ? n : null;
-}
-
-function checked(id) {
-  return Boolean($(id)?.checked);
-}
-
-function setValue(id, newValue) {
-  const el = $(id);
-
-  if (!el) {
-    return;
-  }
-
-  el.value = newValue ?? "";
-}
-
-function setChecked(id, newValue) {
-  const el = $(id);
-
-  if (!el) {
-    return;
-  }
-
-  el.checked = Boolean(newValue);
-}
-
-function selectedCheckboxes(name) {
-  return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`))
-    .map(input => input.value);
-}
-
-function setCheckboxes(name, values = []) {
-  const selected = Array.isArray(values) ? values : [];
-
-  document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
-    input.checked = selected.includes(input.value);
-  });
-}
-
-function escapeHtml(value = "") {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-function escapeAttribute(value = "") {
-  return escapeHtml(value).replaceAll("`", "&#096;");
-}
-
-function showProgress(show) {
-  if (!progressBox) {
-    return;
-  }
-
-  progressBox.classList.toggle("active", Boolean(show));
-}
-
-/* ================================
-   GEOCODING / MAP
-================================ */
-
-function setGeoStatus(message) {
-  const geoStatus = $("geoStatus");
-
-  if (geoStatus) {
-    geoStatus.textContent = message;
-  }
-}
-
-function buildAddressForGeocode() {
-  const publicAddress = value("address");
-  const exactStreet = value("exactStreet");
-  const exactHouseNumber = value("exactHouseNumber");
-
-  const parts = [];
-
-  if (publicAddress) {
-    parts.push(publicAddress);
-  }
-
-  if (exactStreet) {
-    parts.push(exactStreet);
-  }
-
-  if (exactHouseNumber) {
-    parts.push(exactHouseNumber);
-  }
-
-  const rawAddress = parts.join(", ").trim();
-
-  if (!rawAddress) {
-    return "";
-  }
-
-  const lower = rawAddress.toLowerCase();
-
-  if (lower.includes("україна") || lower.includes("ukraine")) {
-    return rawAddress;
-  }
-
-  return `${rawAddress}, Київська область, Україна`;
-}
-
-function updateMapPreview() {
-  const lat = value("lat");
-  const lng = value("lng");
-
-  const mapPreviewBox = $("mapPreviewBox");
-  const mapPreview = $("mapPreview");
-
-  if (!lat || !lng || !mapPreviewBox || !mapPreview) {
-    return;
-  }
-
-  mapPreviewBox.classList.add("active");
-  mapPreview.src = `https://www.google.com/maps?q=${encodeURIComponent(`${lat},${lng}`)}&z=16&output=embed`;
-}
-
-window.geocodeAddress = async function() {
-  const addressForSearch = buildAddressForGeocode();
-
-  if (!addressForSearch || addressForSearch.length < 5) {
-    alert("Введіть адресу або вулицю.");
-    return;
-  }
-
-  if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === "ВСТАВТЕ_СВІЙ_КЛЮЧ_ТУТ") {
-    alert("Спочатку вставте Google Maps API key у admin.js.");
-    return;
-  }
-
-  try {
-    setGeoStatus("🔎 Шукаємо адресу на карті...");
-
-    const url =
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(addressForSearch)}&language=uk&region=ua&key=${GOOGLE_MAPS_API_KEY}`;
-
-    const response = await fetch(url);
-    const data = await response.json();
-
-    if (data.status !== "OK" || !data.results || !data.results.length) {
-      console.error("GEOCODING RESPONSE:", data);
-      setGeoStatus("❌ Адресу не знайдено. Уточніть місто, вулицю або номер будинку.");
-      alert("Не вдалося знайти адресу. Спробуйте вказати точніше.");
-      return;
+<!DOCTYPE html>
+<html lang=" .admin-panel h3 {<html lang="uk">
+      margin-top: 0;
     }
 
-    const result = data.results[0];
-    const location = result.geometry.location;
+    .admin-panel h1 {
+      font-size: clamp(28px, 3.4vw, 42px);
+      line-height: 1.12;
+      margin: 12px 0 20px;
+    }
 
-    setValue("lat", location.lat);
-    setValue("lng", location.lng);
+    .admin-form {
+      display: grid;
+      gap: 14px;
+    }
 
-    setGeoStatus(`✅ Координати знайдено: ${result.formatted_address}`);
+    .admin-form label {
+      color: #e2e8f0;
+      font-size: 14px;
+      margin-bottom: -6px;
+    }
 
-    updateMapPreview();
-  } catch (error) {
-    console.error("GEOCODING ERROR:", error);
-    setGeoStatus("❌ Помилка під час пошуку адреси.");
-    alert("Помилка під час пошуку адреси. Перевірте API key та доступ до Geocoding API.");
-  }
-};
+    .admin-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
 
-["lat", "lng"].forEach(id => {
-  const el = $(id);
+    .admin-row-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
 
-  if (el) {
-    el.addEventListener("input", updateMapPreview);
-  }
-});
+    .admin-section {
+      display: grid;
+      gap: 14px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(8, 21, 15, 0.58);
+      border: 1px solid rgba(232, 137, 18, 0.16);
+    }
 
-/* ================================
-   AUTH
-================================ */
+    .admin-section h3 {
+      margin: 0 0 4px;
+      font-size: 18px;
+      color: #fff3df;
+    }
 
-await setPersistence(auth, browserLocalPersistence);
+    .type-fields {
+      display: none;
+    }
 
-if (loginBtn) {
-  loginBtn.addEventListener("click", async () => {
-    try {
-      if (auth.currentUser) {
-        await signOut(auth);
-      } else {
-        await signInWithPopup(auth, provider);
+    .type-fields.active {
+      display: grid;
+    }
+
+    .admin-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: rgba(8, 21, 15, 0.78);
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      border-radius: 14px;
+      color: #e2e8f0;
+    }
+
+    .admin-check input {
+      width: auto;
+      margin: 0;
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 10px;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .preview-item {
+      position: relative;
+      height: 90px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(232, 137, 18, 0.22);
+      background: #08150f;
+    }
+
+    .preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .preview-item span {
+      position: absolute;
+      left: 6px;
+      bottom: 6px;
+      background: rgba(4, 20, 13, 0.78);
+      color: white;
+      padding: 3px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+    }
+
+    .upload-info {
+      color: #e2e8f0;
+      line-height: 1.6;
+      font-size: 14px;
+      background: rgba(8, 21, 15, 0.74);
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      padding: 14px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+    }
+
+    .admin-auth-box {
+      margin: 16px 0 18px;
+      display: grid;
+      gap: 10px;
+      max-width: 280px;
+    }
+
+    #userInfo {
+      color: #e2e8f0;
+      font-weight: 700;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .progress-box {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(232, 137, 18, 0.12);
+      border: 1px solid rgba(232, 137, 18, 0.26);
+      color: #fff3df;
+    }
+
+    .progress-box.active {
+      display: block;
+    }
+
+    .admin-help-card {
+      background:
+        radial-gradient(circle at top right, rgba(232, 137, 18, 0.14), transparent 35%),
+        rgba(13, 25, 22, 0.96);
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+    }
+
+    .admin-help-card h3 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+
+    .admin-help-card p,
+    .admin-help-card li {
+      color: #dbeafe;
+      line-height: 1.6;
+    }
+
+    .photo-hint {
+      color: #dbeafe;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .photo-manager-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 14px;
+    }
+
+    .photo-manager-item {
+      overflow: hidden;
+      border-radius: 16px;
+      background: rgba(8, 21, 15, 0.84);
+      border: 1px solid rgba(232, 137, 18, 0.22);
+    }
+
+    .photo-manager-img {
+      position: relative;
+      height: 130px;
+      background: #08150f;
+    }
+
+    .photo-manager-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-main-badge {
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #e88912, #95571f);
+      color: white;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .photo-manager-actions {
+      display: grid;
+      gap: 7px;
+      padding: 10px;
+    }
+
+    .photo-manager-actions button {
+      border: 1px solid rgba(232, 137, 18, 0.22);
+      border-radius: 999px;
+      padding: 8px 10px;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.06);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .photo-manager-actions button:hover {
+      background: rgba(232, 137, 18, 0.18);
+    }
+
+    .photo-manager-actions button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .photo-delete-btn {
+      background: rgba(220, 38, 38, 0.22) !important;
+      border-color: rgba(239, 68, 68, 0.36) !important;
+    }
+
+    .photo-empty {
+      padding: 18px;
+      border-radius: 16px;
+      color: #dbeafe;
+      background: rgba(8, 21, 15, 0.72);
+      border: 1px dashed rgba(232, 137, 18, 0.28);
+    }
+
+    .map-preview-box {
+      display: none;
+      margin-top: 14px;
+    }
+
+    .map-preview-box.active {
+      display: block;
+    }
+
+    .map-preview-frame {
+      width: 100%;
+      height: 260px;
+      border: 0;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    @media (max-width: 900px) {
+      .admin-layout {
+        grid-template-columns: 1fr;
       }
-    } catch (error) {
-      console.error("LOGIN ERROR:", error);
-      alert("Помилка входу: " + error.message);
+
+      .admin-row,
+      .admin-row-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-panel {
+        padding: 18px;
+      }
     }
-  });
-}
+  </style>
+</head>
 
-onAuthStateChanged(auth, user => {
-  if (isAllowedAdmin(user)) {
-    currentUser = user;
+<body class="admin-page-body brand-refresh">
 
-    if (userInfo) {
-      const adminName = user.email === "olegivanchik1234@gmail.com"
-        ? "Олег Іванчик"
-        : "Адміністратор";
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <span class="brand-icon">PC</span>
+    <span>
+      <strong>Райський Сад</strong>
+      <small>Адмін-панель</small>
+    </span>
+  </a>
 
-      userInfo.innerHTML = `👤 ${escapeHtml(adminName)}`;
-    }
+  <nav class="nav">
+    <a href="index.html">🏠 Головна</a>
+    <a href="leads.html">📋 CRM</a>
+    <a href="dashboard.html">👤 Кабінет</a>
+    <a href="favorites.html">❤️ Обране</a>
+  </nav>
+</header>
 
-    if (loginBtn) {
-      loginBtn.textContent = "Вийти";
-    }
+<main class="admin-layout">
 
-    loadObjectForEdit();
+  <section class="admin-panel">
+    <span class="section-label">Адміністрування</span>
+    <h1 id="formTitle">Додати обʼєкт нерухомості</h1>
 
-    return;
-  }
-
-  currentUser = null;
-
-  if (user && !isAllowedAdmin(user)) {
-    if (userInfo) {
-      userInfo.innerHTML = `⛔ Немає доступу для ${escapeHtml(user.email || "цього акаунта")}`;
-    }
-
-    if (loginBtn) {
-      loginBtn.textContent = "Вийти";
-    }
-
-    return;
-  }
-
-  if (userInfo) {
-    userInfo.innerHTML = "❌ Не авторизований";
-  }
-
-  if (loginBtn) {
-    loginBtn.textContent = "Увійти через Google";
-  }
-});
-
-/* ================================
-   FORM VISIBILITY
-================================ */
-
-window.toggleFormFields = function() {
-  const dealType = value("dealType") || "sale";
-  const propertyType = value("propertyType") || "apartment";
-
-  const blocks = [
-    "rentFields",
-    "apartmentFields",
-    "houseFields",
-    "landFields",
-    "garageFields",
-    "commercialFields",
-    "commercialTypeBox"
-  ];
-
-  blocks.forEach(id => {
-    const el = $(id);
-
-    if (el) {
-      el.classList.remove("active");
-    }
-  });
-
-  if (dealType === "rent") {
-    $("rentFields")?.classList.add("active");
-  }
-
-  if (propertyType === "apartment") {
-    $("apartmentFields")?.classList.add("active");
-  }
-
-  if (propertyType === "house") {
-    $("houseFields")?.classList.add("active");
-  }
-
-  if (propertyType === "land") {
-    $("landFields")?.classList.add("active");
-  }
-
-  if (propertyType === "garage") {
-    $("garageFields")?.classList.add("active");
-  }
-
-  if (propertyType === "commercial") {
-    $("commercialTypeBox")?.classList.add("active");
-    $("commercialFields")?.classList.add("active");
-  }
-
-  if (propertyType !== "commercial" && $("commercialType")) {
-    $("commercialType").value = "";
-  }
-};
-
-/* ================================
-   FILES / PHOTO MANAGER
-================================ */
-
-function validateFiles(files) {
-  if (files.length > 10) {
-    alert("Можна додати максимум 10 фото.");
-    return false;
-  }
-
-  for (const file of files) {
-    if (!file.type.startsWith("image/")) {
-      alert(`Файл "${file.name}" не є зображенням.`);
-      return false;
-    }
-
-    if (file.size > 10 * 1024 * 1024) {
-      alert(`Фото "${file.name}" більше 10 МБ. Зменшіть розмір фото.`);
-      return false;
-    }
-  }
-
-  return true;
-}
-
-function renderPhotoManager() {
-  if (!photoManager) {
-    return;
-  }
-
-  if (!currentImageUrls.length) {
-    photoManager.innerHTML = `
-      <div class="photo-empty">
-        Поточних фото ще немає. Додайте нові фото нижче.
-      </div>
-    `;
-    return;
-  }
-
-  photoManager.innerHTML = currentImageUrls.map((url, index) => `
-    <div class="photo-manager-item">
-      <div class="photo-manager-img">
-        <img src="${escapeAttribute(url)}" alt="Фото ${index + 1}">
-        ${index === 0 ? `<span class="photo-main-badge">⭐ Головне</span>` : ""}
-      </div>
-
-      <div class="photo-manager-actions">
-        <button type="button" onclick="makeMainPhoto(${index})" ${index === 0 ? "disabled" : ""}>
-          ⭐ Зробити головним
-        </button>
-
-        <button type="button" onclick="movePhotoLeft(${index})" ${index === 0 ? "disabled" : ""}>
-          ⬅️ Вліво
-        </button>
-
-        <button type="button" onclick="movePhotoRight(${index})" ${index === currentImageUrls.length - 1 ? "disabled" : ""}>
-          ➡️ Вправо
-        </button>
-
-        <button class="photo-delete-btn" type="button" onclick="removePhoto(${index})">
-          🗑 Видалити
-        </button>
-      </div>
+    <div class="upload-info">
+      <strong>Вимоги до фото:</strong><br>
+      максимум 10 фото на один обʼєкт, кожне фото до 10 МБ.
+      Перше фото буде головним у каталозі.
+      У режимі редагування можна змінювати порядок фото, робити фото головним,
+      видаляти фото з оголошення та додавати нові фото.
     </div>
-  `).join("");
-}
 
-function renderNewFilesPreview() {
-  if (!preview) {
-    return;
-  }
+    <div class="admin-auth-box">
+      <div id="userInfo">❌ Не авторизований</div>
+      <button id="loginBtn" class="btn" type="button">Увійти через Google</button>
+    </div>
 
-  preview.innerHTML = "";
+    <form class="admin-form" onsubmit="addObject(event)">
 
-  selectedFiles.forEach((file, index) => {
-    const reader = new FileReader();
+      <label for="title">Назва обʼєкта</label>
+      <input id="title" type="text" placeholder="Наприклад: 1-кімнатна квартира в Ірпені" required>
 
-    reader.onload = event => {
-      const item = document.createElement("div");
-      item.className = "preview-item";
+      <div class="admin-row">
+        <div>
+          <label for="dealType">Тип угоди</label>
+          <select id="dealType" required onchange="toggleFormFields()">
+            <option value="sale">Продаж</option>
+            <option value="rent">Оренда</option>
+          </select>
+        </div>
 
-      item.innerHTML = `
-        <img src="${escapeAttribute(event.target.result)}" alt="Нове фото ${index + 1}">
-        <span>+${index + 1}</span>
-      `;
+        <div>
+          <label for="propertyType">Тип нерухомості</label>
+          <select id="propertyType" required onchange="toggleFormFields()">
+            <option value="apartment">Квартира</option>
+            <option value="house">Будинок</option>
+            <option value="land">Земельна ділянка</option>
+            <option value="garage">Гараж</option>
+            <option value="commercial">Комерція</option>
+          </select>
+        </div>
+      </div>
 
-      preview.appendChild(item);
-    };
+      <div id="commercialTypeBox" class="type-fields">
+        <label for="commercialType">Підтип комерції</label>
+        <select id="commercialType" onchange="toggleFormFields()">
+          <option value="">Не вибрано</option>
+          <option value="office">Офіс</option>
+          <option value="hangar">Ангар</option>
+          <option value="warehouse">Склад</option>
+          <option value="shop">Магазин</option>
+          <option value="production">Виробниче приміщення</option>
+          <option value="other">Інше</option>
+        </select>
+      </div>
 
-    reader.readAsDataURL(file);
-  });
-}
+      <div class="admin-row">
+        <div>
+          <label for="price">Ціна</label>
+          <input id="price" type="number" min="0" placeholder="Продаж: $, оренда: грн" required>
+        </div>
 
-window.makeMainPhoto = function(index) {
-  if (index <= 0 || index >= currentImageUrls.length) {
-    return;
-  }
+        <div>
+          <label for="address">Публічна локація</label>
+          <input id="address" type="text" placeholder="Ірпінь, вул. Соборна, 10">
 
-  const [photo] = currentImageUrls.splice(index, 1);
-  currentImageUrls.unshift(photo);
+          <button
+            id="geoFindBtn"
+            class="cta-outline"
+            type="button"
+            onclick="geocodeAddress()"
+            style="margin-top:10px;width:100%;"
+          >
+            📍 Знайти на карті
+          </button>
 
-  renderPhotoManager();
-};
+          <p id="geoStatus" class="photo-hint" style="margin-top:8px;">
+            Введіть адресу або вулицю та натисніть “Знайти на карті”.
+          </p>
+        </div>
+      </div>
 
-window.movePhotoLeft = function(index) {
-  if (index <= 0 || index >= currentImageUrls.length) {
-    return;
-  }
+      <div id="rentFields" class="admin-section type-fields">
+        <h3>Умови оренди</h3>
 
-  [currentImageUrls[index - 1], currentImageUrls[index]] =
-    [currentImageUrls[index], currentImageUrls[index - 1]];
+        <div class="admin-row">
+          <div>
+            <label for="rentPeriod">Період оплати</label>
+            <select id="rentPeriod">
+              <option value="month">За місяць</option>
+              <option value="day">За добу</option>
+              <option value="year">За рік</option>
+              <option value="sqm_month">За м² / місяць</option>
+              <option value="sotka_month">За сотку / місяць</option>
+              <option value="negotiable">Договірна</option>
+            </select>
+          </div>
 
-  renderPhotoManager();
-};
+          <div>
+            <label for="utilitiesIncluded">Комунальні платежі</label>
+            <select id="utilitiesIncluded">
+              <option value="not_included">Окремо</option>
+              <option value="included">Включені</option>
+              <option value="partial">Частково включені</option>
+              <option value="negotiable">Договірно</option>
+            </select>
+          </div>
+        </div>
 
-window.movePhotoRight = function(index) {
-  if (index < 0 || index >= currentImageUrls.length - 1) {
-    return;
-  }
+        <div class="admin-row">
+          <div>
+            <label for="deposit">Застава</label>
+            <input id="deposit" type="number" min="0" placeholder="Наприклад: 15000">
+          </div>
 
-  [currentImageUrls[index], currentImageUrls[index + 1]] =
-    [currentImageUrls[index + 1], currentImageUrls[index]];
+          <div>
+            <label for="commission">Комісія</label>
+            <input id="commission" type="text" placeholder="Наприклад: 50% або без комісії">
+          </div>
+        </div>
 
-  renderPhotoManager();
-};
+        <div class="admin-row">
+          <div>
+            <label for="minTerm">Мінімальний строк оренди</label>
+            <input id="minTerm" type="text" placeholder="Наприклад: 6 місяців">
+          </div>
 
-window.removePhoto = function(index) {
-  if (index < 0 || index >= currentImageUrls.length) {
-    return;
-  }
+          <div>
+            <label for="availableFrom">Доступно з</label>
+            <input id="availableFrom" type="date">
+          </div>
+        </div>
 
-  if (!confirm("Видалити це фото з оголошення?")) {
-    return;
-  }
+        <div class="admin-row">
+          <label class="admin-check">
+            <input id="childrenAllowed" type="checkbox">
+            Можна з дітьми
+          </label>
 
-  currentImageUrls.splice(index, 1);
+          <label class="admin-check">
+            <input id="petsAllowed" type="checkbox">
+            Можна з тваринами
+          </label>
+        </div>
+      </div>
 
-  renderPhotoManager();
-};
+      <div id="apartmentFields" class="admin-section type-fields">
+        <h3>Характеристики квартири</h3>
 
-if (fileInput) {
-  fileInput.addEventListener("change", () => {
-    const files = Array.from(fileInput.files || []);
+        <div class="admin-row-3">
+          <div>
+            <label for="apTotalArea">Загальна площа, м²</label>
+            <input id="apTotalArea" type="number" step="0.1" min="0">
+          </div>
 
-    if (!validateFiles(files)) {
-      fileInput.value = "";
-      selectedFiles = [];
-      renderNewFilesPreview();
-      return;
+          <div>
+            <label for="apLivingArea">Житлова площа, м²</label>
+            <input id="apLivingArea" type="number" step="0.1" min="0">
+          </div>
+
+          <div>
+            <label for="apKitchenArea">Кухня, м²</label>
+            <input id="apKitchenArea" type="number" step="0.1" min="0">
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="apRooms">Кімнат</label>
+            <input id="apRooms" type="number" min="0">
+          </div>
+
+          <div>
+            <label for="apFloor">Поверх</label>
+            <input id="apFloor" type="number">
+          </div>
+
+          <div>
+            <label for="apFloorsTotal">Поверховість</label>
+            <input id="apFloorsTotal" type="number" min="0">
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <div>
+            <label for="apLayout">Планування</label>
+            <select id="apLayout">
+              <option value="">Не вказано</option>
+              <option value="separate">Окрема</option>
+              <option value="adjacent">Суміжна</option>
+              <option value="mixed">Суміжно-роздільна</option>
+              <option value="studio">Студія</option>
+              <option value="free">Вільне планування</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="apCondition">Стан</label>
+            <select id="apCondition">
+              <option value="">Не вказано</option>
+              <option value="living">Житловий</option>
+              <option value="renovated">Після ремонту</option>
+              <option value="euro">Євроремонт</option>
+              <option value="needs_repair">Під ремонт</option>
+              <option value="builder">Після будівельників</option>
+              <option value="no_repair">Без ремонту</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="apBathroomType">Санвузол</label>
+            <select id="apBathroomType">
+              <option value="">Не вказано</option>
+              <option value="combined">Суміжний</option>
+              <option value="separate">Роздільний</option>
+              <option value="multiple">Декілька санвузлів</option>
+              <option value="none">Немає</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="apBathFeature">Ванна / душова</label>
+            <select id="apBathFeature">
+              <option value="">Не вказано</option>
+              <option value="bath">Ванна</option>
+              <option value="shower">Душова</option>
+              <option value="both">Ванна + душова</option>
+              <option value="none">Без ванни / душової</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="apBathroomsCount">Кількість санвузлів</label>
+            <input id="apBathroomsCount" type="number" min="0">
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="apBalcony">Балкон / лоджія</label>
+            <select id="apBalcony">
+              <option value="">Не вказано</option>
+              <option value="none">Немає</option>
+              <option value="balcony">Балкон</option>
+              <option value="loggia">Лоджія</option>
+              <option value="both">Балкон + лоджія</option>
+              <option value="terrace">Тераса</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="apBuildingType">Тип будинку</label>
+            <select id="apBuildingType">
+              <option value="">Не вказано</option>
+              <option value="brick">Цегляний</option>
+              <option value="panel">Панельний</option>
+              <option value="monolith">Монолітний</option>
+              <option value="gasblock">Газоблок</option>
+              <option value="new_building">Новобудова</option>
+              <option value="stalinka">Сталінка</option>
+              <option value="hrushchovka">Хрущовка</option>
+              <option value="czech">Чешка</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="apHeating">Опалення</label>
+            <select id="apHeating">
+              <option value="">Не вказано</option>
+              <option value="individual">Індивідуальне</option>
+              <option value="central">Центральне</option>
+              <option value="electric">Електричне</option>
+              <option value="gas">Газове</option>
+              <option value="none">Немає</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <div>
+            <label for="apBuildYear">Рік побудови</label>
+            <input id="apBuildYear" type="number" min="1800" max="2100">
+          </div>
+
+          <div>
+            <label for="apElevator">Ліфт</label>
+            <select id="apElevator">
+              <option value="">Не вказано</option>
+              <option value="yes">Є</option>
+              <option value="no">Немає</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="apFurniture">Меблі</label>
+          <select id="apFurniture">
+            <option value="">Не вказано</option>
+            <option value="yes">Мебльована</option>
+            <option value="partial">Частково мебльована</option>
+            <option value="no">Без меблів</option>
+          </select>
+        </div>
+
+        <label>Техніка</label>
+        <div class="checkbox-grid">
+          <label class="admin-check"><input type="checkbox" name="appliances" value="fridge"> Холодильник</label>
+          <label class="admin-check"><input type="checkbox" name="appliances" value="washer"> Пральна машина</label>
+          <label class="admin-check"><input type="checkbox" name="appliances" value="conditioner"> Кондиціонер</label>
+          <label class="admin-check"><input type="checkbox" name="appliances" value="dishwasher"> Посудомийка</label>
+          <label class="admin-check"><input type="checkbox" name="appliances" value="internet"> Інтернет</label>
+        </div>
+      </div>
+
+      <div id="houseFields" class="admin-section type-fields">
+        <h3>Характеристики будинку</h3>
+
+        <div class="admin-row">
+          <div>
+            <label for="houseType">Тип будинку</label>
+            <select id="houseType">
+              <option value="">Не вказано</option>
+              <option value="house">Будинок</option>
+              <option value="half_house">Півбудинку</option>
+              <option value="townhouse">Таунхаус</option>
+              <option value="duplex">Дуплекс</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="houseCondition">Стан</label>
+            <select id="houseCondition">
+              <option value="">Не вказано</option>
+              <option value="living">Житловий</option>
+              <option value="renovated">Після ремонту</option>
+              <option value="needs_repair">Під ремонт</option>
+              <option value="builder">Після будівельників</option>
+              <option value="unfinished">Недобудова</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="houseArea">Площа будинку, м²</label>
+            <input id="houseArea" type="number" step="0.1" min="0">
+          </div>
+
+          <div>
+            <label for="houseLandArea">Площа ділянки, соток</label>
+            <input id="houseLandArea" type="number" step="0.01" min="0">
+          </div>
+
+          <div>
+            <label for="houseRooms">Кімнат</label>
+            <input id="houseRooms" type="number" min="0">
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="houseFloors">Поверхів</label>
+            <input id="houseFloors" type="number" min="0">
+          </div>
+
+          <div>
+            <label for="houseWalls">Стіни</label>
+            <input id="houseWalls" type="text" placeholder="Цегла, газоблок...">
+          </div>
+
+          <div>
+            <label for="houseDocuments">Документи</label>
+            <select id="houseDocuments">
+              <option value="">Не вказано</option>
+              <option value="ownership">Право власності</option>
+              <option value="inheritance">Спадщина</option>
+              <option value="contract">Договір</option>
+              <option value="in_progress">В процесі оформлення</option>
+              <option value="other">Інше</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="houseBathroomType">Санвузол</label>
+            <select id="houseBathroomType">
+              <option value="">Не вказано</option>
+              <option value="combined">Суміжний</option>
+              <option value="separate">Роздільний</option>
+              <option value="multiple">Декілька санвузлів</option>
+              <option value="outdoor">На вулиці</option>
+              <option value="none">Немає</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="houseBathFeature">Ванна / душова</label>
+            <select id="houseBathFeature">
+              <option value="">Не вказано</option>
+              <option value="bath">Ванна</option>
+              <option value="shower">Душова</option>
+              <option value="both">Ванна + душова</option>
+              <option value="none">Без ванни / душової</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="houseBathroomsCount">Кількість санвузлів</label>
+            <input id="houseBathroomsCount" type="number" min="0">
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="houseHeating">Опалення</label>
+            <select id="houseHeating">
+              <option value="">Не вказано</option>
+              <option value="gas">Газове</option>
+              <option value="electric">Електричне</option>
+              <option value="solid_fuel">Твердопаливне</option>
+              <option value="combined">Комбіноване</option>
+              <option value="none">Немає</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="houseWater">Вода</label>
+            <select id="houseWater">
+              <option value="">Не вказано</option>
+              <option value="central">Центральна</option>
+              <option value="well">Свердловина</option>
+              <option value="well_yard">Колодязь</option>
+              <option value="none">Немає</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="houseSewerage">Каналізація</label>
+            <select id="houseSewerage">
+              <option value="">Не вказано</option>
+              <option value="central">Центральна</option>
+              <option value="septic">Септик</option>
+              <option value="cesspool">Вигрібна яма</option>
+              <option value="none">Немає</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <label class="admin-check"><input id="houseElectricity" type="checkbox"> Електрика</label>
+          <label class="admin-check"><input id="houseGas" type="checkbox"> Газ</label>
+        </div>
+
+        <div class="admin-row">
+          <label class="admin-check"><input id="houseParking" type="checkbox"> Паркування</label>
+          <label class="admin-check"><input id="houseGarageIncluded" type="checkbox"> Гараж</label>
+        </div>
+      </div>
+
+      <div id="landFields" class="admin-section type-fields">
+        <h3>Характеристики земельної ділянки</h3>
+
+        <div class="admin-row">
+          <div>
+            <label for="landArea">Площа ділянки, соток</label>
+            <input id="landArea" type="number" step="0.01" min="0">
+          </div>
+
+          <div>
+            <label for="landDocuments">Документи</label>
+            <select id="landDocuments">
+              <option value="">Не вказано</option>
+              <option value="ownership">Право власності</option>
+              <option value="lease">Оренда</option>
+              <option value="act">Державний акт</option>
+              <option value="in_progress">В процесі оформлення</option>
+              <option value="other">Інше</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="landPurpose">Цільове призначення</label>
+        <select id="landPurpose">
+          <option value="">Не вибрано</option>
+          <option value="02.01|Для будівництва і обслуговування житлового будинку">02.01 — Для будівництва і обслуговування житлового будинку</option>
+          <option value="02.03|Для будівництва і обслуговування багатоквартирного житлового будинку">02.03 — Для будівництва і обслуговування багатоквартирного житлового будинку</option>
+          <option value="01.03|Для ведення особистого селянського господарства">01.03 — Для ведення особистого селянського господарства</option>
+          <option value="01.05|Для індивідуального садівництва">01.05 — Для індивідуального садівництва</option>
+          <option value="01.06|Для колективного садівництва">01.06 — Для колективного садівництва</option>
+          <option value="01.01|Для ведення товарного сільськогосподарського виробництва">01.01 — Для ведення товарного сільськогосподарського виробництва</option>
+          <option value="02.05|Для індивідуального гаражного будівництва">02.05 — Для індивідуального гаражного будівництва</option>
+          <option value="03.07|Для будівництва та обслуговування будівель торгівлі">03.07 — Для будівництва та обслуговування будівель торгівлі</option>
+          <option value="11.02|Для розміщення та експлуатації будівель промисловості">11.02 — Для промисловості / виробничих обʼєктів</option>
+          <option value="custom|Інше">Інше — вказати вручну</option>
+        </select>
+
+        <label for="landPurposeNote">Уточнення цільового призначення</label>
+        <input id="landPurposeNote" type="text" placeholder="Наприклад: присадибна ділянка, ОСГ, можлива зміна...">
+
+        <div class="admin-row">
+          <div>
+            <label for="landFrontage">Фасад</label>
+            <input id="landFrontage" type="text" placeholder="Наприклад: 20 м">
+          </div>
+
+          <div>
+            <label for="landUtilitiesNearby">Комунікації поруч</label>
+            <input id="landUtilitiesNearby" type="text" placeholder="Світло, газ, вода поруч">
+          </div>
+        </div>
+      </div>
+
+      <div id="garageFields" class="admin-section type-fields">
+        <h3>Характеристики гаража</h3>
+
+        <div class="admin-row">
+          <div>
+            <label for="garageArea">Площа, м²</label>
+            <input id="garageArea" type="number" step="0.1" min="0">
+          </div>
+
+          <div>
+            <label for="garageType">Тип гаража</label>
+            <select id="garageType">
+              <option value="">Не вказано</option>
+              <option value="capital">Капітальний</option>
+              <option value="metal">Металевий</option>
+              <option value="parking_place">Паркомісце</option>
+              <option value="underground">Підземний паркінг</option>
+              <option value="box">Бокс</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <label class="admin-check"><input id="garagePit" type="checkbox"> Яма</label>
+          <label class="admin-check"><input id="garageCellar" type="checkbox"> Погріб</label>
+        </div>
+
+        <div class="admin-row">
+          <label class="admin-check"><input id="garageElectricity" type="checkbox"> Електрика</label>
+          <label class="admin-check"><input id="garageSecurity" type="checkbox"> Охорона / відеонагляд</label>
+        </div>
+
+        <div class="admin-row">
+          <div>
+            <label for="garageGateType">Ворота</label>
+            <input id="garageGateType" type="text" placeholder="Автоматичні, металеві...">
+          </div>
+
+          <div>
+            <label for="garageCondition">Стан</label>
+            <select id="garageCondition">
+              <option value="">Не вказано</option>
+              <option value="good">Добрий</option>
+              <option value="normal">Задовільний</option>
+              <option value="needs_repair">Потребує ремонту</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="commercialFields" class="admin-section type-fields">
+        <h3>Характеристики комерції / офісу</h3>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="commercialArea">Площа, м²</label>
+            <input id="commercialArea" type="number" step="0.1" min="0">
+          </div>
+
+          <div>
+            <label for="commercialFloor">Поверх</label>
+            <input id="commercialFloor" type="number">
+          </div>
+
+          <div>
+            <label for="commercialFloorsTotal">Поверховість будівлі</label>
+            <input id="commercialFloorsTotal" type="number" min="0">
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <div>
+            <label for="commercialRooms">Кабінетів / приміщень</label>
+            <input id="commercialRooms" type="number" min="0">
+          </div>
+
+          <div>
+            <label for="commercialCondition">Стан</label>
+            <select id="commercialCondition">
+              <option value="">Не вказано</option>
+              <option value="renovated">Після ремонту</option>
+              <option value="office">Офісний стан</option>
+              <option value="needs_repair">Під ремонт</option>
+              <option value="shell">Без ремонту</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <div>
+            <label for="commercialLayout">Планування</label>
+            <select id="commercialLayout">
+              <option value="">Не вказано</option>
+              <option value="cabinet">Кабінетна система</option>
+              <option value="open_space">Open space</option>
+              <option value="mixed">Змішане</option>
+              <option value="free">Вільне</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="commercialEntrance">Вхід</label>
+            <select id="commercialEntrance">
+              <option value="">Не вказано</option>
+              <option value="separate">Окремий</option>
+              <option value="common">Загальний</option>
+              <option value="street">З фасаду / з вулиці</option>
+              <option value="yard">З двору</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="commercialBathroom">Санвузол</label>
+            <select id="commercialBathroom">
+              <option value="">Не вказано</option>
+              <option value="yes">Є</option>
+              <option value="no">Немає</option>
+              <option value="shared">Спільний</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="commercialHeating">Опалення</label>
+            <select id="commercialHeating">
+              <option value="">Не вказано</option>
+              <option value="central">Центральне</option>
+              <option value="individual">Індивідуальне</option>
+              <option value="electric">Електричне</option>
+              <option value="none">Немає</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="commercialPower">Потужність електрики</label>
+            <input id="commercialPower" type="text" placeholder="Наприклад: 15 кВт">
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <label class="admin-check"><input id="commercialInternet" type="checkbox"> Інтернет</label>
+          <label class="admin-check"><input id="commercialParking" type="checkbox"> Паркування</label>
+        </div>
+
+        <div class="admin-row">
+          <label class="admin-check"><input id="commercialSecurity" type="checkbox"> Охорона</label>
+          <label class="admin-check"><input id="commercialAccess24" type="checkbox"> Доступ 24/7</label>
+        </div>
+      </div>
+
+      <div class="admin-section">
+        <h3>Опис і карта</h3>
+
+        <label for="description">Детальний опис</label>
+        <textarea id="description" placeholder="Опишіть переваги обʼєкта, стан, комунікації, документи, інфраструктуру..."></textarea>
+
+        <div class="admin-row">
+          <div>
+            <label for="lat">Широта</label>
+            <input id="lat" type="number" step="any" placeholder="50.5215">
+          </div>
+
+          <div>
+            <label for="lng">Довгота</label>
+            <input id="lng" type="number" step="any" placeholder="30.2506">
+          </div>
+        </div>
+
+        <div id="mapPreviewBox" class="map-preview-box">
+          <label>Попередній перегляд на карті</label>
+
+          <iframe
+            id="mapPreview"
+            class="map-preview-frame"
+            title="Попередній перегляд карти"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+
+          <p class="photo-hint">
+            Якщо мітка стала неточно — уточніть адресу або вручну змініть широту/довготу.
+          </p>
+        </div>
+      </div>
+
+      <div class="admin-section">
+        <h3>Службова інформація — не показується клієнту</h3>
+
+        <div class="admin-row">
+          <div>
+            <label for="exactStreet">Точна вулиця</label>
+            <input id="exactStreet" type="text" placeholder="Не показується клієнту">
+          </div>
+
+          <div>
+            <label for="exactHouseNumber">Номер будинку</label>
+            <input id="exactHouseNumber" type="text" placeholder="Не показується клієнту">
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <div>
+            <label for="exactApartmentNumber">Номер квартири</label>
+            <input id="exactApartmentNumber" type="text" placeholder="Не показується клієнту">
+          </div>
+
+          <div>
+            <label for="cadastralNumber">Кадастровий номер</label>
+            <input id="cadastralNumber" type="text" placeholder="Тільки для адмінки">
+          </div>
+        </div>
+
+        <label for="ownerContacts">Контакти власника</label>
+        <input id="ownerContacts" type="text" placeholder="Телефон / примітка, не показується клієнту">
+
+        <label for="internalComment">Внутрішній коментар</label>
+        <textarea id="internalComment" placeholder="Службова інформація для агентства"></textarea>
+      </div>
+
+      <div class="admin-row">
+        <label class="admin-check">
+          <input id="vip" type="checkbox">
+          VIP обʼєкт
+        </label>
+
+        <label class="admin-check">
+          <input id="sold" type="checkbox">
+          Позначити як продано
+        </label>
+      </div>
+
+      <div class="admin-section">
+        <h3>Фото обʼєкта</h3>
+
+        <p class="photo-hint">
+          Перше фото у списку буде головним у каталозі.
+          Ви можете змінювати порядок фото, робити фото головним,
+          видаляти фото з оголошення та додавати нові фото з компʼютера або телефона.
+        </p>
+
+        <div id="photoManager" class="photo-manager-grid">
+          <!-- Сюди admin.js підставить поточні фото обʼєкта -->
+        </div>
+
+        <label for="file">Додати нові фото</label>
+        <input id="file" type="file" accept="image/*" multiple>
+
+        <div id="preview" class="preview-grid">
+          <!-- Сюди admin.js покаже нові вибрані фото перед збереженням -->
+        </div>
+      </div>
+
+      <div id="progressBox" class="progress-box">
+        Збереження обʼєкта... Будь ласка, не закривайте сторінку.
+      </div>
+
+      <div class="admin-actions">
+        <button id="submitBtn" class="cta-big" type="submit">✅ Додати обʼєкт</button>
+        <button class="cta-outline" type="button" onclick="clearForm()">Очистити форму</button>
+      </div>
+
+    </form>
+  </section>
+
+  <aside>
+    <div class="admin-help-card">
+      <h3>Що буде створено?</h3>
+      <p>
+        Після додавання обʼєкт автоматично зʼявиться на головній сторінці
+        в базі нерухомості.
+      </p>
+      <ul>
+        <li>Фото збережуться у Firebase Storage</li>
+        <li>Дані обʼєкта — у Firestore</li>
+        <li>VIP-обʼєкти показуються першими</li>
+        <li>Детальна сторінка відкривається по кліку на картку</li>
+      </ul>
+    </div>
+
+    <div class="admin-help-card">
+      <h3>Адреса та карта</h3>
+      <p>
+        Введіть публічну локацію або точну службову адресу, натисніть
+        «Знайти на карті», і система автоматично заповнить широту та довготу.
+      </p>
+      <ul>
+        <li>Публічна локація може бути приблизною</li>
+        <li>Точна адреса зберігається тільки для агентства</li>
+        <li>Координати можна поправити вручну</li>
+      </ul>
+    </div>
+
+    <div class="admin-help-card">
+      <h3>Редагування фото</h3>
+      <p>
+        Якщо Ви відкрили обʼєкт через кнопку «Редагувати», адмінка підтягне
+        всі поточні фото у вигляді карток.
+      </p>
+      <ul>
+        <li>Перша картка — головне фото</li>
+        <li>Можна зробити будь-яке фото головним</li>
+        <li>Можна рухати фото вліво або вправо</li>
+        <li>Можна видаляти фото з оголошення</li>
+        <li>Можна додавати нові фото з компʼютера або телефона</li>
+      </ul>
+    </div>
+
+    <div class="admin-help-card">
+      <h3>Логіка форми</h3>
+      <p>
+        Спочатку оберіть тип угоди: продаж або оренда.
+        Потім оберіть тип нерухомості — форма покаже потрібні поля.
+      </p>
+      <p>
+        Кадастровий номер, точна адреса і контакти власника зберігаються
+        тільки для агентства і не показуються клієнтам.
+      </p>
+    </div>
+
+    <div class="admin-help-card">
+      <h3>Контакти компанії</h3>
+      <p>
+        На сторінці кожного обʼєкта автоматично будуть кнопки:
+        телефон, Telegram, Viber та чат.
+      </p>
+      <p><strong>Телефон:</strong> 0953777196</p>
+    </div>
+  </aside>
+
+</main>
+
+<script type="module" src="admin.js?v=4"></script>
+
+</body>
+</html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Адмін — АН «Райський Сад»</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .admin-layout {
+      max-width: 1200px;
+      margin: 28px auto 34px;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 1fr 0.78fr;
+      gap: 22px;
     }
 
-    if (currentImageUrls.length + files.length > 10) {
-      alert("Разом можна мати максимум 10 фото на один обʼєкт.");
-      fileInput.value = "";
-      selectedFiles = [];
-      renderNewFilesPreview();
-      return;
+    .admin-panel {
+      background:
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.22);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.34);
     }
 
-    selectedFiles = files;
-    renderNewFilesPreview();
-  });
-}
-
-/* ================================
-   BUILD DATA
-================================ */
-
-function getPurposeData() {
-  const raw = value("landPurpose");
-
-  if (!raw) {
-    return {
-      purposeCode: "",
-      purposeName: "",
-      purposeNote: value("landPurposeNote")
-    };
-  }
-
-  const [code, name] = raw.split("|");
-
-  return {
-    purposeCode: code || "",
-    purposeName: name || "",
-    purposeNote: value("landPurposeNote")
-  };
-}
-
-function buildRentData(dealType) {
-  if (dealType !== "rent") {
-    return null;
-  }
-
-  return {
-    pricePeriod: value("rentPeriod"),
-    utilitiesIncluded: value("utilitiesIncluded"),
-    deposit: numberValue("deposit"),
-    commission: value("commission"),
-    minTerm: value("minTerm"),
-    availableFrom: value("availableFrom"),
-    childrenAllowed: checked("childrenAllowed"),
-    petsAllowed: checked("petsAllowed")
-  };
-}
-
-function buildApartmentData() {
-  return {
-    totalArea: numberValue("apTotalArea"),
-    livingArea: numberValue("apLivingArea"),
-    kitchenArea: numberValue("apKitchenArea"),
-    rooms: numberValue("apRooms"),
-    floor: numberValue("apFloor"),
-    floorsTotal: numberValue("apFloorsTotal"),
-    layout: value("apLayout"),
-    bathroomType: value("apBathroomType"),
-    bathFeature: value("apBathFeature"),
-    bathroomsCount: numberValue("apBathroomsCount"),
-    balcony: value("apBalcony"),
-    buildingType: value("apBuildingType"),
-    buildYear: numberValue("apBuildYear"),
-    elevator: value("apElevator"),
-    heating: value("apHeating"),
-    condition: value("apCondition"),
-    furniture: value("apFurniture"),
-    appliances: selectedCheckboxes("appliances")
-  };
-}
-
-function buildHouseData() {
-  return {
-    houseType: value("houseType"),
-    houseArea: numberValue("houseArea"),
-    landArea: numberValue("houseLandArea"),
-    rooms: numberValue("houseRooms"),
-    floors: numberValue("houseFloors"),
-    walls: value("houseWalls"),
-    documents: value("houseDocuments"),
-    bathroomType: value("houseBathroomType"),
-    bathFeature: value("houseBathFeature"),
-    bathroomsCount: numberValue("houseBathroomsCount"),
-    heating: value("houseHeating"),
-    water: value("houseWater"),
-    sewerage: value("houseSewerage"),
-    electricity: checked("houseElectricity"),
-    gas: checked("houseGas"),
-    parking: checked("houseParking"),
-    garageIncluded: checked("houseGarageIncluded"),
-    condition: value("houseCondition")
-  };
-}
-
-function buildLandData() {
-  return {
-    landArea: numberValue("landArea"),
-    documents: value("landDocuments"),
-    ...getPurposeData(),
-    frontage: value("landFrontage"),
-    utilitiesNearby: value("landUtilitiesNearby")
-  };
-}
-
-function buildGarageData() {
-  return {
-    area: numberValue("garageArea"),
-    garageType: value("garageType"),
-    pit: checked("garagePit"),
-    cellar: checked("garageCellar"),
-    electricity: checked("garageElectricity"),
-    security: checked("garageSecurity"),
-    gateType: value("garageGateType"),
-    condition: value("garageCondition")
-  };
-}
-
-function buildCommercialData() {
-  return {
-    commercialType: value("commercialType"),
-    area: numberValue("commercialArea"),
-    floor: numberValue("commercialFloor"),
-    floorsTotal: numberValue("commercialFloorsTotal"),
-    rooms: numberValue("commercialRooms"),
-    condition: value("commercialCondition"),
-    layout: value("commercialLayout"),
-    entrance: value("commercialEntrance"),
-    bathroom: value("commercialBathroom"),
-    heating: value("commercialHeating"),
-    power: value("commercialPower"),
-    internet: checked("commercialInternet"),
-    parking: checked("commercialParking"),
-    security: checked("commercialSecurity"),
-    access24: checked("commercialAccess24")
-  };
-}
-
-function buildPrivateData() {
-  return {
-    exactStreet: value("exactStreet"),
-    exactHouseNumber: value("exactHouseNumber"),
-    exactApartmentNumber: value("exactApartmentNumber"),
-    cadastralNumber: value("cadastralNumber"),
-    ownerContacts: value("ownerContacts"),
-    internalComment: value("internalComment")
-  };
-}
-
-function buildAreaLabel(propertyType, data) {
-  if (propertyType === "apartment") {
-    const total = data.apartment?.totalArea;
-    return total ? `${total} м²` : "-";
-  }
-
-  if (propertyType === "house") {
-    const houseArea = data.house?.houseArea;
-    const landArea = data.house?.landArea;
-
-    if (houseArea && landArea) {
-      return `${houseArea} м² / ${landArea} сот.`;
-    }
-
-    if (houseArea) {
-      return `${houseArea} м²`;
-    }
-
-    if (landArea) {
-      return `${landArea} сот.`;
-    }
-
-    return "-";
-  }
-
-  if (propertyType === "land") {
-    const landArea = data.land?.landArea;
-    return landArea ? `${landArea} сот.` : "-";
-  }
-
-  if (propertyType === "garage") {
-    const area = data.garage?.area;
-    return area ? `${area} м²` : "-";
-  }
-
-  if (propertyType === "commercial") {
-    const area = data.commercial?.area;
-    return area ? `${area} м²` : "-";
-  }
-
-  return "-";
-}
-
-/* ================================
-   UPLOAD
-================================ */
-
-async function uploadSelectedFiles() {
-  const imageUrls = [];
-
-  for (const file of selectedFiles) {
-    const safeName = file.name.replace(/[^\wа-яА-ЯіїєґІЇЄҐ.-]/g, "_");
-    const fileName = `${Date.now()}_${crypto.randomUUID()}_${safeName}`;
-    const storageRef = ref(storage, `objects/${currentUser.uid}/${fileName}`);
-
-    await uploadBytes(storageRef, file);
-
-    const url = await getDownloadURL(storageRef);
-    imageUrls.push(url);
-  }
-
-  return imageUrls;
-}
-
-/* ================================
-   SAVE OBJECT
-================================ */
-
-window.addObject = async function(event) {
-  if (event) {
-    event.preventDefault();
-  }
-
-  if (!currentUser) {
-    alert("Спочатку увійдіть через Google акаунтом адміністратора.");
-    return;
-  }
-
-  const title = value("title");
-  const price = numberValue("price");
-  const address = value("address");
-  const description = value("description");
-
-  const dealType = value("dealType") || "sale";
-  const propertyType = value("propertyType") || "apartment";
-  const commercialType = propertyType === "commercial" ? value("commercialType") : "";
-
-  const latRaw = value("lat");
-  const lngRaw = value("lng");
-
-  const vip = checked("vip");
-  const sold = checked("sold");
-
-  const lat = latRaw ? Number(latRaw) : 50.5215;
-  const lng = lngRaw ? Number(lngRaw) : 30.2506;
-
-  if (!title) {
-    alert("Вкажіть назву обʼєкта.");
-    return;
-  }
-
-  if (!price || price <= 0) {
-    alert("Вкажіть коректну ціну.");
-    return;
-  }
-
-  if (propertyType === "commercial" && !commercialType) {
-    alert("Виберіть підтип комерції.");
-    return;
-  }
-
-  if (!validateFiles(selectedFiles)) {
-    return;
-  }
-
-  if (currentImageUrls.length + selectedFiles.length === 0) {
-    alert("Додайте хоча б одне фото.");
-    return;
-  }
-
-  if (currentImageUrls.length + selectedFiles.length > 10) {
-    alert("Можна мати максимум 10 фото на один обʼєкт.");
-    return;
-  }
-
-  const dataByType = {
-    rent: buildRentData(dealType),
-    apartment: propertyType === "apartment" ? buildApartmentData() : null,
-    house: propertyType === "house" ? buildHouseData() : null,
-    land: propertyType === "land" ? buildLandData() : null,
-    garage: propertyType === "garage" ? buildGarageData() : null,
-    commercial: propertyType === "commercial" ? buildCommercialData() : null,
-    privateData: buildPrivateData()
-  };
-
-  const area = buildAreaLabel(propertyType, dataByType);
-
-  try {
-    showProgress(true);
-
-    const uploadedImageUrls = await uploadSelectedFiles();
-    const finalImageUrls = [...currentImageUrls, ...uploadedImageUrls];
-
-    const payload = {
-      title,
-      area,
-      price,
-      address: address || "",
-      description: description || "",
-
-      dealType,
-      propertyType,
-      commercialType,
-
-      images: finalImageUrls,
-
-      lat,
-      lng,
-
-      status: sold ? "sold" : "active",
-      vip,
-
-      updatedAt: serverTimestamp()
-    };
-
-    if (dataByType.rent) {
-      payload.rent = dataByType.rent;
-    }
-
-    if (dataByType.apartment) {
-      payload.apartment = dataByType.apartment;
-    }
-
-    if (dataByType.house) {
-      payload.house = dataByType.house;
-    }
-
-    if (dataByType.land) {
-      payload.land = dataByType.land;
-    }
-
-    if (dataByType.garage) {
-      payload.garage = dataByType.garage;
-    }
-
-    if (dataByType.commercial) {
-      payload.commercial = dataByType.commercial;
-    }
-
-    payload.privateData = dataByType.privateData;
-
-    if (editObjectId) {
-      await updateDoc(doc(db, "objects", editObjectId), payload);
-
-      alert("✅ Обʼєкт успішно оновлено!");
-
-      window.location.href = "dashboard.html";
-      return;
-    }
-
-    await addDoc(collection(db, "objects"), {
-      ...payload,
-
-      ownerId: currentUser.uid,
-      ownerName: "Олег Іванчик",
-      ownerEmail: currentUser.email || "",
-
-      views: 0,
-      rating: 0,
-      ratingCount: 0,
-
-      createdAt: serverTimestamp()
-    });
-
-    alert("✅ Обʼєкт успішно створено!");
-
-    clearForm();
-  } catch (error) {
-    console.error("SAVE OBJECT ERROR:", error);
-    alert("❌ Помилка збереження обʼєкта. Перевірте Firebase Storage / Firestore правила.");
-  } finally {
-    showProgress(false);
-  }
-};
-
-/* ================================
-   LOAD OBJECT FOR EDIT
-================================ */
-
-async function loadObjectForEdit() {
-  if (!editObjectId || editLoaded || !currentUser) {
-    return;
-  }
-
-  try {
-    showProgress(true);
-
-    const snap = await getDoc(doc(db, "objects", editObjectId));
-
-    if (!snap.exists()) {
-      alert("Обʼєкт для редагування не знайдено.");
-      window.location.href = "dashboard.html";
-      return;
-    }
-
-    const data = snap.data();
-
-    editLoaded = true;
-
-    if (formTitle) {
-      formTitle.textContent = "Редагувати обʼєкт нерухомості";
-    }
-
-    if (submitBtn) {
-      submitBtn.textContent = "💾 Зберегти зміни";
-    }
-
-    if (fileInput) {
-      fileInput.required = false;
-    }
-
-    setValue("title", data.title || "");
-    setValue("dealType", data.dealType || "sale");
-    setValue("propertyType", data.propertyType || "apartment");
-    setValue("commercialType", data.commercialType || "");
-
-    setValue("price", data.price ?? "");
-    setValue("address", data.address || "");
-    setValue("description", data.description || "");
-
-    setValue("lat", data.lat ?? "");
-    setValue("lng", data.lng ?? "");
-
-    setChecked("vip", data.vip);
-    setChecked("sold", data.status === "sold");
-
-    if (data.rent) {
-      setValue("rentPeriod", data.rent.pricePeriod || "month");
-      setValue("utilitiesIncluded", data.rent.utilitiesIncluded || "not_included");
-      setValue("deposit", data.rent.deposit ?? "");
-      setValue("commission", data.rent.commission || "");
-      setValue("minTerm", data.rent.minTerm || "");
-      setValue("availableFrom", data.rent.availableFrom || "");
-      setChecked("childrenAllowed", data.rent.childrenAllowed);
-      setChecked("petsAllowed", data.rent.petsAllowed);
-    }
-
-    if (data.apartment) {
-      setValue("apTotalArea", data.apartment.totalArea ?? "");
-      setValue("apLivingArea", data.apartment.livingArea ?? "");
-      setValue("apKitchenArea", data.apartment.kitchenArea ?? "");
-      setValue("apRooms", data.apartment.rooms ?? "");
-      setValue("apFloor", data.apartment.floor ?? "");
-      setValue("apFloorsTotal", data.apartment.floorsTotal ?? "");
-      setValue("apLayout", data.apartment.layout || "");
-      setValue("apCondition", data.apartment.condition || "");
-      setValue("apBathroomType", data.apartment.bathroomType || "");
-      setValue("apBathFeature", data.apartment.bathFeature || "");
-      setValue("apBathroomsCount", data.apartment.bathroomsCount ?? "");
-      setValue("apBalcony", data.apartment.balcony || "");
-      setValue("apBuildingType", data.apartment.buildingType || "");
-      setValue("apHeating", data.apartment.heating || "");
-      setValue("apBuildYear", data.apartment.buildYear ?? "");
-      setValue("apElevator", data.apartment.elevator || "");
-      setValue("apFurniture", data.apartment.furniture || "");
-      setCheckboxes("appliances", data.apartment.appliances || []);
-    }
-
-    if (data.house) {
-      setValue("houseType", data.house.houseType || "");
-      setValue("houseCondition", data.house.condition || "");
-      setValue("houseArea", data.house.houseArea ?? "");
-      setValue("houseLandArea", data.house.landArea ?? "");
-      setValue("houseRooms", data.house.rooms ?? "");
-      setValue("houseFloors", data.house.floors ?? "");
-      setValue("houseWalls", data.house.walls || "");
-      setValue("houseDocuments", data.house.documents || "");
-      setValue("houseBathroomType", data.house.bathroomType || "");
-      setValue("houseBathFeature", data.house.bathFeature || "");
-      setValue("houseBathroomsCount", data.house.bathroomsCount ?? "");
-      setValue("houseHeating", data.house.heating || "");
-      setValue("houseWater", data.house.water || "");
-      setValue("houseSewerage", data.house.sewerage || "");
-      setChecked("houseElectricity", data.house.electricity);
-      setChecked("houseGas", data.house.gas);
-      setChecked("houseParking", data.house.parking);
-      setChecked("houseGarageIncluded", data.house.garageIncluded);
-    }
-
-    if (data.land) {
-      setValue("landArea", data.land.landArea ?? "");
-      setValue("landDocuments", data.land.documents || "");
-
-      if (data.land.purposeCode || data.land.purposeName) {
-        setValue("landPurpose", `${data.land.purposeCode || ""}|${data.land.purposeName || ""}`);
-      }
-
-      setValue("landPurposeNote", data.land.purposeNote || "");
-      setValue("landFrontage", data.land.frontage || "");
-      setValue("landUtilitiesNearby", data.land.utilitiesNearby || "");
-    }
-
-    if (data.garage) {
-      setValue("garageArea", data.garage.area ?? "");
-      setValue("garageType", data.garage.garageType || "");
-      setChecked("garagePit", data.garage.pit);
-      setChecked("garageCellar", data.garage.cellar);
-      setChecked("garageElectricity", data.garage.electricity);
-      setChecked("garageSecurity", data.garage.security);
-      setValue("garageGateType", data.garage.gateType || "");
-      setValue("garageCondition", data.garage.condition || "");
-    }
-
-    if (data.commercial) {
-      setValue("commercialType", data.commercial.commercialType || data.commercialType || "");
-      setValue("commercialArea", data.commercial.area ?? "");
-      setValue("commercialFloor", data.commercial.floor ?? "");
-      setValue("commercialFloorsTotal", data.commercial.floorsTotal ?? "");
-      setValue("commercialRooms", data.commercial.rooms ?? "");
-      setValue("commercialCondition", data.commercial.condition || "");
-      setValue("commercialLayout", data.commercial.layout || "");
-      setValue("commercialEntrance", data.commercial.entrance || "");
-      setValue("commercialBathroom", data.commercial.bathroom || "");
-      setValue("commercialHeating", data.commercial.heating || "");
-      setValue("commercialPower", data.commercial.power || "");
-      setChecked("commercialInternet", data.commercial.internet);
-      setChecked("commercialParking", data.commercial.parking);
-      setChecked("commercialSecurity", data.commercial.security);
-      setChecked("commercialAccess24", data.commercial.access24);
-    }
-
-    if (data.privateData) {
-      setValue("exactStreet", data.privateData.exactStreet || "");
-      setValue("exactHouseNumber", data.privateData.exactHouseNumber || "");
-      setValue("exactApartmentNumber", data.privateData.exactApartmentNumber || "");
-      setValue("cadastralNumber", data.privateData.cadastralNumber || "");
-      setValue("ownerContacts", data.privateData.ownerContacts || "");
-      setValue("internalComment", data.privateData.internalComment || "");
-    }
-
-    currentImageUrls = Array.isArray(data.images)
-      ? [...data.images]
-      : [];
-
-    toggleFormFields();
-    renderPhotoManager();
-    renderNewFilesPreview();
-    updateMapPreview();
-  } catch (error) {
-    console.error("LOAD EDIT OBJECT ERROR:", error);
-    alert("❌ Не вдалося завантажити обʼєкт для редагування.");
-  } finally {
-    showProgress(false);
-  }
-}
-
-/* ================================
-   CLEAR FORM
-================================ */
-
-window.clearForm = function() {
-  document.querySelectorAll("input, textarea, select").forEach(el => {
-    if (el.type === "checkbox") {
-      el.checked = false;
-      return;
-    }
-
-    if (el.type === "file") {
-      el.value = "";
-      return;
-    }
-
-    el.value = "";
-  });
-
-  if ($("dealType")) {
-    $("dealType").value = "sale";
-  }
-
-  if ($("propertyType")) {
-    $("propertyType").value = "apartment";
-  }
-
-  if ($("rentPeriod")) {
-    $("rentPeriod").value = "month";
-  }
-
-  if ($("utilitiesIncluded")) {
-    $("utilitiesIncluded").value = "not_included";
-  }
-
-  selectedFiles = [];
-  currentImageUrls = [];
-
-  if (preview) {
-    preview.innerHTML = "";
-  }
-
-  const geoStatus = $("geoStatus");
-
-  if (geoStatus) {
-    geoStatus.textContent = "Введіть адресу або вулицю та натисніть “Знайти на карті”.";
-  }
-
-  const mapPreviewBox = $("mapPreviewBox");
-  const mapPreview = $("mapPreview");
-
-  if (mapPreviewBox) {
-    mapPreviewBox.classList.remove("active");
-  }
-
-  if (mapPreview) {
-    mapPreview.src = "";
-  }
-
-  renderPhotoManager();
-  toggleFormFields();
-};
-
-/* ================================
-   START
-================================ */
-
-toggleFormFields();
-renderPhotoManager();
-updateMapPreview();
+    .admin-panel h1,
+    .admin-panel h2,
