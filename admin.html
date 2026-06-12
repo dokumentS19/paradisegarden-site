@@ -28,7 +28,8 @@
     }
 
     .admin-panel h1,
-    .admin-panel h2 {
+    .admin-panel h2,
+    .admin-panel h3 {
       margin-top: 0;
     }
 
@@ -55,6 +56,35 @@
       gap: 14px;
     }
 
+    .admin-row-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .admin-section {
+      display: grid;
+      gap: 14px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(8, 21, 15, 0.58);
+      border: 1px solid rgba(232, 137, 18, 0.16);
+    }
+
+    .admin-section h3 {
+      margin: 0 0 4px;
+      font-size: 18px;
+      color: #fff3df;
+    }
+
+    .type-fields {
+      display: none;
+    }
+
+    .type-fields.active {
+      display: grid;
+    }
+
     .admin-check {
       display: flex;
       align-items: center;
@@ -69,6 +99,12 @@
     .admin-check input {
       width: auto;
       margin: 0;
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 10px;
     }
 
     .preview-grid {
@@ -170,16 +206,13 @@
       line-height: 1.6;
     }
 
-    #commercialTypeBox {
-      display: none;
-    }
-
     @media (max-width: 900px) {
       .admin-layout {
         grid-template-columns: 1fr;
       }
 
-      .admin-row {
+      .admin-row,
+      .admin-row-3 {
         grid-template-columns: 1fr;
       }
 
@@ -217,7 +250,7 @@
 
     <div class="upload-info">
       <strong>Вимоги до фото:</strong><br>
-      максимум 10 фото на один обʼєкт, кожне фото до 1 МБ.
+      максимум 10 фото на один обʼєкт, кожне фото до 10 МБ.
       Перше фото буде головним у каталозі.
     </div>
 
@@ -234,7 +267,7 @@
       <div class="admin-row">
         <div>
           <label for="dealType">Тип угоди</label>
-          <select id="dealType" required>
+          <select id="dealType" required onchange="toggleFormFields()">
             <option value="sale">Продаж</option>
             <option value="rent">Оренда</option>
           </select>
@@ -242,7 +275,7 @@
 
         <div>
           <label for="propertyType">Тип нерухомості</label>
-          <select id="propertyType" required onchange="toggleCommercialType()">
+          <select id="propertyType" required onchange="toggleFormFields()">
             <option value="apartment">Квартира</option>
             <option value="house">Будинок</option>
             <option value="land">Земельна ділянка</option>
@@ -252,9 +285,9 @@
         </div>
       </div>
 
-      <div id="commercialTypeBox">
+      <div id="commercialTypeBox" class="type-fields">
         <label for="commercialType">Підтип комерції</label>
-        <select id="commercialType">
+        <select id="commercialType" onchange="toggleFormFields()">
           <option value="">Не вибрано</option>
           <option value="office">Офіс</option>
           <option value="hangar">Ангар</option>
@@ -267,32 +300,651 @@
 
       <div class="admin-row">
         <div>
-          <label for="area">Площа ділянки / будинку</label>
-          <input id="area" type="text" placeholder="12 соток / 240 м²">
+          <label for="price">Ціна</label>
+          <input id="price" type="number" min="0" placeholder="Продаж: $, оренда: грн" required>
         </div>
 
         <div>
-          <label for="price">Ціна</label>
-          <input id="price" type="number" min="0" placeholder="Наприклад: 250000 або 12000" required>
+          <label for="address">Публічна локація</label>
+          <input id="address" type="text" placeholder="Ірпінь, район Центрального парку">
         </div>
       </div>
 
-      <label for="address">Адреса / локація</label>
-      <input id="address" type="text" placeholder="Київська область, Ірпінь, Буча, Київ...">
+      <div id="rentFields" class="admin-section type-fields">
+        <h3>Умови оренди</h3>
 
-      <label for="description">Детальний опис</label>
-      <textarea id="description" placeholder="Опишіть переваги обʼєкта, стан, комунікації, документи, інфраструктуру..."></textarea>
+        <div class="admin-row">
+          <div>
+            <label for="rentPeriod">Період оплати</label>
+            <select id="rentPeriod">
+              <option value="month">За місяць</option>
+              <option value="day">За добу</option>
+              <option value="year">За рік</option>
+              <option value="sqm_month">За м² / місяць</option>
+              <option value="sotka_month">За сотку / місяць</option>
+              <option value="negotiable">Договірна</option>
+            </select>
+          </div>
 
-      <div class="admin-row">
-        <div>
-          <label for="lat">Широта</label>
-          <input id="lat" type="number" step="any" placeholder="50.5215">
+          <div>
+            <label for="utilitiesIncluded">Комунальні платежі</label>
+            <select id="utilitiesIncluded">
+              <option value="not_included">Окремо</option>
+              <option value="included">Включені</option>
+              <option value="partial">Частково включені</option>
+              <option value="negotiable">Договірно</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <div>
+            <label for="deposit">Застава</label>
+            <input id="deposit" type="number" min="0" placeholder="Наприклад: 15000">
+          </div>
+
+          <div>
+            <label for="commission">Комісія</label>
+            <input id="commission" type="text" placeholder="Наприклад: 50% або без комісії">
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <div>
+            <label for="minTerm">Мінімальний строк оренди</label>
+            <input id="minTerm" type="text" placeholder="Наприклад: 6 місяців">
+          </div>
+
+          <div>
+            <label for="availableFrom">Доступно з</label>
+            <input id="availableFrom" type="date">
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <label class="admin-check">
+            <input id="childrenAllowed" type="checkbox">
+            Можна з дітьми
+          </label>
+
+          <label class="admin-check">
+            <input id="petsAllowed" type="checkbox">
+            Можна з тваринами
+          </label>
+        </div>
+      </div>
+
+      <div id="apartmentFields" class="admin-section type-fields">
+        <h3>Характеристики квартири</h3>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="apTotalArea">Загальна площа, м²</label>
+            <input id="apTotalArea" type="number" step="0.1" min="0">
+          </div>
+
+          <div>
+            <label for="apLivingArea">Житлова площа, м²</label>
+            <input id="apLivingArea" type="number" step="0.1" min="0">
+          </div>
+
+          <div>
+            <label for="apKitchenArea">Кухня, м²</label>
+            <input id="apKitchenArea" type="number" step="0.1" min="0">
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="apRooms">Кімнат</label>
+            <input id="apRooms" type="number" min="0">
+          </div>
+
+          <div>
+            <label for="apFloor">Поверх</label>
+            <input id="apFloor" type="number">
+          </div>
+
+          <div>
+            <label for="apFloorsTotal">Поверховість</label>
+            <input id="apFloorsTotal" type="number" min="0">
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <div>
+            <label for="apLayout">Планування</label>
+            <select id="apLayout">
+              <option value="">Не вказано</option>
+              <option value="separate">Окрема</option>
+              <option value="adjacent">Суміжна</option>
+              <option value="mixed">Суміжно-роздільна</option>
+              <option value="studio">Студія</option>
+              <option value="free">Вільне планування</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="apCondition">Стан</label>
+            <select id="apCondition">
+              <option value="">Не вказано</option>
+              <option value="living">Житловий</option>
+              <option value="renovated">Після ремонту</option>
+              <option value="euro">Євроремонт</option>
+              <option value="needs_repair">Під ремонт</option>
+              <option value="builder">Після будівельників</option>
+              <option value="no_repair">Без ремонту</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="apBathroomType">Санвузол</label>
+            <select id="apBathroomType">
+              <option value="">Не вказано</option>
+              <option value="combined">Суміжний</option>
+              <option value="separate">Роздільний</option>
+              <option value="multiple">Декілька санвузлів</option>
+              <option value="none">Немає</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="apBathFeature">Ванна / душова</label>
+            <select id="apBathFeature">
+              <option value="">Не вказано</option>
+              <option value="bath">Ванна</option>
+              <option value="shower">Душова</option>
+              <option value="both">Ванна + душова</option>
+              <option value="none">Без ванни / душової</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="apBathroomsCount">Кількість санвузлів</label>
+            <input id="apBathroomsCount" type="number" min="0">
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="apBalcony">Балкон / лоджія</label>
+            <select id="apBalcony">
+              <option value="">Не вказано</option>
+              <option value="none">Немає</option>
+              <option value="balcony">Балкон</option>
+              <option value="loggia">Лоджія</option>
+              <option value="both">Балкон + лоджія</option>
+              <option value="terrace">Тераса</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="apBuildingType">Тип будинку</label>
+            <select id="apBuildingType">
+              <option value="">Не вказано</option>
+              <option value="brick">Цегляний</option>
+              <option value="panel">Панельний</option>
+              <option value="monolith">Монолітний</option>
+              <option value="gasblock">Газоблок</option>
+              <option value="new_building">Новобудова</option>
+              <option value="stalinka">Сталінка</option>
+              <option value="hrushchovka">Хрущовка</option>
+              <option value="czech">Чешка</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="apHeating">Опалення</label>
+            <select id="apHeating">
+              <option value="">Не вказано</option>
+              <option value="individual">Індивідуальне</option>
+              <option value="central">Центральне</option>
+              <option value="electric">Електричне</option>
+              <option value="gas">Газове</option>
+              <option value="none">Немає</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <div>
+            <label for="apBuildYear">Рік побудови</label>
+            <input id="apBuildYear" type="number" min="1800" max="2100">
+          </div>
+
+          <div>
+            <label for="apElevator">Ліфт</label>
+            <select id="apElevator">
+              <option value="">Не вказано</option>
+              <option value="yes">Є</option>
+              <option value="no">Немає</option>
+            </select>
+          </div>
         </div>
 
         <div>
-          <label for="lng">Довгота</label>
-          <input id="lng" type="number" step="any" placeholder="30.2506">
+          <label for="apFurniture">Меблі</label>
+          <select id="apFurniture">
+            <option value="">Не вказано</option>
+            <option value="yes">Мебльована</option>
+            <option value="partial">Частково мебльована</option>
+            <option value="no">Без меблів</option>
+          </select>
         </div>
+
+        <label>Техніка</label>
+        <div class="checkbox-grid">
+          <label class="admin-check"><input type="checkbox" name="appliances" value="fridge"> Холодильник</label>
+          <label class="admin-check"><input type="checkbox" name="appliances" value="washer"> Пральна машина</label>
+          <label class="admin-check"><input type="checkbox" name="appliances" value="conditioner"> Кондиціонер</label>
+          <label class="admin-check"><input type="checkbox" name="appliances" value="dishwasher"> Посудомийка</label>
+          <label class="admin-check"><input type="checkbox" name="appliances" value="internet"> Інтернет</label>
+        </div>
+      </div>
+
+      <div id="houseFields" class="admin-section type-fields">
+        <h3>Характеристики будинку</h3>
+
+        <div class="admin-row">
+          <div>
+            <label for="houseType">Тип будинку</label>
+            <select id="houseType">
+              <option value="">Не вказано</option>
+              <option value="house">Будинок</option>
+              <option value="half_house">Півбудинку</option>
+              <option value="townhouse">Таунхаус</option>
+              <option value="duplex">Дуплекс</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="houseCondition">Стан</label>
+            <select id="houseCondition">
+              <option value="">Не вказано</option>
+              <option value="living">Житловий</option>
+              <option value="renovated">Після ремонту</option>
+              <option value="needs_repair">Під ремонт</option>
+              <option value="builder">Після будівельників</option>
+              <option value="unfinished">Недобудова</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="houseArea">Площа будинку, м²</label>
+            <input id="houseArea" type="number" step="0.1" min="0">
+          </div>
+
+          <div>
+            <label for="houseLandArea">Площа ділянки, соток</label>
+            <input id="houseLandArea" type="number" step="0.01" min="0">
+          </div>
+
+          <div>
+            <label for="houseRooms">Кімнат</label>
+            <input id="houseRooms" type="number" min="0">
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="houseFloors">Поверхів</label>
+            <input id="houseFloors" type="number" min="0">
+          </div>
+
+          <div>
+            <label for="houseWalls">Стіни</label>
+            <input id="houseWalls" type="text" placeholder="Цегла, газоблок...">
+          </div>
+
+          <div>
+            <label for="houseDocuments">Документи</label>
+            <select id="houseDocuments">
+              <option value="">Не вказано</option>
+              <option value="ownership">Право власності</option>
+              <option value="inheritance">Спадщина</option>
+              <option value="contract">Договір</option>
+              <option value="in_progress">В процесі оформлення</option>
+              <option value="other">Інше</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="houseBathroomType">Санвузол</label>
+            <select id="houseBathroomType">
+              <option value="">Не вказано</option>
+              <option value="combined">Суміжний</option>
+              <option value="separate">Роздільний</option>
+              <option value="multiple">Декілька санвузлів</option>
+              <option value="outdoor">На вулиці</option>
+              <option value="none">Немає</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="houseBathFeature">Ванна / душова</label>
+            <select id="houseBathFeature">
+              <option value="">Не вказано</option>
+              <option value="bath">Ванна</option>
+              <option value="shower">Душова</option>
+              <option value="both">Ванна + душова</option>
+              <option value="none">Без ванни / душової</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="houseBathroomsCount">Кількість санвузлів</label>
+            <input id="houseBathroomsCount" type="number" min="0">
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="houseHeating">Опалення</label>
+            <select id="houseHeating">
+              <option value="">Не вказано</option>
+              <option value="gas">Газове</option>
+              <option value="electric">Електричне</option>
+              <option value="solid_fuel">Твердопаливне</option>
+              <option value="combined">Комбіноване</option>
+              <option value="none">Немає</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="houseWater">Вода</label>
+            <select id="houseWater">
+              <option value="">Не вказано</option>
+              <option value="central">Центральна</option>
+              <option value="well">Свердловина</option>
+              <option value="well_yard">Колодязь</option>
+              <option value="none">Немає</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="houseSewerage">Каналізація</label>
+            <select id="houseSewerage">
+              <option value="">Не вказано</option>
+              <option value="central">Центральна</option>
+              <option value="septic">Септик</option>
+              <option value="cesspool">Вигрібна яма</option>
+              <option value="none">Немає</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <label class="admin-check"><input id="houseElectricity" type="checkbox"> Електрика</label>
+          <label class="admin-check"><input id="houseGas" type="checkbox"> Газ</label>
+        </div>
+
+        <div class="admin-row">
+          <label class="admin-check"><input id="houseParking" type="checkbox"> Паркування</label>
+          <label class="admin-check"><input id="houseGarageIncluded" type="checkbox"> Гараж</label>
+        </div>
+      </div>
+
+      <div id="landFields" class="admin-section type-fields">
+        <h3>Характеристики земельної ділянки</h3>
+
+        <div class="admin-row">
+          <div>
+            <label for="landArea">Площа ділянки, соток</label>
+            <input id="landArea" type="number" step="0.01" min="0">
+          </div>
+
+          <div>
+            <label for="landDocuments">Документи</label>
+            <select id="landDocuments">
+              <option value="">Не вказано</option>
+              <option value="ownership">Право власності</option>
+              <option value="lease">Оренда</option>
+              <option value="act">Державний акт</option>
+              <option value="in_progress">В процесі оформлення</option>
+              <option value="other">Інше</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="landPurpose">Цільове призначення</label>
+        <select id="landPurpose">
+          <option value="">Не вибрано</option>
+          <option value="02.01|Для будівництва і обслуговування житлового будинку">02.01 — Для будівництва і обслуговування житлового будинку</option>
+          <option value="02.03|Для будівництва і обслуговування багатоквартирного житлового будинку">02.03 — Для будівництва і обслуговування багатоквартирного житлового будинку</option>
+          <option value="01.03|Для ведення особистого селянського господарства">01.03 — Для ведення особистого селянського господарства</option>
+          <option value="01.05|Для індивідуального садівництва">01.05 — Для індивідуального садівництва</option>
+          <option value="01.06|Для колективного садівництва">01.06 — Для колективного садівництва</option>
+          <option value="01.01|Для ведення товарного сільськогосподарського виробництва">01.01 — Для ведення товарного сільськогосподарського виробництва</option>
+          <option value="02.05|Для індивідуального гаражного будівництва">02.05 — Для індивідуального гаражного будівництва</option>
+          <option value="03.07|Для будівництва та обслуговування будівель торгівлі">03.07 — Для будівництва та обслуговування будівель торгівлі</option>
+          <option value="11.02|Для розміщення та експлуатації будівель промисловості">11.02 — Для промисловості / виробничих обʼєктів</option>
+          <option value="custom|Інше">Інше — вказати вручну</option>
+        </select>
+
+        <label for="landPurposeNote">Уточнення цільового призначення</label>
+        <input id="landPurposeNote" type="text" placeholder="Наприклад: присадибна ділянка, ОСГ, можлива зміна...">
+
+        <div class="admin-row">
+          <div>
+            <label for="landFrontage">Фасад</label>
+            <input id="landFrontage" type="text" placeholder="Наприклад: 20 м">
+          </div>
+
+          <div>
+            <label for="landUtilitiesNearby">Комунікації поруч</label>
+            <input id="landUtilitiesNearby" type="text" placeholder="Світло, газ, вода поруч">
+          </div>
+        </div>
+      </div>
+
+      <div id="garageFields" class="admin-section type-fields">
+        <h3>Характеристики гаража</h3>
+
+        <div class="admin-row">
+          <div>
+            <label for="garageArea">Площа, м²</label>
+            <input id="garageArea" type="number" step="0.1" min="0">
+          </div>
+
+          <div>
+            <label for="garageType">Тип гаража</label>
+            <select id="garageType">
+              <option value="">Не вказано</option>
+              <option value="capital">Капітальний</option>
+              <option value="metal">Металевий</option>
+              <option value="parking_place">Паркомісце</option>
+              <option value="underground">Підземний паркінг</option>
+              <option value="box">Бокс</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <label class="admin-check"><input id="garagePit" type="checkbox"> Яма</label>
+          <label class="admin-check"><input id="garageCellar" type="checkbox"> Погріб</label>
+        </div>
+
+        <div class="admin-row">
+          <label class="admin-check"><input id="garageElectricity" type="checkbox"> Електрика</label>
+          <label class="admin-check"><input id="garageSecurity" type="checkbox"> Охорона / відеонагляд</label>
+        </div>
+
+        <div class="admin-row">
+          <div>
+            <label for="garageGateType">Ворота</label>
+            <input id="garageGateType" type="text" placeholder="Автоматичні, металеві...">
+          </div>
+
+          <div>
+            <label for="garageCondition">Стан</label>
+            <select id="garageCondition">
+              <option value="">Не вказано</option>
+              <option value="good">Добрий</option>
+              <option value="normal">Задовільний</option>
+              <option value="needs_repair">Потребує ремонту</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="commercialFields" class="admin-section type-fields">
+        <h3>Характеристики комерції / офісу</h3>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="commercialArea">Площа, м²</label>
+            <input id="commercialArea" type="number" step="0.1" min="0">
+          </div>
+
+          <div>
+            <label for="commercialFloor">Поверх</label>
+            <input id="commercialFloor" type="number">
+          </div>
+
+          <div>
+            <label for="commercialFloorsTotal">Поверховість будівлі</label>
+            <input id="commercialFloorsTotal" type="number" min="0">
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <div>
+            <label for="commercialRooms">Кабінетів / приміщень</label>
+            <input id="commercialRooms" type="number" min="0">
+          </div>
+
+          <div>
+            <label for="commercialCondition">Стан</label>
+            <select id="commercialCondition">
+              <option value="">Не вказано</option>
+              <option value="renovated">Після ремонту</option>
+              <option value="office">Офісний стан</option>
+              <option value="needs_repair">Під ремонт</option>
+              <option value="shell">Без ремонту</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <div>
+            <label for="commercialLayout">Планування</label>
+            <select id="commercialLayout">
+              <option value="">Не вказано</option>
+              <option value="cabinet">Кабінетна система</option>
+              <option value="open_space">Open space</option>
+              <option value="mixed">Змішане</option>
+              <option value="free">Вільне</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="commercialEntrance">Вхід</label>
+            <select id="commercialEntrance">
+              <option value="">Не вказано</option>
+              <option value="separate">Окремий</option>
+              <option value="common">Загальний</option>
+              <option value="street">З фасаду / з вулиці</option>
+              <option value="yard">З двору</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-row-3">
+          <div>
+            <label for="commercialBathroom">Санвузол</label>
+            <select id="commercialBathroom">
+              <option value="">Не вказано</option>
+              <option value="yes">Є</option>
+              <option value="no">Немає</option>
+              <option value="shared">Спільний</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="commercialHeating">Опалення</label>
+            <select id="commercialHeating">
+              <option value="">Не вказано</option>
+              <option value="central">Центральне</option>
+              <option value="individual">Індивідуальне</option>
+              <option value="electric">Електричне</option>
+              <option value="none">Немає</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="commercialPower">Потужність електрики</label>
+            <input id="commercialPower" type="text" placeholder="Наприклад: 15 кВт">
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <label class="admin-check"><input id="commercialInternet" type="checkbox"> Інтернет</label>
+          <label class="admin-check"><input id="commercialParking" type="checkbox"> Паркування</label>
+        </div>
+
+        <div class="admin-row">
+          <label class="admin-check"><input id="commercialSecurity" type="checkbox"> Охорона</label>
+          <label class="admin-check"><input id="commercialAccess24" type="checkbox"> Доступ 24/7</label>
+        </div>
+      </div>
+
+      <div class="admin-section">
+        <h3>Опис і карта</h3>
+
+        <label for="description">Детальний опис</label>
+        <textarea id="description" placeholder="Опишіть переваги обʼєкта, стан, комунікації, документи, інфраструктуру..."></textarea>
+
+        <div class="admin-row">
+          <div>
+            <label for="lat">Широта</label>
+            <input id="lat" type="number" step="any" placeholder="50.5215">
+          </div>
+
+          <div>
+            <label for="lng">Довгота</label>
+            <input id="lng" type="number" step="any" placeholder="30.2506">
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-section">
+        <h3>Службова інформація — не показується клієнту</h3>
+
+        <div class="admin-row">
+          <div>
+            <label for="exactStreet">Точна вулиця</label>
+            <input id="exactStreet" type="text" placeholder="Не показується клієнту">
+          </div>
+
+          <div>
+            <label for="exactHouseNumber">Номер будинку</label>
+            <input id="exactHouseNumber" type="text" placeholder="Не показується клієнту">
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <div>
+            <label for="exactApartmentNumber">Номер квартири</label>
+            <input id="exactApartmentNumber" type="text" placeholder="Не показується клієнту">
+          </div>
+
+          <div>
+            <label for="cadastralNumber">Кадастровий номер</label>
+            <input id="cadastralNumber" type="text" placeholder="Тільки для адмінки">
+          </div>
+        </div>
+
+        <label for="ownerContacts">Контакти власника</label>
+        <input id="ownerContacts" type="text" placeholder="Телефон / примітка, не показується клієнту">
+
+        <label for="internalComment">Внутрішній коментар</label>
+        <textarea id="internalComment" placeholder="Службова інформація для агентства"></textarea>
       </div>
 
       <div class="admin-row">
@@ -340,26 +992,22 @@
     </div>
 
     <div class="admin-help-card">
-      <h3>Категорії обʼєктів</h3>
+      <h3>Логіка форми</h3>
       <p>
-        Для кожного оголошення можна вибрати тип угоди:
-        продаж або оренда.
+        Спочатку оберіть тип угоди: продаж або оренда.
+        Потім оберіть тип нерухомості — форма покаже потрібні поля.
       </p>
       <p>
-        Також можна вибрати тип нерухомості:
-        квартира, будинок, земельна ділянка, гараж або комерція.
-      </p>
-      <p>
-        Для комерції доступні підтипи:
-        офіс, ангар, склад, магазин, виробниче приміщення або інше.
+        Кадастровий номер, точна адреса і контакти власника зберігаються
+        тільки для агентства і не показуються клієнтам.
       </p>
     </div>
 
     <div class="admin-help-card">
-      <h3>Рекомендації</h3>
+      <h3>Цільове призначення землі</h3>
       <p>
-        Для преміального вигляду додавайте горизонтальні фото хорошої якості.
-        Перше фото має бути найкращим — воно показується в каталозі.
+        Для земельних ділянок обирайте код зі списку, а уточнення пишіть вручну.
+        Кадастровий номер вноситься у службову інформацію.
       </p>
     </div>
 
