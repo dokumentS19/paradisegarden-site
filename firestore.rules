@@ -1,0 +1,125 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn()
+        && request.auth.token.email in [
+          "olegivanchik1234@gmail.com",
+          "rad202331@gmail.com"
+        ];
+    }
+
+    function isChatMember(chatId) {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/chats/$(chatId))
+        && request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId))./{objectId} {        && request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.users;
+
+      // Читати обʼєкти можуть усі відвідувачі сайту
+      allow read: if true;
+
+      // Створювати обʼєкти може адмін або авторизований користувач для себе
+      allow create: if isAdmin()
+        || (
+          isSignedIn()
+          && request.resource.data.ownerId == request.auth.uid
+        );
+
+      // Оновлювати обʼєкт може адмін або власник оголошення
+      allow update: if isAdmin()
+        || (
+          isSignedIn()
+          && resource.data.ownerId == request.auth.uid
+        );
+
+      // Видаляти обʼєкт може адмін або власник оголошення
+      allow delete: if isAdmin()
+        || (
+          isSignedIn()
+          && resource.data.ownerId == request.auth.uid
+        );
+    }
+
+    /*
+      ЗАЯВКИ З ФОРМИ
+      collection: leads
+    */
+    match /leads/{leadId} {
+
+      // Створити заявку може будь-хто з сайту
+      allow create: if true;
+
+      // Читати, редагувати і видаляти заявки можуть тільки адміни CRM
+      allow read, update, delete: if isAdmin();
+    }
+
+    /*
+      ЧАТИ
+      collection: chats
+    */
+    match /chats/{chatId} {
+
+      // Читати чат можуть тільки учасники чату або адмін
+      allow read: if isAdmin()
+        || (
+          isSignedIn()
+          && request.auth.uid in resource.data.users
+        );
+
+      // Створити чат може авторизований користувач,
+      // якщо він є одним з учасників чату
+      allow create: if isSignedIn()
+        && request.auth.uid in request.resource.data.users;
+
+      // Оновлювати чат можуть учасники або адмін
+      allow update: if isAdmin()
+        || (
+          isSignedIn()
+          && request.auth.uid in resource.data.users
+        );
+
+      // Видаляти чат можуть тільки адміни
+      allow delete: if isAdmin();
+    }
+
+    /*
+      ПОВІДОМЛЕННЯ
+      collection: messages
+    */
+    match /messages/{messageId} {
+
+      // Читати повідомлення можуть тільки учасники відповідного чату або адмін
+      allow read: if isAdmin()
+        || isChatMember(resource.data.chatId);
+
+      // Створювати повідомлення може тільки авторизований учасник чату
+      allow create: if isSignedIn()
+        && request.resource.data.senderId == request.auth.uid
+        && isChatMember(request.resource.data.chatId);
+
+      // Редагування повідомлень заборонене
+      allow update: if false;
+
+      // Видаляти повідомлення можуть тільки адміни
+      allow delete: if isAdmin();
+    }
+
+    /*
+      ВСЕ ІНШЕ ЗАБОРОНЕНО
+    */
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+    }
+
+    /*
+      ОБʼЄКТИ НЕРУХОМОСТІ
+      collection: objects
+    */
