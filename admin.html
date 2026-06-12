@@ -11,25 +11,31 @@
   <style>
     .admin-layout {
       max-width: 1200px;
-      margin: 34px auto;
+      margin: 28px auto 34px;
       padding: 0 16px;
       display: grid;
-      grid-template-columns: 1fr 0.8fr;
-      gap: 24px;
+      grid-template-columns: 1fr 0.78fr;
+      gap: 22px;
     }
 
     .admin-panel {
       background:
-        linear-gradient(180deg, rgba(30, 41, 59, 0.94), rgba(15, 23, 42, 0.94));
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.22);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.34);
     }
 
     .admin-panel h1,
     .admin-panel h2 {
       margin-top: 0;
+    }
+
+    .admin-panel h1 {
+      font-size: clamp(28px, 3.4vw, 42px);
+      line-height: 1.12;
+      margin: 12px 0 20px;
     }
 
     .admin-form {
@@ -38,7 +44,7 @@
     }
 
     .admin-form label {
-      color: #cbd5e1;
+      color: #e2e8f0;
       font-size: 14px;
       margin-bottom: -6px;
     }
@@ -54,8 +60,8 @@
       align-items: center;
       gap: 10px;
       padding: 12px 14px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.22);
+      background: rgba(8, 21, 15, 0.78);
+      border: 1px solid rgba(232, 137, 18, 0.18);
       border-radius: 14px;
       color: #e2e8f0;
     }
@@ -77,8 +83,8 @@
       height: 90px;
       border-radius: 12px;
       overflow: hidden;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      background: #020617;
+      border: 1px solid rgba(232, 137, 18, 0.22);
+      background: #08150f;
     }
 
     .preview-item img {
@@ -91,7 +97,7 @@
       position: absolute;
       left: 6px;
       bottom: 6px;
-      background: rgba(2, 6, 23, 0.72);
+      background: rgba(4, 20, 13, 0.78);
       color: white;
       padding: 3px 7px;
       border-radius: 999px;
@@ -99,13 +105,26 @@
     }
 
     .upload-info {
-      color: #cbd5e1;
+      color: #e2e8f0;
       line-height: 1.6;
       font-size: 14px;
-      background: rgba(15, 23, 42, 0.72);
-      border: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(8, 21, 15, 0.74);
+      border: 1px solid rgba(232, 137, 18, 0.18);
       padding: 14px;
-      border-radius: 16px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+    }
+
+    .admin-auth-box {
+      margin: 16px 0 18px;
+      display: grid;
+      gap: 10px;
+      max-width: 280px;
+    }
+
+    #userInfo {
+      color: #e2e8f0;
+      font-weight: 700;
     }
 
     .admin-actions {
@@ -119,10 +138,10 @@
       display: none;
       margin-top: 14px;
       padding: 14px;
-      border-radius: 16px;
-      background: rgba(34, 197, 94, 0.12);
-      border: 1px solid rgba(34, 197, 94, 0.26);
-      color: #bbf7d0;
+      border-radius: 14px;
+      background: rgba(232, 137, 18, 0.12);
+      border: 1px solid rgba(232, 137, 18, 0.26);
+      color: #fff3df;
     }
 
     .progress-box.active {
@@ -131,21 +150,23 @@
 
     .admin-help-card {
       background:
-        radial-gradient(circle at top right, rgba(250, 204, 21, 0.16), transparent 35%),
-        rgba(15, 23, 42, 0.92);
-      border: 1px solid rgba(250, 204, 21, 0.18);
-      border-radius: 22px;
-      padding: 22px;
-      margin-bottom: 18px;
+        radial-gradient(circle at top right, rgba(232, 137, 18, 0.14), transparent 35%),
+        rgba(13, 25, 22, 0.96);
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
     }
 
     .admin-help-card h3 {
       margin-top: 0;
+      font-size: 20px;
     }
 
     .admin-help-card p,
     .admin-help-card li {
-      color: #cbd5e1;
+      color: #dbeafe;
       line-height: 1.6;
     }
 
@@ -161,15 +182,19 @@
       .admin-row {
         grid-template-columns: 1fr;
       }
+
+      .admin-panel {
+        padding: 18px;
+      }
     }
   </style>
 </head>
 
-<body>
+<body class="admin-page-body brand-refresh">
 
 <header class="topbar">
   <a href="index.html" class="brand">
-    <span class="brand-icon">🌿</span>
+    <span class="brand-icon">PC</span>
     <span>
       <strong>Райський Сад</strong>
       <small>Адмін-панель</small>
@@ -196,7 +221,7 @@
       Перше фото буде головним у каталозі.
     </div>
 
-    <div style="margin: 18px 0;">
+    <div class="admin-auth-box">
       <div id="userInfo">❌ Не авторизований</div>
       <button id="loginBtn" class="btn" type="button">Увійти через Google</button>
     </div>
@@ -204,7 +229,7 @@
     <form class="admin-form" onsubmit="addObject(event)">
 
       <label for="title">Назва обʼєкта</label>
-      <input id="title" type="text" placeholder="Наприклад: Елітний будинок біля лісу" required>
+      <input id="title" type="text" placeholder="Наприклад: 1-кімнатна квартира в Ірпені" required>
 
       <div class="admin-row">
         <div>
@@ -247,8 +272,8 @@
         </div>
 
         <div>
-          <<label for="price">Ціна</label>
-          <input id="price" type="number" min="0" placeholder="Наприклад: 250000 або 12000" required>  
+          <label for="price">Ціна</label>
+          <input id="price" type="number" min="0" placeholder="Наприклад: 250000 або 12000" required>
         </div>
       </div>
 
@@ -349,26 +374,6 @@
   </aside>
 
 </main>
-
-<script>
-  function toggleCommercialType() {
-    const propertyType = document.getElementById("propertyType");
-    const commercialTypeBox = document.getElementById("commercialTypeBox");
-    const commercialType = document.getElementById("commercialType");
-
-    if (!propertyType || !commercialTypeBox) return;
-
-    if (propertyType.value === "commercial") {
-      commercialTypeBox.style.display = "block";
-    } else {
-      commercialTypeBox.style.display = "none";
-
-      if (commercialType) {
-        commercialType.value = "";
-      }
-    }
-  }
-</script>
 
 <script type="module" src="admin.js"></script>
 
