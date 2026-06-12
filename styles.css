@@ -1533,7 +1533,7 @@ select:focus {
 ================================ */
 
 html {
-  scroll-padding-top: 100px;
+  scroll-padding-top: 98px;
 }
 
 #about,
@@ -1541,7 +1541,7 @@ html {
 #director,
 #request,
 #contacts {
-  scroll-margin-top: 100px;
+  scroll-margin-top: 98px;
 }
 
 @media (max-width: 680px) {
@@ -1563,7 +1563,7 @@ html {
 ================================ */
 
 html {
-  scroll-padding-top: 100px;
+  scroll-padding-top: 95px;
 }
 
 #about,
@@ -1571,5 +1571,5 @@ html {
 #director,
 #request,
 #contacts {
-  scroll-margin-top: 100px;
+  scroll-margin-top: 95px;
 }
