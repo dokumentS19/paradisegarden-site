@@ -71,16 +71,31 @@ const progressBox = document.getElementById("progressBox");
    AUTH
 ================================ */
 
+/* ================================
+   AUTH
+================================ */
+
 await setPersistence(auth, browserLocalPersistence);
 
-getRedirectResult(auth).catch(error => {
-  console.error("REDIRECT AUTH ERROR:", error);
-});
+if (loginBtn) {
+  loginBtn.addEventListener("click", async () => {
+    try {
+      if (auth.currentUser) {
+        await signOut(auth);
+      } else {
+        await signInWithPopup(auth, provider);
+      }
+    } catch (error) {
+      console.error("LOGIN ERROR:", error);
+      alert("Помилка входу: " + error.message);
+    }
+  });
+}
 
 onAuthStateChanged(auth, user => {
-  if (isAllowedAdmin(user)) {
-    currentUser = user;
+  currentUser = user;
 
+  if (user) {
     if (userInfo) {
       userInfo.innerHTML = `👤 ${escapeHtml(user.displayName || user.email || "Користувач")}`;
     }
@@ -88,42 +103,16 @@ onAuthStateChanged(auth, user => {
     if (loginBtn) {
       loginBtn.textContent = "Вийти";
     }
-
-    return;
-  }
-
-  currentUser = null;
-
-  if (user && !isAllowedAdmin(user)) {
+  } else {
     if (userInfo) {
-      userInfo.innerHTML = `⛔ Немає доступу для ${escapeHtml(user.email || "цього акаунта")}`;
+      userInfo.innerHTML = "❌ Не авторизований";
     }
 
     if (loginBtn) {
-      loginBtn.textContent = "Вийти";
+      loginBtn.textContent = "Увійти через Google";
     }
-
-    return;
-  }
-
-  if (userInfo) {
-    userInfo.innerHTML = "❌ Не авторизований";
-  }
-
-  if (loginBtn) {
-    loginBtn.textContent = "Увійти через Google";
   }
 });
-
-if (loginBtn) {
-  loginBtn.addEventListener("click", () => {
-    if (auth.currentUser) {
-      signOut(auth);
-    } else {
-      signInWithRedirect(auth, provider);
-    }
-  });
-}
 
 /* ================================
    HELPERS
