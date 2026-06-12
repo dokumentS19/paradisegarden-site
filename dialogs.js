@@ -344,4 +344,38 @@ function renderDialogs() {
 
           <p>
             Учасників: ${usersCount}
-            ${objectId ? ` · ID обʼєкта: ${objectId}` :
+            ${objectId ? ` · ID обʼєкта: ${objectId}` : ""}
+          </p>
+
+          <div class="dialog-last">
+            ${lastMessage}
+          </div>
+        </div>
+
+        <div class="dialog-side">
+          <span class="dialog-badge">Відкрити чат</span>
+          <span class="dialog-date">${date}</span>
+        </div>
+      </a>
+    `;
+  }).join("");
+}
+
+/* ================================
+   ACTIONS
+================================ */
+
+window.reloadDialogs = function() {
+  if (!currentUser) {
+    alert("Спочатку увійдіть через Google.");
+    return;
+  }
+
+  renderDialogs();
+};
+
+if (dialogSearch) {
+  dialogSearch.addEventListener("input", () => {
+    renderDialogs();
+  });
+}
