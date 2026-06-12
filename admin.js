@@ -4,15 +4,7 @@ import {
   getFirestore,
   collection,
   addDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+ https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";  serverTimestamp
 
 import {
   getAuth,
@@ -47,6 +39,19 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 /* ================================
+   ACCESS
+================================ */
+
+const allowedEmails = [
+  "olegivanchik1234@gmail.com",
+  "rad202331@gmail.com"
+];
+
+function isAllowedAdmin(user) {
+  return Boolean(user && allowedEmails.includes(user.email));
+}
+
+/* ================================
    STATE
 ================================ */
 
@@ -74,9 +79,9 @@ getRedirectResult(auth).catch(error => {
 });
 
 onAuthStateChanged(auth, user => {
-  currentUser = user;
+  if (isAllowedAdmin(user)) {
+    currentUser = user;
 
-  if (user) {
     if (userInfo) {
       userInfo.innerHTML = `👤 ${escapeHtml(user.displayName || user.email || "Користувач")}`;
     }
@@ -84,14 +89,30 @@ onAuthStateChanged(auth, user => {
     if (loginBtn) {
       loginBtn.textContent = "Вийти";
     }
-  } else {
+
+    return;
+  }
+
+  currentUser = null;
+
+  if (user && !isAllowedAdmin(user)) {
     if (userInfo) {
-      userInfo.innerHTML = "❌ Не авторизований";
+      userInfo.innerHTML = `⛔ Немає доступу для ${escapeHtml(user.email || "цього акаунта")}`;
     }
 
     if (loginBtn) {
-      loginBtn.textContent = "Увійти через Google";
+      loginBtn.textContent = "Вийти";
     }
+
+    return;
+  }
+
+  if (userInfo) {
+    userInfo.innerHTML = "❌ Не авторизований";
+  }
+
+  if (loginBtn) {
+    loginBtn.textContent = "Увійти через Google";
   }
 });
 
@@ -228,7 +249,7 @@ window.addObject = async function(event) {
   if (event) event.preventDefault();
 
   if (!currentUser) {
-    alert("Спочатку увійдіть через Google.");
+    alert("Спочатку увійдіть через Google акаунтом адміністратора.");
     return;
   }
 
@@ -291,7 +312,10 @@ window.addObject = async function(event) {
     for (const file of selectedFiles) {
       const safeName = file.name.replace(/[^\wа-яА-ЯіїєґІЇЄҐ.-]/g, "_");
       const fileName = `${Date.now()}_${crypto.randomUUID()}_${safeName}`;
-      const storageRef = ref(storage, `objects/${fileName}`);
+
+      // ВАЖЛИВО:
+      // шлях відповідає storage.rules: objects/{userId}/{fileName}
+      const storageRef = ref(storage, `objects/${currentUser.uid}/${fileName}`);
 
       await uploadBytes(storageRef, file);
 
@@ -401,3 +425,10 @@ window.clearForm = function() {
     preview.innerHTML = "";
   }
 };
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
