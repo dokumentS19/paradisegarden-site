@@ -68,16 +68,17 @@ const statSold = document.getElementById("statSold");
 
 await setPersistence(auth, browserLocalPersistence);
 
-getRedirectResult(auth).catch(error =&gt; {
-  console.error("AUTH REDIRECT ERROR:", error);
-});
-
 if (loginBtn) {
-  loginBtn.addEventListener("click", () =&gt; {
-    if (auth.currentUser) {
-      signOut(auth);
-    } else {
-      signInWithRedirect(auth, provider);
+  loginBtn.addEventListener("click", async () => {
+    try {
+      if (auth.currentUser) {
+        await signOut(auth);
+      } else {
+        await signInWithPopup(auth, provider);
+      }
+    } catch (error) {
+      console.error("LOGIN ERROR:", error);
+      alert("Помилка входу: " + error.message);
     }
   });
 }
