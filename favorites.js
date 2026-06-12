@@ -215,7 +215,7 @@ window.renderFavorites = function() {
         <p>
           Додайте обʼєкти з головної сторінки, натиснувши сердечко на картці.
         </p>
-        <a class="btn" href="index.html">Перейти до обʼєктів</a>
+        <a class="btn" href="index.html#objects">Перейти до обʼєктів</a>
       </div>
     `;
     return;
@@ -226,7 +226,7 @@ window.renderFavorites = function() {
     const title = escapeHtml(item.title || "Обʼєкт нерухомості");
     const area = escapeHtml(item.area || "-");
     const address = escapeHtml(item.address || "Київ та Київська область");
-   const price = formatPrice(item.price, item.dealType);
+    const price = formatPrice(item.price, item.dealType);
     const image = escapeHtml(getMainImage(item));
     const status = item.status === "sold" ? "❌ Продано" : "✅ Активне";
 
@@ -242,7 +242,7 @@ window.renderFavorites = function() {
 
         <a href="assets/object.html?id=${id}">
           <div class="fav-card-img">
-            <img src="${image}" alt="${title}">
+            <img src="${image}" alt="${title}" loading="lazy">
           </div>
 
           <div class="fav-card-body">
@@ -257,7 +257,7 @@ window.renderFavorites = function() {
             <p>📍 ${address}</p>
             <p>📐 ${area}</p>
             <p>${status}</p>
-   <div class="fav-price">💰 ${price}</div>
+            <div class="fav-price">💰 ${price}</div>
           </div>
         </a>
       </article>
