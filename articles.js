@@ -1,10 +1,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  
+
 import {
   getFirestore,
   collection,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"; 
+  getDocs,
+  query,
+  where
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
@@ -85,14 +87,18 @@ async function loadArticles() {
   if (!articlesGrid) return;
 
   try {
-    const snap = await getDocs(collection(db, "articles"));
+    const articlesQuery = query(
+      collection(db, "articles"),
+      where("status", "==", "published")
+    );
+
+    const snap = await getDocs(articlesQuery);
 
     allArticles = snap.docs
       .map(docSnap => ({
         id: docSnap.id,
         ...docSnap.data()
       }))
-      .filter(item => item.status === "published")
       .sort((a, b) => getDateValue(b) - getDateValue(a));
 
     filteredArticles = [...allArticles];
@@ -103,7 +109,7 @@ async function loadArticles() {
     articlesGrid.innerHTML = `
       <div class="empty-articles">
         <h2>❌ Не вдалося завантажити статті</h2>
-        <p>Перевірте Firestore rules або підключення Firebase.</p>
+        <p>Перевірте Firestore rules або поле status = published.</p>
       </div>
     `;
   }
@@ -140,7 +146,7 @@ function renderArticles(data) {
     articlesGrid.innerHTML = `
       <div class="empty-articles">
         <h2>Статей поки немає</h2>
-        <p>Спробуйте змінити пошук або категорію.</p>
+        <p>Перевірте, чи є у Firestore документ у колекції articles зі status = published.</p>
       </div>
     `;
     return;
