@@ -1,1 +1,61 @@
+rules_version = '2';
 
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn()
+        && request.auth.token.email in [
+          "olegivanchik1234@gmail.com",
+          "rad202331@gmail.com"
+        ];
+    }
+
+    /*
+      ФОТО ОБʼЄКТІВ
+      шлях: objects/{userId}/{fileName}
+    */
+    match /objects/{userId}/{fileName} {
+
+      // Читати фото можуть усі
+      allow read: if true;
+
+      // Завантажувати / змінювати фото може адмін або власник папки
+      allow write: if isAdmin()
+        || (
+          isSignedIn()
+          && request.auth.uid == userId
+          && request.resource.size < 10 * 1024 * 1024
+          && request.resource.contentType.matches('image/.*')
+        );
+    }
+
+    /*
+      АВАТАРИ
+      шлях: avatars/{userId}/{fileName}
+    */
+    match /avatars/{userId}/{fileName} {
+
+      allow read: if true;
+
+      allow write: if isAdmin()
+        || (
+          isSignedIn()
+          && request.auth.uid == userId
+          && request.resource.size < 5 * 1024 * 1024
+          && request.resource.contentType.matches('image/.*')
+        );
+    }
+
+    /*
+      ВСЕ ІНШЕ ЗАБОРОНЕНО
+    */
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
