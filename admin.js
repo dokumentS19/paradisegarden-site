@@ -120,6 +120,7 @@ function escapeHtml(value = "") {
 
 function showProgress(show) {
   if (!progressBox) return;
+
   progressBox.classList.toggle("active", Boolean(show));
 }
 
@@ -239,6 +240,7 @@ window.addObject = async function(event) {
 
   const dealType = document.getElementById("dealType")?.value || "sale";
   const propertyType = document.getElementById("propertyType")?.value || "apartment";
+
   const commercialType = propertyType === "commercial"
     ? document.getElementById("commercialType")?.value || ""
     : "";
