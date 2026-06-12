@@ -1,5 +1,35 @@
 <!DOCTYPE html>
-<html lang=" .admin-panel h3 {<html lang="uk">
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Адмін — АН «Райський Сад»</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .admin-layout {
+      max-width: 1200px;
+      margin: 28px auto 34px;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 1fr 0.78fr;
+      gap: 22px;
+    }
+
+    .admin-panel {
+      background:
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.22);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.34);
+    }
+
+    .admin-panel h1,
+    .admin-panel h2,
+    .admin-panel h3 {
       margin-top: 0;
     }
 
@@ -260,23 +290,6 @@
       border: 1px dashed rgba(232, 137, 18, 0.28);
     }
 
-    .map-preview-box {
-      display: none;
-      margin-top: 14px;
-    }
-
-    .map-preview-box.active {
-      display: block;
-    }
-
-    .map-preview-frame {
-      width: 100%;
-      height: 260px;
-      border: 0;
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
     @media (max-width: 900px) {
       .admin-layout {
         grid-template-columns: 1fr;
@@ -379,21 +392,7 @@
 
         <div>
           <label for="address">Публічна локація</label>
-          <input id="address" type="text" placeholder="Ірпінь, вул. Соборна, 10">
-
-          <button
-            id="geoFindBtn"
-            class="cta-outline"
-            type="button"
-            onclick="geocodeAddress()"
-            style="margin-top:10px;width:100%;"
-          >
-            📍 Знайти на карті
-          </button>
-
-          <p id="geoStatus" class="photo-hint" style="margin-top:8px;">
-            Введіть адресу або вулицю та натисніть “Знайти на карті”.
-          </p>
+          <input id="address" type="text" placeholder="Ірпінь, район Центрального парку">
         </div>
       </div>
 
@@ -998,22 +997,6 @@
             <input id="lng" type="number" step="any" placeholder="30.2506">
           </div>
         </div>
-
-        <div id="mapPreviewBox" class="map-preview-box">
-          <label>Попередній перегляд на карті</label>
-
-          <iframe
-            id="mapPreview"
-            class="map-preview-frame"
-            title="Попередній перегляд карти"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
-
-          <p class="photo-hint">
-            Якщо мітка стала неточно — уточніть адресу або вручну змініть широту/довготу.
-          </p>
-        </div>
       </div>
 
       <div class="admin-section">
@@ -1111,19 +1094,6 @@
     </div>
 
     <div class="admin-help-card">
-      <h3>Адреса та карта</h3>
-      <p>
-        Введіть публічну локацію або точну службову адресу, натисніть
-        «Знайти на карті», і система автоматично заповнить широту та довготу.
-      </p>
-      <ul>
-        <li>Публічна локація може бути приблизною</li>
-        <li>Точна адреса зберігається тільки для агентства</li>
-        <li>Координати можна поправити вручну</li>
-      </ul>
-    </div>
-
-    <div class="admin-help-card">
       <h3>Редагування фото</h3>
       <p>
         Якщо Ви відкрили обʼєкт через кнопку «Редагувати», адмінка підтягне
@@ -1151,6 +1121,14 @@
     </div>
 
     <div class="admin-help-card">
+      <h3>Цільове призначення землі</h3>
+      <p>
+        Для земельних ділянок обирайте код зі списку, а уточнення пишіть вручну.
+        Кадастровий номер вноситься у службову інформацію.
+      </p>
+    </div>
+
+    <div class="admin-help-card">
       <h3>Контакти компанії</h3>
       <p>
         На сторінці кожного обʼєкта автоматично будуть кнопки:
@@ -1162,36 +1140,7 @@
 
 </main>
 
-<script type="module" src="admin.js?v=4"></script>
+<script type="module" src="admin.js?v=3"></script>
 
 </body>
 </html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Адмін — АН «Райський Сад»</title>
-
-  <link rel="stylesheet" href="styles.css">
-
-  <style>
-    .admin-layout {
-      max-width: 1200px;
-      margin: 28px auto 34px;
-      padding: 0 16px;
-      display: grid;
-      grid-template-columns: 1fr 0.78fr;
-      gap: 22px;
-    }
-
-    .admin-panel {
-      background:
-        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
-      border: 1px solid rgba(232, 137, 18, 0.22);
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.34);
-    }
-
-    .admin-panel h1,
-    .admin-panel h2,
