@@ -43,14 +43,10 @@ const firebaseConfig = {
 
 /* ================================
    GOOGLE MAPS / GEOCODING
-   ВСТАВТЕ СВІЙ GOOGLE API KEY НИЖЧЕ
+   Вставте свій Google API key нижче
 ================================ */
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I";
-
-/* ================================
-   INIT
-================================ */
+const GOOGLE_MAPS_API_KEY = "ВСТАВТЕ_СВІЙ_КЛЮЧ_ТУТ";
 
 const app = initializeApp(firebaseConfig);
 
@@ -886,12 +882,29 @@ window.addObject = async function(event) {
       updatedAt: serverTimestamp()
     };
 
-    if (dataByType.rent) payload.rent = dataByType.rent;
-    if (dataByType.apartment) payload.apartment = dataByType.apartment;
-    if (dataByType.house) payload.house = dataByType.house;
-    if (dataByType.land) payload.land = dataByType.land;
-    if (dataByType.garage) payload.garage = dataByType.garage;
-    if (dataByType.commercial) payload.commercial = dataByType.commercial;
+    if (dataByType.rent) {
+      payload.rent = dataByType.rent;
+    }
+
+    if (dataByType.apartment) {
+      payload.apartment = dataByType.apartment;
+    }
+
+    if (dataByType.house) {
+      payload.house = dataByType.house;
+    }
+
+    if (dataByType.land) {
+      payload.land = dataByType.land;
+    }
+
+    if (dataByType.garage) {
+      payload.garage = dataByType.garage;
+    }
+
+    if (dataByType.commercial) {
+      payload.commercial = dataByType.commercial;
+    }
 
     payload.privateData = dataByType.privateData;
 
@@ -1119,10 +1132,21 @@ window.clearForm = function() {
     el.value = "";
   });
 
-  if ($("dealType")) $("dealType").value = "sale";
-  if ($("propertyType")) $("propertyType").value = "apartment";
-  if ($("rentPeriod")) $("rentPeriod").value = "month";
-  if ($("utilitiesIncluded")) $("utilitiesIncluded").value = "not_included";
+  if ($("dealType")) {
+    $("dealType").value = "sale";
+  }
+
+  if ($("propertyType")) {
+    $("propertyType").value = "apartment";
+  }
+
+  if ($("rentPeriod")) {
+    $("rentPeriod").value = "month";
+  }
+
+  if ($("utilitiesIncluded")) {
+    $("utilitiesIncluded").value = "not_included";
+  }
 
   selectedFiles = [];
   currentImageUrls = [];
