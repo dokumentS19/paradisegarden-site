@@ -87,6 +87,10 @@ function escapeHtml(value = "") {
     .replaceAll("'", "&#039;");
 }
 
+function escapeAttribute(value = "") {
+  return escapeHtml(value).replaceAll("`", "&#096;");
+}
+
 function formatPrice(value, dealType = "sale") {
   const n = Number(value);
 
@@ -175,9 +179,10 @@ function updateGallery() {
   const galleryMain = document.querySelector(".gallery-main");
 
   const currentSrc = images[currentSlide] || getMainImage(currentObject || {});
+  const safeCssUrl = String(currentSrc).replaceAll('"', '\\"');
 
   if (galleryMain) {
-    galleryMain.style.setProperty("--gallery-bg", `url("${currentSrc}")`);
+    galleryMain.style.setProperty("--gallery-bg", `url("${safeCssUrl}")`);
   }
 
   if (mainImg) {
@@ -278,7 +283,11 @@ window.startChat = async function(ownerId) {
     snap.forEach(chatDoc => {
       const data = chatDoc.data();
 
-      if (Array.isArray(data.users) && data.users.includes(ownerId)) {
+      if (
+        Array.isArray(data.users) &&
+        data.users.includes(ownerId) &&
+        data.objectId === objectId
+      ) {
         chatId = chatDoc.id;
       }
     });
@@ -420,15 +429,15 @@ function renderObject(item) {
   const status = item.status === "sold" ? "Продано" : "Активне";
   const views = Number(item.views || 0) + 1;
   const createdDate = getCreatedDate(item);
-  const ownerName = "Олег Іванчик";
-  const ownerId = escapeHtml(item.ownerId || "");
+  const ownerName = escapeHtml(item.ownerName || "Олег Іванчик");
+  const ownerId = escapeAttribute(item.ownerId || "");
 
-  const dealName = getDealTypeName(item.dealType);
-  const propertyName = getPropertyTypeName(item.propertyType);
-  const commercialName = getCommercialTypeName(item.commercialType);
+  const dealName = escapeHtml(getDealTypeName(item.dealType));
+  const propertyName = escapeHtml(getPropertyTypeName(item.propertyType));
+  const commercialName = escapeHtml(getCommercialTypeName(item.commercialType));
 
   const thumbsHtml = images.map((src, index) => {
-    const safeSrc = escapeHtml(src);
+    const safeSrc = escapeAttribute(src);
 
     return `
       <img
@@ -441,7 +450,7 @@ function renderObject(item) {
   }).join("");
 
   page.innerHTML = `
-    <a class="back-link" href="../index.html">← Назад до обʼєктів</a>
+    <a class="back-link" href="../index.html#objects">← Назад до обʼєктів</a>
 
     <section class="object-hero-card">
       <div class="object-title-row">
@@ -461,7 +470,7 @@ function renderObject(item) {
 
       <div class="gallery">
         <div class="gallery-main">
-          <img id="mainImg" src="${escapeHtml(images[0])}" alt="${title}">
+          <img id="mainImg" src="${escapeAttribute(images[0])}" alt="${title}">
 
           <button class="gallery-btn left" type="button" onclick="changeSlide(-1)">‹</button>
           <button class="gallery-btn right" type="button" onclick="changeSlide(1)">›</button>
@@ -522,7 +531,7 @@ function renderObject(item) {
           </div>
         </div>
 
-        <h3 style="margin-top: 20px;">Опис</h3>
+        <h3 style="margin-top: 22px;">Опис</h3>
         <p class="object-description">${description}</p>
       </div>
 
@@ -596,16 +605,16 @@ async function loadSimilarObjects(item) {
     }
 
     similarGrid.innerHTML = objects.map(obj => {
-      const image = escapeHtml(getMainImage(obj));
+      const image = escapeAttribute(getMainImage(obj));
       const title = escapeHtml(obj.title || "Без назви");
       const area = escapeHtml(obj.area || "-");
       const price = formatPrice(obj.price, obj.dealType);
 
-      const dealName = getDealTypeName(obj.dealType);
-      const propertyName = getPropertyTypeName(obj.propertyType);
+      const dealName = escapeHtml(getDealTypeName(obj.dealType));
+      const propertyName = escapeHtml(getPropertyTypeName(obj.propertyType));
 
       return `
-        <a class="similar-card" href="object.html?id=${escapeHtml(obj.id)}">
+        <a class="similar-card" href="object.html?id=${escapeAttribute(obj.id)}">
           <img src="${image}" alt="${title}">
 
           <div>
