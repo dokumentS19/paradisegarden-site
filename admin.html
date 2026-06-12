@@ -290,6 +290,22 @@
       border: 1px dashed rgba(232, 137, 18, 0.28);
     }
 
+    #adminMap {
+      width: 100%;
+      height: 360px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(232, 137, 18, 0.25);
+      background: #08150f;
+    }
+
+    .map-help-text {
+      color: #dbeafe;
+      font-size: 13px;
+      line-height: 1.5;
+      margin: -4px 0 0;
+    }
+
     @media (max-width: 900px) {
       .admin-layout {
         grid-template-columns: 1fr;
@@ -986,6 +1002,20 @@
         <label for="description">Детальний опис</label>
         <textarea id="description" placeholder="Опишіть переваги обʼєкта, стан, комунікації, документи, інфраструктуру..."></textarea>
 
+        <label for="fullAddress">Повна адреса для пошуку на карті</label>
+        <input id="fullAddress" type="text" placeholder="Наприклад: вул. Університетська, 2, Київ">
+
+        <button id="findAddressBtn" class="btn" type="button">
+          📍 Показати адресу на карті
+        </button>
+
+        <p class="map-help-text">
+          Якщо адреса не підтягнулась точно — перетягніть прапорець вручну.
+          Для покупця можна показувати не точний будинок, а кольорову область.
+        </p>
+
+        <div id="adminMap"></div>
+
         <div class="admin-row">
           <div>
             <label for="lat">Широта</label>
@@ -997,6 +1027,16 @@
             <input id="lng" type="number" step="any" placeholder="30.2506">
           </div>
         </div>
+
+        <label class="admin-check">
+          <input id="hideHouseNumber" type="checkbox" checked>
+          Не показувати номер будинку покупцю
+        </label>
+
+        <label class="admin-check">
+          <input id="hideExactLocation" type="checkbox" checked>
+          Не показувати точну мітку покупцю, показувати кольорову область
+        </label>
       </div>
 
       <div class="admin-section">
@@ -1025,6 +1065,11 @@
             <input id="cadastralNumber" type="text" placeholder="Тільки для адмінки">
           </div>
         </div>
+
+        <label class="admin-check">
+          <input id="hideCadastralNumber" type="checkbox" checked>
+          Не показувати кадастровий номер покупцю
+        </label>
 
         <label for="ownerContacts">Контакти власника</label>
         <input id="ownerContacts" type="text" placeholder="Телефон / примітка, не показується клієнту">
@@ -1121,6 +1166,20 @@
     </div>
 
     <div class="admin-help-card">
+      <h3>Карта і приватність</h3>
+      <p>
+        У полі повної адреси можна ввести точну адресу обʼєкта.
+        Карта поставить прапорець автоматично, а якщо адреса визначилась неточно —
+        прапорець можна перенести вручну.
+      </p>
+      <ul>
+        <li>Номер будинку можна приховати від покупця</li>
+        <li>Точну мітку можна замінити кольоровою областю</li>
+        <li>Кадастровий номер можна зберігати в базі, але не показувати клієнту</li>
+      </ul>
+    </div>
+
+    <div class="admin-help-card">
       <h3>Цільове призначення землі</h3>
       <p>
         Для земельних ділянок обирайте код зі списку, а уточнення пишіть вручну.
@@ -1140,7 +1199,8 @@
 
 </main>
 
-<script type="module" src="admin.js?v=3"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I"></script>
+<script type="module" src="admin.js?v=4"></script>
 
 </body>
 </html>
