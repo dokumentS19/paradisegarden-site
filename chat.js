@@ -373,4 +373,7 @@ window.sendMessage = async function(event) {
     input.value = "";
     input.focus();
   } catch (error) {
-    console.error("SEND
+    console.error("SEND MESSAGE ERROR:", error);
+    alert("❌ Не вдалося відправити повідомлення.");
+  }
+};
