@@ -14,7 +14,12 @@ exports.sendLeadToTelegram = onDocumentCreated(
     secrets: [TELEGRAM_BOT_TOKEN]
   },
   async (event) => {
-    const lead = event.data.data();
+    if (!event.data) {
+      console.log("No lead data received.");
+      return;
+    }
+
+    const lead = event.data.data() || {};
 
     const name = lead.name || "-";
     const phone = lead.phone || "-";
@@ -38,7 +43,7 @@ exports.sendLeadToTelegram = onDocumentCreated(
       },
       body: JSON.stringify({
         chat_id: CHAT_ID,
-        text: text
+        text
       })
     });
 
@@ -46,5 +51,7 @@ exports.sendLeadToTelegram = onDocumentCreated(
       const result = await response.text();
       throw new Error("Telegram error: " + result);
     }
+
+    console.log("Lead sent to Telegram:", event.params.leadId);
   }
 );
