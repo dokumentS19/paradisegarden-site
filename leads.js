@@ -10,7 +10,6 @@ import {
   browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-
 import {
   getFirestore,
   collection,
@@ -21,6 +20,10 @@ import {
   arrayUnion,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ================================
+   FIREBASE CONFIG
+================================ */
 
 const firebaseConfig = {
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
@@ -33,16 +36,23 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
+const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+
+/* ================================
+   ACCESS
+================================ */
+
 const allowedEmails = [
   "olegivanchik1234@gmail.com",
   "rad202331@gmail.com"
 ];
-await setPersistence(auth, browserLocalPersistence);
 
+/* ================================
+   STATE
+================================ */
 
 let allLeads = [];
 let visibleLeads = [];
@@ -50,6 +60,10 @@ let chartInstance = null;
 let draggedLeadId = null;
 
 const STATUSES = ["new", "in_progress", "done"];
+
+/* ================================
+   DOM
+================================ */
 
 const UI = {
   leads: document.getElementById("leads"),
@@ -64,6 +78,13 @@ const UI = {
   done: document.getElementById("kpi-done"),
   income: document.getElementById("kpi-income")
 };
+
+/* ================================
+   AUTH
+================================ */
+
+await setPersistence(auth, browserLocalPersistence);
+
 function renderCrmLocked() {
   const shell = document.querySelector(".crm-shell");
 
@@ -72,19 +93,43 @@ function renderCrmLocked() {
   shell.innerHTML = `
     <section class="crm-panel" style="text-align:center;">
       <h1>🔒 Доступ до CRM</h1>
-      <p>Увійдіть через Google для доступу до CRM.</p>
+      <p style="color:#dbeafe;line-height:1.6;">
+        Увійдіть через Google для доступу до CRM.
+      </p>
       <button class="btn" onclick="loginCrm()">Увійти через Google</button>
     </section>
   `;
 }
 
 window.loginCrm = function() {
-  signInWithPopup(auth, provider).catch(console.error);
+  signInWithPopup(auth, provider)
+    .then(() => {
+      window.location.reload();
+    })
+    .catch(error => {
+      console.error("CRM LOGIN ERROR:", error);
+      alert("❌ Не вдалося увійти через Google.");
+    });
 };
 
 window.logoutCrm = function() {
   signOut(auth);
 };
+
+onAuthStateChanged(auth, user => {
+  console.log("CRM USER:", user ? user.email : "NO USER");
+
+  if (!user || !allowedEmails.includes(user.email)) {
+    renderCrmLocked();
+    return;
+  }
+
+  loadLeads();
+});
+
+/* ================================
+   HELPERS
+================================ */
 
 function escapeHtml(value = "") {
   return String(value)
@@ -137,6 +182,7 @@ function getPriority(lead) {
 
   if (lead.createdAt?.seconds) {
     const days = (Date.now() - lead.createdAt.seconds * 1000) / 86400000;
+
     if (days < 1) score += 3;
     else if (days < 3) score += 1;
   }
@@ -164,6 +210,10 @@ async function addHistory(id, action, comment = "") {
   });
 }
 
+/* ================================
+   LOAD
+================================ */
+
 async function loadLeads() {
   try {
     const snap = await getDocs(collection(db, "leads"));
@@ -182,6 +232,10 @@ async function loadLeads() {
     }
   }
 }
+
+/* ================================
+   FILTERS
+================================ */
 
 function applyFilters() {
   const text = UI.search ? UI.search.value.trim().toLowerCase() : "";
@@ -225,6 +279,10 @@ function applyFilters() {
   drawChart(allLeads);
 }
 
+/* ================================
+   RENDER LIST
+================================ */
+
 function renderLeads(data) {
   if (!UI.leads) return;
 
@@ -247,7 +305,11 @@ function renderLeads(data) {
 
     const historyHtml = history.length
       ? history.map(item => {
-          return `<div>📌 ${escapeHtml(item.action || "")} ${item.comment ? "— " + escapeHtml(item.comment) : ""} <small>(${escapeHtml(item.time || "")})</small></div>`;
+          const action = escapeHtml(item.action || "");
+          const comment = item.comment ? "— " + escapeHtml(item.comment) : "";
+          const time = escapeHtml(item.time || "");
+
+          return `<div>📌 ${action} ${comment} <small>(${time})</small></div>`;
         }).join("")
       : "<div>Історії поки немає</div>";
 
@@ -256,6 +318,7 @@ function renderLeads(data) {
         <div class="lead-head">
           <div>
             <h3>👤 ${name}</h3>
+
             <div class="lead-meta">
               <span>📞 ${phone}</span>
               <span>🕒 ${getLeadDate(lead)}</span>
@@ -300,6 +363,10 @@ function renderLeads(data) {
   }).join("");
 }
 
+/* ================================
+   RENDER BOARD
+================================ */
+
 function renderBoard(data) {
   if (!UI.board) return;
 
@@ -308,11 +375,15 @@ function renderBoard(data) {
 
     const cards = items.length
       ? items.map(lead => {
+          const id = escapeHtml(lead.id);
+          const name = escapeHtml(lead.name || "Без імені");
+          const phone = escapeHtml(lead.phone || "-");
+
           return `
-            <div class="lead-mini" draggable="true" ondragstart="dragStartLead(event, '${escapeHtml(lead.id)}')">
-              <strong>${escapeHtml(lead.name || "Без імені")}</strong>
-              <div style="color:#cbd5e1;font-size:13px;margin-top:5px;">📞 ${escapeHtml(lead.phone || "-")}</div>
-              <div style="color:#bbf7d0;font-size:13px;margin-top:5px;">${getPriorityBadge(lead)}</div>
+            <div class="lead-mini" draggable="true" ondragstart="dragStartLead(event, '${id}')">
+              <strong>${name}</strong>
+              <div style="color:#dbeafe;font-size:13px;margin-top:5px;">📞 ${phone}</div>
+              <div style="color:#fff3df;font-size:13px;margin-top:5px;">${getPriorityBadge(lead)}</div>
             </div>
           `;
         }).join("")
@@ -330,6 +401,10 @@ function renderBoard(data) {
     `;
   }).join("");
 }
+
+/* ================================
+   ANALYTICS
+================================ */
 
 function updateAnalytics(data) {
   const total = data.length;
@@ -389,6 +464,10 @@ function drawChart(data) {
     }
   });
 }
+
+/* ================================
+   ACTIONS
+================================ */
 
 window.saveLeadInfo = async function(id) {
   const note = document.getElementById(`note-${id}`)?.value.trim() || "";
@@ -469,17 +548,10 @@ window.resetLeadFilters = function() {
   applyFilters();
 };
 
+/* ================================
+   EVENTS
+================================ */
+
 if (UI.search) UI.search.addEventListener("input", applyFilters);
 if (UI.statusFilter) UI.statusFilter.addEventListener("change", applyFilters);
 if (UI.sortFilter) UI.sortFilter.addEventListener("change", applyFilters);
-
-onAuthStateChanged(auth, user => {
-  console.log("CRM USER:", user ? user.email : "NO USER");
-
-  if (!user || !allowedEmails.includes(user.email)) {
-    renderCrmLocked();
-    return;
-  }
-
-  loadLeads();
-});
