@@ -1527,3 +1527,33 @@ select:focus {
 .hero-stats div {
   background: rgba(4, 20, 13, 0.46);
 }
+/* ================================
+   ANCHOR SCROLL OFFSET
+   Щоб блоки не ховались під липкою шапкою
+================================ */
+
+html {
+  scroll-padding-top: 90px;
+}
+
+#about,
+#objects,
+#director,
+#request,
+#contacts {
+  scroll-margin-top: 90px;
+}
+
+@media (max-width: 680px) {
+  html {
+    scroll-padding-top: 74px;
+  }
+
+  #about,
+  #objects,
+  #director,
+  #request,
+  #contacts {
+    scroll-margin-top: 74px;
+  }
+}
