@@ -1563,7 +1563,7 @@ html {
 ================================ */
 
 html {
-  scroll-padding-top: 110px;
+  scroll-padding-top: 100px;
 }
 
 #about,
@@ -1571,5 +1571,5 @@ html {
 #director,
 #request,
 #contacts {
-  scroll-margin-top: 110px;
+  scroll-margin-top: 100px;
 }
