@@ -1528,12 +1528,12 @@ select:focus {
   background: rgba(4, 20, 13, 0.46);
 }
 /* ================================
-   ANCHOR SCROLL OFFSET
-   Щоб блоки не ховались під липкою шапкою
+   FINAL ANCHOR OFFSET
+   Акуратний перехід по меню
 ================================ */
 
 html {
-  scroll-padding-top: 85px;
+  scroll-padding-top: 0;
 }
 
 #about,
@@ -1541,12 +1541,12 @@ html {
 #director,
 #request,
 #contacts {
-  scroll-margin-top: 85px;
+  scroll-margin-top: 62px;
 }
 
 @media (max-width: 680px) {
   html {
-    scroll-padding-top: 74px;
+    scroll-padding-top: 0;
   }
 
   #about,
@@ -1554,22 +1554,6 @@ html {
   #director,
   #request,
   #contacts {
-    scroll-margin-top: 74px;
+    scroll-margin-top: 56px;
   }
-}
-/* ================================
-   FINAL ANCHOR OFFSET
-   Щоб меню не ховало початок секцій
-================================ */
-
-html {
-  scroll-padding-top: 38px;
-}
-
-#about,
-#objects,
-#director,
-#request,
-#contacts {
-  scroll-margin-top: 38px;
 }
