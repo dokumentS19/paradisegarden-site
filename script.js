@@ -515,8 +515,7 @@ const homeArticles = [
     title: "Як підготуватися до купівлі нерухомості",
     excerpt: "Пояснюємо, які документи перевірити, як оцінити бюджет і на що звернути увагу перед купівлею квартири, будинку чи ділянки.",
     date: "12 червня 2026",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80",
-    url: "article.html?id=1"
+   image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80",
   },
   {
     id: 2,
