@@ -101,8 +101,12 @@ onAuthStateChanged(auth, user => {
     currentUser = user;
 
     if (userInfo) {
-      userInfo.innerHTML = `👤 ${escapeHtml(user.displayName || user.email || "Користувач")}`;
-    }
+      const adminName = user.email === "olegivanchik1234@gmail.com"
+        ? "Олег Іванчик"
+        : "Адміністратор";
+
+      userInfo.innerHTML = `👤 ${escapeHtml(adminName)}`;
+      }
 
     if (loginBtn) {
       loginBtn.textContent = "Вийти";
