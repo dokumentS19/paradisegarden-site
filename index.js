@@ -2,7 +2,7 @@ const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
 
-admin.initializeApp();
+admin.initializeApp(); 
 
 const TELEGRAM_BOT_TOKEN = defineSecret("TELEGRAM_BOT_TOKEN");
 
