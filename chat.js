@@ -96,11 +96,13 @@ function setStatus(text) {
 
 function scrollToBottom() {
   if (!messagesDiv) return;
+
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 function showLoginWarning(show) {
   if (!loginWarning) return;
+
   loginWarning.classList.toggle("active", Boolean(show));
 }
 
