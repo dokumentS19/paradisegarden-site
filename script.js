@@ -578,4 +578,5 @@ function renderHomeArticles() {
 ================================ */
 
 setupFilters();
+renderHomeArticles();
 loadObjects();
