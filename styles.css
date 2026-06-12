@@ -1468,11 +1468,13 @@ select:focus {
 }
 
 .hero-shade {
-  background: linear-gradient(
-    90deg,
-    rgba(5, 35, 19, 0.42),
-    rgba(5, 35, 19, 0.10)
-  );
+  background:
+    radial-gradient(circle at center, rgba(5, 35, 19, 0.38), transparent 42%),
+    linear-gradient(
+      90deg,
+      rgba(5, 35, 19, 0.42),
+      rgba(5, 35, 19, 0.10)
+    );
 }
 
 /* Текст трохи мʼякший, щоб не різав очі на світлішому фоні */
