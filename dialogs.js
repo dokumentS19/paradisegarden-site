@@ -1,9 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-  getFirestore,
-  collection,
-  query,
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";import { initializeApp } from "https://  query,
   where,
   onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -101,6 +96,10 @@ function escapeHtml(value = "") {
     .replaceAll("'", "&#039;");
 }
 
+function escapeAttribute(value = "") {
+  return escapeHtml(value).replaceAll("`", "&#096;");
+}
+
 function formatDate(value) {
   if (value?.seconds) {
     return new Date(value.seconds * 1000).toLocaleString("uk-UA", {
@@ -154,7 +153,7 @@ function renderUser(user) {
 
   if (userAvatar) {
     if (user.photoURL) {
-      userAvatar.innerHTML = `<img src="${escapeHtml(user.photoURL)}" alt="avatar">`;
+      userAvatar.innerHTML = `<img src="${escapeAttribute(user.photoURL)}" alt="avatar">`;
     } else {
       userAvatar.textContent = getInitials(user);
     }
@@ -300,7 +299,7 @@ function renderDialogs() {
   }
 
   dialogsList.innerHTML = data.map(dialog => {
-    const id = escapeHtml(dialog.id);
+    const id = escapeAttribute(dialog.id);
     const objectTitle = escapeHtml(dialog.objectTitle || "Обʼєкт нерухомості");
     const objectId = escapeHtml(dialog.objectId || "");
     const lastMessage = escapeHtml(dialog.lastMessage || "Повідомлень поки немає");
@@ -351,3 +350,7 @@ if (dialogSearch) {
     renderDialogs();
   });
 }
+
+import {
+  getFirestore,
+  collection,
