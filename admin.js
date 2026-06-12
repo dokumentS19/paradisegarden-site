@@ -46,7 +46,7 @@ const firebaseConfig = {
    ВСТАВТЕ СВІЙ GOOGLE API KEY НИЖЧЕ
 ================================ */
 
-const GOOGLE_MAPS_API_KEY = "ВСТАВТЕ_СВІЙ_КЛЮЧ_ТУТ";
+const GOOGLE_MAPS_API_KEY = "AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I";
 
 /* ================================
    INIT
