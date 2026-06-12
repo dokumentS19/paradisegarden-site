@@ -20,10 +20,6 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* ================================
-   FIREBASE CONFIG
-================================ */
-
 const firebaseConfig = {
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
@@ -39,10 +35,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-/* ================================
-   STATE
-================================ */
-
 const objectId = new URLSearchParams(window.location.search).get("id");
 
 let currentUser = null;
@@ -50,33 +42,17 @@ let currentObject = null;
 let images = [];
 let currentSlide = 0;
 
-/* ================================
-   CONTACTS
-================================ */
-
 const COMPANY_PHONE_VISIBLE = "0953777196";
 const COMPANY_PHONE_TEL = "+380953777196";
 
 const TELEGRAM_LINK = "https://t.me/paradisegarden_leads_bot";
 const VIBER_LINK = "viber://chat?number=%2B380953777196";
 
-/* ================================
-   DOM
-================================ */
-
 const page = document.getElementById("objectPage");
-
-/* ================================
-   AUTH
-================================ */
 
 onAuthStateChanged(auth, user => {
   currentUser = user;
 });
-
-/* ================================
-   HELPERS
-================================ */
 
 function escapeHtml(value = "") {
   return String(value)
@@ -101,6 +77,17 @@ function formatPrice(value, dealType = "sale") {
   const currency = dealType === "rent" ? "грн" : "$";
 
   return `${new Intl.NumberFormat("uk-UA").format(n)} ${currency}`;
+}
+
+function valueText(value) {
+  if (value === null || value === undefined || value === "") return "";
+  return String(value);
+}
+
+function yesNo(value) {
+  if (value === true) return "Так";
+  if (value === false) return "Ні";
+  return "";
 }
 
 function getMainImage(item) {
@@ -157,9 +144,297 @@ function getCommercialTypeName(value) {
   }[value] || "";
 }
 
-/* ================================
-   GALLERY
-================================ */
+function dict(value, map) {
+  return map[value] || valueText(value);
+}
+
+function getBathroomTypeName(value) {
+  return dict(value, {
+    combined: "Суміжний",
+    separate: "Роздільний",
+    multiple: "Декілька санвузлів",
+    outdoor: "На вулиці",
+    none: "Немає"
+  });
+}
+
+function getBathFeatureName(value) {
+  return dict(value, {
+    bath: "Ванна",
+    shower: "Душова",
+    both: "Ванна + душова",
+    none: "Без ванни / душової"
+  });
+}
+
+function getBalconyName(value) {
+  return dict(value, {
+    none: "Немає",
+    balcony: "Балкон",
+    loggia: "Лоджія",
+    both: "Балкон + лоджія",
+    terrace: "Тераса"
+  });
+}
+
+function getConditionName(value) {
+  return dict(value, {
+    living: "Житловий",
+    renovated: "Після ремонту",
+    euro: "Євроремонт",
+    needs_repair: "Під ремонт",
+    builder: "Після будівельників",
+    no_repair: "Без ремонту",
+    unfinished: "Недобудова",
+    good: "Добрий",
+    normal: "Задовільний",
+    office: "Офісний стан",
+    shell: "Без ремонту"
+  });
+}
+
+function getHeatingName(value) {
+  return dict(value, {
+    individual: "Індивідуальне",
+    central: "Центральне",
+    electric: "Електричне",
+    gas: "Газове",
+    solid_fuel: "Твердопаливне",
+    combined: "Комбіноване",
+    none: "Немає"
+  });
+}
+
+function getHouseTypeName(value) {
+  return dict(value, {
+    house: "Будинок",
+    half_house: "Півбудинку",
+    townhouse: "Таунхаус",
+    duplex: "Дуплекс"
+  });
+}
+
+function getGarageTypeName(value) {
+  return dict(value, {
+    capital: "Капітальний",
+    metal: "Металевий",
+    parking_place: "Паркомісце",
+    underground: "Підземний паркінг",
+    box: "Бокс"
+  });
+}
+
+function getRentPeriodName(value) {
+  return dict(value, {
+    month: "За місяць",
+    day: "За добу",
+    year: "За рік",
+    sqm_month: "За м² / місяць",
+    sotka_month: "За сотку / місяць",
+    negotiable: "Договірна"
+  });
+}
+
+function getUtilitiesIncludedName(value) {
+  return dict(value, {
+    not_included: "Окремо",
+    included: "Включені",
+    partial: "Частково включені",
+    negotiable: "Договірно"
+  });
+}
+
+function getLayoutName(value) {
+  return dict(value, {
+    separate: "Окрема",
+    adjacent: "Суміжна",
+    mixed: "Суміжно-роздільна",
+    studio: "Студія",
+    free: "Вільне планування",
+    cabinet: "Кабінетна система",
+    open_space: "Open space"
+  });
+}
+
+function getBuildingTypeName(value) {
+  return dict(value, {
+    brick: "Цегляний",
+    panel: "Панельний",
+    monolith: "Монолітний",
+    gasblock: "Газоблок",
+    new_building: "Новобудова",
+    stalinka: "Сталінка",
+    hrushchovka: "Хрущовка",
+    czech: "Чешка"
+  });
+}
+
+function getDocumentsName(value) {
+  return dict(value, {
+    ownership: "Право власності",
+    lease: "Оренда",
+    act: "Державний акт",
+    inheritance: "Спадщина",
+    contract: "Договір",
+    in_progress: "В процесі оформлення",
+    other: "Інше"
+  });
+}
+
+function getApplianceNames(values = []) {
+  if (!Array.isArray(values) || !values.length) return "";
+
+  const map = {
+    fridge: "Холодильник",
+    washer: "Пральна машина",
+    conditioner: "Кондиціонер",
+    dishwasher: "Посудомийка",
+    internet: "Інтернет"
+  };
+
+  return values.map(item => map[item] || item).join(", ");
+}
+
+function feature(label, value) {
+  if (value === null || value === undefined || value === "") return "";
+
+  return `
+    <div class="feature">
+      <small>${escapeHtml(label)}</small>
+      <strong>${escapeHtml(value)}</strong>
+    </div>
+  `;
+}
+
+function buildRentFeatures(item) {
+  if (item.dealType !== "rent" || !item.rent) return "";
+
+  const r = item.rent;
+
+  return `
+    ${feature("Період оплати", getRentPeriodName(r.pricePeriod))}
+    ${feature("Комунальні платежі", getUtilitiesIncludedName(r.utilitiesIncluded))}
+    ${feature("Застава", r.deposit ? `${r.deposit} грн` : "")}
+    ${feature("Комісія", r.commission)}
+    ${feature("Мінімальний строк", r.minTerm)}
+    ${feature("Доступно з", r.availableFrom)}
+    ${feature("Можна з дітьми", yesNo(r.childrenAllowed))}
+    ${feature("Можна з тваринами", yesNo(r.petsAllowed))}
+  `;
+}
+
+function buildApartmentFeatures(item) {
+  const a = item.apartment;
+  if (!a) return "";
+
+  return `
+    ${feature("Загальна площа", a.totalArea ? `${a.totalArea} м²` : "")}
+    ${feature("Житлова площа", a.livingArea ? `${a.livingArea} м²` : "")}
+    ${feature("Кухня", a.kitchenArea ? `${a.kitchenArea} м²` : "")}
+    ${feature("Кімнат", a.rooms)}
+    ${feature("Поверх", a.floor && a.floorsTotal ? `${a.floor} / ${a.floorsTotal}` : a.floor)}
+    ${feature("Планування", getLayoutName(a.layout))}
+    ${feature("Санвузол", getBathroomTypeName(a.bathroomType))}
+    ${feature("Ванна / душова", getBathFeatureName(a.bathFeature))}
+    ${feature("Кількість санвузлів", a.bathroomsCount)}
+    ${feature("Балкон / лоджія", getBalconyName(a.balcony))}
+    ${feature("Тип будинку", getBuildingTypeName(a.buildingType))}
+    ${feature("Рік побудови", a.buildYear)}
+    ${feature("Ліфт", dict(a.elevator, { yes: "Є", no: "Немає" }))}
+    ${feature("Опалення", getHeatingName(a.heating))}
+    ${feature("Стан", getConditionName(a.condition))}
+    ${feature("Меблі", dict(a.furniture, { yes: "Мебльована", partial: "Частково мебльована", no: "Без меблів" }))}
+    ${feature("Техніка", getApplianceNames(a.appliances))}
+  `;
+}
+
+function buildHouseFeatures(item) {
+  const h = item.house;
+  if (!h) return "";
+
+  return `
+    ${feature("Тип будинку", getHouseTypeName(h.houseType))}
+    ${feature("Площа будинку", h.houseArea ? `${h.houseArea} м²` : "")}
+    ${feature("Площа ділянки", h.landArea ? `${h.landArea} сот.` : "")}
+    ${feature("Кімнат", h.rooms)}
+    ${feature("Поверхів", h.floors)}
+    ${feature("Стіни", h.walls)}
+    ${feature("Санвузол", getBathroomTypeName(h.bathroomType))}
+    ${feature("Ванна / душова", getBathFeatureName(h.bathFeature))}
+    ${feature("Кількість санвузлів", h.bathroomsCount)}
+    ${feature("Опалення", getHeatingName(h.heating))}
+    ${feature("Вода", dict(h.water, { central: "Центральна", well: "Свердловина", well_yard: "Колодязь", none: "Немає" }))}
+    ${feature("Каналізація", dict(h.sewerage, { central: "Центральна", septic: "Септик", cesspool: "Вигрібна яма", none: "Немає" }))}
+    ${feature("Електрика", yesNo(h.electricity))}
+    ${feature("Газ", yesNo(h.gas))}
+    ${feature("Паркування", yesNo(h.parking))}
+    ${feature("Гараж", yesNo(h.garageIncluded))}
+    ${feature("Документи", getDocumentsName(h.documents))}
+    ${feature("Стан", getConditionName(h.condition))}
+  `;
+}
+
+function buildLandFeatures(item) {
+  const l = item.land;
+  if (!l) return "";
+
+  return `
+    ${feature("Площа ділянки", l.landArea ? `${l.landArea} сот.` : "")}
+    ${feature("Цільове призначення", l.purposeName)}
+    ${feature("Уточнення", l.purposeNote)}
+    ${feature("Документи", getDocumentsName(l.documents))}
+    ${feature("Фасад", l.frontage)}
+    ${feature("Комунікації поруч", l.utilitiesNearby)}
+  `;
+}
+
+function buildGarageFeatures(item) {
+  const g = item.garage;
+  if (!g) return "";
+
+  return `
+    ${feature("Площа", g.area ? `${g.area} м²` : "")}
+    ${feature("Тип гаража", getGarageTypeName(g.garageType))}
+    ${feature("Яма", yesNo(g.pit))}
+    ${feature("Погріб", yesNo(g.cellar))}
+    ${feature("Електрика", yesNo(g.electricity))}
+    ${feature("Охорона / відеонагляд", yesNo(g.security))}
+    ${feature("Ворота", g.gateType)}
+    ${feature("Стан", getConditionName(g.condition))}
+  `;
+}
+
+function buildCommercialFeatures(item) {
+  const c = item.commercial;
+  if (!c) return "";
+
+  return `
+    ${feature("Підтип", getCommercialTypeName(c.commercialType || item.commercialType))}
+    ${feature("Площа", c.area ? `${c.area} м²` : "")}
+    ${feature("Поверх", c.floor && c.floorsTotal ? `${c.floor} / ${c.floorsTotal}` : c.floor)}
+    ${feature("Кабінетів / приміщень", c.rooms)}
+    ${feature("Планування", getLayoutName(c.layout))}
+    ${feature("Стан", getConditionName(c.condition))}
+    ${feature("Вхід", dict(c.entrance, { separate: "Окремий", common: "Загальний", street: "З фасаду / з вулиці", yard: "З двору" }))}
+    ${feature("Санвузол", dict(c.bathroom, { yes: "Є", no: "Немає", shared: "Спільний" }))}
+    ${feature("Опалення", getHeatingName(c.heating))}
+    ${feature("Потужність електрики", c.power)}
+    ${feature("Інтернет", yesNo(c.internet))}
+    ${feature("Паркування", yesNo(c.parking))}
+    ${feature("Охорона", yesNo(c.security))}
+    ${feature("Доступ 24/7", yesNo(c.access24))}
+  `;
+}
+
+function buildTypeFeatures(item) {
+  if (item.propertyType === "apartment") return buildApartmentFeatures(item);
+  if (item.propertyType === "house") return buildHouseFeatures(item);
+  if (item.propertyType === "land") return buildLandFeatures(item);
+  if (item.propertyType === "garage") return buildGarageFeatures(item);
+  if (item.propertyType === "commercial") return buildCommercialFeatures(item);
+
+  return "";
+}
 
 function applyImageOrientation(img) {
   if (!img) return;
@@ -211,13 +486,8 @@ window.changeSlide = function(step) {
 
   currentSlide += step;
 
-  if (currentSlide >= images.length) {
-    currentSlide = 0;
-  }
-
-  if (currentSlide < 0) {
-    currentSlide = images.length - 1;
-  }
+  if (currentSlide >= images.length) currentSlide = 0;
+  if (currentSlide < 0) currentSlide = images.length - 1;
 
   updateGallery();
 };
@@ -230,18 +500,9 @@ window.selectImage = function(index) {
 };
 
 document.addEventListener("keydown", event => {
-  if (event.key === "ArrowRight") {
-    window.changeSlide(1);
-  }
-
-  if (event.key === "ArrowLeft") {
-    window.changeSlide(-1);
-  }
+  if (event.key === "ArrowRight") window.changeSlide(1);
+  if (event.key === "ArrowLeft") window.changeSlide(-1);
 });
-
-/* ================================
-   CONTACT ACTIONS
-================================ */
 
 window.callCompany = function() {
   window.location.href = `tel:${COMPANY_PHONE_TEL}`;
@@ -254,10 +515,6 @@ window.openTelegram = function() {
 window.openViber = function() {
   window.location.href = VIBER_LINK;
 };
-
-/* ================================
-   CHAT
-================================ */
 
 window.startChat = async function(ownerId) {
   if (!currentUser) {
@@ -311,10 +568,6 @@ window.startChat = async function(ownerId) {
   }
 };
 
-/* ================================
-   MAP
-================================ */
-
 function initMap(lat, lng) {
   const mapEl = document.getElementById("map");
 
@@ -344,10 +597,6 @@ function initMap(lat, lng) {
     title: currentObject?.title || "Обʼєкт нерухомості"
   });
 }
-
-/* ================================
-   LOAD OBJECT
-================================ */
 
 async function loadObject() {
   if (!page) return;
@@ -416,10 +665,6 @@ async function loadObject() {
   }
 }
 
-/* ================================
-   RENDER OBJECT
-================================ */
-
 function renderObject(item) {
   const title = escapeHtml(item.title || "Обʼєкт нерухомості");
   const price = formatPrice(item.price, item.dealType);
@@ -448,6 +693,9 @@ function renderObject(item) {
       >
     `;
   }).join("");
+
+  const rentFeatures = buildRentFeatures(item);
+  const typeFeatures = buildTypeFeatures(item);
 
   page.innerHTML = `
     <a class="back-link" href="../index.html#objects">← Назад до обʼєктів</a>
@@ -489,46 +737,15 @@ function renderObject(item) {
         <h2>Інформація про обʼєкт</h2>
 
         <div class="feature-grid">
-          <div class="feature">
-            <small>Тип угоди</small>
-            <strong>${dealName}</strong>
-          </div>
-
-          <div class="feature">
-            <small>Тип нерухомості</small>
-            <strong>${propertyName}</strong>
-          </div>
-
-          ${
-            item.propertyType === "commercial" && commercialName
-              ? `
-                <div class="feature">
-                  <small>Підтип комерції</small>
-                  <strong>${commercialName}</strong>
-                </div>
-              `
-              : ""
-          }
-
-          <div class="feature">
-            <small>Ціна</small>
-            <strong>${price}</strong>
-          </div>
-
-          <div class="feature">
-            <small>Площа</small>
-            <strong>${area}</strong>
-          </div>
-
-          <div class="feature">
-            <small>Локація</small>
-            <strong>${address}</strong>
-          </div>
-
-          <div class="feature">
-            <small>Дата додавання</small>
-            <strong>${createdDate}</strong>
-          </div>
+          ${feature("Тип угоди", dealName)}
+          ${feature("Тип нерухомості", propertyName)}
+          ${item.propertyType === "commercial" && commercialName ? feature("Підтип комерції", commercialName) : ""}
+          ${feature("Ціна", price)}
+          ${feature("Площа", area)}
+          ${feature("Локація", address)}
+          ${feature("Дата додавання", createdDate)}
+          ${rentFeatures}
+          ${typeFeatures}
         </div>
 
         <h3 style="margin-top: 22px;">Опис</h3>
@@ -572,10 +789,6 @@ function renderObject(item) {
     </section>
   `;
 }
-
-/* ================================
-   SIMILAR OBJECTS
-================================ */
 
 async function loadSimilarObjects(item) {
   const similarGrid = document.getElementById("similarGrid");
@@ -632,9 +845,5 @@ async function loadSimilarObjects(item) {
     similarGrid.innerHTML = "<p>Не вдалося завантажити схожі обʼєкти.</p>";
   }
 }
-
-/* ================================
-   START
-================================ */
 
 loadObject();
