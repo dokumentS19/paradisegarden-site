@@ -65,7 +65,6 @@ const statSold = document.getElementById("statSold");
 /* ================================
    AUTH
 ================================ */
-
 await setPersistence(auth, browserLocalPersistence);
 
 if (loginBtn) {
@@ -84,42 +83,16 @@ if (loginBtn) {
 }
 
 onAuthStateChanged(auth, user => {
-  if (isAllowedAdmin(user)) {
-    currentUser = user;
+  currentUser = user;
 
-    if (userInfo) {
-      userInfo.innerHTML = "👤 Олег Іванчик";
-    }
-
-    if (loginBtn) {
-      loginBtn.textContent = "Вийти";
-    }
-
-    return;
-  }
-
-  currentUser = null;
-
-  if (user && !isAllowedAdmin(user)) {
-    if (userInfo) {
-      userInfo.innerHTML = `⛔ Немає доступу для ${escapeHtml(user.email || "цього акаунта")}`;
-    }
-
-    if (loginBtn) {
-      loginBtn.textContent = "Вийти";
-    }
-
-    return;
-  }
-
-  if (userInfo) {
-    userInfo.innerHTML = "❌ Не авторизований";
-  }
-
-  if (loginBtn) {
-    loginBtn.textContent = "Увійти через Google";
+  if (user) {
+    renderUser(user);
+    loadMyAds(user.uid);
+  } else {
+    renderGuest();
   }
 });
+
 /* ================================
    HELPERS
 ================================ */
