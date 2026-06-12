@@ -37,7 +37,10 @@ let favs = [];
 
 try {
   favs = JSON.parse(localStorage.getItem("favs")) || [];
-  if (!Array.isArray(favs)) favs = [];
+
+  if (!Array.isArray(favs)) {
+    favs = [];
+  }
 } catch {
   favs = [];
 }
@@ -86,10 +89,16 @@ function escapeHtml(value = "") {
     .replaceAll("'", "&#039;");
 }
 
+function escapeAttribute(value = "") {
+  return escapeHtml(value).replaceAll("`", "&#096;");
+}
+
 function normalizePrice(value) {
   const n = Number(value);
+
   return Number.isFinite(n) ? n : 0;
 }
+
 function formatPrice(value, dealType = "sale") {
   const n = Number(value);
 
@@ -266,8 +275,7 @@ function applyFilters() {
       propertyValue === "all" || item.propertyType === propertyValue;
 
     const matchesCommercial =
-      commercialValue === "all" ||
-      item.commercialType === commercialValue;
+      commercialValue === "all" || item.commercialType === commercialValue;
 
     return (
       matchesText &&
@@ -366,19 +374,19 @@ function renderObjects(data) {
 }
 
 function createObjectCard(item) {
-  const id = escapeHtml(item.id);
+  const id = escapeAttribute(item.id);
   const title = escapeHtml(item.title || "Обʼєкт нерухомості");
   const area = escapeHtml(item.area || "-");
- const price = formatPrice(item.price, item.dealType);
-  const image = escapeHtml(getMainImage(item));
+  const price = formatPrice(item.price, item.dealType);
+  const image = escapeAttribute(getMainImage(item));
   const views = Number(item.views || 0);
   const isVip = Boolean(item.vip);
   const isSold = item.status === "sold";
   const isFav = favs.includes(item.id);
 
-  const dealName = getDealTypeName(item.dealType);
-  const propertyName = getPropertyTypeName(item.propertyType);
-  const commercialName = getCommercialTypeName(item.commercialType);
+  const dealName = escapeHtml(getDealTypeName(item.dealType));
+  const propertyName = escapeHtml(getPropertyTypeName(item.propertyType));
+  const commercialName = escapeHtml(getCommercialTypeName(item.commercialType));
 
   return `
     <article class="card">
@@ -412,7 +420,7 @@ function createObjectCard(item) {
             <span>👁 Переглядів: ${views}</span>
           </div>
 
-       <div class="price">💰 ${price}</div>
+          <div class="price">💰 ${price}</div>
         </div>
       </a>
     </article>
