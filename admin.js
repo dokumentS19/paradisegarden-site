@@ -24,10 +24,6 @@ import {
   browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* ================================
-   FIREBASE CONFIG
-================================ */
-
 const firebaseConfig = {
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
@@ -45,29 +41,13 @@ const storage = getStorage(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-/* ================================
-   ACCESS
-================================ */
-
 const allowedEmails = [
   "olegivanchik1234@gmail.com",
   "rad202331@gmail.com"
 ];
 
-function isAllowedAdmin(user) {
-  return Boolean(user && allowedEmails.includes(user.email));
-}
-
-/* ================================
-   STATE
-================================ */
-
 let currentUser = null;
 let selectedFiles = [];
-
-/* ================================
-   DOM
-================================ */
 
 const fileInput = document.getElementById("file");
 const preview = document.getElementById("preview");
@@ -75,9 +55,49 @@ const loginBtn = document.getElementById("loginBtn");
 const userInfo = document.getElementById("userInfo");
 const progressBox = document.getElementById("progressBox");
 
-/* ================================
-   AUTH
-================================ */
+function isAllowedAdmin(user) {
+  return Boolean(user && allowedEmails.includes(user.email));
+}
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+function value(id) {
+  return $(id)?.value?.trim() || "";
+}
+
+function numberValue(id) {
+  const raw = value(id);
+  if (raw === "") return null;
+
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : null;
+}
+
+function checked(id) {
+  return Boolean($(id)?.checked);
+}
+
+function selectedCheckboxes(name) {
+  return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`))
+    .map(input => input.value);
+}
+
+function escapeHtml(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function showProgress(show) {
+  if (!progressBox) return;
+
+  progressBox.classList.toggle("active", Boolean(show));
+}
 
 await setPersistence(auth, browserLocalPersistence);
 
@@ -106,7 +126,7 @@ onAuthStateChanged(auth, user => {
         : "Адміністратор";
 
       userInfo.innerHTML = `👤 ${escapeHtml(adminName)}`;
-      }
+    }
 
     if (loginBtn) {
       loginBtn.textContent = "Вийти";
@@ -138,24 +158,55 @@ onAuthStateChanged(auth, user => {
   }
 });
 
-/* ================================
-   HELPERS
-================================ */
+window.toggleFormFields = function() {
+  const dealType = value("dealType") || "sale";
+  const propertyType = value("propertyType") || "apartment";
+  const commercialType = value("commercialType");
 
-function escapeHtml(value = "") {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
+  const blocks = [
+    "rentFields",
+    "apartmentFields",
+    "houseFields",
+    "landFields",
+    "garageFields",
+    "commercialFields",
+    "commercialTypeBox"
+  ];
 
-function showProgress(show) {
-  if (!progressBox) return;
+  blocks.forEach(id => {
+    const el = $(id);
+    if (el) el.classList.remove("active");
+  });
 
-  progressBox.classList.toggle("active", Boolean(show));
-}
+  if (dealType === "rent") {
+    $("rentFields")?.classList.add("active");
+  }
+
+  if (propertyType === "apartment") {
+    $("apartmentFields")?.classList.add("active");
+  }
+
+  if (propertyType === "house") {
+    $("houseFields")?.classList.add("active");
+  }
+
+  if (propertyType === "land") {
+    $("landFields")?.classList.add("active");
+  }
+
+  if (propertyType === "garage") {
+    $("garageFields")?.classList.add("active");
+  }
+
+  if (propertyType === "commercial") {
+    $("commercialTypeBox")?.classList.add("active");
+    $("commercialFields")?.classList.add("active");
+  }
+
+  if (propertyType !== "commercial" && $("commercialType")) {
+    $("commercialType").value = "";
+  }
+};
 
 function validateFiles(files) {
   if (!files.length) {
@@ -174,8 +225,8 @@ function validateFiles(files) {
       return false;
     }
 
-    if (file.size > 1024 * 1024) {
-      alert(`Фото "${file.name}" більше 1 МБ. Зменшіть розмір фото.`);
+    if (file.size > 10 * 1024 * 1024) {
+      alert(`Фото "${file.name}" більше 10 МБ. Зменшіть розмір фото.`);
       return false;
     }
   }
@@ -207,32 +258,6 @@ function renderPreview(files) {
   });
 }
 
-/* ================================
-   COMMERCIAL TYPE
-================================ */
-
-window.toggleCommercialType = function() {
-  const propertyType = document.getElementById("propertyType");
-  const commercialTypeBox = document.getElementById("commercialTypeBox");
-  const commercialType = document.getElementById("commercialType");
-
-  if (!propertyType || !commercialTypeBox) return;
-
-  if (propertyType.value === "commercial") {
-    commercialTypeBox.style.display = "block";
-  } else {
-    commercialTypeBox.style.display = "none";
-
-    if (commercialType) {
-      commercialType.value = "";
-    }
-  }
-};
-
-/* ================================
-   FILE INPUT
-================================ */
-
 if (fileInput) {
   fileInput.addEventListener("change", () => {
     const files = Array.from(fileInput.files || []);
@@ -253,9 +278,175 @@ if (fileInput) {
   });
 }
 
-/* ================================
-   ADD OBJECT
-================================ */
+function getPurposeData() {
+  const raw = value("landPurpose");
+
+  if (!raw) {
+    return {
+      purposeCode: "",
+      purposeName: "",
+      purposeNote: value("landPurposeNote")
+    };
+  }
+
+  const [code, name] = raw.split("|");
+
+  return {
+    purposeCode: code || "",
+    purposeName: name || "",
+    purposeNote: value("landPurposeNote")
+  };
+}
+
+function buildRentData(dealType) {
+  if (dealType !== "rent") return null;
+
+  return {
+    pricePeriod: value("rentPeriod"),
+    utilitiesIncluded: value("utilitiesIncluded"),
+    deposit: numberValue("deposit"),
+    commission: value("commission"),
+    minTerm: value("minTerm"),
+    availableFrom: value("availableFrom"),
+    childrenAllowed: checked("childrenAllowed"),
+    petsAllowed: checked("petsAllowed")
+  };
+}
+
+function buildApartmentData() {
+  return {
+    totalArea: numberValue("apTotalArea"),
+    livingArea: numberValue("apLivingArea"),
+    kitchenArea: numberValue("apKitchenArea"),
+    rooms: numberValue("apRooms"),
+    floor: numberValue("apFloor"),
+    floorsTotal: numberValue("apFloorsTotal"),
+    layout: value("apLayout"),
+    bathroomType: value("apBathroomType"),
+    bathFeature: value("apBathFeature"),
+    bathroomsCount: numberValue("apBathroomsCount"),
+    balcony: value("apBalcony"),
+    buildingType: value("apBuildingType"),
+    buildYear: numberValue("apBuildYear"),
+    elevator: value("apElevator"),
+    heating: value("apHeating"),
+    condition: value("apCondition"),
+    furniture: value("apFurniture"),
+    appliances: selectedCheckboxes("appliances")
+  };
+}
+
+function buildHouseData() {
+  return {
+    houseType: value("houseType"),
+    houseArea: numberValue("houseArea"),
+    landArea: numberValue("houseLandArea"),
+    rooms: numberValue("houseRooms"),
+    floors: numberValue("houseFloors"),
+    walls: value("houseWalls"),
+    documents: value("houseDocuments"),
+    bathroomType: value("houseBathroomType"),
+    bathFeature: value("houseBathFeature"),
+    bathroomsCount: numberValue("houseBathroomsCount"),
+    heating: value("houseHeating"),
+    water: value("houseWater"),
+    sewerage: value("houseSewerage"),
+    electricity: checked("houseElectricity"),
+    gas: checked("houseGas"),
+    parking: checked("houseParking"),
+    garageIncluded: checked("houseGarageIncluded"),
+    condition: value("houseCondition")
+  };
+}
+
+function buildLandData() {
+  return {
+    landArea: numberValue("landArea"),
+    documents: value("landDocuments"),
+    ...getPurposeData(),
+    frontage: value("landFrontage"),
+    utilitiesNearby: value("landUtilitiesNearby")
+  };
+}
+
+function buildGarageData() {
+  return {
+    area: numberValue("garageArea"),
+    garageType: value("garageType"),
+    pit: checked("garagePit"),
+    cellar: checked("garageCellar"),
+    electricity: checked("garageElectricity"),
+    security: checked("garageSecurity"),
+    gateType: value("garageGateType"),
+    condition: value("garageCondition")
+  };
+}
+
+function buildCommercialData() {
+  return {
+    commercialType: value("commercialType"),
+    area: numberValue("commercialArea"),
+    floor: numberValue("commercialFloor"),
+    floorsTotal: numberValue("commercialFloorsTotal"),
+    rooms: numberValue("commercialRooms"),
+    condition: value("commercialCondition"),
+    layout: value("commercialLayout"),
+    entrance: value("commercialEntrance"),
+    bathroom: value("commercialBathroom"),
+    heating: value("commercialHeating"),
+    power: value("commercialPower"),
+    internet: checked("commercialInternet"),
+    parking: checked("commercialParking"),
+    security: checked("commercialSecurity"),
+    access24: checked("commercialAccess24")
+  };
+}
+
+function buildPrivateData() {
+  return {
+    exactStreet: value("exactStreet"),
+    exactHouseNumber: value("exactHouseNumber"),
+    exactApartmentNumber: value("exactApartmentNumber"),
+    cadastralNumber: value("cadastralNumber"),
+    ownerContacts: value("ownerContacts"),
+    internalComment: value("internalComment")
+  };
+}
+
+function buildAreaLabel(propertyType, data) {
+  if (propertyType === "apartment") {
+    const total = data.apartment?.totalArea;
+    return total ? `${total} м²` : "-";
+  }
+
+  if (propertyType === "house") {
+    const houseArea = data.house?.houseArea;
+    const landArea = data.house?.landArea;
+
+    if (houseArea && landArea) return `${houseArea} м² / ${landArea} сот.`;
+    if (houseArea) return `${houseArea} м²`;
+    if (landArea) return `${landArea} сот.`;
+
+    return "-";
+  }
+
+  if (propertyType === "land") {
+    const landArea = data.land?.landArea;
+    return landArea ? `${landArea} сот.` : "-";
+  }
+
+  if (propertyType === "garage") {
+    const area = data.garage?.area;
+    return area ? `${area} м²` : "-";
+  }
+
+  if (propertyType === "commercial") {
+    const area = data.commercial?.area;
+    return area ? `${area} м²` : "-";
+  }
+
+  return "-";
+}
 
 window.addObject = async function(event) {
   if (event) event.preventDefault();
@@ -265,24 +456,20 @@ window.addObject = async function(event) {
     return;
   }
 
-  const title = document.getElementById("title")?.value.trim();
-  const area = document.getElementById("area")?.value.trim();
-  const price = Number(document.getElementById("price")?.value);
-  const address = document.getElementById("address")?.value.trim();
-  const description = document.getElementById("description")?.value.trim();
+  const title = value("title");
+  const price = numberValue("price");
+  const address = value("address");
+  const description = value("description");
 
-  const dealType = document.getElementById("dealType")?.value || "sale";
-  const propertyType = document.getElementById("propertyType")?.value || "apartment";
+  const dealType = value("dealType") || "sale";
+  const propertyType = value("propertyType") || "apartment";
+  const commercialType = propertyType === "commercial" ? value("commercialType") : "";
 
-  const commercialType = propertyType === "commercial"
-    ? document.getElementById("commercialType")?.value || ""
-    : "";
+  const latRaw = value("lat");
+  const lngRaw = value("lng");
 
-  const latRaw = document.getElementById("lat")?.value;
-  const lngRaw = document.getElementById("lng")?.value;
-
-  const vip = document.getElementById("vip")?.checked || false;
-  const sold = document.getElementById("sold")?.checked || false;
+  const vip = checked("vip");
+  const sold = checked("sold");
 
   const lat = latRaw ? Number(latRaw) : 50.5215;
   const lng = lngRaw ? Number(lngRaw) : 30.2506;
@@ -297,16 +484,6 @@ window.addObject = async function(event) {
     return;
   }
 
-  if (!dealType) {
-    alert("Виберіть тип угоди.");
-    return;
-  }
-
-  if (!propertyType) {
-    alert("Виберіть тип нерухомості.");
-    return;
-  }
-
   if (propertyType === "commercial" && !commercialType) {
     alert("Виберіть підтип комерції.");
     return;
@@ -316,6 +493,18 @@ window.addObject = async function(event) {
     return;
   }
 
+  const dataByType = {
+    rent: buildRentData(dealType),
+    apartment: propertyType === "apartment" ? buildApartmentData() : null,
+    house: propertyType === "house" ? buildHouseData() : null,
+    land: propertyType === "land" ? buildLandData() : null,
+    garage: propertyType === "garage" ? buildGarageData() : null,
+    commercial: propertyType === "commercial" ? buildCommercialData() : null,
+    privateData: buildPrivateData()
+  };
+
+  const area = buildAreaLabel(propertyType, dataByType);
+
   try {
     showProgress(true);
 
@@ -324,12 +513,6 @@ window.addObject = async function(event) {
     for (const file of selectedFiles) {
       const safeName = file.name.replace(/[^\wа-яА-ЯіїєґІЇЄҐ.-]/g, "_");
       const fileName = `${Date.now()}_${crypto.randomUUID()}_${safeName}`;
-
-      /*
-        Важливо:
-        цей шлях має відповідати storage.rules:
-        objects/{userId}/{fileName}
-      */
       const storageRef = ref(storage, `objects/${currentUser.uid}/${fileName}`);
 
       await uploadBytes(storageRef, file);
@@ -338,9 +521,9 @@ window.addObject = async function(event) {
       imageUrls.push(url);
     }
 
-    await addDoc(collection(db, "objects"), {
+    const payload = {
       title,
-      area: area || "-",
+      area,
       price,
       address: address || "",
       description: description || "",
@@ -367,7 +550,17 @@ window.addObject = async function(event) {
 
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
-    });
+    };
+
+    if (dataByType.rent) payload.rent = dataByType.rent;
+    if (dataByType.apartment) payload.apartment = dataByType.apartment;
+    if (dataByType.house) payload.house = dataByType.house;
+    if (dataByType.land) payload.land = dataByType.land;
+    if (dataByType.garage) payload.garage = dataByType.garage;
+    if (dataByType.commercial) payload.commercial = dataByType.commercial;
+    payload.privateData = dataByType.privateData;
+
+    await addDoc(collection(db, "objects"), payload);
 
     alert("✅ Обʼєкт успішно створено!");
 
@@ -380,63 +573,33 @@ window.addObject = async function(event) {
   }
 };
 
-/* ================================
-   CLEAR FORM
-================================ */
-
 window.clearForm = function() {
-  const ids = [
-    "title",
-    "area",
-    "price",
-    "address",
-    "description",
-    "lat",
-    "lng"
-  ];
-
-  ids.forEach(id => {
-    const el = document.getElementById(id);
-
-    if (el) {
-      el.value = "";
+  document.querySelectorAll("input, textarea, select").forEach(el => {
+    if (el.type === "checkbox") {
+      el.checked = false;
+      return;
     }
+
+    if (el.type === "file") {
+      el.value = "";
+      return;
+    }
+
+    el.value = "";
   });
 
-  const dealType = document.getElementById("dealType");
-  const propertyType = document.getElementById("propertyType");
-  const commercialType = document.getElementById("commercialType");
-  const commercialTypeBox = document.getElementById("commercialTypeBox");
-
-  if (dealType) {
-    dealType.value = "sale";
-  }
-
-  if (propertyType) {
-    propertyType.value = "apartment";
-  }
-
-  if (commercialType) {
-    commercialType.value = "";
-  }
-
-  if (commercialTypeBox) {
-    commercialTypeBox.style.display = "none";
-  }
-
-  const vip = document.getElementById("vip");
-  const sold = document.getElementById("sold");
-
-  if (vip) vip.checked = false;
-  if (sold) sold.checked = false;
-
-  if (fileInput) {
-    fileInput.value = "";
-  }
+  if ($("dealType")) $("dealType").value = "sale";
+  if ($("propertyType")) $("propertyType").value = "apartment";
+  if ($("rentPeriod")) $("rentPeriod").value = "month";
+  if ($("utilitiesIncluded")) $("utilitiesIncluded").value = "not_included";
 
   selectedFiles = [];
 
   if (preview) {
     preview.innerHTML = "";
   }
+
+  toggleFormFields();
 };
+
+toggleFormFields();
