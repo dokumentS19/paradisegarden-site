@@ -447,7 +447,7 @@
         border-radius: 16px;
       }
     }
-  /* ================================
+ /* ================================
    OBJECT EARLY COMPACT TOP FIX
    Ранній компактний верх: назва, ціна, бейджі
    Фото НЕ чіпаємо
@@ -515,13 +515,9 @@
   line-height: 1.1 !important;
 }
 
-/* Фото НЕ зменшуємо */
+/* Фото не зменшуємо — залишаємо поточний розмір */
 .gallery {
   gap: 4px !important;
-}
-
-.gallery-main {
-  height: clamp(320px, 42vw, 520px) !important;
 }
 
 .thumbs {
@@ -535,45 +531,7 @@
   border-radius: 7px !important;
 }
 
-/* Нижні блоки трохи компактніше */
-.object-info-grid {
-  gap: 16px !important;
-  margin-top: 14px !important;
-}
-
-.object-box,
-.seller-card {
-  padding: 15px !important;
-  border-radius: 15px !important;
-}
-
-.object-box h2 {
-  font-size: 19px !important;
-}
-
-.object-box h3 {
-  font-size: 16px !important;
-}
-
-.object-description,
-.seller-card p {
-  font-size: 14px !important;
-}
-
-.feature {
-  padding: 10px !important;
-  border-radius: 11px !important;
-}
-
-.feature small {
-  font-size: 11px !important;
-}
-
-.feature strong {
-  font-size: 14px !important;
-}
-
-/* Планшет */
+/* Якщо екран вузький */
 @media (max-width: 950px) {
   .object-title-row {
     grid-template-columns: 1fr !important;
@@ -583,14 +541,8 @@
     width: fit-content !important;
     text-align: left !important;
   }
-
-  .gallery-main {
-    height: 44vh !important;
-    min-height: 280px !important;
-  }
 }
 
-/* Телефон */
 @media (max-width: 620px) {
   .object-shell {
     margin: 2px auto 18px !important;
@@ -607,21 +559,9 @@
     text-align: left !important;
   }
 
-  .gallery-main {
-    height: 38vh !important;
-    min-height: 240px !important;
-    border-radius: 13px !important;
-  }
-
   .thumbs img {
     width: 66px !important;
     height: 44px !important;
-  }
-
-  .object-box,
-  .seller-card {
-    padding: 13px !important;
-    border-radius: 13px !important;
   }
   </style>
 </head>
