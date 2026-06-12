@@ -1541,7 +1541,7 @@ html {
 #director,
 #request,
 #contacts {
-  scroll-margin-top: 56px;
+  scroll-margin-top: 75px;
 }
 
 @media (max-width: 680px) {
