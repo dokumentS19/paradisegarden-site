@@ -68,12 +68,12 @@ const statSold = document.getElementById("statSold");
 
 await setPersistence(auth, browserLocalPersistence);
 
-getRedirectResult(auth).catch(error => {
+getRedirectResult(auth).catch(error =&gt; {
   console.error("AUTH REDIRECT ERROR:", error);
 });
 
 if (loginBtn) {
-  loginBtn.addEventListener("click", () => {
+  loginBtn.addEventListener("click", () =&gt; {
     if (auth.currentUser) {
       signOut(auth);
     } else {
