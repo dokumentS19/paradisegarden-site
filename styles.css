@@ -1017,7 +1017,7 @@ select:focus {
   }
 }
 /* ================================
-   PARADISE GARDEN BRAND REFRESH
+   PARADISE GARDEN BRAND REFRESH — FINAL
    Фірмовий стиль під логотип / візитки
 ================================ */
 
@@ -1031,48 +1031,65 @@ select:focus {
   --brand-text-dark: #1f2933;
 }
 
-/* Загальний фон — тепліший і спокійніший */
+/* Загальний фон — теплий, темно-зелений, без неону */
 body {
   background:
-    radial-gradient(circle at top left, rgba(232, 137, 18, 0.12), transparent 32%),
-    radial-gradient(circle at top right, rgba(7, 92, 43, 0.16), transparent 30%),
+    radial-gradient(circle at top left, rgba(232, 137, 18, 0.10), transparent 30%),
+    radial-gradient(circle at top right, rgba(7, 92, 43, 0.14), transparent 30%),
     #08150f;
 }
 
-/* Шапка */
+/* ================================
+   HEADER
+================================ */
+
 .topbar {
-  background: rgba(4, 20, 13, 0.93);
+  min-height: 70px;
+  padding: 10px 34px;
+  background: rgba(4, 20, 13, 0.94);
   border-bottom: 1px solid rgba(232, 137, 18, 0.20);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
 }
 
-/* Знак бренду */
+.brand {
+  gap: 11px;
+}
+
 .brand-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 15px;
   background: linear-gradient(135deg, var(--brand-orange), var(--brand-brown));
   color: #ffffff;
-  box-shadow: 0 0 24px rgba(232, 137, 18, 0.28);
-  font-size: 18px;
+  box-shadow: 0 0 22px rgba(232, 137, 18, 0.26);
+  font-size: 17px;
   font-weight: 900;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.4px;
 }
 
-/* Якщо в index.html всередині brand-icon стоїть PC */
 .brand-icon::before {
   content: "";
 }
 
 .brand strong {
   color: #ffffff;
+  font-size: 20px;
   letter-spacing: 0.2px;
 }
 
 .brand small {
   color: #d8d8d8;
+  font-size: 12px;
 }
 
-/* Меню */
+.nav {
+  gap: 7px;
+}
+
 .nav a {
   color: #f3f4f6;
+  font-size: 14px;
+  padding: 9px 11px;
 }
 
 .nav a:hover {
@@ -1080,9 +1097,13 @@ body {
   box-shadow: inset 0 0 0 1px rgba(232, 137, 18, 0.34);
 }
 
-/* Hero */
+/* ================================
+   HERO — компактніше, щоб статистика не обрізалась
+================================ */
+
 .hero {
-  min-height: calc(100vh - 74px);
+  min-height: calc(100vh - 70px);
+  padding: 48px 24px 34px;
   background:
     linear-gradient(
       rgba(4, 20, 13, 0.58),
@@ -1093,7 +1114,7 @@ body {
 
 .hero::before {
   background:
-    radial-gradient(circle at 50% 30%, rgba(232, 137, 18, 0.16), transparent 28%),
+    radial-gradient(circle at 50% 30%, rgba(232, 137, 18, 0.14), transparent 28%),
     linear-gradient(to bottom, transparent, #08150f 96%);
 }
 
@@ -1105,6 +1126,11 @@ body {
   );
 }
 
+.hero-content {
+  max-width: 1080px;
+}
+
+/* Бейдж */
 .hero-badge,
 .section-label {
   color: #fff3df;
@@ -1112,28 +1138,64 @@ body {
   border: 1px solid rgba(232, 137, 18, 0.38);
 }
 
-/* Головний заголовок — спокійніший */
+/* Головний заголовок — менший і спокійніший */
 .hero-title {
-  font-size: clamp(38px, 5.6vw, 68px);
+  margin: 20px 0 14px;
+  font-size: clamp(36px, 5vw, 60px);
   line-height: 1.08;
-  letter-spacing: -1.2px;
+  letter-spacing: -1px;
   font-weight: 850;
   text-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
 }
 
+/* Опис */
 .hero-sub {
-  font-size: clamp(16px, 1.9vw, 21px);
-  line-height: 1.55;
+  max-width: 780px;
+  font-size: clamp(16px, 1.75vw, 20px);
+  line-height: 1.5;
   color: #f1f5f9;
 }
 
-/* Кнопки */
+/* Кнопки у hero */
+.hero-actions {
+  margin-top: 26px;
+  gap: 14px;
+}
+
+/* Статистика — піднята вище, щоб не обрізалась */
+.hero-stats {
+  margin: 34px auto 0;
+  max-width: 820px;
+  gap: 16px;
+}
+
+.hero-stats div {
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: rgba(4, 20, 13, 0.62);
+  border: 1px solid rgba(232, 137, 18, 0.18);
+  backdrop-filter: blur(14px);
+}
+
+.hero-stats strong {
+  color: var(--brand-orange);
+  font-size: 30px;
+}
+
+.hero-stats span {
+  font-size: 14px;
+}
+
+/* ================================
+   BUTTONS
+================================ */
+
 .cta-big,
 .btn,
 .banner-btn {
   color: #ffffff;
   background: linear-gradient(135deg, var(--brand-orange), var(--brand-brown));
-  box-shadow: 0 16px 36px rgba(149, 87, 31, 0.30);
+  box-shadow: 0 14px 32px rgba(149, 87, 31, 0.30);
 }
 
 .cta-outline {
@@ -1147,39 +1209,46 @@ body {
 .btn:hover,
 .banner-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 20px 44px rgba(149, 87, 31, 0.34);
+  box-shadow: 0 18px 40px rgba(149, 87, 31, 0.34);
 }
 
-/* Статистика */
-.hero-stats div {
-  background: rgba(4, 20, 13, 0.62);
-  border: 1px solid rgba(232, 137, 18, 0.18);
+/* ================================
+   STICKY CTA — менш навʼязлива
+================================ */
+
+.sticky-cta {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--brand-orange), var(--brand-brown));
+  box-shadow: 0 16px 34px rgba(149, 87, 31, 0.32);
+  padding: 11px 15px;
+  font-size: 14px;
 }
 
-.hero-stats strong {
-  color: var(--brand-orange);
-}
+/* ================================
+   PREMIUM BANNER / SECTIONS
+================================ */
 
-/* Premium banner */
 .premium-banner {
+  margin-top: -30px;
   background:
     linear-gradient(135deg, rgba(232, 137, 18, 0.18), rgba(7, 92, 43, 0.18)),
     rgba(15, 23, 42, 0.92);
   border: 1px solid rgba(232, 137, 18, 0.24);
 }
 
-/* Секції */
 .section {
   border-color: rgba(232, 137, 18, 0.16);
 }
 
-/* Картки переваг */
+/* ================================
+   CARDS / OBJECTS
+================================ */
+
 .value-card:hover,
 .contact-card:hover {
   border-color: rgba(232, 137, 18, 0.46);
 }
 
-/* Картки обʼєктів */
 .card:hover {
   border-color: rgba(232, 137, 18, 0.48);
   box-shadow:
@@ -1193,13 +1262,15 @@ body {
   font-weight: 850;
 }
 
-/* VIP */
 .vip-badge {
   background: linear-gradient(135deg, var(--brand-orange), #facc15);
   color: #1f2933;
 }
 
-/* Форма */
+/* ================================
+   FORM FOCUS
+================================ */
+
 input:focus,
 textarea:focus,
 select:focus {
@@ -1207,15 +1278,10 @@ select:focus {
   box-shadow: 0 0 0 4px rgba(232, 137, 18, 0.12);
 }
 
-/* Плаваюча кнопка */
-.sticky-cta {
-  color: #ffffff;
-  background: linear-gradient(135deg, var(--brand-orange), var(--brand-brown));
-  box-shadow: 0 18px 42px rgba(149, 87, 31, 0.35);
-  padding: 13px 18px;
-}
+/* ================================
+   DIRECTOR PLACEHOLDER
+================================ */
 
-/* Director placeholder */
 .photo-placeholder {
   background:
     linear-gradient(135deg, rgba(232, 137, 18, 0.22), rgba(7, 92, 43, 0.18)),
@@ -1228,10 +1294,18 @@ select:focus {
   background: linear-gradient(135deg, var(--brand-orange), var(--brand-brown));
 }
 
-/* Object page compact header — залишаємо компактність */
+/* ================================
+   OBJECT PAGE COMPACT HEADER
+   Зберігаємо компактність сторінки обʼєкта
+================================ */
+
 .object-page-body .topbar {
   min-height: 52px;
   padding: 6px 26px;
+}
+
+.object-page-body .brand {
+  gap: 9px;
 }
 
 .object-page-body .brand-icon {
@@ -1239,6 +1313,7 @@ select:focus {
   height: 36px;
   border-radius: 12px;
   font-size: 15px;
+  box-shadow: 0 0 18px rgba(232, 137, 18, 0.28);
 }
 
 .object-page-body .brand strong {
@@ -1251,37 +1326,116 @@ select:focus {
   line-height: 1.1;
 }
 
+.object-page-body .nav {
+  gap: 5px;
+}
+
 .object-page-body .nav a {
   font-size: 12.5px;
   padding: 7px 9px;
 }
 
-/* Мобільна адаптація */
+@media (max-width: 1050px) {
+  .object-page-body .nav {
+    top: 52px;
+    height: calc(100vh - 52px);
+  }
+}
+
+/* ================================
+   RESPONSIVE BRAND FIXES
+================================ */
+
+@media (max-width: 1050px) {
+  .nav {
+    top: 70px;
+    height: calc(100vh - 70px);
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 56px 18px 40px;
+  }
+
+  .hero-stats {
+    margin-top: 30px;
+  }
+}
+
 @media (max-width: 680px) {
+  .topbar {
+    min-height: 62px;
+    padding: 9px 16px;
+  }
+
+  .brand-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 15px;
+  }
+
+  .brand strong {
+    font-size: 17px;
+  }
+
+  .brand small {
+    font-size: 11px;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 48px 16px 36px;
+  }
+
   .hero-title {
-    font-size: clamp(34px, 10vw, 48px);
+    font-size: clamp(32px, 9vw, 46px);
+    margin: 18px 0 12px;
   }
 
   .hero-sub {
     font-size: 16px;
   }
 
-  .topbar {
-    padding: 10px 16px;
+  .hero-actions {
+    margin-top: 22px;
   }
 
-  .brand-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
+  .hero-stats {
+    margin-top: 26px;
+  }
+
+  .hero-stats div {
+    padding: 15px;
   }
 
   .sticky-cta {
-    padding: 12px 15px;
+    right: 14px;
+    bottom: 14px;
+    padding: 10px 14px;
+    font-size: 13px;
   }
 
   .object-page-body .topbar {
     min-height: 48px;
     padding: 6px 12px;
+  }
+
+  .object-page-body .brand-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+  }
+
+  .object-page-body .brand strong {
+    font-size: 15px;
+  }
+
+  .object-page-body .brand small {
+    font-size: 9.5px;
+  }
+
+  .object-page-body .nav a {
+    font-size: 12px;
+    padding: 7px 9px;
   }
 }
