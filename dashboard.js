@@ -84,16 +84,42 @@ if (loginBtn) {
 }
 
 onAuthStateChanged(auth, user => {
-  currentUser = user;
+  if (isAllowedAdmin(user)) {
+    currentUser = user;
 
-  if (user) {
-    renderUser(user);
-    loadMyAds(user.uid);
-  } else {
-    renderGuest();
+    if (userInfo) {
+      userInfo.innerHTML = "👤 Олег Іванчик";
+    }
+
+    if (loginBtn) {
+      loginBtn.textContent = "Вийти";
+    }
+
+    return;
+  }
+
+  currentUser = null;
+
+  if (user && !isAllowedAdmin(user)) {
+    if (userInfo) {
+      userInfo.innerHTML = `⛔ Немає доступу для ${escapeHtml(user.email || "цього акаунта")}`;
+    }
+
+    if (loginBtn) {
+      loginBtn.textContent = "Вийти";
+    }
+
+    return;
+  }
+
+  if (userInfo) {
+    userInfo.innerHTML = "❌ Не авторизований";
+  }
+
+  if (loginBtn) {
+    loginBtn.textContent = "Увійти через Google";
   }
 });
-
 /* ================================
    HELPERS
 ================================ */
