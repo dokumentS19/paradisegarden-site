@@ -9,14 +9,14 @@
   <link rel="stylesheet" href="styles.css">
 
   <style>
-    body {
+    .chat-page-body {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       background:
-        radial-gradient(circle at top left, rgba(34, 197, 94, 0.16), transparent 34%),
-        radial-gradient(circle at top right, rgba(250, 204, 21, 0.10), transparent 28%),
-        #07111f;
+        radial-gradient(circle at top left, rgba(232, 137, 18, 0.10), transparent 30%),
+        radial-gradient(circle at top right, rgba(7, 92, 43, 0.14), transparent 30%),
+        #08150f;
     }
 
     .chat-page {
@@ -32,10 +32,10 @@
 
     .chat-panel {
       background:
-        linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.96));
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 26px;
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.20);
+      border-radius: 22px;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.30);
       overflow: hidden;
       display: grid;
       grid-template-rows: auto 1fr auto;
@@ -44,10 +44,10 @@
 
     .chat-header-box {
       padding: 18px 22px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+      border-bottom: 1px solid rgba(232, 137, 18, 0.16);
       background:
-        linear-gradient(135deg, rgba(34, 197, 94, 0.16), rgba(250, 204, 21, 0.08)),
-        rgba(2, 6, 23, 0.45);
+        linear-gradient(135deg, rgba(7, 92, 43, 0.22), rgba(149, 87, 31, 0.16)),
+        rgba(4, 20, 13, 0.58);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -62,7 +62,7 @@
 
     .chat-title p {
       margin: 6px 0 0;
-      color: #cbd5e1;
+      color: #dbeafe;
       font-size: 14px;
     }
 
@@ -72,9 +72,9 @@
       gap: 8px;
       padding: 9px 13px;
       border-radius: 999px;
-      background: rgba(34, 197, 94, 0.14);
-      border: 1px solid rgba(34, 197, 94, 0.28);
-      color: #bbf7d0;
+      background: rgba(149, 87, 31, 0.34);
+      border: 1px solid rgba(232, 137, 18, 0.34);
+      color: #fff3df;
       font-size: 13px;
     }
 
@@ -85,8 +85,8 @@
       flex-direction: column;
       gap: 12px;
       background:
-        radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.08), transparent 32%),
-        rgba(2, 6, 23, 0.18);
+        radial-gradient(circle at bottom right, rgba(232, 137, 18, 0.08), transparent 32%),
+        rgba(4, 20, 13, 0.22);
     }
 
     .msg {
@@ -101,15 +101,16 @@
 
     .msg.mine {
       align-self: flex-end;
-      background: linear-gradient(135deg, #16a34a, #22c55e);
-      color: #04130a;
+      background: linear-gradient(135deg, #e88912, #95571f);
+      color: #ffffff;
       border-bottom-right-radius: 6px;
+      box-shadow: 0 10px 24px rgba(149, 87, 31, 0.24);
     }
 
     .msg.other {
       align-self: flex-start;
-      background: rgba(30, 41, 59, 0.95);
-      border: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(8, 21, 15, 0.90);
+      border: 1px solid rgba(232, 137, 18, 0.16);
       color: white;
       border-bottom-left-radius: 6px;
     }
@@ -125,10 +126,13 @@
       text-align: right;
     }
 
+    .chat-input-wrap {
+      background: rgba(4, 20, 13, 0.70);
+      border-top: 1px solid rgba(232, 137, 18, 0.16);
+    }
+
     .chat-input-box {
       padding: 14px;
-      border-top: 1px solid rgba(148, 163, 184, 0.18);
-      background: rgba(2, 6, 23, 0.58);
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 10px;
@@ -139,6 +143,13 @@
       max-height: 150px;
       resize: vertical;
       margin: 0;
+      background: rgba(8, 21, 15, 0.86);
+      border-color: rgba(232, 137, 18, 0.20);
+    }
+
+    .chat-input-box textarea:focus {
+      border-color: #e88912;
+      box-shadow: 0 0 0 4px rgba(232, 137, 18, 0.12);
     }
 
     .chat-input-box button {
@@ -148,7 +159,7 @@
     .chat-empty {
       margin: auto;
       text-align: center;
-      color: #cbd5e1;
+      color: #dbeafe;
       max-width: 440px;
     }
 
@@ -158,11 +169,11 @@
 
     .chat-login-warning {
       padding: 12px 16px;
-      border-radius: 16px;
-      background: rgba(250, 204, 21, 0.12);
-      border: 1px solid rgba(250, 204, 21, 0.28);
-      color: #fde68a;
-      margin-bottom: 14px;
+      border-radius: 14px;
+      background: rgba(232, 137, 18, 0.12);
+      border: 1px solid rgba(232, 137, 18, 0.26);
+      color: #fff3df;
+      margin: 14px 14px 0;
       display: none;
     }
 
@@ -190,7 +201,7 @@
 
       .chat-panel {
         min-height: calc(100vh - 125px);
-        border-radius: 20px;
+        border-radius: 18px;
       }
 
       .messages {
@@ -212,11 +223,11 @@
   </style>
 </head>
 
-<body>
+<body class="chat-page-body brand-refresh">
 
 <header class="topbar">
   <a href="index.html" class="brand">
-    <span class="brand-icon">🌿</span>
+    <span class="brand-icon">PC</span>
     <span>
       <strong>Райський Сад</strong>
       <small>Чат з продавцем</small>
@@ -269,7 +280,7 @@
 </main>
 
 <footer class="footer">
-  <p>© 2005–2026 АН «Райський Сад». Безпечний чат з продавцем.</p>
+  <p>© 2002–2026 АН «Райський Сад». Безпечний чат з продавцем.</p>
 </footer>
 
 <script type="module" src="chat.js"></script>
