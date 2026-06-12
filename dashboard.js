@@ -22,6 +22,7 @@ import {
   setPersistence,
   browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 /* ================================
    FIREBASE CONFIG
 ================================ */
@@ -65,6 +66,7 @@ const statSold = document.getElementById("statSold");
 /* ================================
    AUTH
 ================================ */
+
 await setPersistence(auth, browserLocalPersistence);
 
 if (loginBtn) {
@@ -104,6 +106,10 @@ function escapeHtml(value = "") {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function escapeAttribute(value = "") {
+  return escapeHtml(value).replaceAll("`", "&#096;");
 }
 
 function formatPrice(value, dealType = "sale") {
@@ -160,6 +166,23 @@ function setStats(total = 0, active = 0, sold = 0) {
   if (statSold) statSold.textContent = sold;
 }
 
+function getDisplayName(user) {
+  if (user.email === "olegivanchik1234@gmail.com") {
+    return "Олег Іванчик";
+  }
+
+  return user.displayName || user.email || "Користувач";
+}
+
+function getInitials(user) {
+  const source = getDisplayName(user);
+
+  return source
+    .trim()
+    .slice(0, 2)
+    .toUpperCase();
+}
+
 /* ================================
    PROFILE RENDER
 ================================ */
@@ -171,7 +194,7 @@ function renderUser(user) {
 
   if (userInfo) {
     userInfo.innerHTML = `
-      <p><strong>👤 ${escapeHtml(user.displayName || "Користувач")}</strong></p>
+      <p><strong>👤 ${escapeHtml(getDisplayName(user))}</strong></p>
       <p>✉️ ${escapeHtml(user.email || "-")}</p>
       <p>🆔 ${escapeHtml(user.uid)}</p>
     `;
@@ -179,14 +202,9 @@ function renderUser(user) {
 
   if (profileAvatar) {
     if (user.photoURL) {
-      profileAvatar.innerHTML = `<img src="${escapeHtml(user.photoURL)}" alt="avatar">`;
+      profileAvatar.innerHTML = `<img src="${escapeAttribute(user.photoURL)}" alt="avatar">`;
     } else {
-      const initials = (user.displayName || user.email || "?")
-        .trim()
-        .slice(0, 2)
-        .toUpperCase();
-
-      profileAvatar.textContent = initials;
+      profileAvatar.textContent = getInitials(user);
     }
   }
 }
@@ -269,7 +287,7 @@ window.addObject = async function(event) {
       lng: 30.2506,
 
       ownerId: currentUser.uid,
-      ownerName: currentUser.displayName || currentUser.email || "Користувач",
+      ownerName: getDisplayName(currentUser),
       ownerEmail: currentUser.email || "",
 
       status: "active",
@@ -398,12 +416,14 @@ function renderMyAds(data) {
   });
 
   myAds.innerHTML = data.map(item => {
-    const id = escapeHtml(item.id);
+    const id = escapeAttribute(item.id);
+    const encodedId = encodeURIComponent(item.id);
+
     const title = escapeHtml(item.title || "Без назви");
     const area = escapeHtml(item.area || "-");
     const address = escapeHtml(item.address || "Київ та Київська область");
     const price = formatPrice(item.price, item.dealType);
-    const image = escapeHtml(getMainImage(item));
+    const image = escapeAttribute(getMainImage(item));
     const status = item.status === "sold" ? "❌ Продано" : "✅ Активне";
     const views = Number(item.views || 0);
 
@@ -435,7 +455,7 @@ function renderMyAds(data) {
           <p>👁 Переглядів: ${views}</p>
 
           <div class="my-ad-actions">
-            <a class="cta-outline" href="assets/object.html?id=${id}">👁 Переглянути</a>
+            <a class="cta-outline" href="assets/object.html?id=${encodedId}">👁 Переглянути</a>
 
             <button class="cta-outline" type="button" onclick="editAd('${id}')">
               ✏️ Редагувати
