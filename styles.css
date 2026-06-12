@@ -1557,3 +1557,19 @@ html {
     scroll-margin-top: 74px;
   }
 }
+/* ================================
+   FINAL ANCHOR OFFSET
+   Щоб меню не ховало початок секцій
+================================ */
+
+html {
+  scroll-padding-top: 110px;
+}
+
+#about,
+#objects,
+#director,
+#request,
+#contacts {
+  scroll-margin-top: 110px;
+}
