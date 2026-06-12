@@ -1,10 +1,18 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
- 
+
 import {
   getFirestore,
   collection,
   addDoc,
- https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";  serverTimestamp
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 import {
   getAuth,
@@ -89,9 +97,9 @@ if (loginBtn) {
 }
 
 onAuthStateChanged(auth, user => {
-  currentUser = user;
+  if (isAllowedAdmin(user)) {
+    currentUser = user;
 
-  if (user) {
     if (userInfo) {
       userInfo.innerHTML = `👤 ${escapeHtml(user.displayName || user.email || "Користувач")}`;
     }
@@ -99,16 +107,101 @@ onAuthStateChanged(auth, user => {
     if (loginBtn) {
       loginBtn.textContent = "Вийти";
     }
-  } else {
+
+    return;
+  }
+
+  currentUser = null;
+
+  if (user && !isAllowedAdmin(user)) {
     if (userInfo) {
-      userInfo.innerHTML = "❌ Не авторизований";
+      userInfo.innerHTML = `⛔ Немає доступу для ${escapeHtml(user.email || "цього акаунта")}`;
     }
 
     if (loginBtn) {
-      loginBtn.textContent = "Увійти через Google";
+      loginBtn.textContent = "Вийти";
     }
+
+    return;
+  }
+
+  if (userInfo) {
+    userInfo.innerHTML = "❌ Не авторизований";
+  }
+
+  if (loginBtn) {
+    loginBtn.textContent = "Увійти через Google";
   }
 });
+
+/* ================================
+   HELPERS
+================================ */
+
+function escapeHtml(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function showProgress(show) {
+  if (!progressBox) return;
+
+  progressBox.classList.toggle("active", Boolean(show));
+}
+
+function validateFiles(files) {
+  if (!files.length) {
+    alert("Додайте хоча б одне фото.");
+    return false;
+  }
+
+  if (files.length > 10) {
+    alert("Можна додати максимум 10 фото.");
+    return false;
+  }
+
+  for (const file of files) {
+    if (!file.type.startsWith("image/")) {
+      alert(`Файл "${file.name}" не є зображенням.`);
+      return false;
+    }
+
+    if (file.size > 1024 * 1024) {
+      alert(`Фото "${file.name}" більше 1 МБ. Зменшіть розмір фото.`);
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function renderPreview(files) {
+  if (!preview) return;
+
+  preview.innerHTML = "";
+
+  files.forEach((file, index) => {
+    const reader = new FileReader();
+
+    reader.onload = event => {
+      const item = document.createElement("div");
+      item.className = "preview-item";
+
+      item.innerHTML = `
+        <img src="${event.target.result}" alt="Фото ${index + 1}">
+        <span>${index + 1}</span>
+      `;
+
+      preview.appendChild(item);
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
 
 /* ================================
    COMMERCIAL TYPE
@@ -228,8 +321,11 @@ window.addObject = async function(event) {
       const safeName = file.name.replace(/[^\wа-яА-ЯіїєґІЇЄҐ.-]/g, "_");
       const fileName = `${Date.now()}_${crypto.randomUUID()}_${safeName}`;
 
-      // ВАЖЛИВО:
-      // шлях відповідає storage.rules: objects/{userId}/{fileName}
+      /*
+        Важливо:
+        цей шлях має відповідати storage.rules:
+        objects/{userId}/{fileName}
+      */
       const storageRef = ref(storage, `objects/${currentUser.uid}/${fileName}`);
 
       await uploadBytes(storageRef, file);
@@ -340,10 +436,3 @@ window.clearForm = function() {
     preview.innerHTML = "";
   }
 };
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL
