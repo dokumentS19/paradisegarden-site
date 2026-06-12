@@ -41,6 +41,17 @@ const firebaseConfig = {
   measurementId: "G-6XHWE6Y0JE"
 };
 
+/* ================================
+   GOOGLE MAPS / GEOCODING
+   ВСТАВТЕ СВІЙ GOOGLE API KEY НИЖЧЕ
+================================ */
+
+const GOOGLE_MAPS_API_KEY = "ВСТАВТЕ_СВІЙ_КЛЮЧ_ТУТ";
+
+/* ================================
+   INIT
+================================ */
+
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
@@ -169,6 +180,120 @@ function showProgress(show) {
 
   progressBox.classList.toggle("active", Boolean(show));
 }
+
+/* ================================
+   GEOCODING / MAP
+================================ */
+
+function setGeoStatus(message) {
+  const geoStatus = $("geoStatus");
+
+  if (geoStatus) {
+    geoStatus.textContent = message;
+  }
+}
+
+function buildAddressForGeocode() {
+  const publicAddress = value("address");
+  const exactStreet = value("exactStreet");
+  const exactHouseNumber = value("exactHouseNumber");
+
+  const parts = [];
+
+  if (publicAddress) {
+    parts.push(publicAddress);
+  }
+
+  if (exactStreet) {
+    parts.push(exactStreet);
+  }
+
+  if (exactHouseNumber) {
+    parts.push(exactHouseNumber);
+  }
+
+  const rawAddress = parts.join(", ").trim();
+
+  if (!rawAddress) {
+    return "";
+  }
+
+  const lower = rawAddress.toLowerCase();
+
+  if (lower.includes("україна") || lower.includes("ukraine")) {
+    return rawAddress;
+  }
+
+  return `${rawAddress}, Київська область, Україна`;
+}
+
+function updateMapPreview() {
+  const lat = value("lat");
+  const lng = value("lng");
+
+  const mapPreviewBox = $("mapPreviewBox");
+  const mapPreview = $("mapPreview");
+
+  if (!lat || !lng || !mapPreviewBox || !mapPreview) {
+    return;
+  }
+
+  mapPreviewBox.classList.add("active");
+  mapPreview.src = `https://www.google.com/maps?q=${encodeURIComponent(`${lat},${lng}`)}&z=16&output=embed`;
+}
+
+window.geocodeAddress = async function() {
+  const addressForSearch = buildAddressForGeocode();
+
+  if (!addressForSearch || addressForSearch.length < 5) {
+    alert("Введіть адресу або вулицю.");
+    return;
+  }
+
+  if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === "ВСТАВТЕ_СВІЙ_КЛЮЧ_ТУТ") {
+    alert("Спочатку вставте Google Maps API key у admin.js.");
+    return;
+  }
+
+  try {
+    setGeoStatus("🔎 Шукаємо адресу на карті...");
+
+    const url =
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(addressForSearch)}&language=uk&region=ua&key=${GOOGLE_MAPS_API_KEY}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.status !== "OK" || !data.results || !data.results.length) {
+      console.error("GEOCODING RESPONSE:", data);
+      setGeoStatus("❌ Адресу не знайдено. Уточніть місто, вулицю або номер будинку.");
+      alert("Не вдалося знайти адресу. Спробуйте вказати точніше.");
+      return;
+    }
+
+    const result = data.results[0];
+    const location = result.geometry.location;
+
+    setValue("lat", location.lat);
+    setValue("lng", location.lng);
+
+    setGeoStatus(`✅ Координати знайдено: ${result.formatted_address}`);
+
+    updateMapPreview();
+  } catch (error) {
+    console.error("GEOCODING ERROR:", error);
+    setGeoStatus("❌ Помилка під час пошуку адреси.");
+    alert("Помилка під час пошуку адреси. Перевірте API key та доступ до Geocoding API.");
+  }
+};
+
+["lat", "lng"].forEach(id => {
+  const el = $(id);
+
+  if (el) {
+    el.addEventListener("input", updateMapPreview);
+  }
+});
 
 /* ================================
    AUTH
@@ -761,29 +886,12 @@ window.addObject = async function(event) {
       updatedAt: serverTimestamp()
     };
 
-    if (dataByType.rent) {
-      payload.rent = dataByType.rent;
-    }
-
-    if (dataByType.apartment) {
-      payload.apartment = dataByType.apartment;
-    }
-
-    if (dataByType.house) {
-      payload.house = dataByType.house;
-    }
-
-    if (dataByType.land) {
-      payload.land = dataByType.land;
-    }
-
-    if (dataByType.garage) {
-      payload.garage = dataByType.garage;
-    }
-
-    if (dataByType.commercial) {
-      payload.commercial = dataByType.commercial;
-    }
+    if (dataByType.rent) payload.rent = dataByType.rent;
+    if (dataByType.apartment) payload.apartment = dataByType.apartment;
+    if (dataByType.house) payload.house = dataByType.house;
+    if (dataByType.land) payload.land = dataByType.land;
+    if (dataByType.garage) payload.garage = dataByType.garage;
+    if (dataByType.commercial) payload.commercial = dataByType.commercial;
 
     payload.privateData = dataByType.privateData;
 
@@ -983,6 +1091,7 @@ async function loadObjectForEdit() {
     toggleFormFields();
     renderPhotoManager();
     renderNewFilesPreview();
+    updateMapPreview();
   } catch (error) {
     console.error("LOAD EDIT OBJECT ERROR:", error);
     alert("❌ Не вдалося завантажити обʼєкт для редагування.");
@@ -1010,27 +1119,33 @@ window.clearForm = function() {
     el.value = "";
   });
 
-  if ($("dealType")) {
-    $("dealType").value = "sale";
-  }
-
-  if ($("propertyType")) {
-    $("propertyType").value = "apartment";
-  }
-
-  if ($("rentPeriod")) {
-    $("rentPeriod").value = "month";
-  }
-
-  if ($("utilitiesIncluded")) {
-    $("utilitiesIncluded").value = "not_included";
-  }
+  if ($("dealType")) $("dealType").value = "sale";
+  if ($("propertyType")) $("propertyType").value = "apartment";
+  if ($("rentPeriod")) $("rentPeriod").value = "month";
+  if ($("utilitiesIncluded")) $("utilitiesIncluded").value = "not_included";
 
   selectedFiles = [];
   currentImageUrls = [];
 
   if (preview) {
     preview.innerHTML = "";
+  }
+
+  const geoStatus = $("geoStatus");
+
+  if (geoStatus) {
+    geoStatus.textContent = "Введіть адресу або вулицю та натисніть “Знайти на карті”.";
+  }
+
+  const mapPreviewBox = $("mapPreviewBox");
+  const mapPreview = $("mapPreview");
+
+  if (mapPreviewBox) {
+    mapPreviewBox.classList.remove("active");
+  }
+
+  if (mapPreview) {
+    mapPreview.src = "";
   }
 
   renderPhotoManager();
@@ -1043,3 +1158,4 @@ window.clearForm = function() {
 
 toggleFormFields();
 renderPhotoManager();
+updateMapPreview();
