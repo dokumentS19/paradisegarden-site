@@ -504,6 +504,75 @@ window.openTelegram = function() {
 window.openViber = function() {
   window.location.href = VIBER_LINK;
 };
+/* ================================
+   HOME ARTICLES
+   Вивід 3 корисних статей на головну
+================================ */
+
+const homeArticles = [
+  {
+    id: 1,
+    title: "Як підготуватися до купівлі нерухомості",
+    excerpt: "Пояснюємо, які документи перевірити, як оцінити бюджет і на що звернути увагу перед купівлею квартири, будинку чи ділянки.",
+    date: "12 червня 2026",
+    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80",
+    url: "article.html?id=1"
+  },
+  {
+    id: 2,
+    title: "Продаж квартири: як не втратити гроші",
+    excerpt: "Короткі поради для власників: підготовка обʼєкта, правильна ціна, фото, покази, переговори та безпечне оформлення угоди.",
+    date: "10 червня 2026",
+    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80",
+    url: "article.html?id=2"
+  },
+  {
+    id: 3,
+    title: "Оренда житла: що важливо перевірити",
+    excerpt: "Розбираємо ключові моменти договору оренди, оплату, заставу, стан житла та комунікацію між власником і орендарем.",
+    date: "8 червня 2026",
+    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80",
+    url: "article.html?id=3"
+  }
+];
+
+function renderHomeArticles() {
+  const container = document.getElementById("homeArticlesList");
+
+  if (!container) {
+    return;
+  }
+
+  const latestArticles = homeArticles.slice(0, 3);
+
+  if (!latestArticles.length) {
+    container.innerHTML = `
+      <div class="home-articles-empty">
+        <h3>Статті скоро зʼявляться</h3>
+        <p>Ми готуємо корисні матеріали про нерухомість, купівлю, продаж та оренду.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = latestArticles.map(article => `
+    <a href="${escapeAttribute(article.url)}" class="article-card">
+      <div class="article-card-img">
+        <img src="${escapeAttribute(article.image)}" alt="${escapeAttribute(article.title)}" loading="lazy">
+      </div>
+
+      <div class="article-card-body">
+        <span class="article-card-date">🗓 ${escapeHtml(article.date)}</span>
+
+        <h3 class="article-card-title">${escapeHtml(article.title)}</h3>
+
+        <p class="article-card-excerpt">${escapeHtml(article.excerpt)}</p>
+
+        <span class="article-card-more">Читати далі →</span>
+      </div>
+    </a>
+  `).join("");
+}
 
 /* ================================
    START
