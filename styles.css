@@ -1440,3 +1440,52 @@ select:focus {
     padding: 7px 9px;
   }
 }
+/* ================================
+   HERO BACKGROUND FINAL FIX
+   Тепліший, світліший, менш важкий фон
+================================ */
+
+.hero {
+  min-height: calc(100vh - 70px);
+  padding: 48px 24px 34px;
+  background:
+    linear-gradient(
+      rgba(5, 35, 19, 0.34),
+      rgba(5, 35, 19, 0.64)
+    ),
+    url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=80") center/cover;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 28%, rgba(232, 137, 18, 0.20), transparent 30%),
+    radial-gradient(circle at 50% 80%, rgba(7, 92, 43, 0.22), transparent 36%),
+    linear-gradient(to bottom, transparent 66%, #08150f 98%);
+  pointer-events: none;
+}
+
+.hero-shade {
+  background: linear-gradient(
+    90deg,
+    rgba(5, 35, 19, 0.42),
+    rgba(5, 35, 19, 0.10)
+  );
+}
+
+/* Текст трохи мʼякший, щоб не різав очі на світлішому фоні */
+.hero-title {
+  text-shadow: 0 10px 26px rgba(0, 0, 0, 0.42);
+}
+
+.hero-sub {
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.34);
+}
+
+/* Нижня частина hero не така чорна */
+.hero-stats div {
+  background: rgba(4, 20, 13, 0.52);
+  border: 1px solid rgba(232, 137, 18, 0.22);
+}
