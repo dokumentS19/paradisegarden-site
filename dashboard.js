@@ -32,7 +32,8 @@ const firebaseConfig = {
   apiKey: "AIzaSyBq_bUWieO6UI7REfU1iNrk2RK2EjQGnts",
   authDomain: "paradisegarden-site.firebaseapp.com",
   projectId: "paradisegarden-site",
-  storageBucket: "paradisegarden352075250",  storageBucket: "paradisegarden-site.firebasestorage.app",
+  storageBucket: "paradisegarden-site.firebasestorage.app",
+  messagingSenderId: "452352075250",
   appId: "1:452352075250:web:049e1b3f10c44bc04c776b",
   measurementId: "G-6XHWE6Y0JE"
 };
@@ -237,6 +238,9 @@ window.addObject = async function(event) {
   const address = document.getElementById("address")?.value.trim();
   const description = document.getElementById("description")?.value.trim();
 
+  const dealType = document.getElementById("quickDealType")?.value || "sale";
+  const propertyType = document.getElementById("quickPropertyType")?.value || "apartment";
+
   if (!title) {
     alert("Вкажіть назву оголошення.");
     return;
@@ -255,8 +259,8 @@ window.addObject = async function(event) {
       address: address || "",
       description: description || "",
 
-      dealType: "sale",
-      propertyType: "house",
+      dealType,
+      propertyType,
       commercialType: "",
 
       images: [
@@ -301,6 +305,12 @@ function clearQuickForm() {
       el.value = "";
     }
   });
+
+  const quickDealType = document.getElementById("quickDealType");
+  const quickPropertyType = document.getElementById("quickPropertyType");
+
+  if (quickDealType) quickDealType.value = "sale";
+  if (quickPropertyType) quickPropertyType.value = "apartment";
 }
 
 /* ================================
@@ -420,28 +430,28 @@ function renderMyAds(data) {
               : ""
           }
 
-         <p>💰 ${price}</p>
+          <p>💰 ${price}</p>
           <p>📐 ${area}</p>
           <p>📍 ${address}</p>
           <p>${status}</p>
           <p>👁 Переглядів: ${views}</p>
 
- <div class="my-ad-actions">
-  <a class="cta-outline" href="assets/object.html?id=${id}">👁 Переглянути</a>
+          <div class="my-ad-actions">
+            <a class="cta-outline" href="assets/object.html?id=${id}">👁 Переглянути</a>
 
-  <button class="cta-outline" type="button" onclick="editAd('${id}')">
-    ✏️ Редагувати
-  </button>
+            <button class="cta-outline" type="button" onclick="editAd('${id}')">
+              ✏️ Редагувати
+            </button>
 
-  ${
-    item.status === "sold"
-      ? `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'active')">✅ Зробити активним</button>`
-      : `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'sold')">❌ Позначити проданим</button>`
-  }
+            ${
+              item.status === "sold"
+                ? `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'active')">✅ Зробити активним</button>`
+                : `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'sold')">❌ Позначити проданим</button>`
+            }
 
-  <button class="danger-btn" type="button" onclick="deleteAd('${id}')">🗑 Видалити</button>
-</div>
-</div>
+            <button class="danger-btn" type="button" onclick="deleteAd('${id}')">🗑 Видалити</button>
+          </div>
+        </div>
       </article>
     `;
   }).join("");
@@ -494,6 +504,7 @@ window.deleteAd = async function(id) {
     alert("❌ Не вдалося видалити оголошення.");
   }
 };
+
 window.editAd = async function(id) {
   if (!currentUser) {
     alert("Увійдіть через Google.");
