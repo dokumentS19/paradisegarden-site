@@ -13,31 +13,33 @@
   <style>
     .crm-shell {
       max-width: 1280px;
-      margin: 34px auto;
+      margin: 28px auto 34px;
       padding: 0 16px;
       display: grid;
-      gap: 24px;
+      gap: 22px;
     }
 
     .crm-hero {
       background:
-        linear-gradient(135deg, rgba(34, 197, 94, 0.18), rgba(250, 204, 21, 0.1)),
-        rgba(15, 23, 42, 0.94);
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 26px;
-      padding: 34px;
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+        linear-gradient(135deg, rgba(7, 92, 43, 0.22), rgba(149, 87, 31, 0.16)),
+        rgba(13, 25, 22, 0.96);
+      border: 1px solid rgba(232, 137, 18, 0.20);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.30);
     }
 
     .crm-hero h1 {
-      margin: 14px 0 10px;
-      font-size: clamp(32px, 5vw, 54px);
+      margin: 12px 0 10px;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.1;
     }
 
     .crm-hero p {
-      color: #cbd5e1;
-      line-height: 1.7;
-      max-width: 850px;
+      color: #dbeafe;
+      line-height: 1.65;
+      max-width: 900px;
+      margin-bottom: 0;
     }
 
     .crm-kpi {
@@ -47,34 +49,35 @@
     }
 
     .crm-kpi-card {
-      background: rgba(30, 41, 59, 0.92);
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 22px;
-      padding: 22px;
-      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.25);
+      background: rgba(8, 21, 15, 0.82);
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
     }
 
     .crm-kpi-card span {
-      color: #cbd5e1;
+      color: #dbeafe;
       font-size: 14px;
     }
 
     .crm-kpi-card strong {
       display: block;
-      color: #22c55e;
-      font-size: 34px;
+      color: #e88912;
+      font-size: 32px;
       margin-top: 8px;
     }
 
     .crm-panel {
       background:
-        linear-gradient(180deg, rgba(30, 41, 59, 0.94), rgba(15, 23, 42, 0.94));
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.3);
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.28);
     }
 
+    .crm-panel h1,
     .crm-panel h2 {
       margin-top: 0;
     }
@@ -94,9 +97,9 @@
 
     .crm-column {
       min-height: 260px;
-      background: rgba(15, 23, 42, 0.88);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      border-radius: 22px;
+      background: rgba(8, 21, 15, 0.78);
+      border: 1px solid rgba(232, 137, 18, 0.16);
+      border-radius: 18px;
       padding: 16px;
     }
 
@@ -105,12 +108,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 12px;
     }
 
     .lead-mini {
-      background: rgba(30, 41, 59, 0.92);
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      border-radius: 16px;
+      background: rgba(13, 25, 22, 0.96);
+      border: 1px solid rgba(232, 137, 18, 0.16);
+      border-radius: 14px;
       padding: 12px;
       margin-bottom: 10px;
       cursor: grab;
@@ -119,7 +123,7 @@
 
     .lead-mini:hover {
       transform: translateY(-3px);
-      border-color: rgba(34, 197, 94, 0.45);
+      border-color: rgba(232, 137, 18, 0.42);
     }
 
     .leads-grid {
@@ -128,16 +132,17 @@
     }
 
     .lead-card {
-      background: rgba(15, 23, 42, 0.92);
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 22px;
+      background: rgba(8, 21, 15, 0.86);
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      border-radius: 18px;
       padding: 18px;
       transition: 0.25s ease;
     }
 
     .lead-card:hover {
-      border-color: rgba(34, 197, 94, 0.45);
+      border-color: rgba(232, 137, 18, 0.44);
       transform: translateY(-3px);
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.26);
     }
 
     .lead-head {
@@ -154,7 +159,7 @@
     }
 
     .lead-meta {
-      color: #cbd5e1;
+      color: #dbeafe;
       display: grid;
       gap: 6px;
       margin-bottom: 12px;
@@ -171,8 +176,9 @@
       margin-top: 14px;
       padding: 12px;
       border-radius: 14px;
-      background: rgba(2, 6, 23, 0.42);
-      color: #cbd5e1;
+      background: rgba(4, 20, 13, 0.58);
+      border: 1px solid rgba(232, 137, 18, 0.12);
+      color: #dbeafe;
       font-size: 14px;
       display: grid;
       gap: 6px;
@@ -183,20 +189,37 @@
       display: inline-flex;
       padding: 7px 11px;
       border-radius: 999px;
-      background: rgba(34, 197, 94, 0.14);
-      border: 1px solid rgba(34, 197, 94, 0.28);
-      color: #bbf7d0;
+      background: rgba(149, 87, 31, 0.34);
+      border: 1px solid rgba(232, 137, 18, 0.34);
+      color: #fff3df;
       font-size: 13px;
+      width: fit-content;
     }
 
     .danger-btn {
-      background: linear-gradient(135deg, #dc2626, #ef4444);
+      border: none;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
       color: white;
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .chart-wrap {
       max-width: 420px;
       margin: 0 auto;
+    }
+
+    #stats {
+      color: #dbeafe;
+      line-height: 1.6;
+      margin-bottom: 18px;
     }
 
     @media (max-width: 1000px) {
@@ -214,6 +237,11 @@
     }
 
     @media (max-width: 680px) {
+      .crm-shell {
+        margin: 20px auto 28px;
+        padding: 0 12px;
+      }
+
       .crm-kpi,
       .crm-tools {
         grid-template-columns: 1fr;
@@ -221,17 +249,21 @@
 
       .crm-hero,
       .crm-panel {
-        padding: 22px;
+        padding: 18px;
+      }
+
+      .crm-hero h1 {
+        font-size: 32px;
       }
     }
   </style>
 </head>
 
-<body>
+<body class="leads-page-body brand-refresh">
 
 <header class="topbar">
   <a href="index.html" class="brand">
-    <span class="brand-icon">🌿</span>
+    <span class="brand-icon">PC</span>
     <span>
       <strong>Райський Сад</strong>
       <small>CRM заявки</small>
@@ -329,7 +361,7 @@
 </main>
 
 <footer class="footer">
-  <p>© 2005–2026 АН «Райський Сад». CRM система заявок.</p>
+  <p>© 2002–2026 АН «Райський Сад». CRM система заявок.</p>
 </footer>
 
 <script type="module" src="leads.js"></script>
