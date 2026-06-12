@@ -63,6 +63,7 @@ const allowedEmails = [
 
 let currentUser = null;
 let selectedFiles = [];
+let currentImageUrls = [];
 let editObjectId = null;
 let editLoaded = false;
 
@@ -76,7 +77,7 @@ const loginBtn = document.getElementById("loginBtn");
 const userInfo = document.getElementById("userInfo");
 const progressBox = document.getElementById("progressBox");
 
-const imageUrlsInput = document.getElementById("imageUrls");
+const photoManager = document.getElementById("photoManager");
 const formTitle = document.getElementById("formTitle");
 const submitBtn = document.getElementById("submitBtn");
 
@@ -167,17 +168,6 @@ function showProgress(show) {
   }
 
   progressBox.classList.toggle("active", Boolean(show));
-}
-
-function parseImageUrls() {
-  if (!imageUrlsInput) {
-    return [];
-  }
-
-  return imageUrlsInput.value
-    .split("\n")
-    .map(url => url.trim())
-    .filter(Boolean);
 }
 
 /* ================================
@@ -302,7 +292,7 @@ window.toggleFormFields = function() {
 };
 
 /* ================================
-   FILES / PREVIEW
+   FILES / PHOTO MANAGER
 ================================ */
 
 function validateFiles(files) {
@@ -326,26 +316,54 @@ function validateFiles(files) {
   return true;
 }
 
-function renderPreview() {
+function renderPhotoManager() {
+  if (!photoManager) {
+    return;
+  }
+
+  if (!currentImageUrls.length) {
+    photoManager.innerHTML = `
+      <div class="photo-empty">
+        Поточних фото ще немає. Додайте нові фото нижче.
+      </div>
+    `;
+    return;
+  }
+
+  photoManager.innerHTML = currentImageUrls.map((url, index) => `
+    <div class="photo-manager-item">
+      <div class="photo-manager-img">
+        <img src="${escapeAttribute(url)}" alt="Фото ${index + 1}">
+        ${index === 0 ? `<span class="photo-main-badge">⭐ Головне</span>` : ""}
+      </div>
+
+      <div class="photo-manager-actions">
+        <button type="button" onclick="makeMainPhoto(${index})" ${index === 0 ? "disabled" : ""}>
+          ⭐ Зробити головним
+        </button>
+
+        <button type="button" onclick="movePhotoLeft(${index})" ${index === 0 ? "disabled" : ""}>
+          ⬅️ Вліво
+        </button>
+
+        <button type="button" onclick="movePhotoRight(${index})" ${index === currentImageUrls.length - 1 ? "disabled" : ""}>
+          ➡️ Вправо
+        </button>
+
+        <button class="photo-delete-btn" type="button" onclick="removePhoto(${index})">
+          🗑 Видалити
+        </button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderNewFilesPreview() {
   if (!preview) {
     return;
   }
 
   preview.innerHTML = "";
-
-  const existingUrls = parseImageUrls();
-
-  existingUrls.forEach((url, index) => {
-    const item = document.createElement("div");
-    item.className = "preview-item";
-
-    item.innerHTML = `
-      <img src="${escapeAttribute(url)}" alt="Фото ${index + 1}">
-      <span>${index + 1}</span>
-    `;
-
-    preview.appendChild(item);
-  });
 
   selectedFiles.forEach((file, index) => {
     const reader = new FileReader();
@@ -366,6 +384,53 @@ function renderPreview() {
   });
 }
 
+window.makeMainPhoto = function(index) {
+  if (index <= 0 || index >= currentImageUrls.length) {
+    return;
+  }
+
+  const [photo] = currentImageUrls.splice(index, 1);
+  currentImageUrls.unshift(photo);
+
+  renderPhotoManager();
+};
+
+window.movePhotoLeft = function(index) {
+  if (index <= 0 || index >= currentImageUrls.length) {
+    return;
+  }
+
+  [currentImageUrls[index - 1], currentImageUrls[index]] =
+    [currentImageUrls[index], currentImageUrls[index - 1]];
+
+  renderPhotoManager();
+};
+
+window.movePhotoRight = function(index) {
+  if (index < 0 || index >= currentImageUrls.length - 1) {
+    return;
+  }
+
+  [currentImageUrls[index], currentImageUrls[index + 1]] =
+    [currentImageUrls[index + 1], currentImageUrls[index]];
+
+  renderPhotoManager();
+};
+
+window.removePhoto = function(index) {
+  if (index < 0 || index >= currentImageUrls.length) {
+    return;
+  }
+
+  if (!confirm("Видалити це фото з оголошення?")) {
+    return;
+  }
+
+  currentImageUrls.splice(index, 1);
+
+  renderPhotoManager();
+};
+
 if (fileInput) {
   fileInput.addEventListener("change", () => {
     const files = Array.from(fileInput.files || []);
@@ -373,17 +438,21 @@ if (fileInput) {
     if (!validateFiles(files)) {
       fileInput.value = "";
       selectedFiles = [];
-      renderPreview();
+      renderNewFilesPreview();
+      return;
+    }
+
+    if (currentImageUrls.length + files.length > 10) {
+      alert("Разом можна мати максимум 10 фото на один обʼєкт.");
+      fileInput.value = "";
+      selectedFiles = [];
+      renderNewFilesPreview();
       return;
     }
 
     selectedFiles = files;
-    renderPreview();
+    renderNewFilesPreview();
   });
-}
-
-if (imageUrlsInput) {
-  imageUrlsInput.addEventListener("input", renderPreview);
 }
 
 /* ================================
@@ -638,18 +707,16 @@ window.addObject = async function(event) {
     return;
   }
 
-  const existingImageUrls = parseImageUrls();
-
   if (!validateFiles(selectedFiles)) {
     return;
   }
 
-  if (existingImageUrls.length + selectedFiles.length === 0) {
-    alert("Додайте хоча б одне фото або залиште посилання на існуюче фото.");
+  if (currentImageUrls.length + selectedFiles.length === 0) {
+    alert("Додайте хоча б одне фото.");
     return;
   }
 
-  if (existingImageUrls.length + selectedFiles.length > 10) {
+  if (currentImageUrls.length + selectedFiles.length > 10) {
     alert("Можна мати максимум 10 фото на один обʼєкт.");
     return;
   }
@@ -670,7 +737,7 @@ window.addObject = async function(event) {
     showProgress(true);
 
     const uploadedImageUrls = await uploadSelectedFiles();
-    const finalImageUrls = [...existingImageUrls, ...uploadedImageUrls];
+    const finalImageUrls = [...currentImageUrls, ...uploadedImageUrls];
 
     const payload = {
       title,
@@ -909,14 +976,13 @@ async function loadObjectForEdit() {
       setValue("internalComment", data.privateData.internalComment || "");
     }
 
-    if (imageUrlsInput) {
-      imageUrlsInput.value = Array.isArray(data.images)
-        ? data.images.join("\n")
-        : "";
-    }
+    currentImageUrls = Array.isArray(data.images)
+      ? [...data.images]
+      : [];
 
     toggleFormFields();
-    renderPreview();
+    renderPhotoManager();
+    renderNewFilesPreview();
   } catch (error) {
     console.error("LOAD EDIT OBJECT ERROR:", error);
     alert("❌ Не вдалося завантажити обʼєкт для редагування.");
@@ -961,15 +1027,13 @@ window.clearForm = function() {
   }
 
   selectedFiles = [];
-
-  if (imageUrlsInput) {
-    imageUrlsInput.value = "";
-  }
+  currentImageUrls = [];
 
   if (preview) {
     preview.innerHTML = "";
   }
 
+  renderPhotoManager();
   toggleFormFields();
 };
 
@@ -978,3 +1042,4 @@ window.clearForm = function() {
 ================================ */
 
 toggleFormFields();
+renderPhotoManager();
