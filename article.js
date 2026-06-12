@@ -5,13 +5,7 @@ import {
   collection,
   getDocs,
   query,
-  where,
-  limit,
-  doc,
-  getDoc,
-  updateDoc,
-  increment,
-  serverTimestamp
+  where
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -27,15 +21,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const COMPANY_PHONE_TEL = "+380953777196";
-const TELEGRAM_LINK = "https://t.me/paradisegarden_leads_bot";
-const VIBER_LINK = "viber://chat?number=%2B380953777196";
+let allArticles = [];
+let filteredArticles = [];
 
-const params = new URLSearchParams(window.location.search);
-const slug = params.get("slug");
-const id = params.get("id");
-
-const articleView = document.getElementById("articleView");
+const articlesGrid = document.getElementById("articlesGrid");
+const articleSearch = document.getElementById("articleSearch");
+const categoryFilter = document.getElementById("categoryFilter");
 
 function escapeHtml(value = "") {
   return String(value)
@@ -81,194 +72,117 @@ function getArticleImage(item) {
     return item.image;
   }
 
-  return "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=80";
+  return "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=900&q=80";
 }
 
-function renderMarkdownLite(text = "") {
-  const safe = escapeHtml(text);
-  const lines = safe.split("\n");
-
-  let html = "";
-  let listOpen = false;
-
-  function closeList() {
-    if (listOpen) {
-      html += "</ul>";
-      listOpen = false;
-    }
+function getArticleUrl(item) {
+  if (item.slug) {
+    return `article.html?slug=${encodeURIComponent(item.slug)}`;
   }
 
-  lines.forEach(line => {
-    const trimmed = line.trim();
-
-    if (!trimmed) {
-      closeList();
-      return;
-    }
-
-    if (trimmed.startsWith("### ")) {
-      closeList();
-      html += `<h3>${trimmed.slice(4)}</h3>`;
-      return;
-    }
-
-    if (trimmed.startsWith("## ")) {
-      closeList();
-      html += `<h2>${trimmed.slice(3)}</h2>`;
-      return;
-    }
-
-    if (trimmed.startsWith("# ")) {
-      closeList();
-      html += `<h2>${trimmed.slice(2)}</h2>`;
-      return;
-    }
-
-    if (trimmed.startsWith("- ") || trimmed.startsWith("• ")) {
-      if (!listOpen) {
-        html += "<ul>";
-        listOpen = true;
-      }
-
-      html += `<li>${trimmed.slice(2)}</li>`;
-      return;
-    }
-
-    closeList();
-    html += `<p>${trimmed}</p>`;
-  });
-
-  closeList();
-
-  return html;
+  return `article.html?id=${encodeURIComponent(item.id)}`;
 }
 
-async function getArticle() {
-  if (id) {
-    const ref = doc(db, "articles", id);
-    const snap = await getDoc(ref);
-
-    if (!snap.exists()) return null;
-
-    return {
-      id: snap.id,
-      ref,
-      ...snap.data()
-    };
-  }
-
-  if (slug) {
-    const q = query(
-      collection(db, "articles"),
-      where("slug", "==", slug),
-      limit(1)
-    );
-
-    const snap = await getDocs(q);
-
-    if (snap.empty) return null;
-
-    const docSnap = snap.docs[0];
-
-    return {
-      id: docSnap.id,
-      ref: doc(db, "articles", docSnap.id),
-      ...docSnap.data()
-    };
-  }
-
-  return null;
-}
-
-async function loadArticle() {
-  if (!articleView) return;
+async function loadArticles() {
+  if (!articlesGrid) return;
 
   try {
-    const article = await getArticle();
+    const articlesQuery = query(
+      collection(db, "articles"),
+      where("status", "==", "published")
+    );
 
-    if (!article || article.status !== "published") {
-      articleView.innerHTML = `
-        <div class="article-content-wrap">
-          <h1>❌ Статтю не знайдено</h1>
-          <p class="article-excerpt">Можливо, матеріал видалено або ще не опубліковано.</p>
-          <a class="btn" href="articles.html">До всіх статей</a>
-        </div>
-      `;
-      return;
-    }
+    const snap = await getDocs(articlesQuery);
 
-    try {
-      await updateDoc(article.ref, {
-        views: increment(1),
-        updatedAt: serverTimestamp()
-      });
-    } catch (viewsError) {
-      console.warn("Article views update blocked:", viewsError);
-    }
+    allArticles = snap.docs
+      .map(docSnap => ({
+        id: docSnap.id,
+        ...docSnap.data()
+      }))
+      .sort((a, b) => getDateValue(b) - getDateValue(a));
 
-    renderArticle(article);
+    filteredArticles = [...allArticles];
+    renderArticles(filteredArticles);
   } catch (error) {
-    console.error("LOAD ARTICLE ERROR:", error);
+    console.error("LOAD ARTICLES ERROR:", error);
 
-    articleView.innerHTML = `
-      <div class="article-content-wrap">
-        <h1>❌ Помилка завантаження</h1>
-        <p class="article-excerpt">Перевірте підключення Firebase або правила Firestore.</p>
-        <a class="btn" href="articles.html">До всіх статей</a>
+    articlesGrid.innerHTML = `
+      <div class="empty-articles">
+        <h2>❌ Не вдалося завантажити статті</h2>
+        <p>Перевірте Firestore rules або поле status = published.</p>
       </div>
     `;
   }
 }
 
-function renderArticle(article) {
-  const title = escapeHtml(article.title || "Без назви");
-  const excerpt = escapeHtml(article.excerpt || "");
-  const category = escapeHtml(article.category || "Стаття");
-  const image = escapeAttribute(getArticleImage(article));
-  const date = escapeHtml(formatDate(article));
-  const views = Number(article.views || 0) + 1;
-  const content = renderMarkdownLite(article.content || "Текст статті буде додано пізніше.");
+function applyFilters() {
+  const search = articleSearch ? articleSearch.value.trim().toLowerCase() : "";
+  const category = categoryFilter ? categoryFilter.value : "all";
 
-  document.title = `${article.title || "Стаття"} — АН «Райський Сад»`;
+  filteredArticles = allArticles.filter(item => {
+    const title = String(item.title || "").toLowerCase();
+    const excerpt = String(item.excerpt || "").toLowerCase();
+    const content = String(item.content || "").toLowerCase();
+    const itemCategory = String(item.category || "");
 
-  const metaDescription = document.querySelector('meta[name="description"]');
+    const matchesSearch =
+      !search ||
+      title.includes(search) ||
+      excerpt.includes(search) ||
+      content.includes(search);
 
-  if (metaDescription && article.excerpt) {
-    metaDescription.setAttribute("content", article.excerpt);
-  }
+    const matchesCategory = category === "all" || itemCategory === category;
 
-  articleView.innerHTML = `
-    <div class="article-hero-img">
-      <img src="${image}" alt="${title}">
-    </div>
+    return matchesSearch && matchesCategory;
+  });
 
-    <div class="article-content-wrap">
-      <div class="article-meta-line">
-        <span class="article-pill">${category}</span>
-        <span class="article-pill">📅 ${date}</span>
-        <span class="article-pill">👁 ${views} переглядів</span>
-      </div>
-
-      <h1>${title}</h1>
-      ${excerpt ? `<p class="article-excerpt">${excerpt}</p>` : ""}
-
-      <div class="article-content">
-        ${content}
-      </div>
-    </div>
-  `;
+  renderArticles(filteredArticles);
 }
 
-window.callCompany = function() {
-  window.location.href = `tel:${COMPANY_PHONE_TEL}`;
-};
+function renderArticles(data) {
+  if (!articlesGrid) return;
 
-window.openTelegram = function() {
-  window.open(TELEGRAM_LINK, "_blank", "noopener,noreferrer");
-};
+  if (!data.length) {
+    articlesGrid.innerHTML = `
+      <div class="empty-articles">
+        <h2>Статей поки немає</h2>
+        <p>Перевірте, чи є у Firestore документ у колекції articles зі status = published.</p>
+      </div>
+    `;
+    return;
+  }
 
-window.openViber = function() {
-  window.location.href = VIBER_LINK;
-};
+  articlesGrid.innerHTML = data.map(item => {
+    const title = escapeHtml(item.title || "Без назви");
+    const excerpt = escapeHtml(item.excerpt || "Короткий опис статті буде додано пізніше.");
+    const category = escapeHtml(item.category || "Стаття");
+    const image = escapeAttribute(getArticleImage(item));
+    const url = escapeAttribute(getArticleUrl(item));
+    const date = escapeHtml(formatDate(item));
 
-loadArticle();
+    return `
+      <a class="article-card" href="${url}">
+        <div class="article-card-img">
+          <img src="${image}" alt="${title}">
+        </div>
+
+        <div class="article-card-body">
+          <span class="article-category">${category}</span>
+          <h2>${title}</h2>
+          <p>${excerpt}</p>
+          <div class="article-meta">📅 ${date}</div>
+        </div>
+      </a>
+    `;
+  }).join("");
+}
+
+if (articleSearch) {
+  articleSearch.addEventListener("input", applyFilters);
+}
+
+if (categoryFilter) {
+  categoryFilter.addEventListener("change", applyFilters);
+}
+
+loadArticles();
