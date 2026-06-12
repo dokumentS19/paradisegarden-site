@@ -1122,8 +1122,8 @@ body {
 .hero-shade {
   background: linear-gradient(
     90deg,
-    rgba(4, 35, 18, 0.50),
-    rgba(4, 35, 18, 0.18)
+    rgba(4, 20, 13, 0.55),
+    rgba(4, 20, 13, 0.16)
   );
 }
 
