@@ -206,6 +206,19 @@
       line-height: 1.6;
     }
 
+    #imageUrls {
+      min-height: 130px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .photo-hint {
+      color: #dbeafe;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
     @media (max-width: 900px) {
       .admin-layout {
         grid-template-columns: 1fr;
@@ -246,12 +259,14 @@
 
   <section class="admin-panel">
     <span class="section-label">Адміністрування</span>
-    <h1>Додати обʼєкт нерухомості</h1>
+    <h1 id="formTitle">Додати обʼєкт нерухомості</h1>
 
     <div class="upload-info">
       <strong>Вимоги до фото:</strong><br>
       максимум 10 фото на один обʼєкт, кожне фото до 10 МБ.
       Перше фото буде головним у каталозі.
+      У режимі редагування можна змінювати порядок фото, видаляти старі посилання
+      та додавати нові фото.
     </div>
 
     <div class="admin-auth-box">
@@ -959,17 +974,33 @@
         </label>
       </div>
 
-      <label for="file">Фото обʼєкта</label>
-      <input id="file" type="file" accept="image/*" multiple required>
+      <div class="admin-section">
+        <h3>Фото обʼєкта</h3>
 
-      <div id="preview" class="preview-grid"></div>
+        <label for="imageUrls">Поточні фото обʼєкта</label>
+        <textarea
+          id="imageUrls"
+          placeholder="У режимі редагування тут будуть посилання на фото. Кожне фото з нового рядка. Перше фото буде головним."
+        ></textarea>
+
+        <p class="photo-hint">
+          Щоб змінити головне фото — поставте потрібне посилання першим.
+          Щоб прибрати фото — видаліть його посилання зі списку.
+          Нові фото, вибрані нижче, будуть додані після поточних фото.
+        </p>
+
+        <label for="file">Додати нові фото</label>
+        <input id="file" type="file" accept="image/*" multiple>
+
+        <div id="preview" class="preview-grid"></div>
+      </div>
 
       <div id="progressBox" class="progress-box">
-        Завантаження обʼєкта... Будь ласка, не закривайте сторінку.
+        Збереження обʼєкта... Будь ласка, не закривайте сторінку.
       </div>
 
       <div class="admin-actions">
-        <button class="cta-big" type="submit">✅ Додати обʼєкт</button>
+        <button id="submitBtn" class="cta-big" type="submit">✅ Додати обʼєкт</button>
         <button class="cta-outline" type="button" onclick="clearForm()">Очистити форму</button>
       </div>
 
@@ -988,6 +1019,20 @@
         <li>Дані обʼєкта — у Firestore</li>
         <li>VIP-обʼєкти показуються першими</li>
         <li>Детальна сторінка відкривається по кліку на картку</li>
+      </ul>
+    </div>
+
+    <div class="admin-help-card">
+      <h3>Редагування фото</h3>
+      <p>
+        Якщо Ви відкрили обʼєкт через кнопку «Редагувати», адмінка підтягне
+        всі поточні фото у вигляді посилань.
+      </p>
+      <ul>
+        <li>Перше посилання — головне фото</li>
+        <li>Можна змінити порядок фото</li>
+        <li>Можна видалити посилання на фото</li>
+        <li>Можна додати нові фото з компʼютера або телефона</li>
       </ul>
     </div>
 
