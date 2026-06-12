@@ -1683,3 +1683,44 @@ html {
   border-color: #e88912;
   box-shadow: 0 0 0 4px rgba(232, 137, 18, 0.12);
 }
+/* ================================
+   LEADS / CRM PAGE BRAND FIX
+   CRM у фірмовому стилі
+================================ */
+
+.leads-page-body {
+  background:
+    radial-gradient(circle at top left, rgba(232, 137, 18, 0.10), transparent 30%),
+    radial-gradient(circle at top right, rgba(7, 92, 43, 0.14), transparent 30%),
+    #08150f;
+}
+
+.leads-page-body .topbar {
+  background: rgba(4, 20, 13, 0.94);
+  border-bottom: 1px solid rgba(232, 137, 18, 0.20);
+}
+
+.leads-page-body .brand-icon {
+  background: linear-gradient(135deg, #e88912, #95571f);
+  color: #ffffff;
+  box-shadow: 0 0 22px rgba(232, 137, 18, 0.26);
+}
+
+.leads-page-body .nav a:hover {
+  background: rgba(232, 137, 18, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(232, 137, 18, 0.34);
+}
+
+.leads-page-body input,
+.leads-page-body textarea,
+.leads-page-body select {
+  background: rgba(8, 21, 15, 0.86);
+  border-color: rgba(232, 137, 18, 0.20);
+}
+
+.leads-page-body input:focus,
+.leads-page-body textarea:focus,
+.leads-page-body select:focus {
+  border-color: #e88912;
+  box-shadow: 0 0 0 4px rgba(232, 137, 18, 0.12);
+}
