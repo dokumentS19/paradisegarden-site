@@ -11,40 +11,42 @@
   <style>
     .dialogs-shell {
       max-width: 1200px;
-      margin: 34px auto;
+      margin: 28px auto 34px;
       padding: 0 16px;
       display: grid;
-      gap: 24px;
+      gap: 22px;
     }
 
     .dialogs-hero {
       background:
-        linear-gradient(135deg, rgba(34, 197, 94, 0.18), rgba(250, 204, 21, 0.1)),
-        rgba(15, 23, 42, 0.94);
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 26px;
-      padding: 34px;
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+        linear-gradient(135deg, rgba(7, 92, 43, 0.22), rgba(149, 87, 31, 0.16)),
+        rgba(13, 25, 22, 0.96);
+      border: 1px solid rgba(232, 137, 18, 0.20);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.30);
     }
 
     .dialogs-hero h1 {
-      margin: 14px 0 10px;
-      font-size: clamp(32px, 5vw, 54px);
+      margin: 12px 0 10px;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.1;
     }
 
     .dialogs-hero p {
-      color: #cbd5e1;
-      line-height: 1.7;
+      color: #dbeafe;
+      line-height: 1.65;
       max-width: 820px;
+      margin-bottom: 0;
     }
 
     .dialogs-user-panel {
       background:
-        linear-gradient(180deg, rgba(30, 41, 59, 0.94), rgba(15, 23, 42, 0.94));
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 24px;
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      border-radius: 20px;
       padding: 22px;
-      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.28);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -63,12 +65,13 @@
       height: 58px;
       border-radius: 50%;
       overflow: hidden;
-      background: linear-gradient(135deg, #facc15, #22c55e);
+      background: linear-gradient(135deg, #e88912, #95571f);
       display: grid;
       place-items: center;
-      color: #04130a;
+      color: #ffffff;
       font-weight: 900;
       font-size: 22px;
+      box-shadow: 0 12px 30px rgba(149, 87, 31, 0.28);
     }
 
     .dialogs-avatar img {
@@ -84,17 +87,18 @@
     }
 
     .dialogs-user-info span {
-      color: #cbd5e1;
+      color: #dbeafe;
       font-size: 14px;
+      word-break: break-word;
     }
 
     .dialogs-toolbar {
       background:
-        linear-gradient(180deg, rgba(30, 41, 59, 0.94), rgba(15, 23, 42, 0.94));
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 24px;
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      border-radius: 20px;
       padding: 18px;
-      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.24);
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.24);
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 12px;
@@ -111,23 +115,22 @@
       grid-template-columns: 84px 1fr auto;
       gap: 16px;
       align-items: center;
-      background:
-        linear-gradient(180deg, rgba(30, 41, 59, 0.94), rgba(15, 23, 42, 0.94));
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 22px;
+      background: rgba(8, 21, 15, 0.86);
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      border-radius: 20px;
       padding: 16px;
       color: white;
       text-decoration: none;
-      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.28);
       transition: 0.28s ease;
     }
 
     .dialog-card:hover {
       transform: translateY(-5px);
-      border-color: rgba(34, 197, 94, 0.5);
+      border-color: rgba(232, 137, 18, 0.46);
       box-shadow:
-        0 24px 70px rgba(0, 0, 0, 0.42),
-        0 0 30px rgba(34, 197, 94, 0.12);
+        0 24px 65px rgba(0, 0, 0, 0.42),
+        0 0 28px rgba(232, 137, 18, 0.12);
     }
 
     .dialog-icon {
@@ -135,9 +138,9 @@
       height: 84px;
       border-radius: 18px;
       background:
-        radial-gradient(circle at top right, rgba(34, 197, 94, 0.35), transparent 45%),
-        #020617;
-      border: 1px solid rgba(148, 163, 184, 0.22);
+        radial-gradient(circle at top right, rgba(232, 137, 18, 0.22), transparent 45%),
+        #08150f;
+      border: 1px solid rgba(232, 137, 18, 0.18);
       display: grid;
       place-items: center;
       font-size: 34px;
@@ -150,13 +153,13 @@
     }
 
     .dialog-main p {
-      color: #cbd5e1;
+      color: #dbeafe;
       margin: 5px 0;
       line-height: 1.45;
     }
 
     .dialog-last {
-      color: #bbf7d0;
+      color: #fff3df;
       font-size: 14px;
       margin-top: 8px;
       max-width: 700px;
@@ -182,21 +185,21 @@
       display: inline-flex;
       padding: 7px 11px;
       border-radius: 999px;
-      background: rgba(34, 197, 94, 0.14);
-      border: 1px solid rgba(34, 197, 94, 0.28);
-      color: #bbf7d0;
+      background: rgba(149, 87, 31, 0.34);
+      border: 1px solid rgba(232, 137, 18, 0.34);
+      color: #fff3df;
       font-size: 13px;
     }
 
     .empty-dialogs {
       background:
-        linear-gradient(180deg, rgba(30, 41, 59, 0.94), rgba(15, 23, 42, 0.94));
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 24px;
-      padding: 34px;
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      border-radius: 20px;
+      padding: 30px;
       text-align: center;
-      color: #cbd5e1;
-      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.26);
+      color: #dbeafe;
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.26);
     }
 
     .empty-dialogs h2 {
@@ -216,7 +219,7 @@
       .dialogs-hero,
       .dialogs-user-panel,
       .dialogs-toolbar {
-        padding: 22px;
+        padding: 18px;
       }
 
       .dialogs-toolbar {
@@ -247,7 +250,8 @@
 
     @media (max-width: 520px) {
       .dialogs-shell {
-        margin: 22px auto;
+        margin: 20px auto 28px;
+        padding: 0 12px;
       }
 
       .dialogs-hero h1 {
@@ -269,11 +273,11 @@
   </style>
 </head>
 
-<body>
+<body class="dialogs-page-body brand-refresh">
 
 <header class="topbar">
   <a href="index.html" class="brand">
-    <span class="brand-icon">🌿</span>
+    <span class="brand-icon">PC</span>
     <span>
       <strong>Райський Сад</strong>
       <small>Мої діалоги</small>
@@ -332,7 +336,7 @@
 </main>
 
 <footer class="footer">
-  <p>© 2005–2026 АН «Райський Сад». Діалоги з клієнтами та продавцями.</p>
+  <p>© 2002–2026 АН «Райський Сад». Діалоги з клієнтами та продавцями.</p>
 </footer>
 
 <script type="module" src="dialogs.js"></script>
