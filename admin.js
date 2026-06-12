@@ -71,10 +71,6 @@ const progressBox = document.getElementById("progressBox");
    AUTH
 ================================ */
 
-/* ================================
-   AUTH
-================================ */
-
 await setPersistence(auth, browserLocalPersistence);
 
 if (loginBtn) {
@@ -113,75 +109,6 @@ onAuthStateChanged(auth, user => {
     }
   }
 });
-
-/* ================================
-   HELPERS
-================================ */
-
-function escapeHtml(value = "") {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-function showProgress(show) {
-  if (!progressBox) return;
-
-  progressBox.classList.toggle("active", Boolean(show));
-}
-
-function validateFiles(files) {
-  if (!files.length) {
-    alert("Додайте хоча б одне фото.");
-    return false;
-  }
-
-  if (files.length > 10) {
-    alert("Можна додати максимум 10 фото.");
-    return false;
-  }
-
-  for (const file of files) {
-    if (!file.type.startsWith("image/")) {
-      alert(`Файл "${file.name}" не є зображенням.`);
-      return false;
-    }
-
-    if (file.size > 1024 * 1024) {
-      alert(`Фото "${file.name}" більше 1 МБ. Зменшіть розмір фото.`);
-      return false;
-    }
-  }
-
-  return true;
-}
-
-function renderPreview(files) {
-  if (!preview) return;
-
-  preview.innerHTML = "";
-
-  files.forEach((file, index) => {
-    const reader = new FileReader();
-
-    reader.onload = event => {
-      const item = document.createElement("div");
-      item.className = "preview-item";
-
-      item.innerHTML = `
-        <img src="${event.target.result}" alt="Фото ${index + 1}">
-        <span>${index + 1}</span>
-      `;
-
-      preview.appendChild(item);
-    };
-
-    reader.readAsDataURL(file);
-  });
-}
 
 /* ================================
    COMMERCIAL TYPE
