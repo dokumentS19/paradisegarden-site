@@ -1,4 +1,9 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";import { initializeApp } from "https://  query,
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  query,
   where,
   onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -6,8 +11,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import {
   getAuth,
   GoogleAuthProvider,
-  signInWithRedirect,
-  getRedirectResult,
+  signInWithPopup,
   onAuthStateChanged,
   signOut,
   setPersistence,
@@ -58,16 +62,17 @@ const dialogSearch = document.getElementById("dialogSearch");
 
 await setPersistence(auth, browserLocalPersistence);
 
-getRedirectResult(auth).catch(error => {
-  console.error("AUTH REDIRECT ERROR:", error);
-});
-
 if (loginBtn) {
-  loginBtn.addEventListener("click", () => {
-    if (auth.currentUser) {
-      signOut(auth);
-    } else {
-      signInWithRedirect(auth, provider);
+  loginBtn.addEventListener("click", async () => {
+    try {
+      if (auth.currentUser) {
+        await signOut(auth);
+      } else {
+        await signInWithPopup(auth, provider);
+      }
+    } catch (error) {
+      console.error("LOGIN ERROR:", error);
+      alert("Помилка входу: " + error.message);
     }
   });
 }
@@ -131,6 +136,18 @@ function getInitials(user) {
     .toUpperCase();
 }
 
+function getDisplayName(user) {
+  if (!user) {
+    return "Користувач";
+  }
+
+  if (user.email === "olegivanchik1234@gmail.com") {
+    return "Олег Іванчик";
+  }
+
+  return user.displayName || user.email || "Користувач";
+}
+
 function getDialogDate(dialog) {
   return dialog.lastMessageAt || dialog.updatedAt || dialog.createdAt || null;
 }
@@ -146,7 +163,7 @@ function renderUser(user) {
 
   if (userInfo) {
     userInfo.innerHTML = `
-      <strong>${escapeHtml(user.displayName || "Користувач")}</strong>
+      <strong>${escapeHtml(getDisplayName(user))}</strong>
       <span>${escapeHtml(user.email || "")}</span>
     `;
   }
@@ -189,8 +206,12 @@ function renderGuest() {
       <div class="empty-dialogs">
         <h2>Потрібна авторизація</h2>
         <p>Увійдіть через Google, щоб переглядати свої діалоги.</p>
+
         <div class="dialogs-actions">
-          <button class="btn" type="button" onclick="document.getElementById('loginBtn').click()">Увійти</button>
+          <button class="btn" type="button" onclick="document.getElementById('loginBtn').click()">
+            Увійти
+          </button>
+
           <a class="cta-outline" href="index.html">На головну</a>
         </div>
       </div>
@@ -203,7 +224,9 @@ function renderGuest() {
 ================================ */
 
 function listenDialogs(uid) {
-  if (!dialogsList) return;
+  if (!dialogsList) {
+    return;
+  }
 
   if (unsubscribeDialogs) {
     unsubscribeDialogs();
@@ -239,7 +262,10 @@ function listenDialogs(uid) {
       dialogsList.innerHTML = `
         <div class="empty-dialogs">
           <h2>❌ Помилка завантаження</h2>
-          <p>Не вдалося отримати список діалогів. Перевірте правила Firestore.</p>
+          <p>
+            Не вдалося отримати список діалогів.
+            Перевірте правила Firestore або структуру колекції chats.
+          </p>
         </div>
       `;
     }
@@ -260,7 +286,9 @@ function sortDialogs() {
 ================================ */
 
 function renderDialogs() {
-  if (!dialogsList) return;
+  if (!dialogsList) {
+    return;
+  }
 
   const search = dialogSearch ? dialogSearch.value.trim().toLowerCase() : "";
 
@@ -299,7 +327,8 @@ function renderDialogs() {
   }
 
   dialogsList.innerHTML = data.map(dialog => {
-    const id = escapeAttribute(dialog.id);
+    const encodedId = encodeURIComponent(dialog.id);
+
     const objectTitle = escapeHtml(dialog.objectTitle || "Обʼєкт нерухомості");
     const objectId = escapeHtml(dialog.objectId || "");
     const lastMessage = escapeHtml(dialog.lastMessage || "Повідомлень поки немає");
@@ -307,7 +336,7 @@ function renderDialogs() {
     const usersCount = Array.isArray(dialog.users) ? dialog.users.length : 0;
 
     return `
-      <a class="dialog-card" href="chat.html?chatId=${id}">
+      <a class="dialog-card" href="chat.html?chatId=${encodedId}">
         <div class="dialog-icon">💬</div>
 
         <div class="dialog-main">
@@ -315,42 +344,4 @@ function renderDialogs() {
 
           <p>
             Учасників: ${usersCount}
-            ${objectId ? ` · ID обʼєкта: ${objectId}` : ""}
-          </p>
-
-          <div class="dialog-last">
-            ${lastMessage}
-          </div>
-        </div>
-
-        <div class="dialog-side">
-          <span class="dialog-badge">Відкрити чат</span>
-          <span class="dialog-date">${date}</span>
-        </div>
-      </a>
-    `;
-  }).join("");
-}
-
-/* ================================
-   ACTIONS
-================================ */
-
-window.reloadDialogs = function() {
-  if (!currentUser) {
-    alert("Спочатку увійдіть через Google.");
-    return;
-  }
-
-  renderDialogs();
-};
-
-if (dialogSearch) {
-  dialogSearch.addEventListener("input", () => {
-    renderDialogs();
-  });
-}
-
-import {
-  getFirestore,
-  collection,
+            ${objectId ? ` · ID обʼєкта: ${objectId}` :
