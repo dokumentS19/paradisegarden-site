@@ -80,9 +80,102 @@ function formatPrice(value, dealType = "sale") {
 }
 
 function valueText(value) {
-  if (value === null || value === undefined || value === "") return "";
+  if (value === null || value === undefined || value === "") {
+    return "";
+  }
+
   return String(value);
 }
+
+/* ================================
+   PUBLIC ADDRESS / MAP PRIVACY
+================================ */
+
+function getPublicAddress(item) {
+  return item.addressPublic || item.address || "Київ та Київська область";
+}
+
+function getMapPrivacy(item) {
+  return {
+    hideExactLocation: item.mapPrivacy?.hideExactLocation === true,
+    hideHouseNumber: item.mapPrivacy?.hideHouseNumber === true,
+    hideCadastralNumber: item.mapPrivacy?.hideCadastralNumber === true
+  };
+}
+
+function getPublicMapPosition(item) {
+  const privacy = getMapPrivacy(item);
+
+  if (
+    privacy.hideExactLocation &&
+    item.publicMapLocation &&
+    Number.isFinite(Number(item.publicMapLocation.lat)) &&
+    Number.isFinite(Number(item.publicMapLocation.lng))
+  ) {
+    return {
+      lat: Number(item.publicMapLocation.lat),
+      lng: Number(item.publicMapLocation.lng)
+    };
+  }
+
+  if (
+    item.mapLocation &&
+    Number.isFinite(Number(item.mapLocation.lat)) &&
+    Number.isFinite(Number(item.mapLocation.lng))
+  ) {
+    return {
+      lat: Number(item.mapLocation.lat),
+      lng: Number(item.mapLocation.lng)
+    };
+  }
+
+  return {
+    lat: Number(item.lat || 50.5215),
+    lng: Number(item.lng || 30.2506)
+  };
+}
+
+function getPublicCadastralNumber(item) {
+  if (item.mapPrivacy?.hideCadastralNumber === true) {
+    return "";
+  }
+
+  return item.cadastral?.publicNumber || item.cadastral?.number || "";
+}
+
+function getMapDisplayMode(item) {
+  const privacy = getMapPrivacy(item);
+
+  if (item.mapDisplay?.mode) {
+    return item.mapDisplay.mode;
+  }
+
+  return privacy.hideExactLocation ? "approximate_circle" : "exact_marker";
+}
+
+function getMapDisplayRadius(item) {
+  const radius = Number(item.mapDisplay?.radius);
+
+  if (Number.isFinite(radius) && radius > 0) {
+    return radius;
+  }
+
+  return 200;
+}
+
+function getMapNote(item) {
+  const privacy = getMapPrivacy(item);
+
+  if (privacy.hideExactLocation) {
+    return "Точне місце обʼєкта приховано. На карті показано приблизну зону розташування.";
+  }
+
+  return "На карті показано місце розташування обʼєкта.";
+}
+
+/* ================================
+   DICTIONARIES / TEXT HELPERS
+================================ */
 
 function yesNo(value) {
   if (value === true) return "Так";
@@ -282,7 +375,9 @@ function getDocumentsName(value) {
 }
 
 function getApplianceNames(values = []) {
-  if (!Array.isArray(values) || !values.length) return "";
+  if (!Array.isArray(values) || !values.length) {
+    return "";
+  }
 
   const map = {
     fridge: "Холодильник",
@@ -296,7 +391,9 @@ function getApplianceNames(values = []) {
 }
 
 function feature(label, value) {
-  if (value === null || value === undefined || value === "") return "";
+  if (value === null || value === undefined || value === "") {
+    return "";
+  }
 
   return `
     <div class="feature">
@@ -305,6 +402,10 @@ function feature(label, value) {
     </div>
   `;
 }
+
+/* ================================
+   FEATURES BY TYPE
+================================ */
 
 function buildRentFeatures(item) {
   if (item.dealType !== "rent" || !item.rent) return "";
@@ -436,6 +537,10 @@ function buildTypeFeatures(item) {
   return "";
 }
 
+/* ================================
+   GALLERY
+================================ */
+
 function applyImageOrientation(img) {
   if (!img) return;
 
@@ -504,6 +609,10 @@ document.addEventListener("keydown", event => {
   if (event.key === "ArrowLeft") window.changeSlide(-1);
 });
 
+/* ================================
+   CONTACT ACTIONS
+================================ */
+
 window.callCompany = function() {
   window.location.href = `tel:${COMPANY_PHONE_TEL}`;
 };
@@ -568,7 +677,11 @@ window.startChat = async function(ownerId) {
   }
 };
 
-function initMap(lat, lng) {
+/* ================================
+   MAP
+================================ */
+
+function initMap(item) {
   const mapEl = document.getElementById("map");
 
   if (!mapEl) return;
@@ -578,25 +691,44 @@ function initMap(lat, lng) {
     return;
   }
 
-  const position = {
-    lat: Number(lat || 50.5215),
-    lng: Number(lng || 30.2506)
-  };
+  const position = getPublicMapPosition(item);
+  const privacy = getMapPrivacy(item);
+  const displayMode = getMapDisplayMode(item);
+  const radius = getMapDisplayRadius(item);
 
   const map = new google.maps.Map(mapEl, {
     center: position,
-    zoom: 14,
+    zoom: privacy.hideExactLocation ? 14 : 15,
     mapTypeControl: false,
     streetViewControl: false,
     fullscreenControl: true
   });
 
+  if (displayMode === "approximate_circle" || privacy.hideExactLocation) {
+    new google.maps.Circle({
+      strokeColor: "#e88912",
+      strokeOpacity: 0.9,
+      strokeWeight: 2,
+      fillColor: "#e88912",
+      fillOpacity: 0.26,
+      map,
+      center: position,
+      radius
+    });
+
+    return;
+  }
+
   new google.maps.Marker({
     position,
     map,
-    title: currentObject?.title || "Обʼєкт нерухомості"
+    title: item?.title || "Обʼєкт нерухомості"
   });
 }
+
+/* ================================
+   LOAD OBJECT
+================================ */
 
 async function loadObject() {
   if (!page) return;
@@ -648,7 +780,7 @@ async function loadObject() {
     updateGallery();
 
     setTimeout(() => {
-      initMap(currentObject.lat, currentObject.lng);
+      initMap(currentObject);
     }, 300);
 
     loadSimilarObjects(currentObject);
@@ -665,21 +797,31 @@ async function loadObject() {
   }
 }
 
+/* ================================
+   RENDER OBJECT
+================================ */
+
 function renderObject(item) {
   const title = escapeHtml(item.title || "Обʼєкт нерухомості");
   const price = formatPrice(item.price, item.dealType);
-  const area = escapeHtml(item.area || "-");
-  const address = escapeHtml(item.address || "Київ та Київська область");
-  const description = escapeHtml(item.description || "Детальний опис обʼєкта буде додано найближчим часом.");
+  const area = item.area || "-";
+  const address = getPublicAddress(item);
+  const publicCadastralNumber = getPublicCadastralNumber(item);
+  const mapNote = getMapNote(item);
+
+  const description = escapeHtml(
+    item.description || "Детальний опис обʼєкта буде додано найближчим часом."
+  );
+
   const status = item.status === "sold" ? "Продано" : "Активне";
   const views = Number(item.views || 0) + 1;
   const createdDate = getCreatedDate(item);
   const ownerName = escapeHtml(item.ownerName || "Олег Іванчик");
   const ownerId = escapeAttribute(item.ownerId || "");
 
-  const dealName = escapeHtml(getDealTypeName(item.dealType));
-  const propertyName = escapeHtml(getPropertyTypeName(item.propertyType));
-  const commercialName = escapeHtml(getCommercialTypeName(item.commercialType));
+  const dealName = getDealTypeName(item.dealType);
+  const propertyName = getPropertyTypeName(item.propertyType);
+  const commercialName = getCommercialTypeName(item.commercialType);
 
   const thumbsHtml = images.map((src, index) => {
     const safeSrc = escapeAttribute(src);
@@ -707,13 +849,13 @@ function renderObject(item) {
           <h1>${title}</h1>
 
           <div class="status-line">
-            <span class="pill">🏷️ ${status}</span>
+            <span class="pill">🏷️ ${escapeHtml(status)}</span>
             ${item.vip ? `<span class="pill">🔥 VIP</span>` : ""}
             <span class="pill">👁 ${views} переглядів</span>
           </div>
         </div>
 
-        <div class="object-price">💰 ${price}</div>
+        <div class="object-price">💰 ${escapeHtml(price)}</div>
       </div>
 
       <div class="gallery">
@@ -743,6 +885,7 @@ function renderObject(item) {
           ${feature("Ціна", price)}
           ${feature("Площа", area)}
           ${feature("Локація", address)}
+          ${publicCadastralNumber ? feature("Кадастровий номер", publicCadastralNumber) : ""}
           ${feature("Дата додавання", createdDate)}
           ${rentFeatures}
           ${typeFeatures}
@@ -778,6 +921,7 @@ function renderObject(item) {
 
     <section class="object-box">
       <h2>Локація на карті</h2>
+      <p class="map-note">${escapeHtml(mapNote)}</p>
       <div id="map" class="map-box"></div>
     </section>
 
@@ -789,6 +933,10 @@ function renderObject(item) {
     </section>
   `;
 }
+
+/* ================================
+   SIMILAR OBJECTS
+================================ */
 
 async function loadSimilarObjects(item) {
   const similarGrid = document.getElementById("similarGrid");
@@ -835,7 +983,7 @@ async function loadSimilarObjects(item) {
             <p>🔑 ${dealName}</p>
             <p>🏷️ ${propertyName}</p>
             <p>📐 ${area}</p>
-            <p>💰 ${price}</p>
+            <p>💰 ${escapeHtml(price)}</p>
           </div>
         </a>
       `;
