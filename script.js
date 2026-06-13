@@ -515,7 +515,8 @@ const homeArticles = [
     title: "Як підготуватися до купівлі нерухомості",
     excerpt: "Пояснюємо, які документи перевірити, як оцінити бюджет і на що звернути увагу перед купівлею квартири, будинку чи ділянки.",
     date: "12 червня 2026",
-   image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80",
+    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80",
+    url: "article.html?id=1"
   },
   {
     id: 2,
@@ -524,15 +525,15 @@ const homeArticles = [
     date: "13 червня 2026",
     image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80",
     url: "prodazh-zhytlovoi-nerukhomosti-yak-ne-vtratyty-hroshi.html"
-    },
-   {
+  },
+  {
     id: 3,
     title: "Оренда житла: що важливо перевірити",
     excerpt: "Розбираємо ключові моменти договору оренди, оплату, заставу, стан житла та комунікацію між власником і орендарем.",
     date: "13 червня 2026",
     image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80",
-     url: "orenda-zhytla-shcho-vazhlyvo-pereviryty.html"
-  }
+    url: "orenda-zhytla-shcho-vazhlyvo-pereviryty.html"
+   }
 ];
 
 function renderHomeArticles() {
