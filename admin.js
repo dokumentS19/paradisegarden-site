@@ -902,7 +902,84 @@ function buildAreaLabel(propertyType, data) {
 
   return "-";
 }
+/* ================================
+   IMAGE COMPRESSION
+================================ */
 
+async function compressImage(file, maxWidth = 1600, quality = 0.75) {
+  return new Promise((resolve, reject) => {
+    if (!file || !file.type.startsWith("image/")) {
+      resolve(file);
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = event => {
+      const img = new Image();
+
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+
+        if (!ctx) {
+          resolve(file);
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(
+          blob => {
+            if (!blob) {
+              resolve(file);
+              return;
+            }
+
+            const originalName = file.name || "image.jpg";
+            const compressedName = originalName.replace(/\.[^/.]+$/, ".jpg");
+
+            const compressedFile = new File(
+              [blob],
+              compressedName,
+              {
+                type: "image/jpeg",
+                lastModified: Date.now()
+              }
+            );
+
+            resolve(compressedFile);
+          },
+          "image/jpeg",
+          quality
+        );
+      };
+
+      img.onerror = () => {
+        resolve(file);
+      };
+
+      img.src = event.target.result;
+    };
+
+    reader.onerror = () => {
+      resolve(file);
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
 /* ================================
    UPLOAD
 ================================ */
