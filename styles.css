@@ -2146,3 +2146,55 @@ html {
   font-size: clamp(24px, 3vw, 36px);
   line-height: 1.15;
 }
+/* ===== Адаптація фото для мобільної версії ===== */
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.card-img {
+  width: 100%;
+  overflow: hidden;
+}
+
+.card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (max-width: 768px) {
+  .card-img {
+    height: 220px;
+  }
+
+  .card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gallery-main {
+    min-height: 240px;
+    max-height: 360px;
+  }
+
+  .gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-img {
+    height: 190px;
+  }
+
+  .gallery-main {
+    min-height: 220px;
+    max-height: 320px;
+  }
+}
