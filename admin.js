@@ -1343,10 +1343,35 @@ window.clearForm = function() {
 /* ================================
    START
 ================================ */
-
 toggleFormFields();
 renderPhotoManager();
 
-window.addEventListener("load", () => {
-  setTimeout(initAdminMap, 400);
-});
+functionMap) {function startAdminMapWhenReady(retries = 40) {
+    return;
+  }
+
+  if (mapEl && window.google && google.maps) {
+    initAdminMap();
+    console.log("✅ Адмін-карту ініціалізовано");
+    return;
+  }
+
+  if (retries > 0) {
+    setTimeout(() => {
+      startAdminMapWhenReady(retries - 1);
+    }, 300);
+    return;
+  }
+
+  console.warn("⚠️ Google Maps не завантажилась або #adminMap не знайдено.");
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => {
+    startAdminMapWhenReady();
+  });
+} else {
+  startAdminMapWhenReady();
+}
+  const mapEl = document.getElementById("adminMap");
+
