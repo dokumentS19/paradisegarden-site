@@ -2138,3 +2138,7 @@ html {
 #contacts {
   scroll-margin-top: 150px;
 }
+.section-head h2 {
+  font-size: clamp(26px, 3vw, 38px);
+  line-height: 1.15;
+}
