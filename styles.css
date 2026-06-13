@@ -338,7 +338,7 @@ img {
 .director h2,
 .request h2 {
   margin: 16px 0 10px;
-  font-size: clamp(28px, 4vw, 46px);
+ font-size: clamp(26px, 3vw, 38px);
   line-height: 1.15;
 }
 
