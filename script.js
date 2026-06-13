@@ -529,7 +529,7 @@ const homeArticles = [
     id: 3,
     title: "Оренда житла: що важливо перевірити",
     excerpt: "Розбираємо ключові моменти договору оренди, оплату, заставу, стан житла та комунікацію між власником і орендарем.",
-    date: "8 червня 2026",
+    date: "13 червня 2026",
     image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80",
      url: "orenda-zhytla-shcho-vazhlyvo-pereviryty.html"
   }
