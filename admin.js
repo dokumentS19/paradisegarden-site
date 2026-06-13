@@ -906,8 +906,12 @@ function buildAreaLabel(propertyType, data) {
    IMAGE COMPRESSION
 ================================ */
 
+/* ================================
+   IMAGE COMPRESSION
+================================ */
+
 async function compressImage(file, maxWidth = 1600, quality = 0.75) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     if (!file || !file.type.startsWith("image/")) {
       resolve(file);
       return;
@@ -980,6 +984,7 @@ async function compressImage(file, maxWidth = 1600, quality = 0.75) {
     reader.readAsDataURL(file);
   });
 }
+
 /* ================================
    UPLOAD
 ================================ */
@@ -988,11 +993,15 @@ async function uploadSelectedFiles() {
   const imageUrls = [];
 
   for (const file of selectedFiles) {
-    const safeName = file.name.replace(/[^\wа-яА-ЯіїєґІЇЄҐ.-]/g, "_");
+    const compressedFile = await compressImage(file, 1600, 0.75);
+
+    const safeName = compressedFile.name.replace(/[^\wа-яА-ЯіїєґІЇЄҐ.-]/g, "_");
     const fileName = `${Date.now()}_${crypto.randomUUID()}_${safeName}`;
     const storageRef = ref(storage, `objects/${currentUser.uid}/${fileName}`);
 
-    await uploadBytes(storageRef, file);
+    await uploadBytes(storageRef, compressedFile, {
+      contentType: compressedFile.type
+    });
 
     const url = await getDownloadURL(storageRef);
     imageUrls.push(url);
