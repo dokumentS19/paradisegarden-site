@@ -531,7 +531,7 @@ const homeArticles = [
     excerpt: "Розбираємо ключові моменти договору оренди, оплату, заставу, стан житла та комунікацію між власником і орендарем.",
     date: "8 червня 2026",
     image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80",
-    url: "article.html?id=3"
+     url: "orenda-zhytla-shcho-vazhlyvo-pereviryty.html"
   }
 ];
 
