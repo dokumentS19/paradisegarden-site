@@ -579,4 +579,18 @@ function renderHomeArticles() {
 
 setupFilters();
 renderHomeArticles();
-loadObjects();
+
+loadObjects().then(() => {
+  if (window.location.hash === "#contacts") {
+    setTimeout(() => {
+      const contactsSection = document.getElementById("contacts");
+
+      if (contactsSection) {
+        contactsSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+    }, 400);
+  }
+});
