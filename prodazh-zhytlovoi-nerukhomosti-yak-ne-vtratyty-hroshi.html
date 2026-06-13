@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Продаж житлової нерухомості: як не втратити гроші | Райський Сад</title>
+  <meta name="description" content="Практичний посібник для власників: підготовка квартири або будинку до продажу, правильна ціна, фото, покази, переговори та безпечне оформлення угоди." />
+
+  <style>
+    :root {
+      --bg: #061811;
+      --text: #f5f7f4;
+      --muted: #c8d0cc;
+      --accent: #d9871e;
+      --accent-2: #f3a334;
+      --border: rgba(217, 135, 30, 0.35);
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --radius: 26px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(217, 135, 30, 0.12), transparent 34%),
+        linear-gradient(180deg, #061811 0%, #081d15 44%, #04110d 100%);
+      line-height: 1.7;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(5, 24, 17, 0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nav {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 210px;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent));
+      font-weight: 900;
+      color: white;
+      box-shadow: 0 12px 26px rgba(217, 135, 30, 0.24);
+    }
+
+    .brand-title { font-size: 21px; font-weight: 800; line-height: 1.1; }
+    .brand-subtitle { font-size: 13px; color: var(--muted); line-height: 1.2; }
+
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 18px;
+      font-size: 15px;
+      font-weight: 700;
+      color: rgba(245, 247, 244, 0.9);
+    }
+
+    .menu a:hover, .menu .active { color: var(--accent-2); }
+
+    .hero {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 64px 22px 32px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-2);
+      font-weight: 800;
+      margin-bottom: 28px;
+    }
+
+    .article-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 34px;
+      align-items: start;
+    }
+
+    .article-card {
+      background: linear-gradient(180deg, rgba(12, 36, 27, 0.98), rgba(5, 22, 16, 0.98));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .article-image {
+      min-height: 310px;
+      background:
+        linear-gradient(135deg, rgba(217, 135, 30, 0.45), rgba(7, 28, 20, 0.94)),
+        radial-gradient(circle at 18% 24%, rgba(255, 255, 255, 0.18), transparent 26%);
+      display: flex;
+      align-items: flex-end;
+      padding: 34px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(217, 135, 30, 0.22);
+      border: 1px solid rgba(217, 135, 30, 0.45);
+      color: #ffe0b2;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .article-content { padding: 42px 44px 50px; }
+
+    h1 {
+      margin: 0 0 18px;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .lead {
+      font-size: 19px;
+      color: var(--muted);
+      margin: 0 0 28px;
+    }
+
+    h2 {
+      margin: 42px 0 16px;
+      font-size: clamp(24px, 3vw, 32px);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      margin: 0 0 18px;
+      color: rgba(245, 247, 244, 0.9);
+      font-size: 17px;
+    }
+
+    ul {
+      margin: 0 0 24px;
+      padding-left: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    li {
+      position: relative;
+      padding: 16px 18px 16px 46px;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.075);
+      border-radius: 18px;
+      color: rgba(245, 247, 244, 0.9);
+      font-size: 16px;
+    }
+
+    li::before {
+      content: '✓';
+      position: absolute;
+      left: 17px;
+      top: 15px;
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #081d15;
+      background: var(--accent-2);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    strong { color: white; }
+
+    .compare {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0 28px;
+      overflow: hidden;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .compare th,
+    .compare td {
+      padding: 15px 16px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(245, 247, 244, 0.9);
+      font-size: 15px;
+    }
+
+    .compare th {
+      color: white;
+      background: rgba(217, 135, 30, 0.18);
+      font-weight: 900;
+    }
+
+    .compare tr:last-child td { border-bottom: none; }
+
+    .notice {
+      margin-top: 42px;
+      padding: 28px;
+      border-radius: 22px;
+      border: 1px solid rgba(217, 135, 30, 0.45);
+      background: rgba(217, 135, 30, 0.12);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 104px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .side-card {
+      background: rgba(7, 28, 20, 0.88);
+      border: 1px solid rgba(217, 135, 30, 0.28);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+    }
+
+    .side-card h3 { margin: 0 0 12px; font-size: 20px; }
+    .side-card p, .side-card a { font-size: 15px; color: var(--muted); }
+
+    .toc { display: grid; gap: 10px; margin-top: 14px; }
+
+    .toc a {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.045);
+      color: rgba(245, 247, 244, 0.86);
+      font-weight: 700;
+    }
+
+    .toc a:hover { background: rgba(217, 135, 30, 0.16); color: var(--accent-2); }
+
+    .cta {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-top: 10px;
+      padding: 14px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent));
+      color: white !important;
+      font-weight: 900;
+      box-shadow: 0 16px 34px rgba(217, 135, 30, 0.22);
+    }
+
+    .site-footer {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 26px 22px 46px;
+      color: rgba(245, 247, 244, 0.58);
+      font-size: 14px;
+    }
+
+    @media (max-width: 980px) {
+      .article-shell { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+    }
+
+    @media (max-width: 720px) {
+      .nav { align-items: flex-start; flex-direction: column; }
+      .menu { justify-content: flex-start; gap: 12px 16px; }
+      .article-content { padding: 30px 22px 34px; }
+      .article-image { min-height: 230px; padding: 22px; }
+      .compare { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav" aria-label="Головна навігація">
+      <a class="brand" href="index.html" aria-label="Райський Сад — на головну">
+        <span class="brand-logo">РС</span>
+        <span>
+          <span class="brand-title">Райський Сад</span><br />
+          <span class="brand-subtitle">Агенція нерухомості</span>
+        </span>
+      </a>
+
+      <div class="menu">
+        <a href="index.html#about">Про агентство</a>
+        <a href="index.html#objects">Обʼєкти</a>
+        <a class="active" href="index.html#articles">Статті</a>
+        <a href="index.html#director">Директор</a>
+        <a href="index.html#contacts">Контакти</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <a class="back-link" href="index.html#articles">← Назад до статей</a>
+
+    <div class="article-shell">
+      <article class="article-card">
+        <div class="article-image">
+          <span class="badge">📅 8 червня 2026</span>
+        </div>
+
+        <div class="article-content">
+          <h1>Продаж житлової нерухомості: як не втратити гроші та захистити свої інтереси</h1>
+
+          <p class="lead">
+            Продаж нерухомості — будь то міська квартира чи приватний будинок — це велика фінансова операція, яка вимагає від власника максимальної концентрації. Помилки на будь-якому етапі можуть коштувати тисяч доларів або призвести до того, що обʼєкт надовго «зависне» на ринку.
+          </p>
+
+          <p>
+            Як продати житло вигідно, швидко та безпечно? Розбираємо шість головних етапів підготовки та проведення угоди в сучасному контексті ринку.
+          </p>
+
+          <h2 id="preparation">1. Підготовка обʼєкта: створюємо товарний вигляд</h2>
+          <p>
+            Покупці обирають очима та емоціями. Обʼєкт, який виглядає захаращеним або брудним, автоматично втрачає в ціні, незалежно від типу будівлі.
+          </p>
+          <ul>
+            <li><strong>Генеральне прибирання.</strong> Помийте вікна, кахель, сантехніку. Чистота додає відчуття свіжості, світла та простору.</li>
+            <li><strong>Деперсоналізація.</strong> Приберіть особисті речі: сімейні фото, магнітики з холодильника, засоби гігієни у ванній. Покупець має приміряти цей простір на себе.</li>
+            <li><strong>Дрібний ремонт.</strong> Полагодьте підтікаючий кран, замініть перегорілі лампочки, підклейте шпалери, що відійшли.</li>
+            <li><strong>Подвірʼя для будинку.</strong> Якщо продається приватний будинок, обовʼязково впорядкуйте подвірʼя: скосіть траву, приберіть зайве сміття та зробіть фасад охайним.</li>
+          </ul>
+
+          <h2 id="price">2. Правильна ціна: аналітика замість ілюзій</h2>
+          <p>
+            Завищена ціна — одна з найпоширеніших помилок продавців. Через це оголошення ігнорують, а нерухомість з часом набуває репутації «проблемної».
+          </p>
+          <ul>
+            <li><strong>Аналіз конкурентів.</strong> Вивчіть схожі оголошення у вашому районі.</li>
+            <li><strong>Для квартир.</strong> Порівнюйте обʼєкти з таким самим плануванням, станом, поверхом і локацією.</li>
+            <li><strong>Для будинків.</strong> Порівнюйте площу будинку, площу ділянки, стан комунікацій, підʼїзд і документи на землю.</li>
+            <li><strong>Зазор на торг.</strong> Враховуйте 5–10% простору для реального торгу, щоб мати маневр і не піти в мінус.</li>
+          </ul>
+
+          <h2 id="photos">3. Професійні фото: візитна картка оголошення</h2>
+          <p>
+            Перше, що бачить потенційний покупець на сайтах нерухомості, — це фотографії. Саме фото часто вирішують, чи відкриє людина оголошення.
+          </p>
+          <ul>
+            <li><strong>Більше світла.</strong> Робіть знімки у сонячний день, відкрийте штори та увімкніть усі світильники.</li>
+            <li><strong>Правильні ракурси.</strong> Фотографуйте від дверей або з кута кімнати, тримаючи камеру на рівні очей чи грудей.</li>
+            <li><strong>Без викривлень.</strong> Уникайте ширококутних лінз типу «рибʼяче око», які занадто спотворюють простір.</li>
+            <li><strong>Порядок у кадрі.</strong> У кадрі не має бути брудного посуду, розкиданих речей чи зайвих побутових деталей.</li>
+            <li><strong>Для будинку.</strong> Обовʼязково покажіть красивий ракурс фасаду, подвірʼя та ділянки.</li>
+          </ul>
+
+          <h2 id="negotiations">4. Покази та переговори: тримайте емоції під контролем</h2>
+          <p>
+            Коли зʼявляються перші відгуки, починається етап безпосереднього спілкування з потенційними покупцями.
+          </p>
+          <ul>
+            <li><strong>Гнучкість графіку.</strong> Будьте готові показати обʼєкт у зручний для покупця час: увечері після роботи або у вихідні.</li>
+            <li><strong>Без агресивних виправдань.</strong> Якщо покупець помітив мінус, спокійно поясніть, що цей нюанс уже врахований у стартовій вартості.</li>
+            <li><strong>Фіксуйте пропозиції.</strong> Якщо людина пропонує свою ціну, не відмовляйте одразу. Візьміть паузу та поверніться з відповіддю пізніше.</li>
+          </ul>
+
+          <h2 id="safety">5. Безпечне оформлення угоди: юридичний захист</h2>
+          <p>
+            Фінал продажу — це юридичний процес, де ціна помилки найвища. Документи та розрахунки потрібно перевіряти особливо уважно.
+          </p>
+          <ul>
+            <li><strong>Документи заздалегідь.</strong> Підготуйте право власності, техпаспорт, довідки щодо зареєстрованих осіб, а також перевірте відсутність арештів, застав і боргів.</li>
+            <li><strong>Продаж будинку.</strong> Для будинку нотаріус вимагатиме окремий пакет документів на земельну ділянку: кадастровий номер, приватизацію та коректні межі.</li>
+            <li><strong>Завдаток.</strong> Оформлюйте завдаток тільки письмово через попередній договір у нотаріуса. Усні «бронювання» або прості розписки не дають належного захисту.</li>
+            <li><strong>Безпечні розрахунки.</strong> Найкращий варіант — безготівковий розрахунок через банківські рахунки.</li>
+            <li><strong>Готівка.</strong> Якщо розрахунок готівковий, перевірка та перерахунок купюр мають відбуватися у відділенні банку або в кабінеті нотаріуса з детектором валют.</li>
+          </ul>
+
+          <h2 id="comparison">6. Де простіше втратити гроші: квартира чи приватний будинок?</h2>
+          <p>
+            Ризики продажу залежать від типу нерухомості. Квартира зазвичай продається швидше, а будинок потребує глибшої перевірки документів, ділянки та технічного стану.
+          </p>
+
+          <table class="compare" aria-label="Порівняння ризиків продажу квартири і приватного будинку">
+            <thead>
+              <tr>
+                <th>Критерій ризику</th>
+                <th>Квартира</th>
+                <th>Приватний будинок</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Юридичні ризики</strong></td>
+                <td>Переважно повʼязані з перевіркою власників, спадкоємців і випискою зареєстрованих осіб.</td>
+                <td>Ризики ширші: потрібно перевіряти межі ділянки, кадастровий номер, приватизацію землі та законність прибудов.</td>
+              </tr>
+              <tr>
+                <td><strong>Приховані дефекти</strong></td>
+                <td>Часто стосуються проводки, сантехніки, стану ремонту та комунікацій.</td>
+                <td>Можуть бути серйозні проблеми з фундаментом, дахом, септиком, опаленням або інженерними мережами.</td>
+              </tr>
+              <tr>
+                <td><strong>Швидкість продажу</strong></td>
+                <td>Зазвичай вища: квартиру з адекватною ціною можна реалізувати швидше завдяки стандартизації ринку.</td>
+                <td>Нижча: будинок — індивідуальний обʼєкт, покупця іноді доводиться шукати значно довше.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="notice">
+            <h2 id="summary">Важливе нагадування для власників</h2>
+            <p>
+              Не намагайтеся приховати суттєві юридичні або технічні проблеми обʼєкта: судові спори, борги за комунальні послуги, серйозний грибок, незаконні прибудови чи проблеми із землею.
+            </p>
+            <p>
+              Такі ризики можуть призвести до визнання угоди недійсною через суд навіть після отримання грошей. Чесність, відкритість та юридична чистота — найкращий спосіб отримати максимум від продажу вашого майна.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <aside class="sidebar" aria-label="Навігація статтею">
+        <div class="side-card">
+          <h3>У статті</h3>
+          <div class="toc">
+            <a href="#preparation">Підготовка</a>
+            <a href="#price">Ціна</a>
+            <a href="#photos">Фото</a>
+            <a href="#negotiations">Покази</a>
+            <a href="#safety">Оформлення</a>
+            <a href="#comparison">Квартира vs будинок</a>
+          </div>
+        </div>
+
+        <div class="side-card">
+          <h3>Плануєте продаж?</h3>
+          <p>Допоможемо підготувати квартиру або будинок, визначити реальну ціну та безпечно провести угоду.</p>
+          <a class="cta" href="index.html#contacts">Звʼязатися</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    © 2026 Райський Сад. Агенція нерухомості.
+  </footer>
+</body>
+</html>
