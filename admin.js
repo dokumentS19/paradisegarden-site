@@ -271,8 +271,11 @@ function updateMapPrivacyView() {
 }
 
 function initAdminMap() {
-  const mapEl = $("adminMap");
+  if (adminMap) {
+    return;
+  }
 
+  const mapEl = $("adminMap");
   if (!mapEl || !window.google || !google.maps) {
     return;
   }
