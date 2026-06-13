@@ -1,4 +1,4 @@
- import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
   getFirestore,
@@ -66,6 +66,11 @@ let selectedFiles = [];
 let currentImageUrls = [];
 let editObjectId = null;
 let editLoaded = false;
+
+let adminMap = null;
+let adminMarker = null;
+let adminCircle = null;
+let adminGeocoder = null;
 
 /* ================================
    DOM
@@ -168,6 +173,258 @@ function showProgress(show) {
   }
 
   progressBox.classList.toggle("active", Boolean(show));
+}
+
+/* ================================
+   MAP / ADDRESS / PRIVACY
+================================ */
+
+function makePublicAddress(fullAddress, hideHouseNumber) {
+  const clean = String(fullAddress || "").trim();
+
+  if (!clean) {
+    return "";
+  }
+
+  if (!hideHouseNumber) {
+    return clean;
+  }
+
+  return clean
+    .replace(/,\s*\d+[a-zA-Zа-яА-ЯіІїЇєЄґҐ0-9\/\-\s]*\s*(?=,|$)/u, "")
+    .replace(/\s+/g, " ")
+    .replace(/\s+,/g, ",")
+    .trim();
+}
+
+function getApproximateLocation(lat, lng) {
+  const nLat = Number(lat);
+  const nLng = Number(lng);
+
+  if (!Number.isFinite(nLat) || !Number.isFinite(nLng)) {
+    return {
+      lat: 50.5215,
+      lng: 30.2506
+    };
+  }
+
+  return {
+    lat: Number((nLat + 0.0012).toFixed(7)),
+    lng: Number((nLng + 0.0012).toFixed(7))
+  };
+}
+
+function getFullAddressForMap() {
+  const fullAddress = value("fullAddress");
+
+  if (fullAddress) {
+    return fullAddress;
+  }
+
+  const parts = [
+    value("exactStreet"),
+    value("exactHouseNumber"),
+    value("address")
+  ].filter(Boolean);
+
+  return parts.join(", ");
+}
+
+function updateMapPrivacyView() {
+  if (!adminMap || !adminMarker || !window.google || !google.maps) {
+    return;
+  }
+
+  const lat = numberValue("lat") || 50.5215;
+  const lng = numberValue("lng") || 30.2506;
+
+  const position = {
+    lat,
+    lng
+  };
+
+  const hideExactLocation = checked("hideExactLocation");
+
+  adminMarker.setPosition(position);
+
+  if (adminCircle) {
+    adminCircle.setMap(null);
+    adminCircle = null;
+  }
+
+  if (hideExactLocation) {
+    adminMarker.setVisible(false);
+
+    adminCircle = new google.maps.Circle({
+      strokeColor: "#e88912",
+      strokeOpacity: 0.9,
+      strokeWeight: 2,
+      fillColor: "#e88912",
+      fillOpacity: 0.25,
+      map: adminMap,
+      center: position,
+      radius: 200
+    });
+  } else {
+    adminMarker.setVisible(true);
+  }
+}
+
+function initAdminMap() {
+  const mapEl = $("adminMap");
+
+  if (!mapEl || !window.google || !google.maps) {
+    return;
+  }
+
+  const startPosition = {
+    lat: numberValue("lat") || 50.5215,
+    lng: numberValue("lng") || 30.2506
+  };
+
+  if (!value("lat")) {
+    setValue("lat", startPosition.lat);
+  }
+
+  if (!value("lng")) {
+    setValue("lng", startPosition.lng);
+  }
+
+  adminGeocoder = new google.maps.Geocoder();
+
+  adminMap = new google.maps.Map(mapEl, {
+    center: startPosition,
+    zoom: 14,
+    mapTypeControl: false,
+    streetViewControl: false,
+    fullscreenControl: true
+  });
+
+  adminMarker = new google.maps.Marker({
+    position: startPosition,
+    map: adminMap,
+    draggable: true,
+    title: "Перетягніть прапорець для уточнення місця"
+  });
+
+  adminMarker.addListener("dragend", event => {
+    const lat = event.latLng.lat();
+    const lng = event.latLng.lng();
+
+    setValue("lat", lat);
+    setValue("lng", lng);
+
+    updateMapPrivacyView();
+  });
+
+  $("findAddressBtn")?.addEventListener("click", findAddressOnAdminMap);
+  $("hideExactLocation")?.addEventListener("change", updateMapPrivacyView);
+
+  $("lat")?.addEventListener("change", () => {
+    const lat = numberValue("lat");
+    const lng = numberValue("lng");
+
+    if (lat && lng) {
+      adminMap.setCenter({ lat, lng });
+      updateMapPrivacyView();
+    }
+  });
+
+  $("lng")?.addEventListener("change", () => {
+    const lat = numberValue("lat");
+    const lng = numberValue("lng");
+
+    if (lat && lng) {
+      adminMap.setCenter({ lat, lng });
+      updateMapPrivacyView();
+    }
+  });
+
+  updateMapPrivacyView();
+}
+
+function findAddressOnAdminMap() {
+  if (!adminGeocoder) {
+    alert("Карта ще не завантажилась. Спробуйте через кілька секунд.");
+    return;
+  }
+
+  const fullAddress = getFullAddressForMap();
+
+  if (!fullAddress) {
+    alert("Введіть адресу для пошуку на карті.");
+    return;
+  }
+
+  adminGeocoder.geocode({ address: fullAddress }, (results, status) => {
+    if (status === "OK" && results[0]) {
+      const location = results[0].geometry.location;
+
+      const lat = location.lat();
+      const lng = location.lng();
+
+      setValue("lat", lat);
+      setValue("lng", lng);
+
+      adminMap.setCenter(location);
+      adminMap.setZoom(16);
+
+      updateMapPrivacyView();
+      return;
+    }
+
+    alert("Адресу не знайдено. Перетягніть прапорець вручну на карті.");
+  });
+}
+
+function buildMapData() {
+  const lat = numberValue("lat") || 50.5215;
+  const lng = numberValue("lng") || 30.2506;
+
+  const fullAddress = getFullAddressForMap();
+  const hideHouseNumber = checked("hideHouseNumber");
+  const hideExactLocation = checked("hideExactLocation");
+  const hideCadastralNumber = checked("hideCadastralNumber");
+
+  const publicAddress = value("address") || makePublicAddress(fullAddress, hideHouseNumber);
+  const approximateLocation = getApproximateLocation(lat, lng);
+  const cadastralNumber = value("cadastralNumber");
+
+  return {
+    addressFull: fullAddress,
+    addressPublic: publicAddress,
+
+    lat,
+    lng,
+
+    mapLocation: {
+      lat,
+      lng
+    },
+
+    publicMapLocation: hideExactLocation
+      ? approximateLocation
+      : {
+          lat,
+          lng
+        },
+
+    mapPrivacy: {
+      hideHouseNumber,
+      hideExactLocation,
+      hideCadastralNumber
+    },
+
+    mapDisplay: {
+      mode: hideExactLocation ? "approximate_circle" : "exact_marker",
+      radius: hideExactLocation ? 200 : 0
+    },
+
+    cadastral: {
+      number: cadastralNumber,
+      publicNumber: hideCadastralNumber ? "" : cadastralNumber
+    }
+  };
 }
 
 /* ================================
@@ -587,10 +844,14 @@ function buildCommercialData() {
 
 function buildPrivateData() {
   return {
+    fullAddress: getFullAddressForMap(),
     exactStreet: value("exactStreet"),
     exactHouseNumber: value("exactHouseNumber"),
     exactApartmentNumber: value("exactApartmentNumber"),
     cadastralNumber: value("cadastralNumber"),
+    hideHouseNumber: checked("hideHouseNumber"),
+    hideExactLocation: checked("hideExactLocation"),
+    hideCadastralNumber: checked("hideCadastralNumber"),
     ownerContacts: value("ownerContacts"),
     internalComment: value("internalComment")
   };
@@ -676,21 +937,14 @@ window.addObject = async function(event) {
 
   const title = value("title");
   const price = numberValue("price");
-  const address = value("address");
   const description = value("description");
 
   const dealType = value("dealType") || "sale";
   const propertyType = value("propertyType") || "apartment";
   const commercialType = propertyType === "commercial" ? value("commercialType") : "";
 
-  const latRaw = value("lat");
-  const lngRaw = value("lng");
-
   const vip = checked("vip");
   const sold = checked("sold");
-
-  const lat = latRaw ? Number(latRaw) : 50.5215;
-  const lng = lngRaw ? Number(lngRaw) : 30.2506;
 
   if (!title) {
     alert("Вкажіть назву обʼєкта.");
@@ -739,11 +993,17 @@ window.addObject = async function(event) {
     const uploadedImageUrls = await uploadSelectedFiles();
     const finalImageUrls = [...currentImageUrls, ...uploadedImageUrls];
 
+    const mapData = buildMapData();
+
     const payload = {
       title,
       area,
       price,
-      address: address || "",
+
+      address: mapData.addressPublic || "",
+      addressFull: mapData.addressFull || "",
+      addressPublic: mapData.addressPublic || "",
+
       description: description || "",
 
       dealType,
@@ -752,8 +1012,14 @@ window.addObject = async function(event) {
 
       images: finalImageUrls,
 
-      lat,
-      lng,
+      lat: mapData.lat,
+      lng: mapData.lng,
+
+      mapLocation: mapData.mapLocation,
+      publicMapLocation: mapData.publicMapLocation,
+      mapPrivacy: mapData.mapPrivacy,
+      mapDisplay: mapData.mapDisplay,
+      cadastral: mapData.cadastral,
 
       status: sold ? "sold" : "active",
       vip,
@@ -863,11 +1129,16 @@ async function loadObjectForEdit() {
     setValue("commercialType", data.commercialType || "");
 
     setValue("price", data.price ?? "");
-    setValue("address", data.address || "");
+    setValue("address", data.addressPublic || data.address || "");
+    setValue("fullAddress", data.addressFull || data.privateData?.fullAddress || "");
     setValue("description", data.description || "");
 
-    setValue("lat", data.lat ?? "");
-    setValue("lng", data.lng ?? "");
+    setValue("lat", data.mapLocation?.lat ?? data.lat ?? "");
+    setValue("lng", data.mapLocation?.lng ?? data.lng ?? "");
+
+    setChecked("hideHouseNumber", data.mapPrivacy?.hideHouseNumber ?? data.privateData?.hideHouseNumber ?? true);
+    setChecked("hideExactLocation", data.mapPrivacy?.hideExactLocation ?? data.privateData?.hideExactLocation ?? true);
+    setChecked("hideCadastralNumber", data.mapPrivacy?.hideCadastralNumber ?? data.privateData?.hideCadastralNumber ?? true);
 
     setChecked("vip", data.vip);
     setChecked("sold", data.status === "sold");
@@ -971,9 +1242,11 @@ async function loadObjectForEdit() {
       setValue("exactStreet", data.privateData.exactStreet || "");
       setValue("exactHouseNumber", data.privateData.exactHouseNumber || "");
       setValue("exactApartmentNumber", data.privateData.exactApartmentNumber || "");
-      setValue("cadastralNumber", data.privateData.cadastralNumber || "");
+      setValue("cadastralNumber", data.privateData.cadastralNumber || data.cadastral?.number || "");
       setValue("ownerContacts", data.privateData.ownerContacts || "");
       setValue("internalComment", data.privateData.internalComment || "");
+    } else {
+      setValue("cadastralNumber", data.cadastral?.number || "");
     }
 
     currentImageUrls = Array.isArray(data.images)
@@ -983,6 +1256,20 @@ async function loadObjectForEdit() {
     toggleFormFields();
     renderPhotoManager();
     renderNewFilesPreview();
+
+    setTimeout(() => {
+      if (adminMap) {
+        const editLat = numberValue("lat") || 50.5215;
+        const editLng = numberValue("lng") || 30.2506;
+
+        adminMap.setCenter({
+          lat: editLat,
+          lng: editLng
+        });
+
+        updateMapPrivacyView();
+      }
+    }, 400);
   } catch (error) {
     console.error("LOAD EDIT OBJECT ERROR:", error);
     alert("❌ Не вдалося завантажити обʼєкт для редагування.");
@@ -1026,6 +1313,13 @@ window.clearForm = function() {
     $("utilitiesIncluded").value = "not_included";
   }
 
+  setChecked("hideHouseNumber", true);
+  setChecked("hideExactLocation", true);
+  setChecked("hideCadastralNumber", true);
+
+  setValue("lat", 50.5215);
+  setValue("lng", 30.2506);
+
   selectedFiles = [];
   currentImageUrls = [];
 
@@ -1035,6 +1329,15 @@ window.clearForm = function() {
 
   renderPhotoManager();
   toggleFormFields();
+
+  if (adminMap) {
+    adminMap.setCenter({
+      lat: 50.5215,
+      lng: 30.2506
+    });
+
+    updateMapPrivacyView();
+  }
 };
 
 /* ================================
@@ -1043,3 +1346,7 @@ window.clearForm = function() {
 
 toggleFormFields();
 renderPhotoManager();
+
+window.addEventListener("load", () => {
+  setTimeout(initAdminMap, 400);
+});
