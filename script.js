@@ -523,9 +523,10 @@ const homeArticles = [
     excerpt: "Короткі поради для власників: підготовка обʼєкта, правильна ціна, фото, покази, переговори та безпечне оформлення угоди.",
     date: "13 червня 2026",
     image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80",
-    url: "prodazh-zhytlovoi-nerukhomosti-yak-ne-vtratyty-hroshi.html"
-  },
-  {
+    url: url: "prodazh-zhytlovoi-nerukhomosti-yak-ne-vtratyty-hroshi.html"
+      ``
+    },
+   {
     id: 3,
     title: "Оренда житла: що важливо перевірити",
     excerpt: "Розбираємо ключові моменти договору оренди, оплату, заставу, стан житла та комунікацію між власником і орендарем.",
