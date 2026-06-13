@@ -524,7 +524,6 @@ const homeArticles = [
     date: "13 червня 2026",
     image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80",
     url: url: "prodazh-zhytlovoi-nerukhomosti-yak-ne-vtratyty-hroshi.html"
-      ``
     },
    {
     id: 3,
