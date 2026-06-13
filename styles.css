@@ -2132,3 +2132,6 @@ html {
 }.director-img {
   object-position: center 20%;
 }
+.director-img {
+  object-position: center top;
+}
