@@ -2135,3 +2135,6 @@ html {
 .director-img {
   object-position: center top;
 }
+#contacts {
+  scroll-margin-top: 150px;
+}
