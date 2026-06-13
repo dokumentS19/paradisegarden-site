@@ -1349,7 +1349,10 @@ window.clearForm = function() {
 toggleFormFields();
 renderPhotoManager();
 
-functionMap) {function startAdminMapWhenReady(retries = 40) {
+function startAdminMapWhenReady(retries = 40) {
+  const mapEl = document.getElementById("adminMap");
+
+  if (adminMap) {
     return;
   }
 
@@ -1376,5 +1379,3 @@ if (document.readyState === "loading") {
 } else {
   startAdminMapWhenReady();
 }
-  const mapEl = document.getElementById("adminMap");
-
