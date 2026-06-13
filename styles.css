@@ -2126,3 +2126,9 @@ html {
     margin: 0 auto;
   }
 }
+.director-photo {
+  width: 240px;
+  height: 320px;
+}.director-img {
+  object-position: center 20%;
+}
