@@ -567,9 +567,9 @@ function validateFiles(files) {
       return false;
     }
 
-    if (file.size > 10 * 1024 * 1024) {
-      alert(`Фото "${file.name}" більше 10 МБ. Зменшіть розмір фото.`);
-      return false;
+  if (file.size > 25 * 1024 * 1024) {
+  alert(`Фото "${file.name}" більше 25 МБ. Виберіть менше фото.`);
+  return false;
     }
   }
 
