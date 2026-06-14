@@ -479,52 +479,58 @@
       <div id="apartmentFields" class="admin-section type-fields">
         <h3>Характеристики квартири</h3>
 
-        <div class="admin-row-3">
-          <div>
-            <label for="apTotalArea">Загальна площа, м²</label>
-            <input id="apTotalArea" type="number" step="0.1" min="0">
-          </div>
+      <div class="admin-row-3">
+  <div>
+    <label for="houseArea">Загальна площа будинку, м²</label>
+    <input id="houseArea" type="number" step="0.1" min="0">
+  </div>
 
-          <div>
-            <label for="apLivingArea">Житлова площа, м²</label>
-            <input id="apLivingArea" type="number" step="0.1" min="0">
-          </div>
+  <div>
+    <label for="houseLivingArea">Житлова площа, м²</label>
+    <input id="houseLivingArea" type="number" step="0.1" min="0">
+  </div>
 
-          <div>
-            <label for="apKitchenArea">Кухня, м²</label>
-            <input id="apKitchenArea" type="number" step="0.1" min="0">
-          </div>
-        </div>
+  <div>
+    <label for="houseKitchenArea">Кухня, м²</label>
+    <input id="houseKitchenArea" type="number" step="0.1" min="0">
+  </div>
+</div>
 
-        <div class="admin-row-3">
-          <div>
-            <label for="apRooms">Кімнат</label>
-            <input id="apRooms" type="number" min="0">
-          </div>
+<div class="admin-row-3">
+  <div>
+    <label for="houseLandArea">Площа ділянки, соток</label>
+    <input id="houseLandArea" type="number" step="0.01" min="0">
+  </div>
 
-          <div>
-            <label for="apFloor">Поверх</label>
-            <input id="apFloor" type="number">
-          </div>
+  <div>
+    <label for="houseRooms">Кімнат</label>
+    <input id="houseRooms" type="number" min="0">
+  </div>
 
-          <div>
-            <label for="apFloorsTotal">Поверховість</label>
-            <input id="apFloorsTotal" type="number" min="0">
-          </div>
-        </div>
+  <div>
+    <label for="houseFloors">Поверхів</label>
+    <input id="houseFloors" type="number" min="0">
+  </div>
+</div>
 
-        <div class="admin-row">
-          <div>
-            <label for="apLayout">Планування</label>
-            <select id="apLayout">
-              <option value="">Не вказано</option>
-              <option value="separate">Окрема</option>
-              <option value="adjacent">Суміжна</option>
-              <option value="mixed">Суміжно-роздільна</option>
-              <option value="studio">Студія</option>
-              <option value="free">Вільне планування</option>
-            </select>
-          </div>
+<div class="admin-row">
+  <div>
+    <label for="houseWalls">Стіни</label>
+    <input id="houseWalls" type="text" placeholder="Цегла, газоблок...">
+  </div>
+
+  <div>
+    <label for="houseDocuments">Документи</label>
+    <select id="houseDocuments">
+      <option value="">Не вказано</option>
+      <option value="ownership">Право власності</option>
+      <option value="inheritance">Спадщина</option>
+      <option value="contract">Договір</option>
+      <option value="in_progress">В процесі оформлення</option>
+      <option value="other">Інше</option>
+    </select>
+  </div>
+</div>
 
           <div>
             <label for="apCondition">Стан</label>
