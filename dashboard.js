@@ -434,11 +434,10 @@ function renderMyAds(data) {
     const image = escapeAttribute(getMainImage(item));
     const status = item.status === "sold" ? "❌ Продано" : "✅ Активне";
     const views = Number(item.views || 0);
-
-    const dealName = escapeHtml(getDealTypeName(item.dealType));
-    const propertyName = escapeHtml(getPropertyTypeName(item.propertyType));
-    const commercialName = escapeHtml(getCommercialTypeName(item.commercialType));
-
+const dealName = escapeHtml(getDealTypeName(item.dealType));
+const propertyName = escapeHtml(getPropertyTypeName(item.propertyType));
+const commercialName = escapeHtml(getCommercialTypeName(item.commercialType));
+const houseTypeName = escapeHtml(getHouseTypeName(item.house?.houseType));
     return `
       <article class="my-ad">
         <div class="my-ad-img">
