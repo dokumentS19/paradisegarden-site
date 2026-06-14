@@ -1067,10 +1067,12 @@ window.addObject = async function(event) {
     return;
   }
 
-  if (currentImageUrls.length + selectedFiles.length > 10) {
-    alert("Можна мати максимум 10 фото на один обʼєкт.");
-    return;
-  }
+
+if (currentImageUrls.length + selectedFiles.length > 20) {
+  alert("Можна мати максимум 20 фото на один обʼєкт.");
+  return;
+}
+
 
   const dataByType = {
     rent: buildRentData(dealType),
