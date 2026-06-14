@@ -148,11 +148,14 @@ function getPropertyTypeName(value) {
   return {
     apartment: "Квартира",
     house: "Будинок",
+    dacha: "Дача",
     land: "Земельна ділянка",
     garage: "Гараж",
     commercial: "Комерція"
-  }[value] || "Не вказано";
+ 
+ }[value] || "Не вказано";
 }
+
 
 function getCommercialTypeName(value) {
   return {
