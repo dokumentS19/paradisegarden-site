@@ -548,7 +548,7 @@ window.toggleFormFields = function() {
   if (propertyType !== "commercial" && $("commercialType")) {
     $("commercialType").value = "";
   }
-};
+}; 
 
 /* ================================
    FILES / PHOTO MANAGER
