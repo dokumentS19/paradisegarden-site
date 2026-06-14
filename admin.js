@@ -555,10 +555,10 @@ window.toggleFormFields = function() {
 ================================ */
 
 function validateFiles(files) {
-  if (files.length > 10) {
-    alert("Можна додати максимум 10 фото.");
+  if (files.length > 20) {
+    alert("Можна додати максимум 20 фото.");
     return false;
-  }
+    }
 
   for (const file of files) {
     if (!file.type.startsWith("image/")) {
