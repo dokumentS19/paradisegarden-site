@@ -498,7 +498,6 @@ onAuthStateChanged(auth, user => {
 /* ================================
    FORM VISIBILITY
 ================================ */
-
 window.toggleFormFields = function() {
   const dealType = value("dealType") || "sale";
   const propertyType = value("propertyType") || "apartment";
@@ -529,9 +528,10 @@ window.toggleFormFields = function() {
     $("apartmentFields")?.classList.add("active");
   }
 
-if (propertyType === "house" || propertyType === "dacha") {
-  $("houseFields")?.classList.add("active");
-}
+  if (propertyType === "house" || propertyType === "dacha") {
+    $("houseFields")?.classList.add("active");
+  }
+
   if (propertyType === "land") {
     $("landFields")?.classList.add("active");
   }
