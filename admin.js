@@ -701,12 +701,12 @@ if (fileInput) {
       return;
     }
 
-    if (currentImageUrls.length + files.length > 10) {
-      alert("Разом можна мати максимум 10 фото на один обʼєкт.");
-      fileInput.value = "";
-      selectedFiles = [];
-      renderNewFilesPreview();
-      return;
+   if (currentImageUrls.length + files.length > 20) {
+  alert("Разом можна мати максимум 20 фото на один обʼєкт.");
+  fileInput.value = "";
+  selectedFiles = [];
+  renderNewFilesPreview();
+  return;
     }
 
     selectedFiles = files;
