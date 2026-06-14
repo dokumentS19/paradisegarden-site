@@ -419,12 +419,17 @@ const houseTypeName = escapeHtml(getHouseTypeName(item.house?.houseType));
           <div class="card-meta">
             <span>🔑 ${dealName}</span>
             <span>🏷️ ${propertyName}</span>
-            ${
-              item.propertyType === "commercial" && commercialName
-                ? `<span>📌 ${commercialName}</span>`
-                : ""
-            }
-            <span>📐 Площа: ${area}</span>
+          ${
+  item.propertyType === "commercial" && commercialName
+    ? `<span>📌 ${commercialName}</span>`
+    : ""
+}
+${
+  item.propertyType === "house" && houseTypeName
+    ? `<span>🏡 ${houseTypeName}</span>`
+    : ""
+}
+<span>📐 Площа: ${area}</span>
             <span>👁 Переглядів: ${views}</span>
           </div>
 
