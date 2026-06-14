@@ -529,9 +529,9 @@ window.toggleFormFields = function() {
     $("apartmentFields")?.classList.add("active");
   }
 
-if (propertyType === "house" || propertyType === "dacha") 
-  $("houseFields")?.class
- }
+if (propertyType === "house" || propertyType === "dacha") {
+  $("houseFields")?.classList.add("active");
+}
   if (propertyType === "land") {
     $("landFields")?.classList.add("active");
   }
