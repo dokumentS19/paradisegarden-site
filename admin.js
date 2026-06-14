@@ -1272,7 +1272,7 @@ async function loadObjectForEdit() {
       setCheckboxes("appliances", data.apartment.appliances || []);
     }
 
- if (data.house) {
+if (data.house) {
   setValue("houseType", data.house.houseType || "");
   setValue("houseCondition", data.house.condition || "");
 
@@ -1300,7 +1300,6 @@ async function loadObjectForEdit() {
   setChecked("houseParking", data.house.parking);
   setChecked("houseGarageIncluded", data.house.garageIncluded);
 }
-
     if (data.land) {
       setValue("landArea", data.land.landArea ?? "");
       setValue("landDocuments", data.land.documents || "");
