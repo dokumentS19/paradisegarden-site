@@ -392,10 +392,11 @@ function createObjectCard(item) {
   const isSold = item.status === "sold";
   const isFav = favs.includes(item.id);
 
-const dealName = escapeHtml(getDealTypeName(item.dealType));
-const propertyName = escapeHtml(getPropertyTypeName(item.propertyType));
-const commercialName = escapeHtml(getCommercialTypeName(item.commercialType));
-const houseTypeName = escapeHtml(getHouseTypeName(item.house?.houseType));
+  const dealName = escapeHtml(getDealTypeName(item.dealType));
+  const propertyName = escapeHtml(getPropertyTypeName(item.propertyType));
+  const commercialName = escapeHtml(getCommercialTypeName(item.commercialType));
+  const houseTypeName = escapeHtml(getHouseTypeName(item.house?.houseType));
+
   return `
     <article class="card">
       ${isVip ? `<div class="vip-badge">🔥 VIP</div>` : ""}
