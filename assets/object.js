@@ -301,6 +301,7 @@ function getHeatingName(value) {
 function getHouseTypeName(value) {
   return dict(value, {
     house: "Будинок",
+    dacha: "Дача",
     half_house: "Півбудинку",
     townhouse: "Таунхаус",
     duplex: "Дуплекс"
