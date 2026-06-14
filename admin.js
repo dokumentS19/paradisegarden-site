@@ -1273,13 +1273,20 @@ async function loadObjectForEdit() {
       setCheckboxes("appliances", data.apartment.appliances || []);
     }
 
-    if (data.house) {
-      setValue("houseType", data.house.houseType || "");
-      setValue("houseCondition", data.house.condition || "");
-      setValue("houseArea", data.house.houseArea ?? "");
-      setValue("houseLandArea", data.house.landArea ?? "");
-      setValue("houseRooms", data.house.rooms ?? "");
-      setValue("houseFloors", data.house.floors ?? "");
+ if (data.house) {
+  setValue("houseType", data.house.houseType || "");
+  setValue("houseCondition", data.house.condition || "");
+
+  setValue("houseArea", data.house.houseArea ?? "");
+  setValue("houseLivingArea", data.house.livingArea ?? "");
+  setValue("houseKitchenArea", data.house.kitchenArea ?? "");
+  setValue("houseLandArea", data.house.landArea ?? "");
+
+  setValue("houseRooms", data.house.rooms ?? "");
+  setValue("houseFloors", data.house.floors ?? "");
+  setValue("houseWalls", data.house.walls || "");
+  setValue("houseDocuments", data.house.documents || ""); 
+   
       setValue("houseWalls", data.house.walls || "");
       setValue("houseDocuments", data.house.documents || "");
       setValue("houseBathroomType", data.house.bathroomType || "");
