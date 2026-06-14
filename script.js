@@ -164,7 +164,15 @@ function getCommercialTypeName(value) {
     other: "Інше"
   }[value] || "";
 }
-
+function getHouseTypeName(value) {
+  return {
+    house: "Будинок",
+    dacha: "Дача",
+    half_house: "Півбудинку",
+    townhouse: "Таунхаус",
+    duplex: "Дуплекс"
+  }[value] || "";
+}
 /* ================================
    MOBILE MENU
 ================================ */
