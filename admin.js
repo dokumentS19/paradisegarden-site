@@ -782,22 +782,31 @@ function buildApartmentData() {
 function buildHouseData() {
   return {
     houseType: value("houseType"),
+
     houseArea: numberValue("houseArea"),
+    livingArea: numberValue("houseLivingArea"),
+    kitchenArea: numberValue("houseKitchenArea"),
     landArea: numberValue("houseLandArea"),
+
     rooms: numberValue("houseRooms"),
     floors: numberValue("houseFloors"),
+
     walls: value("houseWalls"),
     documents: value("houseDocuments"),
+
     bathroomType: value("houseBathroomType"),
     bathFeature: value("houseBathFeature"),
     bathroomsCount: numberValue("houseBathroomsCount"),
+
     heating: value("houseHeating"),
     water: value("houseWater"),
     sewerage: value("houseSewerage"),
+
     electricity: checked("houseElectricity"),
     gas: checked("houseGas"),
     parking: checked("houseParking"),
     garageIncluded: checked("houseGarageIncluded"),
+
     condition: value("houseCondition")
   };
 }
