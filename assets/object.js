@@ -475,7 +475,7 @@ function buildHouseFeatures(item) {
     ${feature("Гараж", yesNo(h.garageIncluded))}
     ${feature("Документи", getDocumentsName(h.documents))}
     ${feature("Стан", getConditionName(h.condition))}
-  `;
+  `; 
 }
 
 function buildLandFeatures(item) {
