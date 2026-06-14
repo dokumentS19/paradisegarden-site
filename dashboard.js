@@ -451,13 +451,18 @@ const houseTypeName = escapeHtml(getHouseTypeName(item.house?.houseType));
 
           <p>🔑 ${dealName}</p>
           <p>🏷️ ${propertyName}</p>
-          ${
-            item.propertyType === "commercial" && commercialName
-              ? `<p>📌 ${commercialName}</p>`
-              : ""
-          }
+        ${
+  item.propertyType === "commercial" && commercialName
+    ? `<p>📌 ${commercialName}</p>`
+    : ""
+}
+${
+  item.propertyType === "house" && houseTypeName
+    ? `<p>🏡 ${houseTypeName}</p>`
+    : ""
+}
 
-          <p>💰 ${price}</p>
+<p>💰 ${price}</p>
           <p>📐 ${area}</p>
           <p>📍 ${address}</p>
           <p>${status}</p>
