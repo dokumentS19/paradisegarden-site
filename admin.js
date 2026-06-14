@@ -808,7 +808,7 @@ function buildHouseData() {
 
     condition: value("houseCondition")
   };
-}
+} 
 
 function buildLandData() {
   return {
