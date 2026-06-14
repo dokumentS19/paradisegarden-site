@@ -456,7 +456,9 @@ function buildHouseFeatures(item) {
 
   return `
     ${feature("Тип будинку", getHouseTypeName(h.houseType))}
-    ${feature("Площа будинку", h.houseArea ? `${h.houseArea} м²` : "")}
+    ${feature("Загальна площа будинку", h.houseArea ? `${h.houseArea} м²` : "")}
+    ${feature("Житлова площа", h.livingArea ? `${h.livingArea} м²` : "")}
+    ${feature("Кухня", h.kitchenArea ? `${h.kitchenArea} м²` : "")}
     ${feature("Площа ділянки", h.landArea ? `${h.landArea} сот.` : "")}
     ${feature("Кімнат", h.rooms)}
     ${feature("Поверхів", h.floors)}
