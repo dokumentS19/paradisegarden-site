@@ -1074,16 +1074,16 @@ if (currentImageUrls.length + selectedFiles.length > 20) {
 }
 
 
-  const dataByType = {
-    rent: buildRentData(dealType),
-    apartment: propertyType === "apartment" ? buildApartmentData() : null,
- house: propertyType === "house" || propertyType === "dacha" ? buildHouseData() : null,``
-    land: propertyType === "land" ? buildLandData() : null,
-    garage: propertyType === "garage" ? buildGarageData() : null,
-    commercial: propertyType === "commercial" ? buildCommercialData() : null,
-    privateData: buildPrivateData()
-  };
-
+ const dataByType = {
+  rent: buildRentData(dealType),
+  apartment: propertyType === "apartment" ? buildApartmentData() : null,
+  house: (propertyType === "house" || propertyType === "dacha") ? buildHouseData() : null,
+  land: propertyType === "land" ? buildLandData() : null,
+  garage: propertyType === "garage" ? buildGarageData() : null,
+  commercial: propertyType === "commercial" ? buildCommercialData() : null,
+  privateData: buildPrivateData()
+};
+  
   const area = buildAreaLabel(propertyType, dataByType);
 
   try {
