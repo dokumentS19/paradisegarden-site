@@ -1284,22 +1284,23 @@ async function loadObjectForEdit() {
 
   setValue("houseRooms", data.house.rooms ?? "");
   setValue("houseFloors", data.house.floors ?? "");
+
   setValue("houseWalls", data.house.walls || "");
-  setValue("houseDocuments", data.house.documents || ""); 
-   
-      setValue("houseWalls", data.house.walls || "");
-      setValue("houseDocuments", data.house.documents || "");
-      setValue("houseBathroomType", data.house.bathroomType || "");
-      setValue("houseBathFeature", data.house.bathFeature || "");
-      setValue("houseBathroomsCount", data.house.bathroomsCount ?? "");
-      setValue("houseHeating", data.house.heating || "");
-      setValue("houseWater", data.house.water || "");
-      setValue("houseSewerage", data.house.sewerage || "");
-      setChecked("houseElectricity", data.house.electricity);
-      setChecked("houseGas", data.house.gas);
-      setChecked("houseParking", data.house.parking);
-      setChecked("houseGarageIncluded", data.house.garageIncluded);
-    }
+  setValue("houseDocuments", data.house.documents || "");
+
+  setValue("houseBathroomType", data.house.bathroomType || "");
+  setValue("houseBathFeature", data.house.bathFeature || "");
+  setValue("houseBathroomsCount", data.house.bathroomsCount ?? "");
+
+  setValue("houseHeating", data.house.heating || "");
+  setValue("houseWater", data.house.water || "");
+  setValue("houseSewerage", data.house.sewerage || "");
+
+  setChecked("houseElectricity", data.house.electricity);
+  setChecked("houseGas", data.house.gas);
+  setChecked("houseParking", data.house.parking);
+  setChecked("houseGarageIncluded", data.house.garageIncluded);
+}
 
     if (data.land) {
       setValue("landArea", data.land.landArea ?? "");
