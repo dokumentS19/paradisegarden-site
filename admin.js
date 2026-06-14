@@ -874,7 +874,7 @@ function buildAreaLabel(propertyType, data) {
     return total ? `${total} м²` : "-";
   }
 
-  if (propertyType === "house") {
+if (propertyType === "house" || propertyType === "dacha") {
     const houseArea = data.house?.houseArea;
     const landArea = data.house?.landArea;
 
