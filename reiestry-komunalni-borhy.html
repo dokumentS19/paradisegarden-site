@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Систематизований довідник для перевірки нерухомості — АН «Райський Сад»</title>
+  <meta name="description" content="Державні реєстри, електронні сервіси та комунальні служби Ірпеня для перевірки нерухомості, власника, судових ризиків і комунальних боргів перед угодою.">
+  <meta name="keywords" content="перевірка нерухомості, реєстри України, ДРРП, Держгеокадастр, судовий реєстр, борги, комунальні борги, Ірпінь, нерухомість">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    :root {
+      --paper-bg: #f4eadb;
+      --paper-bg-2: #fbf6ee;
+      --paper-card: #fffaf2;
+      --paper-card-2: #fdf2df;
+      --ink: #1f2933;
+      --ink-soft: #475569;
+      --ink-muted: #64748b;
+      --gold: #b8792e;
+      --gold-dark: #8a551e;
+      --gold-soft: rgba(184, 121, 46, 0.13);
+      --line: rgba(138, 85, 30, 0.24);
+      --danger: #b91c1c;
+      --danger-soft: rgba(185, 28, 28, 0.08);
+      --green-soft: rgba(7, 92, 43, 0.08);
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(184, 121, 46, 0.10), transparent 34%),
+        linear-gradient(180deg, var(--paper-bg-2), var(--paper-bg));
+      color: var(--ink);
+    }
+
+    .article-page {
+      max-width: 1040px;
+      margin: 6px auto 30px;
+      padding: 0 16px;
+    }
+
+    .back-to-blog {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--gold-dark);
+      background: rgba(255, 250, 242, 0.88);
+      border: 1px solid var(--line);
+      font-size: 13px;
+      font-weight: 800;
+      box-shadow: 0 10px 24px rgba(80, 50, 20, 0.08);
+    }
+
+    .back-to-blog:hover {
+      background: #ffffff;
+      color: var(--gold-dark);
+    }
+
+    .article-hero {
+      background:
+        radial-gradient(circle at top right, rgba(184, 121, 46, 0.13), transparent 34%),
+        linear-gradient(180deg, #fffaf2, #f8eddd);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: clamp(15px, 2.2vw, 22px);
+      box-shadow: 0 14px 32px rgba(80, 50, 20, 0.10);
+      margin-bottom: 14px;
+    }
+
+    .article-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: rgba(184, 121, 46, 0.12);
+      border: 1px solid rgba(184, 121, 46, 0.30);
+      color: var(--gold-dark);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .article-hero h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(20px, 2.1vw, 28px);
+      line-height: 1.22;
+      letter-spacing: -0.01em;
+      max-width: 820px;
+    }
+
+    .article-lead {
+      margin: 12px 0 0;
+      color: var(--ink-soft);
+      font-size: clamp(14px, 1.25vw, 16px);
+      line-height: 1.6;
+      max-width: 860px;
+    }
+
+    .article-meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .article-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #fffaf2;
+      border: 1px solid var(--line);
+      color: var(--gold-dark);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .article-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 310px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .article-card {
+      background: var(--paper-card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: clamp(16px, 2.2vw, 26px);
+      box-shadow: 0 16px 36px rgba(80, 50, 20, 0.10);
+    }
+
+    .article-card h2 {
+      color: var(--ink);
+      font-size: clamp(18px, 1.7vw, 24px);
+      line-height: 1.25;
+      margin: 20px 0 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .article-card h2:first-child { margin-top: 0; }
+
+    .article-card h3 {
+      color: var(--gold-dark);
+      font-size: 17px;
+      margin: 18px 0 8px;
+      line-height: 1.25;
+    }
+
+    .article-card p {
+      color: var(--ink-soft);
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0 0 12px;
+    }
+
+    .article-card strong { color: var(--ink); }
+
+    .article-card ul,
+    .sidebar-box ul {
+      margin: 12px 0 20px;
+      padding-left: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .article-card li,
+    .sidebar-box li {
+      position: relative;
+      color: var(--ink-soft);
+      line-height: 1.55;
+      padding-left: 30px;
+      font-size: 14px;
+    }
+
+    .article-card li::before,
+    .sidebar-box li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 1px;
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .article-note {
+      margin: 18px 0;
+      padding: 16px;
+      border-radius: 18px;
+      background: var(--gold-soft);
+      border: 1px solid rgba(184, 121, 46, 0.30);
+    }
+
+    .article-note p {
+      margin: 0;
+      color: #3f2f1b;
+    }
+
+    .article-warning {
+      margin: 18px 0;
+      padding: 16px;
+      border-radius: 18px;
+      background: var(--danger-soft);
+      border: 1px solid rgba(185, 28, 28, 0.22);
+    }
+
+    .article-warning p {
+      margin: 0;
+      color: #7f1d1d;
+    }
+
+    .process-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 18px 0 20px;
+    }
+
+    .process-line span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: #fffaf2;
+      border: 1px solid var(--line);
+      color: var(--gold-dark);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .tool-list {
+      display: grid;
+      gap: 12px;
+      margin: 16px 0 20px;
+    }
+
+    .tool-item {
+      padding: 15px;
+      border-radius: 17px;
+      background: #fff7eb;
+      border: 1px solid rgba(184, 121, 46, 0.18);
+    }
+
+    .tool-item h3 {
+      margin: 0 0 6px;
+      color: var(--ink);
+      font-size: 17px;
+      line-height: 1.25;
+    }
+
+    .tool-link {
+      color: var(--gold-dark);
+      font-weight: 900;
+      font-size: 13px;
+      margin-bottom: 8px;
+      display: inline-flex;
+    }
+
+    .article-sidebar {
+      position: sticky;
+      top: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .sidebar-box {
+      background: #fffaf2;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 14px 30px rgba(80, 50, 20, 0.10);
+    }
+
+    .sidebar-box h3 {
+      margin: 0 0 10px;
+      color: var(--ink);
+      font-size: 19px;
+      line-height: 1.25;
+    }
+
+    .sidebar-box p,
+    .sidebar-box a {
+      color: var(--ink-soft);
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    .sidebar-box a {
+      text-decoration: none;
+      font-weight: 800;
+      color: var(--gold-dark);
+    }
+
+    .sidebar-box a:hover { color: var(--gold); }
+
+    .sidebar-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .article-footer-cta {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at top right, rgba(184, 121, 46, 0.16), transparent 34%),
+        #fff4e4;
+      border: 1px solid rgba(184, 121, 46, 0.24);
+    }
+
+    .article-footer-cta h2 { margin-top: 0; }
+
+    .article-disclaimer {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(184, 121, 46, 0.20);
+      color: var(--ink-muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .article-page .cta-big,
+    .article-page .article-footer-cta .cta-big,
+    .article-page .sidebar-box .cta-big {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 12px 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(184, 121, 46, 0.35);
+      background: linear-gradient(135deg, #e88912, #a6631f);
+      color: #ffffff !important;
+      font-weight: 800;
+      font-size: 15px;
+      text-decoration: none;
+      box-shadow: 0 12px 24px rgba(138, 85, 30, 0.22);
+    }
+
+    .article-page .cta-big:hover,
+    .article-page .article-footer-cta .cta-big:hover,
+    .article-page .sidebar-box .cta-big:hover {
+      background: linear-gradient(135deg, #f59e0b, #95571f);
+      color: #ffffff !important;
+      transform: translateY(-1px);
+    }
+
+    .article-page .cta-outline,
+    .article-page .article-footer-cta .cta-outline,
+    .article-page .sidebar-box .cta-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 12px 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(184, 121, 46, 0.38);
+      background: #fffaf2;
+      color: #8a551e !important;
+      font-weight: 800;
+      font-size: 15px;
+      text-decoration: none;
+      box-shadow: 0 10px 22px rgba(80, 50, 20, 0.08);
+    }
+
+    .article-page .cta-outline:hover,
+    .article-page .article-footer-cta .cta-outline:hover,
+    .article-page .sidebar-box .cta-outline:hover {
+      background: #fff4e4;
+      color: #6f3f12 !important;
+      border-color: rgba(184, 121, 46, 0.58);
+    }
+
+    .article-page .hero-actions,
+    .article-page .article-actions,
+    .article-page .sidebar-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    @media (max-width: 920px) {
+      .article-layout { grid-template-columns: 1fr; }
+      .article-sidebar { position: static; }
+    }
+
+    @media (max-width: 620px) {
+      .article-page { margin: 4px auto 28px; padding: 0 10px; }
+      .article-hero,
+      .article-card,
+      .sidebar-box { border-radius: 18px; }
+      .article-hero h1 { font-size: 21px; }
+      .article-lead { font-size: 14px; }
+    }
+  </style>
+</head>
+<body class="brand-refresh">
+
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <span class="brand-icon">PC</span>
+    <span>
+      <strong>Райський Сад</strong>
+      <small>Інформаційний довідник</small>
+    </span>
+  </a>
+
+  <nav class="nav">
+    <a href="index.html">🏠 Головна</a>
+    <a href="articles.html">📰 Статті</a>
+    <a href="index.html#objects">🏡 Обʼєкти</a>
+    <a href="index.html#contacts">☎️ Контакти</a>
+    <a href="dashboard.html">👤 Кабінет</a>
+  </nav>
+</header>
+
+<main class="article-page">
+  <a class="back-to-blog" href="articles.html">← Назад до статей</a>
+
+  <section class="article-hero">
+    <div class="article-kicker">Інформаційно-аналітичні матеріали • Оперативна перевірка</div>
+    <h1>Систематизований довідник для перевірки нерухомості</h1>
+    <p class="article-lead">
+      Перелік ключових державних реєстрів України та локальних комунальних служб міста Ірпінь для комплексної перевірки юридичної чистоти об’єкта, власника, судових ризиків і комунальних боргів перед угодою.
+    </p>
+    <div class="article-meta">
+      <span class="article-pill">📌 Перевірка нерухомості</span>
+      <span class="article-pill">🧾 Реєстри</span>
+      <span class="article-pill">🏙️ Ірпінь</span>
+      <span class="article-pill">📅 2026</span>
+    </div>
+  </section>
+
+  <section class="article-layout">
+    <article class="article-card">
+      <h2>Навіщо потрібен цей довідник?</h2>
+      <p>
+        Перед купівлею або продажем нерухомості важливо перевірити не лише сам об’єкт, а й власника, історію права власності, наявність арештів, судових спорів, виконавчих проваджень і комунальних боргів.
+      </p>
+      <p>
+        Цей довідник систематизує ключові державні реєстри та локальні сервіси Ірпеня, які допомагають швидко оцінити ризики перед укладенням угоди.
+      </p>
+
+      <div class="article-note">
+        <p><strong>Важливо:</strong> жоден окремий реєстр не дає повної картини. Безпечна перевірка нерухомості — це поєднання даних із державних сервісів, судових реєстрів, перевірки документів і звірки комунальних платежів.</p>
+      </div>
+
+      <h2>Блок I. Державні реєстри та електронні сервіси</h2>
+
+      <div class="tool-list">
+        <div class="tool-item">
+          <h3>1. Державний реєстр речових прав на нерухоме майно</h3>
+          <span class="tool-link">online.minjust.gov.ua</span>
+          <p>Головний реєстр для перевірки права власності. Дозволяє отримати інформаційну довідку про об’єкт за адресою, реєстраційним номером або кадастровим номером. Показує власника, підстави права власності, арешти, заборони, іпотеки та інші обтяження.</p>
+        </div>
+
+        <div class="tool-item">
+          <h3>2. Портал електронних послуг Держгеокадастру</h3>
+          <span class="tool-link">e.land.gov.ua</span>
+          <p>Базовий сервіс для роботи із земельними ділянками. Через електронний кабінет можна замовляти витяги з ДЗК, відомості про земельну ділянку та витяги про нормативну грошову оцінку землі.</p>
+        </div>
+
+        <div class="tool-item">
+          <h3>3. Єдиний державний реєстр судових рішень</h3>
+          <span class="tool-link">reyestr.court.gov.ua</span>
+          <p>Дозволяє шукати судові рішення за ПІБ власника, назвою компанії або забудовника. Допомагає виявити спори щодо права власності, меж земельної ділянки, поділу майна або недійсності договорів.</p>
+        </div>
+
+        <div class="tool-item">
+          <h3>4. Портал «Судова влада України»</h3>
+          <span class="tool-link">court.gov.ua/fair/</span>
+          <p>Підходить для оперативного моніторингу призначених до розгляду справ у судах. Допомагає знайти свіжі позови та засідання, які ще могли не потрапити до реєстру судових рішень.</p>
+        </div>
+
+        <div class="tool-item">
+          <h3>5. Єдиний реєстр боржників</h3>
+          <span class="tool-link">erb.minjust.gov.ua</span>
+          <p>Безкоштовна експрес-перевірка фізичних та юридичних осіб. Наявність продавця в цьому реєстрі може свідчити про відкриті виконавчі провадження і створювати ризик для посвідчення угоди нотаріусом.</p>
+        </div>
+
+        <div class="tool-item">
+          <h3>6. Автоматизована система виконавчого провадження</h3>
+          <span class="tool-link">asvpweb.minjust.gov.ua</span>
+          <p>Сервіс для детальнішого аналізу конкретних примусових проваджень: статус справи, сума стягнення та дані виконавця, який веде провадження.</p>
+        </div>
+
+        <div class="tool-item">
+          <h3>7. Перевірка недійсних документів ДМС України</h3>
+          <span class="tool-link">nd.dmsu.gov.ua / nd.nddkc.gov.ua</span>
+          <p>Дає можливість перевірити паспортні документи сторін угоди та мінімізувати ризики використання втрачених, викрадених або анульованих документів.</p>
+        </div>
+      </div>
+
+      <h2>Блок II. Комунальні служби міста Ірпінь</h2>
+
+      <div class="tool-list">
+        <div class="tool-item">
+          <h3>1. КП «Ірпіньводоканал»</h3>
+          <span class="tool-link">vodokanal-irpen.com.ua • my.vodokanal-irpen.com.ua</span>
+          <p>Сервіс для перевірки водопостачання та водовідведення, балансу особового рахунку, заборгованостей і показників лічильників. Також може використовуватись Telegram-бот irpen_voda_bot.</p>
+        </div>
+
+        <div class="tool-item">
+          <h3>2. КПП «Теплоенергопостач» ІМР</h3>
+          <span class="tool-link">tep-irpin.org.ua • my.tep-irpin.org.ua</span>
+          <p>Постачальник централізованого опалення та гарячої води. Перевірка цього сервісу важлива під час купівлі квартир на вторинному ринку для підтвердження відсутності боргів за теплову енергію.</p>
+        </div>
+
+        <div class="tool-item">
+          <h3>3. Розподіл газу: Київська філія «Газмережі»</h3>
+          <span class="tool-link">kv.gasmerezhi.com.ua • my.gasmerezhi.com.ua</span>
+          <p>Електронний кабінет використовується для контролю стану особового рахунку, перевірки обсягів споживання газу, оплат за газ і послугу доставки.</p>
+        </div>
+
+        <div class="tool-item">
+          <h3>4. Електропостачання: ДТЕК та YASNO</h3>
+          <span class="tool-link">dtek-krem.com.ua • yasno.com.ua</span>
+          <p>ДТЕК відповідає за технічну частину мереж і показники приладів обліку, а розрахунки, тарифи та перевірка заборгованості здійснюються через постачальника YASNO.</p>
+        </div>
+      </div>
+
+      <h2>Експрес-метод перевірки комунальних боргів</h2>
+      <p>
+        Для швидкої попередньої перевірки можна використовувати банківські застосунки, наприклад Приват24 або Монобанк. У розділі комунальних платежів достатньо ввести адресу об’єкта або номер особового рахунку, щоб побачити актуальні нарахування та можливу заборгованість.
+      </p>
+      <p>
+        Додатково можна використовувати платіжні портали, зокрема iPay.ua, якщо там доступний регіональний розділ для комунальних послуг Ірпеня.
+      </p>
+
+      <div class="article-warning">
+        <p><strong>Увага:</strong> експрес-перевірка через банківські застосунки не замінює офіційної довідки або звірки з постачальником послуг, але допомагає швидко виявити очевидні борги перед угодою.</p>
+      </div>
+
+      <h2>Висновок</h2>
+      <p>
+        Комплексна перевірка нерухомості перед угодою має включати аналіз права власності, обтяжень, судових спорів, боргів продавця, паспортних документів і комунальних платежів. Такий підхід знижує ризики та допомагає ухвалювати рішення більш впевнено.
+      </p>
+
+      <div class="article-footer-cta">
+        <h2>Потрібна допомога з перевіркою нерухомості?</h2>
+        <p>АН «Райський Сад» допоможе зорієнтуватися в документах, перевірити об’єкт, підготуватися до угоди та зменшити юридичні ризики.</p>
+        <div class="hero-actions">
+          <a href="tel:+380953777196" class="cta-big">📞 Подзвонити</a>
+          <a href="index.html#request" class="cta-outline">📩 Залишити заявку</a>
+        </div>
+      </div>
+
+      <p class="article-disclaimer">Матеріал має інформаційний характер і не є індивідуальною юридичною консультацією.</p>
+    </article>
+
+    <aside class="article-sidebar">
+      <div class="sidebar-box">
+        <h3>Коротко про головне</h3>
+        <p>Довідник допомагає перевірити об’єкт нерухомості, власника, судові ризики, борги та комунальні платежі перед угодою.</p>
+      </div>
+
+      <div class="sidebar-box">
+        <h3>Що перевірити перед угодою</h3>
+        <ul>
+          <li>право власності;</li>
+          <li>арешти та заборони;</li>
+          <li>судові справи;</li>
+          <li>борги власника;</li>
+          <li>паспортні документи;</li>
+          <li>комунальні борги.</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-box">
+        <h3>Державні реєстри</h3>
+        <ul>
+          <li>ДРРП;</li>
+          <li>Держгеокадастр;</li>
+          <li>Судовий реєстр;</li>
+          <li>Єдиний реєстр боржників;</li>
+          <li>АСВП;</li>
+          <li>ДМС.</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-box">
+        <h3>Комунальні служби Ірпеня</h3>
+        <ul>
+          <li>Ірпіньводоканал;</li>
+          <li>Теплоенергопостач;</li>
+          <li>Газмережі;</li>
+          <li>ДТЕК / YASNO.</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-box">
+        <h3>Контакти</h3>
+        <p>АН «Райський Сад»<br>Телефон: <a href="tel:+380953777196">0953777196</a></p>
+        <div class="sidebar-actions">
+          <a class="cta-big" href="tel:+380953777196">📞 Подзвонити</a>
+          <a class="cta-outline" href="index.html#contacts">Контакти</a>
+        </div>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>© 2002–2026 АН «Райський Сад». Нерухомість Ірпеня, Києва та Київської області.</p>
+  <p>Інформаційні матеріали не є індивідуальною юридичною консультацією.</p>
+</footer>
+</body>
+</html>
