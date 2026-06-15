@@ -2375,3 +2375,8 @@ img {
     font-size: 12px;
   }
 }
+/* Менший верхній відступ перед блоком "Корисні посилання" */
+#registers-preview {
+  margin-top: -16px;
+  padding-top: 0;
+}
