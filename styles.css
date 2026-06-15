@@ -2272,3 +2272,10 @@ img {
     min-height: auto;
   }
 }
+.registers-preview-action .cta-big {
+  min-height:-size: 14px;  min-height: 40px;
+  border-radius: 999px;
+  line-height: 1.2;
+  box-shadow: 0 10px 22px rgba(149, 87, 31, 0.20);
+}
+  padding: 9px 18px;
