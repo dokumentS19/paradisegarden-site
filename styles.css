@@ -2392,7 +2392,7 @@ html {
 #director,
 #request,
 #contacts {
-  scroll-margin-top: 75px;
+  scroll-margin-top: 70px;
 }
 
 @media (max-width: 620px) {
