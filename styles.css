@@ -2388,3 +2388,29 @@ img {
     scroll-margin-top: 90px;
   }
 }
+/* ================================
+   ANCHOR OFFSET
+   Щоб блоки не заїжджали під шапку при переході з меню
+================================ */
+
+#about,
+#objects,
+#registers-preview,
+#articles-preview,
+#director,
+#request,
+#contacts {
+  scroll-margin-top: 105px;
+}
+
+@media (max-width: 620px) {
+  #about,
+  #objects,
+  #registers-preview,
+  #articles-preview,
+  #director,
+  #request,
+  #contacts {
+    scroll-margin-top: 90px;
+  }
+}
