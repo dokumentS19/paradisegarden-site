@@ -2275,7 +2275,7 @@ img {
 /* ================================
    REGISTERS PREVIEW BLOCK
    Блок}   Блок "Корисні посилання" на головній
- ================================/*
+ ================================*/
 .registers-preview-card {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
