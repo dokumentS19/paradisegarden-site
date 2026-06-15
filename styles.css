@@ -2274,8 +2274,13 @@ img {
 }
 /* ================================
    REGISTERS PREVIEW BLOCK
-   Блок}   Блок "Корисні посилання" на головній
- ================================*/
+   Блок "Корисні посилання" на головній
+================================ */
+
+.registers-preview {
+  display: grid;
+}
+
 .registers-preview-card {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -2370,5 +2375,3 @@ img {
     font-size: 12px;
   }
 }
-.registers-preview {
-  display: grid;
