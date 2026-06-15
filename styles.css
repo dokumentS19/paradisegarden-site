@@ -2414,3 +2414,38 @@ img {
     scroll-margin-top: 90px;
   }
 }
+/* ================================
+   ANCHOR OFFSET
+   Щоб секції не заїжджали під шапку
+================================ */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 115px;
+}
+
+#about,
+#objects,
+#registers-preview,
+#articles-preview,
+#director,
+#request,
+#contacts {
+  scroll-margin-top: 115px;
+}
+
+@media (max-width: 620px) {
+  html {
+    scroll-padding-top: 95px;
+  }
+
+  #about,
+  #objects,
+  #registers-preview,
+  #articles-preview,
+  #director,
+  #request,
+  #contacts {
+    scroll-margin-top: 95px;
+  }
+}
