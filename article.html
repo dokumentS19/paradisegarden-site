@@ -159,6 +159,221 @@
         font-size: 16px;
       }
     }
+    /* === LIGHT PAPER STYLE FOR FIREBASE ARTICLES === */
+
+.article-page-body {
+  background:
+    radial-gradient(circle at top left, rgba(184, 121, 46, 0.10), transparent 34%),
+    linear-gradient(180deg, #fbf6ee, #f4eadb);
+  color: #1f2933;
+}
+
+.article-shell {
+  max-width: 980px;
+  margin: 14px auto 34px;
+  padding: 0 16px;
+  display: grid;
+  gap: 14px;
+}
+
+.article-back {
+  display: inline-flex;
+  width: fit-content;
+  text-decoration: none;
+  color: #8a551e !important;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 250, 242, 0.92);
+  border: 1px solid rgba(138, 85, 30, 0.24);
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 10px 24px rgba(80, 50, 20, 0.08);
+}
+
+.article-view {
+  background: #fffaf2;
+  border: 1px solid rgba(138, 85, 30, 0.24);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 18px 42px rgba(80, 50, 20, 0.11);
+}
+
+.article-hero-img {
+  height: clamp(140px, 22vw, 260px);
+  background:
+    radial-gradient(circle at top right, rgba(184, 121, 46, 0.16), transparent 45%),
+    #fff4e4;
+  overflow: hidden;
+}
+
+.article-hero-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.article-content-wrap {
+  padding: clamp(18px, 2.4vw, 28px);
+}
+
+.article-meta-line {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.article-pill {
+  display: inline-flex;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: rgba(184, 121, 46, 0.12);
+  border: 1px solid rgba(184, 121, 46, 0.30);
+  color: #8a551e !important;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.article-view h1 {
+  color: #1f2933;
+  font-size: clamp(22px, 2.4vw, 32px);
+  line-height: 1.18;
+  margin: 0 0 12px;
+  letter-spacing: -0.015em;
+}
+
+.article-excerpt {
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.55;
+  margin-bottom: 18px;
+}
+
+.article-content {
+  color: #475569;
+  line-height: 1.62;
+  font-size: 14px;
+}
+
+.article-content h2 {
+  color: #1f2933;
+  margin: 22px 0 9px;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.article-content h3 {
+  color: #8a551e;
+  margin: 18px 0 8px;
+  font-size: 17px;
+  line-height: 1.25;
+}
+
+.article-content p {
+  margin: 0 0 12px;
+}
+
+.article-content ul,
+.article-content ol {
+  padding-left: 22px;
+  margin: 0 0 14px;
+}
+
+.article-content li {
+  margin-bottom: 6px;
+}
+
+.article-content a {
+  color: #8a551e;
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.article-cta {
+  background:
+    radial-gradient(circle at top right, rgba(184, 121, 46, 0.16), transparent 36%),
+    #fffaf2;
+  border: 1px solid rgba(138, 85, 30, 0.24);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 14px 30px rgba(80, 50, 20, 0.10);
+}
+
+.article-cta h2 {
+  color: #1f2933;
+  font-size: 22px;
+  line-height: 1.25;
+  margin-top: 0;
+}
+
+.article-cta p {
+  color: #475569;
+  line-height: 1.55;
+  font-size: 14px;
+}
+
+.article-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.article-page-body .cta-big {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 11px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(184, 121, 46, 0.35);
+  background: linear-gradient(135deg, #e88912, #a6631f);
+  color: #ffffff !important;
+  font-weight: 800;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: 0 12px 24px rgba(138, 85, 30, 0.22);
+}
+
+.article-page-body .cta-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 11px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(184, 121, 46, 0.38);
+  background: #fffaf2;
+  color: #8a551e !important;
+  font-weight: 800;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: 0 10px 22px rgba(80, 50, 20, 0.08);
+}
+
+.article-page-body .cta-outline:hover {
+  background: #fff4e4;
+  color: #6f3f12 !important;
+  border-color: rgba(184, 121, 46, 0.58);
+}
+
+@media (max-width: 640px) {
+  .article-content-wrap {
+    padding: 18px;
+  }
+
+  .article-excerpt {
+    font-size: 14px;
+  }
+
+  .article-view h1 {
+    font-size: 22px;
+  }
+}
   </style>
 </head>
 
