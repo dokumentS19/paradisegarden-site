@@ -228,7 +228,7 @@ function renderArticles(data) {
       </a>
     `;
   }).join("");
-}
+} 
 
 /* ================================
    EVENTS
