@@ -2198,3 +2198,77 @@ img {
     max-height: 320px;
   }
 }
+.quick-registers {
+  display: grid;
+  gap: 20px;
+}
+
+.quick-registers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.quick-register-card {
+  display: grid;
+  gap: 8px;
+  text-decoration: none;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at top right, rgba(232, 137, 18, 0.14), transparent 38%),
+    rgba(8, 21, 15, 0.86);
+  border: 1px solid rgba(232, 137, 18, 0.18);
+  border-radius: 18px;
+  padding: 16px;
+  min-height: 145px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+  transition: 0.25s ease;
+}
+
+.quick-register-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(232, 137, 18, 0.46);
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.32),
+    0 0 24px rgba(232, 137, 18, 0.10);
+}
+
+.quick-register-card span {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #e88912, #95571f);
+  color: #ffffff;
+  font-size: 20px;
+  box-shadow: 0 10px 24px rgba(149, 87, 31, 0.26);
+}
+
+.quick-register-card strong {
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.quick-register-card small {
+  color: #dbeafe;
+  line-height: 1.45;
+  font-size: 13px;
+}
+
+.quick-registers-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+@media (max-width: 620px) {
+  .quick-registers-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-register-card {
+    min-height: auto;
+  }
+}
