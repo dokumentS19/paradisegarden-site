@@ -21,12 +21,39 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+/* ================================
+   LOCAL ARTICLES
+   Статті, які є окремими HTML-файлами на сайті
+================================ */
+
+const localArticles = [
+  {
+    id: "staryi-derzhavnyi-akt-kadastrovyi-nomer-2026",
+    title: "Старий державний акт на землю: як присвоїти кадастровий номер у 2026 році",
+    excerpt: "Пояснюємо, навіщо потрібен кадастровий номер, як внести стару земельну ділянку до ДЗК і які документи потрібні власнику.",
+    category: "Документи",
+    dateText: "15.06.2026",
+    dateSort: new Date("2026-06-15").getTime(),
+    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80",
+    url: "staryi-derzhavnyi-akt-kadastrovyi-nomer-2026.html",
+    content: "старий державний акт земля кадастровий номер ДЗК Держгеокадастр технічна документація землеустрій земельна ділянка документи реєстрація права власності ДРРП витяг з ДЗК межі ділянки"
+  }
+];
+
+/* ================================
+   STATE
+================================ */
+
 let allArticles = [];
 let filteredArticles = [];
 
 const articlesGrid = document.getElementById("articlesGrid");
 const articleSearch = document.getElementById("articleSearch");
 const categoryFilter = document.getElementById("categoryFilter");
+
+/* ================================
+   HELPERS
+================================ */
 
 function escapeHtml(value = "") {
   return String(value)
@@ -42,6 +69,10 @@ function escapeAttribute(value = "") {
 }
 
 function getDateValue(item) {
+  if (item.dateSort) {
+    return Number(item.dateSort);
+  }
+
   if (item.createdAt?.seconds) {
     return item.createdAt.seconds * 1000;
   }
@@ -54,6 +85,10 @@ function getDateValue(item) {
 }
 
 function formatDate(item) {
+  if (item.dateText) {
+    return item.dateText;
+  }
+
   const value = getDateValue(item);
 
   if (!value) {
@@ -76,12 +111,20 @@ function getArticleImage(item) {
 }
 
 function getArticleUrl(item) {
+  if (item.url) {
+    return item.url;
+  }
+
   if (item.slug) {
     return `article.html?slug=${encodeURIComponent(item.slug)}`;
   }
 
   return `article.html?id=${encodeURIComponent(item.id)}`;
 }
+
+/* ================================
+   LOAD ARTICLES
+================================ */
 
 async function loadArticles() {
   if (!articlesGrid) return;
@@ -94,26 +137,31 @@ async function loadArticles() {
 
     const snap = await getDocs(articlesQuery);
 
-    allArticles = snap.docs
-      .map(docSnap => ({
-        id: docSnap.id,
-        ...docSnap.data()
-      }))
-      .sort((a, b) => getDateValue(b) - getDateValue(a));
+    const firebaseArticles = snap.docs.map(docSnap => ({
+      id: docSnap.id,
+      ...docSnap.data()
+    }));
+
+    allArticles = [
+      ...localArticles,
+      ...firebaseArticles
+    ].sort((a, b) => getDateValue(b) - getDateValue(a));
 
     filteredArticles = [...allArticles];
     renderArticles(filteredArticles);
   } catch (error) {
     console.error("LOAD ARTICLES ERROR:", error);
 
-    articlesGrid.innerHTML = `
-      <div class="empty-articles">
-        <h2>❌ Не вдалося завантажити статті</h2>
-        <p>Перевірте Firestore rules або поле status = published.</p>
-      </div>
-    `;
+    allArticles = [...localArticles];
+    filteredArticles = [...allArticles];
+
+    renderArticles(filteredArticles);
   }
 }
+
+/* ================================
+   FILTERS
+================================ */
 
 function applyFilters() {
   const search = articleSearch ? articleSearch.value.trim().toLowerCase() : "";
@@ -131,7 +179,8 @@ function applyFilters() {
       excerpt.includes(search) ||
       content.includes(search);
 
-    const matchesCategory = category === "all" || itemCategory === category;
+    const matchesCategory =
+      category === "all" || itemCategory === category;
 
     return matchesSearch && matchesCategory;
   });
@@ -139,14 +188,18 @@ function applyFilters() {
   renderArticles(filteredArticles);
 }
 
+/* ================================
+   RENDER
+================================ */
+
 function renderArticles(data) {
   if (!articlesGrid) return;
 
   if (!data.length) {
     articlesGrid.innerHTML = `
       <div class="empty-articles">
-        <h2>Статей поки немає</h2>
-        <p>Перевірте, чи є у Firestore документ у колекції articles зі status = published.</p>
+        <h2>Статей не знайдено</h2>
+        <p>Спробуйте змінити пошук або обрати іншу категорію.</p>
       </div>
     `;
     return;
@@ -163,7 +216,7 @@ function renderArticles(data) {
     return `
       <a class="article-card" href="${url}">
         <div class="article-card-img">
-          <img src="${image}" alt="${title}">
+          <img src="${image}" alt="${title}" loading="lazy">
         </div>
 
         <div class="article-card-body">
@@ -177,6 +230,10 @@ function renderArticles(data) {
   }).join("");
 }
 
+/* ================================
+   EVENTS
+================================ */
+
 if (articleSearch) {
   articleSearch.addEventListener("input", applyFilters);
 }
@@ -184,5 +241,9 @@ if (articleSearch) {
 if (categoryFilter) {
   categoryFilter.addEventListener("change", applyFilters);
 }
+
+/* ================================
+   START
+================================ */
 
 loadArticles();
