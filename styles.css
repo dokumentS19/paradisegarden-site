@@ -2375,3 +2375,6 @@ img {
     font-size: 12px;
   }
 }
+.registers-preview {
+  display: grid;
+}
