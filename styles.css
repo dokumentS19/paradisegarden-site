@@ -2375,54 +2375,14 @@ img {
     font-size: 12px;
   }
 }
-#registers-preview {
-  margin-top: -8px;
-  padding-top: 0;
-  scroll-margin-top: 105px;
-}
-
-@media (max-width: 620px) {
-  #registers-preview {
-    margin-top: -4px;
-    scroll-margin-top: 90px;
-  }
-}
-
 /* ================================
    ANCHOR OFFSET
-   Щоб блоки не заїжджали під шапку при переході з меню
-================================ */
-
-#about,
-#objects,
-#registers-preview,
-#articles-preview,
-#director,
-#request,
-#contacts {
-  scroll-margin-top: 105px;
-}
-
-@media (max-width: 620px) {
-  #about,
-  #objects,
-  #registers-preview,
-  #articles-preview,
-  #director,
-  #request,
-  #contacts {
-    scroll-margin-top: 90px;
-  }
-}
-
-/* ================================
-   ANCHOR OFFSET
-   Щоб секції не заїжджали під шапку
+   Щоб секції не ховались під шапку при переході з меню
 ================================ */
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 115px;
+  scroll-padding-top: 130px;
 }
 
 #about,
@@ -2432,7 +2392,7 @@ html {
 #director,
 #request,
 #contacts {
-  scroll-margin-top: 115px;
+  scroll-margin-top: 130px;
 }
 
 @media (max-width: 620px) {
