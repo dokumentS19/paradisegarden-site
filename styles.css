@@ -2272,18 +2272,10 @@ img {
     min-height: auto;
   }
 }
-.registers-preview-action .cta-big {
-  min-height: 36px;
-  padding: 8px 16px;
-  font-size: 13px;
-  border-radius: 999px;
-  line-height: 1.2;
-  box-shadow: 0 8px 18px rgba(149, 87, 31, 0.18);
-}
-/* ================================/*
+/* ================================
    REGISTERS PREVIEW BLOCK
    Блок}   Блок "Корисні посилання" на головній
-
+ ================================/*
 .registers-preview-card {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -2378,7 +2370,5 @@ img {
     font-size: 12px;
   }
 }
-/*================================ */
-
 .registers-preview {
   display: grid;
