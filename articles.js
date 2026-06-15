@@ -216,7 +216,7 @@ function renderArticles(data) {
     return `
       <a class="article-card" href="${url}">
         <div class="article-card-img">
-          <img src="${image}" alt="${title}" loading="lazy">
+          <img src="${image}" alt="${title}">
         </div>
 
         <div class="article-card-body">
