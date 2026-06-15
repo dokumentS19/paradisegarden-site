@@ -2375,12 +2375,12 @@ img {
     font-size: 12px;
   }
 }
-/* Менший верхній відступ перед блоком "Корисні посилання" */
+/* Коректний відступ при переході з меню до блоку "Корисні посилання" */
 #registers-preview {
-  margin-top: -16px;
+  margin-top: -8px;
   padding-top: 0;
+  scroll-margin-top: 105px;
 }
-
 @media (max-width: 620px) {
   #registers-preview {
     margin-top: -10px;
