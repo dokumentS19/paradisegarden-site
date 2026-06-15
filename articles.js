@@ -35,7 +35,7 @@ const localArticles = [
     dateText: "15.06.2026",
     dateSort: new Date("2026-06-15").getTime(),
     image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80",
-    url: "staryi-derzhavnyi-akt-kadastrovyi-nomer-2026.html",
+    url: "kadastr-2026.html",
     content: "старий державний акт земля кадастровий номер ДЗК Держгеокадастр технічна документація землеустрій земельна ділянка документи реєстрація права власності ДРРП витяг з ДЗК межі ділянки"
   }
 ];
