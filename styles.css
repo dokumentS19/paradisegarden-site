@@ -2380,14 +2380,9 @@ img {
    Щоб секції не ховались під шапку при переході з меню
 ================================ */
 
-/* ================================
-   ANCHOR OFFSET
-   Щоб секції не ховались під шапку при переході з меню
-================================ */
-
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 110px;
+  scroll-padding-top: 85px;
 }
 
 #about,
@@ -2397,12 +2392,12 @@ html {
 #director,
 #request,
 #contacts {
-  scroll-margin-top: 110px;
+  scroll-margin-top: 85px;
 }
 
 @media (max-width: 620px) {
   html {
-    scroll-padding-top: 90px;
+    scroll-padding-top: 80px;
   }
 
   #about,
@@ -2412,6 +2407,6 @@ html {
   #director,
   #request,
   #contacts {
-    scroll-margin-top: 90px;
+    scroll-margin-top: 80px;
   }
 }
