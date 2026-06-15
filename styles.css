@@ -2382,7 +2382,7 @@ img {
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 70px;
+  scroll-padding-top: 67px;
 }
 
 #about,
@@ -2392,12 +2392,12 @@ html {
 #director,
 #request,
 #contacts {
-  scroll-margin-top: 70px;
+  scroll-margin-top: 67px;
 }
 
 @media (max-width: 620px) {
   html {
-    scroll-padding-top: 65px;
+    scroll-padding-top: 62px;
   }
 
   #about,
@@ -2407,6 +2407,6 @@ html {
   #director,
   #request,
   #contacts {
-    scroll-margin-top:  65px;
+    scroll-margin-top:  62px;
   }
 }
