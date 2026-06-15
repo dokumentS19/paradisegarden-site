@@ -7,7 +7,7 @@ service firebase.storage {
       return request.auth != null;
     }
 
-    function isAdmin() {
+    function isAdmin() { 
       return isSignedIn()
         && request.auth.token.email in [
           "olegivanchik1234@gmail.com",
