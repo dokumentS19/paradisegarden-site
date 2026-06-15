@@ -2280,3 +2280,105 @@ img {
   line-height: 1.2;
   box-shadow: 0 8px 18px rgba(149, 87, 31, 0.18);
 }
+/* ================================
+   REGISTERS PREVIEW BLOCK
+   Блок}   Блок "Корисні посилання" на головній
+
+.registers-preview-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  background:
+    radial-gradient(circle at top right, rgba(232, 137, 18, 0.14), transparent 34%),
+    linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+  border: 1px solid rgba(232, 137, 18, 0.20);
+  border-radius: 22px;
+  padding: 20px 24px;
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.26);
+}
+
+.registers-preview-content h2 {
+  margin: 8px 0 8px;
+  color: #ffffff;
+  font-size: clamp(22px, 2.6vw, 34px);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.registers-preview-content p {
+  color: #dbeafe;
+  line-height: 1.55;
+  max-width: 820px;
+  margin: 0;
+  font-size: 14px;
+}
+
+.registers-preview-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.registers-preview-pills span {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(8, 21, 15, 0.72);
+  border: 1px solid rgba(232, 137, 18, 0.22);
+  color: #fff3df;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.registers-preview-action {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Менша кнопка тільки в цьому блоці */
+.registers-preview-action .cta-big {
+  min-height: 36px;
+  padding: 8px 16px;
+  font-size: 13px;
+  border-radius: 999px;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: 0 8px 18px rgba(149, 87, 31, 0.18);
+}
+
+@media (max-width: 820px) {
+  .registers-preview-card {
+    grid-template-columns: 1fr;
+    padding: 18px 20px;
+  }
+
+  .registers-preview-action {
+    justify-content: flex-start;
+  }
+
+  .registers-preview-action .cta-big {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 620px) {
+  .registers-preview-content h2 {
+    font-size: 21px;
+  }
+
+  .registers-preview-content p {
+    font-size: 13px;
+  }
+
+  .registers-preview-pills span {
+    font-size: 12px;
+  }
+}
+================================ */
+
+.registers-preview {
+  display: grid;
