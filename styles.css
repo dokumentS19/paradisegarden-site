@@ -2881,37 +2881,49 @@ html {
   }
 }
 /* ================================
-   HERO LOGO IMAGE
-   Логотип Райський Сад у центрі hero
+   HERO LOGO IMAGE — COMPACT
+   Компактний логотип у центрі hero
 ================================ */
 
 .hero-logo-title {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 22px auto 18px;
-  max-width: 760px;
+  margin: 18px auto 16px;
   width: 100%;
+  max-width: 480px;
 }
 
 .hero-logo-img {
   display: block;
   width: 100%;
-  max-width: 760px;
+  max-width: 480px;
   height: auto;
   object-fit: contain;
-  filter: drop-shadow(0 12px 26px rgba(0, 0, 0, 0.32));
+  border-radius: 18px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
 }
 
-/* Мобільна версія */
-@media (max-width: 680px) {
+/* Планшети */
+@media (max-width: 900px) {
   .hero-logo-title {
-    max-width: 330px;
+    max-width: 380px;
     margin: 16px auto 14px;
   }
 
   .hero-logo-img {
-    width: 100%;
-    max-width: 330px;
+    max-width: 380px;
+  }
+}
+
+/* Телефони */
+@media (max-width: 680px) {
+  .hero-logo-title {
+    max-width: 280px;
+    margin: 14px auto 12px;
+  }
+
+  .hero-logo-img {
+    max-width: 280px;
   }
 }
