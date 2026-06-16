@@ -479,7 +479,140 @@
         padding: 13px;
         border-radius: 13px;
       }
-    }
+    } 
+/* ================================
+   PHOTO LIGHTBOX
+   Велике вікно перегляду фото
+================================ */
+
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.88);
+  padding: 58px 24px 26px;
+}
+
+.photo-lightbox.active {
+  display: flex;
+}
+
+.photo-lightbox-img {
+  max-width: 96vw;
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 14px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.60);
+}
+
+.photo-lightbox-btn {
+  position: fixed;
+  z-index: 10001;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(4, 20, 13, 0.78);
+  color: #ffffff;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: 0.25s ease;
+}
+
+.photo-lightbox-btn:hover {
+  background: rgba(232, 137, 18, 0.78);
+}
+
+.photo-lightbox-close {
+  top: 16px;
+  right: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 32px;
+  line-height: 1;
+}
+
+.photo-lightbox-back {
+  top: 16px;
+  left: 18px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.photo-lightbox-arrow {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  font-size: 34px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+}
+
+.photo-lightbox-prev {
+  left: 18px;
+}
+
+.photo-lightbox-next {
+  right: 18px;
+}
+
+.photo-lightbox-counter {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 10001;
+  color: #ffffff;
+  background: rgba(4, 20, 13, 0.82);
+  border: 1px solid rgba(232, 137, 18, 0.24);
+  border-radius: 999px;
+  padding: 7px 13px;
+  font-size: 13px;
+  backdrop-filter: blur(12px);
+}
+
+@media (max-width: 620px) {
+  .photo-lightbox {
+    padding: 62px 10px 34px;
+  }
+
+  .photo-lightbox-img {
+    max-width: 98vw;
+    max-height: 82vh;
+  }
+
+  .photo-lightbox-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 30px;
+  }
+
+  .photo-lightbox-prev {
+    left: 8px;
+  }
+
+  .photo-lightbox-next {
+    right: 8px;
+  }
+
+  .photo-lightbox-back {
+    left: 10px;
+    padding: 0 13px;
+    font-size: 14px;
+  }
+
+  .photo-lightbox-close {
+    right: 10px;
+  }
+}
+    
   </style>
 </head>
 
