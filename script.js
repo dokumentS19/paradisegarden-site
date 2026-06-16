@@ -420,7 +420,8 @@ function createObjectCard(item) {
   const propertyName = escapeHtml(getPropertyTypeName(item.propertyType));
   const commercialName = escapeHtml(getCommercialTypeName(item.commercialType));
   const houseTypeName = escapeHtml(getHouseTypeName(item.house?.houseType));
-
+  const apartmentFloorText = escapeHtml(getApartmentFloorText(item));
+  
   return `
     <article class="card">
       ${isVip ? `<div class="vip-badge">🔥 VIP</div>` : ""}
