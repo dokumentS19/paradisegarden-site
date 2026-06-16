@@ -2492,49 +2492,117 @@ html {
   background: rgba(255, 255, 255, 0.10);
 }
 /* ================================
-   HERO LIGHT FINAL OVERRIDE
-   Робимо головний екран світлішим
+   HOME HERO LIGHT FINAL
+   Світліший головний екран без гнітючого затемнення
 ================================ */
 
-.hero {
-  background-position: center !important;
-  background-size: cover !important;
+/* Шапка: темно-зелена, але не чорна */
+.topbar {
+  background: rgba(7, 43, 30, 0.90) !important;
+  border-bottom: 1px solid rgba(232, 137, 18, 0.16) !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14) !important;
 }
 
-/* Прибираємо надто темний шар */
-.hero::before {
+/* Основне фото hero: менше затемнення прямо у background */
+.hero {
+  position: relative !important;
+  isolation: isolate !important;
   background:
     linear-gradient(
       180deg,
-      rgba(5, 28, 18, 0.12) 0%,
-      rgba(5, 28, 18, 0.08) 45%,
-      rgba(5, 28, 18, 0.22) 100%
-    ) !important;
-  opacity: 1 !important;
+      rgba(4, 20, 13, 0.14) 0%,
+      rgba(4, 20, 13, 0.10) 45%,
+      rgba(4, 20, 13, 0.28) 100%
+    ),
+    url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=80") center / cover no-repeat !important;
 }
 
-/* Якщо є другий затемнюючий шар — послаблюємо */
-.hero::after {
+/* Легкий теплий шар поверх фото */
+.hero::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
   background:
     radial-gradient(
-      circle at center,
-      rgba(232, 137, 18, 0.08),
-      transparent 52%
+      circle at 50% 28%,
+      rgba(232, 137, 18, 0.10),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 50% 82%,
+      rgba(7, 92, 43, 0.12),
+      transparent 40%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 68%,
+      rgba(8, 21, 15, 0.34) 100%
     ) !important;
-  opacity: 1 !important;
 }
 
-/* Шапку робимо трохи м’якшою, не чорною */
-.topbar {
-  background: rgba(7, 43, 30, 0.92) !important;
-  border-bottom: 1px solid rgba(232, 137, 18, 0.16) !important;
+/* Старий боковий темний шар робимо дуже м’яким */
+.hero-shade {
+  z-index: 2 !important;
+  pointer-events: none !important;
+  opacity: 0.55 !important;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(4, 20, 13, 0.18),
+      rgba(4, 20, 13, 0.03)
+    ) !important;
 }
 
-/* Статистика трохи світліша */
-.hero-stats,
-.stats-row,
-.hero .stats,
-.hero .stat-card {
-  background: rgba(8, 31, 22, 0.30) !important;
-  border-color: rgba(232, 137, 18, 0.20) !important;
+/* Контент поверх усіх шарів */
+.hero-content {
+  position: relative !important;
+  z-index: 3 !important;
+}
+
+/* Заголовок лишається читабельним */
+.hero-title {
+  color: #ffffff !important;
+  text-shadow: 0 7px 22px rgba(0, 0, 0, 0.34) !important;
+}
+
+/* Опис під заголовком */
+.hero-sub {
+  color: #f8fafc !important;
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.28) !important;
+}
+
+/* Плашка локації */
+.hero-badge,
+.hero .section-label {
+  background: rgba(149, 87, 31, 0.52) !important;
+  border-color: rgba(232, 137, 18, 0.34) !important;
+  color: #fff7ed !important;
+}
+
+/* Статистика внизу hero — світліша */
+.hero-stats {
+  position: relative !important;
+  z-index: 3 !important;
+}
+
+.hero-stats div {
+  background: rgba(4, 20, 13, 0.34) !important;
+  border: 1px solid rgba(232, 137, 18, 0.20) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* Помаранчеві кнопки залишаємо */
+.hero .cta-big {
+  background: linear-gradient(135deg, #e88912, #95571f) !important;
+  color: #ffffff !important;
+  box-shadow: 0 12px 26px rgba(149, 87, 31, 0.28) !important;
+}
+
+.hero .cta-outline {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.10) !important;
+  border-color: rgba(255, 243, 223, 0.42) !important;
 }
