@@ -1901,3 +1901,17 @@ select:focus {
     font-size: 24px !important;
   }
 }
+
+/* Назви оголошень — ще менші й курсивом */
+.card-body h3,
+.card-body h3 a,
+.objects-grid .card h3,
+.objects-grid .card h3 a {
+ font-size: 16px !important;
+  line-height: 1.25 !important;
+  font-style: italic !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  color: #ffffff !important;
+  letter-spacing: -0.01em !important;
+}
