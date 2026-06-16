@@ -1677,3 +1677,55 @@ select:focus {
     transform: translateY(0);
   }
 }
+/* ================================
+   HERO VERTICAL COMPACT FIX
+   Піднімаємо кнопки і статистику вище
+================================ */
+
+.hero {
+  padding-top: 38px !important;
+  padding-bottom: 24px !important;
+}
+
+.hero-logo-title {
+  max-width: 400px !important;
+  margin: 10px auto 8px !important;
+}
+
+.hero-sub {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.hero-actions {
+  margin-top: 20px !important;
+}
+
+.hero-stats {
+  margin-top: 24px !important;
+}
+
+/* Якщо треба ще компактніше на ноутбуках */
+@media (max-height: 780px) and (min-width: 900px) {
+  .hero {
+    padding-top: 28px !important;
+    padding-bottom: 18px !important;
+  }
+
+  .hero-logo-title {
+    max-width: 380px !important;
+    margin: 8px auto 6px !important;
+  }
+
+  .hero-actions {
+    margin-top: 16px !important;
+  }
+
+  .hero-stats {
+    margin-top: 18px !important;
+  }
+
+  .hero-stats div {
+    padding: 13px 16px !important;
+  }
+}
