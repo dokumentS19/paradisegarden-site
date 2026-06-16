@@ -41,6 +41,7 @@ let currentUser = null;
 let currentObject = null;
 let images = [];
 let currentSlide = 0;
+let lightboxSlide = 0;
 
 const COMPANY_PHONE_VISIBLE = "0953777196";
 const COMPANY_PHONE_TEL = "+380953777196";
