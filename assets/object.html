@@ -643,6 +643,29 @@
   </div>
 </main>
 
+  <div id="photoLightbox" class="photo-lightbox" aria-hidden="true">
+  <button class="photo-lightbox-btn photo-lightbox-back" type="button" onclick="closePhotoLightbox()">
+    ← Назад
+  </button>
+
+  <button class="photo-lightbox-btn photo-lightbox-close" type="button" onclick="closePhotoLightbox()" aria-label="Закрити">
+    ×
+  </button>
+
+  <button class="photo-lightbox-btn photo-lightbox-arrow photo-lightbox-prev" type="button" onclick="changeLightboxSlide(-1)" aria-label="Попереднє фото">
+    ‹
+  </button>
+
+  <img id="photoLightboxImg" class="photo-lightbox-img" src="" alt="Фото обʼєкта">
+
+  <button class="photo-lightbox-btn photo-lightbox-arrow photo-lightbox-next" type="button" onclick="changeLightboxSlide(1)" aria-label="Наступне фото">
+    ›
+  </button>
+
+  <div id="photoLightboxCounter" class="photo-lightbox-counter">1 / 1</div>
+</div>
+
+  
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I"></script>
 <script type="module" src="object.js"></script>
 
