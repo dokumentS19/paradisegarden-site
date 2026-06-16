@@ -477,23 +477,173 @@
         </div>
       </div>
 
-      <div id="apartmentFields" class="admin-section type-fields">
-        <h3>Характеристики квартири</h3>
+     <div id="apartmentFields" class="admin-section type-fields">
+  <h3>Характеристики квартири</h3>
 
-     <div class="admin-row-3">
-  <div>
-    <label for="houseArea">Загальна площа будинку, м²</label>
-    <input id="houseArea" type="number" step="0.1" min="0">
+  <div class="admin-row-3">
+    <div>
+      <label for="apTotalArea">Загальна площа, м²</label>
+      <input id="apTotalArea" type="number" step="0.1" min="0">
+    </div>
+
+    <div>
+      <label for="apLivingArea">Житлова площа, м²</label>
+      <input id="apLivingArea" type="number" step="0.1" min="0">
+    </div>
+
+    <div>
+      <label for="apKitchenArea">Кухня, м²</label>
+      <input id="apKitchenArea" type="number" step="0.1" min="0">
+    </div>
+  </div>
+
+  <div class="admin-row-3">
+    <div>
+      <label for="apRooms">Кімнат</label>
+      <input id="apRooms" type="number" min="0">
+    </div>
+
+    <div>
+      <label for="apFloor">Поверх квартири</label>
+      <input id="apFloor" type="number" min="0" placeholder="Наприклад: 3">
+    </div>
+
+    <div>
+      <label for="apFloorsTotal">Поверховість будинку</label>
+      <input id="apFloorsTotal" type="number" min="0" placeholder="Наприклад: 9">
+    </div>
+  </div>
+
+  <div class="admin-row">
+    <div>
+      <label for="apLayout">Планування</label>
+      <select id="apLayout">
+        <option value="">Не вказано</option>
+        <option value="separate">Окрема</option>
+        <option value="adjacent">Суміжна</option>
+        <option value="mixed">Суміжно-роздільна</option>
+        <option value="studio">Студія</option>
+        <option value="free">Вільне планування</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="apCondition">Стан</label>
+      <select id="apCondition">
+        <option value="">Не вказано</option>
+        <option value="living">Житловий</option>
+        <option value="renovated">Після ремонту</option>
+        <option value="euro">Євроремонт</option>
+        <option value="needs_repair">Під ремонт</option>
+        <option value="builder">Після будівельників</option>
+        <option value="no_repair">Без ремонту</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="admin-row-3">
+    <div>
+      <label for="apBathroomType">Санвузол</label>
+      <select id="apBathroomType">
+        <option value="">Не вказано</option>
+        <option value="combined">Суміжний</option>
+        <option value="separate">Роздільний</option>
+        <option value="multiple">Декілька санвузлів</option>
+        <option value="none">Немає</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="apBathFeature">Ванна / душова</label>
+      <select id="apBathFeature">
+        <option value="">Не вказано</option>
+        <option value="bath">Ванна</option>
+        <option value="shower">Душова</option>
+        <option value="both">Ванна + душова</option>
+        <option value="none">Без ванни / душової</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="apBathroomsCount">Кількість санвузлів</label>
+      <input id="apBathroomsCount" type="number" min="0">
+    </div>
+  </div>
+
+  <div class="admin-row-3">
+    <div>
+      <label for="apBalcony">Балкон / лоджія</label>
+      <select id="apBalcony">
+        <option value="">Не вказано</option>
+        <option value="none">Немає</option>
+        <option value="balcony">Балкон</option>
+        <option value="loggia">Лоджія</option>
+        <option value="both">Балкон + лоджія</option>
+        <option value="terrace">Тераса</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="apBuildingType">Тип будинку</label>
+      <select id="apBuildingType">
+        <option value="">Не вказано</option>
+        <option value="brick">Цегляний</option>
+        <option value="panel">Панельний</option>
+        <option value="monolith">Монолітний</option>
+        <option value="gasblock">Газоблок</option>
+        <option value="new_building">Новобудова</option>
+        <option value="stalinka">Сталінка</option>
+        <option value="hrushchovka">Хрущовка</option>
+        <option value="czech">Чешка</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="apHeating">Опалення</label>
+      <select id="apHeating">
+        <option value="">Не вказано</option>
+        <option value="individual">Індивідуальне</option>
+        <option value="central">Центральне</option>
+        <option value="electric">Електричне</option>
+        <option value="gas">Газове</option>
+        <option value="none">Немає</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="admin-row">
+    <div>
+      <label for="apBuildYear">Рік побудови</label>
+      <input id="apBuildYear" type="number" min="1800" max="2100">
+    </div>
+
+    <div>
+      <label for="apElevator">Ліфт</label>
+      <select id="apElevator">
+        <option value="">Не вказано</option>
+        <option value="yes">Є</option>
+        <option value="no">Немає</option>
+      </select>
+    </div>
   </div>
 
   <div>
-    <label for="houseLivingArea">Житлова площа, м²</label>
-    <input id="houseLivingArea" type="number" step="0.1" min="0">
+    <label for="apFurniture">Меблі</label>
+    <select id="apFurniture">
+      <option value="">Не вказано</option>
+      <option value="yes">Мебльована</option>
+      <option value="partial">Частково мебльована</option>
+      <option value="no">Без меблів</option>
+    </select>
   </div>
 
-  <div>
-    <label for="houseKitchenArea">Кухня, м²</label>
-    <input id="houseKitchenArea" type="number" step="0.1" min="0">
+  <label>Техніка</label>
+  <div class="checkbox-grid">
+    <label class="admin-check"><input type="checkbox" name="appliances" value="fridge"> Холодильник</label>
+    <label class="admin-check"><input type="checkbox" name="appliances" value="washer"> Пральна машина</label>
+    <label class="admin-check"><input type="checkbox" name="appliances" value="conditioner"> Кондиціонер</label>
+    <label class="admin-check"><input type="checkbox" name="appliances" value="dishwasher"> Посудомийка</label>
+    <label class="admin-check"><input type="checkbox" name="appliances" value="internet"> Інтернет</label>
   </div>
 </div>
 
