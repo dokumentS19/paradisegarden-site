@@ -461,6 +461,7 @@ const dealName = escapeHtml(getDealTypeName(item.dealType));
 const propertyName = escapeHtml(getPropertyTypeName(item.propertyType));
 const commercialName = escapeHtml(getCommercialTypeName(item.commercialType));
 const houseTypeName = escapeHtml(getHouseTypeName(item.house?.houseType));
+ const apartmentFloorText = escapeHtml(getApartmentFloorText(item));
     
     return `
       <article class="my-ad">
