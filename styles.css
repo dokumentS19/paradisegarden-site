@@ -2438,9 +2438,9 @@ html {
   background:
     linear-gradient(
       180deg,
-      rgba(5, 28, 18, 0.30) 0%,
-      rgba(5, 28, 18, 0.24) 45%,
-      rgba(5, 28, 18, 0.38) 100%
+     rgba(5, 28, 18, 0.22)
+     rgba(5, 28, 18, 0.18)
+     rgba(5, 28, 18, 0.30)
     ),
     radial-gradient(
       circle at center,
