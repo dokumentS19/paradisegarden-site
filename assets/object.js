@@ -429,12 +429,20 @@ function buildApartmentFeatures(item) {
   const a = item.apartment;
   if (!a) return "";
 
+  const floorText = a.floor && a.floorsTotal
+    ? `${a.floor} / ${a.floorsTotal}`
+    : a.floor
+      ? `${a.floor}`
+      : a.floorsTotal
+        ? `Будинок ${a.floorsTotal} пов.`
+        : "";
+
   return `
     ${feature("Загальна площа", a.totalArea ? `${a.totalArea} м²` : "")}
     ${feature("Житлова площа", a.livingArea ? `${a.livingArea} м²` : "")}
     ${feature("Кухня", a.kitchenArea ? `${a.kitchenArea} м²` : "")}
     ${feature("Кімнат", a.rooms)}
-    ${feature("Поверх", a.floor && a.floorsTotal ? `${a.floor} / ${a.floorsTotal}` : a.floor)}
+    ${feature("Поверх", floorText)}
     ${feature("Планування", getLayoutName(a.layout))}
     ${feature("Санвузол", getBathroomTypeName(a.bathroomType))}
     ${feature("Ванна / душова", getBathFeatureName(a.bathFeature))}
