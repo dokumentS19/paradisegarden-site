@@ -2605,3 +2605,65 @@ html {
   background: rgba(255, 255, 255, 0.10) !important;
   border-color: rgba(255, 243, 223, 0.42) !important;
 }
+/* ================================
+   HERO BRAND TITLE
+   Назва "Райський Сад" у стилі логотипу
+================================ */
+
+.hero-brand-title {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  margin: 22px 0 18px;
+  line-height: 1;
+}
+
+/* Великий помаранчевий напис */
+.hero-brand-name {
+  display: block;
+  color: #e88912;
+  font-family: "Brush Script MT", "Segoe Script", "Monotype Corsiva", cursive;
+  font-size: clamp(68px, 10vw, 150px);
+  font-weight: 700;
+  line-height: 0.86;
+  letter-spacing: -0.055em;
+  text-shadow:
+    0 4px 0 rgba(149, 87, 31, 0.22),
+    0 12px 28px rgba(0, 0, 0, 0.32);
+}
+
+/* Підпис під назвою */
+.hero-brand-subtitle {
+  display: block;
+  color: #fffaf2;
+  font-size: clamp(13px, 1.35vw, 21px);
+  font-weight: 900;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.38);
+}
+
+/* Щоб старі стилі hero-title не ламали новий титул */
+.hero-title.hero-brand-title {
+  font-size: initial;
+  letter-spacing: normal;
+  font-weight: initial;
+}
+
+/* Мобільна адаптація */
+@media (max-width: 680px) {
+  .hero-brand-title {
+    gap: 8px;
+    margin: 18px 0 14px;
+  }
+
+  .hero-brand-name {
+    font-size: clamp(58px, 18vw, 94px);
+    line-height: 0.88;
+  }
+
+  .hero-brand-subtitle {
+    font-size: 12px;
+    letter-spacing: 0.22em;
+  }
+}
