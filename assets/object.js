@@ -597,6 +597,89 @@ function updateGallery() {
     img.classList.toggle("active", index === currentSlide);
   });
 }
+/* ================================
+   PHOTO LIGHTBOX
+   Великий перегляд фото
+================================ */
+
+function updatePhotoLightbox() {
+  const modalImg = document.getElementById("photoLightboxImg");
+  const modalCounter = document.getElementById("photoLightboxCounter");
+
+  if (!modalImg || !images.length) return;
+
+  modalImg.src = images[lightboxSlide];
+
+  if (modalCounter) {
+    modalCounter.textContent = `${lightboxSlide + 1} / ${images.length}`;
+  }
+}
+
+function isPhotoLightboxOpen() {
+  const modal = document.getElementById("photoLightbox");
+  return modal?.classList.contains("active");
+}
+
+window.openPhotoLightbox = function(index = currentSlide) {
+  if (!images.length) return;
+
+  const modal = document.getElementById("photoLightbox");
+
+  if (!modal) return;
+
+  lightboxSlide = Number.isInteger(index) ? index : currentSlide;
+
+  if (lightboxSlide < 0) lightboxSlide = 0;
+  if (lightboxSlide >= images.length) lightboxSlide = images.length - 1;
+
+  updatePhotoLightbox();
+
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("no-scroll");
+};
+
+window.closePhotoLightbox = function() {
+  const modal = document.getElementById("photoLightbox");
+
+  if (!modal) return;
+
+  modal.classList.remove("active");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("no-scroll");
+
+  currentSlide = lightboxSlide;
+  updateGallery();
+};
+
+window.changeLightboxSlide = function(step) {
+  if (!images.length) return;
+
+  lightboxSlide += step;
+
+  if (lightboxSlide >= images.length) lightboxSlide = 0;
+  if (lightboxSlide < 0) lightboxSlide = images.length - 1;
+
+  updatePhotoLightbox();
+};
+
+function bindGalleryOpenEvents() {
+  const mainImg = document.getElementById("mainImg");
+
+  if (!mainImg || mainImg.dataset.lightboxBound === "1") return;
+
+  mainImg.dataset.lightboxBound = "1";
+
+  mainImg.addEventListener("dblclick", () => {
+    window.openPhotoLightbox(currentSlide);
+  });
+
+  mainImg.addEventListener("click", () => {
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      window.openPhotoLightbox(currentSlide);
+    }
+  });
+}
 
 window.changeSlide = function(step) {
   if (!images.length) return;
