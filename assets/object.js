@@ -701,6 +701,25 @@ window.selectImage = function(index) {
 };
 
 document.addEventListener("keydown", event => {
+  if (isPhotoLightboxOpen()) {
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      window.changeLightboxSlide(1);
+    }
+
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      window.changeLightboxSlide(-1);
+    }
+
+    if (event.key === "Escape") {
+      event.preventDefault();
+      window.closePhotoLightbox();
+    }
+
+    return;
+  }
+
   if (event.key === "ArrowRight") window.changeSlide(1);
   if (event.key === "ArrowLeft") window.changeSlide(-1);
 });
