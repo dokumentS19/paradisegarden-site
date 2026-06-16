@@ -2491,3 +2491,50 @@ html {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.10);
 }
+/* ================================
+   HERO LIGHT FINAL OVERRIDE
+   Робимо головний екран світлішим
+================================ */
+
+.hero {
+  background-position: center !important;
+  background-size: cover !important;
+}
+
+/* Прибираємо надто темний шар */
+.hero::before {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5, 28, 18, 0.12) 0%,
+      rgba(5, 28, 18, 0.08) 45%,
+      rgba(5, 28, 18, 0.22) 100%
+    ) !important;
+  opacity: 1 !important;
+}
+
+/* Якщо є другий затемнюючий шар — послаблюємо */
+.hero::after {
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(232, 137, 18, 0.08),
+      transparent 52%
+    ) !important;
+  opacity: 1 !important;
+}
+
+/* Шапку робимо трохи м’якшою, не чорною */
+.topbar {
+  background: rgba(7, 43, 30, 0.92) !important;
+  border-bottom: 1px solid rgba(232, 137, 18, 0.16) !important;
+}
+
+/* Статистика трохи світліша */
+.hero-stats,
+.stats-row,
+.hero .stats,
+.hero .stat-card {
+  background: rgba(8, 31, 22, 0.30) !important;
+  border-color: rgba(232, 137, 18, 0.20) !important;
+}
