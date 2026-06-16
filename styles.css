@@ -1729,3 +1729,60 @@ select:focus {
     padding: 13px 16px !important;
   }
 }
+/* ================================
+   HERO LOGO — FINAL RESPONSIVE
+================================ */
+
+.hero-logo-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 400px;
+  width: 100%;
+  margin: 14px auto 12px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.hero-logo-img {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 0;
+  box-shadow: none;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.30));
+}
+
+@media (max-width: 900px) {
+  .hero-logo-title {
+    max-width: 340px;
+  }
+
+  .hero-logo-img {
+    max-width: 340px;
+  }
+}
+
+@media (max-width: 680px) {
+  .hero-logo-title {
+    max-width: 270px;
+  }
+
+  .hero-logo-img {
+    max-width: 270px;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-logo-title {
+    max-width: 240px;
+  }
+
+  .hero-logo-img {
+    max-width: 240px;
+  }
+}
