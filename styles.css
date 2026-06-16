@@ -1798,3 +1798,12 @@ select:focus {
   font-size: clamp(24px, 2.4vw, 32px) !important;
   line-height: 1.15 !important;
 }
+/* Заголовок "Актуальні пропозиції нерухомості" — менший і курсивом */
+#objects .section-head h2,
+.objects .section-head h2 {
+  font-size: clamp(22px, 2.2vw, 30px) !important;
+  line-height: 1.15 !important;
+  font-style: italic !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+}
