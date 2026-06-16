@@ -1818,3 +1818,86 @@ select:focus {
   font-weight: 700 !important;
   letter-spacing: -0.01em !important;
 }
+/* ================================
+   OBJECT CARDS TEXT FIX
+   Менші назви, без підкреслення, яскравіша ціна
+================================ */
+
+/* Назви оголошень — менші й без підкреслення */
+.card-body h3,
+.card-body h3 a,
+.objects-grid .card h3,
+.objects-grid .card h3 a {
+  font-size: 19px !important;
+  line-height: 1.25 !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+  color: #ffffff !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* Усі посилання всередині картки — без підкреслення */
+.card,
+.card a,
+.card-body a,
+.card-meta a,
+.objects-grid .card a {
+  text-decoration: none !important;
+}
+
+/* Характеристики — менші, спокійніші, без підкреслення */
+.card-meta,
+.card-meta div,
+.card-meta span,
+.card-meta a,
+.card-body p,
+.card-body li {
+  font-size: 15px !important;
+  line-height: 1.45 !important;
+  color: #cbd5e1 !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+}
+
+/* Іконки/рядки характеристик не повинні виглядати як старі посилання */
+.card-meta * {
+  text-decoration: none !important;
+}
+
+/* Ціна — яскравіша і головний акцент */
+.price,
+.card .price,
+.card-body .price {
+  color: #22ff7a !important;
+  font-size: 26px !important;
+  font-weight: 950 !important;
+  line-height: 1.15 !important;
+  text-shadow:
+    0 0 12px rgba(34, 255, 122, 0.28),
+    0 4px 14px rgba(0, 0, 0, 0.28) !important;
+}
+
+/* Мобільна версія */
+@media (max-width: 680px) {
+  .card-body h3,
+  .card-body h3 a,
+  .objects-grid .card h3,
+  .objects-grid .card h3 a {
+    font-size: 18px !important;
+  }
+
+  .card-meta,
+  .card-meta div,
+  .card-meta span,
+  .card-meta a,
+  .card-body p,
+  .card-body li {
+    font-size: 14px !important;
+  }
+
+  .price,
+  .card .price,
+  .card-body .price {
+    font-size: 24px !important;
+  }
+}
