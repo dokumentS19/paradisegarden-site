@@ -1786,3 +1786,10 @@ select:focus {
     max-width: 240px;
   }
 }
+/* Зменшуємо заголовок блоку об'єктів */
+#objects .section-head h2,
+.objects .section-head h2 {
+  font-size: clamp(26px, 2.6vw, 34px) !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.02em;
+}
