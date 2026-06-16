@@ -1166,7 +1166,31 @@
   </aside>
 
 </main>
+<script>
+  function updateHouseFieldsTitle() {
+    const propertyType = document.getElementById("propertyType")?.value;
+    const title = document.getElementById("houseFieldsTitle");
 
+    if (!title) return;
+
+    if (propertyType === "dacha") {
+      title.textContent = "Характеристики дачі";
+      return;
+    }
+
+    title.textContent = "Характеристики будинку";
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    updateHouseFieldsTitle();
+
+    const propertyTypeSelect = document.getElementById("propertyType");
+
+    if (propertyTypeSelect) {
+      propertyTypeSelect.addEventListener("change", updateHouseFieldsTitle);
+    }
+  });
+</script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I&loading=async" async defer></script>
 <script type="module" src="admin.js?v=6"></script>
 
