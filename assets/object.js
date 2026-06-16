@@ -342,9 +342,9 @@ function getUtilitiesIncludedName(value) {
 
 function getLayoutName(value) {
   return dict(value, {
-    separate: "Окрема",
-    adjacent: "Суміжна",
-    mixed: "Суміжно-роздільна",
+    separate: "Роздільні кімнати",
+    adjacent: "Суміжні кімнати",
+    mixed: "Суміжно-роздільні кімнати",
     studio: "Студія",
     free: "Вільне планування",
     cabinet: "Кабінетна система",
