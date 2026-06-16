@@ -454,6 +454,11 @@ ${
   item.propertyType === "house" && houseTypeName
     ? `<span>🏡 ${houseTypeName}</span>`
     : ""
+} 
+${
+  item.propertyType === "apartment" && apartmentFloorText
+    ? `<span>🏢 Поверх: ${apartmentFloorText}</span>`
+    : ""
 }
 <span>📐 Площа: ${area}</span>
             <span>👁 Переглядів: ${views}</span>
