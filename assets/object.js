@@ -596,6 +596,7 @@ function updateGallery() {
   document.querySelectorAll(".thumbs img").forEach((img, index) => {
     img.classList.toggle("active", index === currentSlide);
   });
+  bindGalleryOpenEvents();
 }
 /* ================================
    PHOTO LIGHTBOX
