@@ -2411,46 +2411,48 @@ html {
   }
 }
 /* ================================
-   LIGHTER HERO STYLE
+   LIGHTER HOME HERO
    Світліший головний екран
 ================================ */
 
-.hero {
-  position: relative;
-  background-color: #f5efe3;
+/* М’якша шапка */
+.topbar {
+  background: rgba(6, 38, 26, 0.94);
+  border-bottom: 1px solid rgba(232, 137, 18, 0.18);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
 }
 
-/* Світліший затемнюючий шар поверх фото */
+/* Щоб hero мав правильне накладання шарів */
+.hero {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Світліший оверлей поверх фото */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background:
     linear-gradient(
       180deg,
-      rgba(5, 28, 18, 0.38) 0%,
-      rgba(5, 28, 18, 0.30) 42%,
-      rgba(5, 28, 18, 0.44) 100%
+      rgba(5, 28, 18, 0.30) 0%,
+      rgba(5, 28, 18, 0.24) 45%,
+      rgba(5, 28, 18, 0.38) 100%
     ),
     radial-gradient(
       circle at center,
       rgba(232, 137, 18, 0.10),
-      transparent 45%
+      transparent 48%
     );
-  z-index: 1;
-  pointer-events: none;
 }
 
-/* Щоб контент був поверх оверлею */
-.hero > * {
-  position: relative;
-  z-index: 2;
-}
-
-/* М’якший текст */
+/* Текст лишається читабельним, але без надмірної темряви */
 .hero h1 {
   color: #ffffff;
-  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.34);
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.36);
 }
 
 .hero p {
@@ -2458,11 +2460,34 @@ html {
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.30);
 }
 
-/* Статистика внизу hero — трохи світліша */
+/* Плашка локації зверху hero */
+.hero .section-label,
+.hero-badge,
+.hero-label {
+  background: rgba(149, 87, 31, 0.56);
+  border-color: rgba(232, 137, 18, 0.34);
+  color: #fff7ed;
+}
+
+/* Блоки статистики внизу hero — м’якші */
 .hero-stats,
 .stats-row,
-.hero .stats {
-  background: rgba(8, 31, 22, 0.48);
+.hero .stats,
+.hero .stat-card {
+  background: rgba(8, 31, 22, 0.44);
   border-color: rgba(232, 137, 18, 0.24);
   backdrop-filter: blur(8px);
+}
+
+/* Помаранчеві кнопки залишаємо, тільки трохи м’якше тінь */
+.hero .cta-big {
+  background: linear-gradient(135deg, #e88912, #a6631f);
+  color: #ffffff;
+  box-shadow: 0 12px 26px rgba(149, 87, 31, 0.28);
+}
+
+.hero .cta-outline {
+  border-color: rgba(255, 243, 223, 0.44);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.10);
 }
