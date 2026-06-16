@@ -2928,9 +2928,16 @@ html {
   }
 }
 /* Логотип у hero — трохи більший */
-.hero-logo-title {
-  max-width: 390px;
-  margin: 14px auto 12px;
+..hero-logo-title {
+  max-width: 360px;
+  margin: 16px auto 14px;
+}
+
+.hero-logo-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
 }
 
 .hero-logo-img {
@@ -2944,7 +2951,7 @@ html {
 /* Мобільна версія */
 @media (max-width: 680px) {
   .hero-logo-title {
-    max-width: 270px;
+    max-width: 250px;
     margin: 12px auto 10px;
   }
 }
