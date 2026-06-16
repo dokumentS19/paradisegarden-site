@@ -2589,11 +2589,10 @@ html {
 }
 
 .hero-stats div {
-  background: rgba(4, 20, 13, 0.34) !important;
-  border: 1px solid rgba(232, 137, 18, 0.20) !important;
+  background: rgba(4, 20, 13, 0.46) !important;
+  border: 1px solid rgba(232, 137, 18, 0.22) !important;
   backdrop-filter: blur(10px) !important;
 }
-
 /* Помаранчеві кнопки залишаємо */
 .hero .cta-big {
   background: linear-gradient(135deg, #e88912, #95571f) !important;
