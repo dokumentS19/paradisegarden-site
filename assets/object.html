@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="uk"> 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Обʼєкт нерухомості — АН «Райський Сад»</title>
+
+  <link rel="stylesheet" href="../styles.css">
+
+  <style>
+    .object-shell {
+      max-width: 1280px;
+      margin: 2px auto 20px;
+      padding: 0 14px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      text-decoration: none;
+      color: #fff3df;
+      margin: 0 0 4px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: rgba(8, 21, 15, 0.82);
+      border: 1px solid rgba(232, 137, 18, 0.24);
+      font-size: 12px;
+      line-height: 1.1;
+      transition: 0.25s ease;
+    }
+
+    .back-link:hover {
+      background: rgba(149, 87, 31, 0.28);
+      transform: translateY(-1px);
+    }
+
+    .object-hero-card {
+      background: linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.20);
+      border-radius: 14px;
+      padding: 7px;
+      overflow: hidden;
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.28);
+    }
+
+    .object-title-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: start;
+      margin-bottom: 5px;
+    }
+
+    .object-title-row > div { min-width: 0; }
+
+    .object-hero-card .section-label {
+      font-size: 7.5px;
+      padding: 3px 6px;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+    }
+
+    .object-title-row h1 {
+      margin: 3px 0 0;
+      font-size: clamp(13px, 1.05vw, 16px);
+      line-height: 1.12;
+      font-weight: 650;
+      letter-spacing: -0.05px;
+      max-width: 760px;
+    }
+
+    .object-price {
+      color: #ffffff;
+      font-size: clamp(13px, 1vw, 15px);
+      font-weight: 700;
+      white-space: nowrap;
+      line-height: 1;
+      padding: 5px 9px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #e88912, #95571f);
+      border: 1px solid rgba(232, 137, 18, 0.32);
+      text-align: right;
+      box-shadow: 0 12px 28px rgba(149, 87, 31, 0.26);
+    }
+
+    .status-line {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-top: 5px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(149, 87, 31, 0.30);
+      border: 1px solid rgba(232, 137, 18, 0.30);
+      color: #fff3df;
+      font-size: 8.5px;
+      line-height: 1.1;
+    }
+
+    .gallery {
+      display: grid;
+      gap: 4px;
+    }
+
+    .gallery-main {
+      position: relative;
+      width: 100%;
+      height: min(54vw, calc(100vh - 230px));
+      min-height: 430px;
+      max-height: 680px;
+      border-radius: 13px;
+      overflow: hidden;
+      background: #08150f;
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery-main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: var(--gallery-bg);
+      background-size: cover;
+      background-position: center;
+      filter: blur(18px);
+      transform: scale(1.12);
+      opacity: 0.22;
+      z-index: 1;
+    }
+
+    .gallery-main::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(4, 20, 13, 0.34);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .gallery-main img {
+      position: relative;
+      z-index: 3;
+      display: block;
+      user-select: none;
+      object-fit: contain;
+      object-position: center center;
+    }
+
+    .gallery-main img.horizontal {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      object-position: center center;
+    }
+
+    .gallery-main img.vertical {
+      width: auto;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      object-position: center center;
+    }
+
+    .gallery-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 30;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: rgba(4, 20, 13, 0.76);
+      color: white;
+      font-size: 19px;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      transition: 0.25s ease;
+      display: grid;
+      place-items: center;
+      line-height: 1;
+    }
+
+    .gallery-btn:hover {
+      background: rgba(232, 137, 18, 0.72);
+      transform: translateY(-50%) scale(1.06);
+    }
+
+    .gallery-btn.left { left: 12px; }
+    .gallery-btn.right { right: 12px; }
+
+    .counter {
+      position: absolute;
+      z-index: 30;
+      left: 50%;
+      bottom: 7px;
+      transform: translateX(-50%);
+      background: rgba(4, 20, 13, 0.82);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 999px;
+      backdrop-filter: blur(12px);
+      font-size: 10px;
+      border: 1px solid rgba(232, 137, 18, 0.20);
+    }
+
+    .thumbs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 3px 2px 4px;
+      background: transparent;
+    }
+
+    .thumbs img {
+      width: 70px;
+      height: 46px;
+      object-fit: cover;
+      object-position: center center;
+      border-radius: 7px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      opacity: 0.72;
+      transition: 0.25s ease;
+      flex: 0 0 auto;
+      background: #08150f;
+    }
+
+    .thumbs img:hover,
+    .thumbs img.active {
+      opacity: 1;
+      border-color: #e88912;
+      transform: translateY(-2px);
+    }
+
+    .object-info-grid {
+      display: grid;
+      grid-template-columns: 1.18fr 0.82fr;
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .object-box,
+    .seller-card {
+      background: linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+    }
+
+    .seller-card {
+      background:
+        radial-gradient(circle at top right, rgba(232, 137, 18, 0.13), transparent 36%),
+        rgba(13, 25, 22, 0.96);
+      border-color: rgba(232, 137, 18, 0.20);
+    }
+
+    .object-box h2,
+    .object-box h3,
+    .seller-card h3 {
+      margin-top: 0;
+    }
+
+    .object-box h2 { font-size: 19px; }
+    .object-box h3 { font-size: 16px; }
+    .seller-card h3 { font-size: 18px; }
+
+    .object-description {
+      color: #dbeafe;
+      line-height: 1.6;
+      white-space: pre-line;
+      font-size: 14px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .feature {
+      background: rgba(8, 21, 15, 0.78);
+      border: 1px solid rgba(232, 137, 18, 0.16);
+      border-radius: 11px;
+      padding: 10px;
+    }
+
+    .feature small {
+      display: block;
+      color: #94a3b8;
+      margin-bottom: 4px;
+      font-size: 11px;
+    }
+
+    .feature strong {
+      color: white;
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .seller-card p {
+      color: #dbeafe;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .seller-actions {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .seller-actions button,
+    .seller-actions a {
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .map-box {
+      height: 270px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(232, 137, 18, 0.20);
+      background: #08150f;
+    }
+
+    .similar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .similar-card {
+      display: block;
+      text-decoration: none;
+      color: white;
+      background: rgba(8, 21, 15, 0.86);
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: 0.25s ease;
+    }
+
+    .similar-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(232, 137, 18, 0.46);
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.28);
+    }
+
+    .similar-card img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+    }
+
+    .similar-card div { padding: 10px; }
+    .similar-card p { color: #dbeafe; margin: 6px 0; }
+
+    /* ================================
+       PHOTO LIGHTBOX — FINAL ANIMATED
+    ================================ */
+
+    .photo-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.88);
+      padding: 52px 10px 18px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.24s ease, visibility 0.24s ease;
+    }
+
+    .photo-lightbox.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .photo-lightbox.closing {
+      opacity: 0;
+      visibility: visible;
+      pointer-events: none;
+    }
+
+    .photo-lightbox-img {
+      display: block;
+      width: 98vw;
+      height: 88vh;
+      max-width: 1700px;
+      max-height: 980px;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.60);
+      opacity: 0;
+      transform: scale(0.965);
+      transition: opacity 0.24s ease 0.06s, transform 0.24s ease 0.06s;
+    }
+
+    .photo-lightbox.active .photo-lightbox-img {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .photo-lightbox.closing .photo-lightbox-img {
+      opacity: 0;
+      transform: scale(0.985);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .photo-lightbox-img.photo-swap {
+      animation: photoSwap 0.22s ease both;
+    }
+
+    .photo-lightbox-btn {
+      position: fixed;
+      z-index: 10001;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(4, 20, 13, 0.78);
+      color: #ffffff;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity 0.22s ease 0.12s, transform 0.22s ease 0.12s, background 0.25s ease;
+    }
+
+    .photo-lightbox.active .photo-lightbox-btn {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .photo-lightbox.closing .photo-lightbox-btn {
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity 0.14s ease, transform 0.14s ease;
+    }
+
+    .photo-lightbox-btn:hover { background: rgba(232, 137, 18, 0.78); }
+
+    .photo-lightbox-close {
+      top: 16px;
+      right: 18px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .photo-lightbox-back {
+      top: 16px;
+      left: 18px;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .photo-lightbox-arrow {
+      top: 50%;
+      transform: translateY(-50%);
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      font-size: 34px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+    }
+
+    .photo-lightbox.active .photo-lightbox-arrow { transform: translateY(-50%); }
+    .photo-lightbox-arrow.arrow-pulse { animation: arrowPulse 0.22s ease both; }
+    .photo-lightbox-prev { left: 18px; }
+    .photo-lightbox-next { right: 18px; }
+
+    .photo-lightbox-counter {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      z-index: 10001;
+      color: #ffffff;
+      background: rgba(4, 20, 13, 0.82);
+      border: 1px solid rgba(232, 137, 18, 0.24);
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: 13px;
+      backdrop-filter: blur(12px);
+      opacity: 0;
+      transition: opacity 0.22s ease 0.16s;
+    }
+
+    .photo-lightbox.active .photo-lightbox-counter { opacity: 1; }
+    .photo-lightbox.closing .photo-lightbox-counter { opacity: 0; transition: opacity 0.14s ease; }
+
+    @keyframes photoSwap {
+      from { opacity: 0.45; transform: scale(0.985); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes arrowPulse {
+      0% { transform: translateY(-50%) scale(1); }
+      50% { transform: translateY(-50%) scale(1.14); }
+      100% { transform: translateY(-50%) scale(1); }
+    }
+
+    @media (max-height: 820px) and (min-width: 900px) {
+      .gallery-main {
+        height: min(50vw, calc(100vh - 210px));
+        min-height: 390px;
+        max-height: 600px;
+      }
+
+      .thumbs img {
+        width: 66px;
+        height: 44px;
+      }
+    }
+
+    @media (max-width: 950px) {
+      .object-info-grid { grid-template-columns: 1fr; }
+      .object-title-row { grid-template-columns: 1fr; }
+      .object-price { width: fit-content; text-align: left; }
+      .gallery-main { height: 42vh; min-height: 260px; max-height: none; }
+    }
+
+    @media (max-width: 620px) {
+      .object-shell {
+        margin: 2px auto 16px;
+        padding: 0 8px;
+      }
+
+      .object-title-row h1 { font-size: 13px; }
+      .object-price { width: fit-content; font-size: 13px; text-align: left; }
+      .pill { font-size: 8px; padding: 2px 5px; }
+
+      .gallery-main {
+        height: 38vh;
+        min-height: 230px;
+        border-radius: 13px;
+      }
+
+      .gallery-btn { width: 30px; height: 30px; font-size: 18px; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .thumbs img { width: 64px; height: 42px; }
+      .object-box, .seller-card { padding: 13px; border-radius: 13px; }
+
+      .photo-lightbox { padding: 62px 8px 34px; }
+      .photo-lightbox-img { width: 98vw; height: 82vh; object-fit: contain; }
+      .photo-lightbox-arrow { width: 40px; height: 40px; font-size: 30px; }
+      .photo-lightbox-prev { left: 8px; }
+      .photo-lightbox-next { right: 8px; }
+      .photo-lightbox-back { left: 10px; padding: 0 13px; font-size: 14px; }
+      .photo-lightbox-close { right: 10px; }
+    }
+  </style>
+</head>
+
+<body class="object-page-body brand-refresh">
+
+<header class="topbar">
+  <a href="../index.html" class="brand">
+    <span class="brand-icon">РС</span>
+    <span>
+      <strong>Райський Сад</strong>
+      <small>Обʼєкт нерухомості</small>
+    </span>
+  </a>
+
+  <nav class="nav">
+    <a href="../index.html">🏠 Головна</a>
+    <a href="../favorites.html">❤️ Обране</a>
+    <a href="../dashboard.html">👤 Кабінет</a>
+    <a href="../admin.html">⚙️ Адмін</a>
+  </nav>
+</header>
+
+<main class="object-shell">
+  <div id="objectPage" class="object-page">
+    <section class="object-hero-card">
+      <p>Завантаження обʼєкта...</p>
+    </section>
+  </div>
+</main>
+
+<div id="photoLightbox" class="photo-lightbox" aria-hidden="true">
+  <button class="photo-lightbox-btn photo-lightbox-back" type="button" onclick="closePhotoLightbox()">← Назад</button>
+  <button class="photo-lightbox-btn photo-lightbox-close" type="button" onclick="closePhotoLightbox()" aria-label="Закрити">×</button>
+  <button class="photo-lightbox-btn photo-lightbox-arrow photo-lightbox-prev" type="button" onclick="changeLightboxSlide(-1)" aria-label="Попереднє фото">‹</button>
+  <img id="photoLightboxImg" class="photo-lightbox-img" src="" alt="Фото обʼєкта">
+  <button class="photo-lightbox-btn photo-lightbox-arrow photo-lightbox-next" type="button" onclick="changeLightboxSlide(1)" aria-label="Наступне фото">›</button>
+  <div id="photoLightboxCounter" class="photo-lightbox-counter">1 / 1</div>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWP2WuQloBOErhfB4zrh1GWgd90BCI2I"></script>
+<script type="module" src="object.js"></script>
+
+</body>
+</html>
