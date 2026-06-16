@@ -2880,3 +2880,38 @@ html {
     max-width: 250px;
   }
 }
+/* ================================
+   HERO LOGO IMAGE
+   Логотип Райський Сад у центрі hero
+================================ */
+
+.hero-logo-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 22px auto 18px;
+  max-width: 760px;
+  width: 100%;
+}
+
+.hero-logo-img {
+  display: block;
+  width: 100%;
+  max-width: 760px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 26px rgba(0, 0, 0, 0.32));
+}
+
+/* Мобільна версія */
+@media (max-width: 680px) {
+  .hero-logo-title {
+    max-width: 330px;
+    margin: 16px auto 14px;
+  }
+
+  .hero-logo-img {
+    width: 100%;
+    max-width: 330px;
+  }
+}
