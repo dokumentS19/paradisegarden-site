@@ -693,7 +693,248 @@ photo-lightbox {
     transform: translateY(0);
   }
 }
-</style>
+ /* ================================
+   PHOTO LIGHTBOX — FINAL ANIMATED OVERRIDE
+================================ */
+
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.88);
+  padding: 52px 10px 18px;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 0.24s ease,
+    visibility 0.24s ease;
+}
+
+.photo-lightbox.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.photo-lightbox.closing {
+  opacity: 0;
+  visibility: visible;
+  pointer-events: none;
+}
+
+.photo-lightbox-img {
+  display: block;
+  width: 98vw;
+  height: 88vh;
+  max-width: 1700px;
+  max-height: 980px;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.60);
+
+  opacity: 0;
+  transform: scale(0.965);
+  transition:
+    opacity 0.24s ease 0.06s,
+    transform 0.24s ease 0.06s;
+}
+
+.photo-lightbox.active .photo-lightbox-img {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.photo-lightbox.closing .photo-lightbox-img {
+  opacity: 0;
+  transform: scale(0.985);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.photo-lightbox-img.photo-swap {
+  animation: photoSwap 0.22s ease both;
+}
+
+.photo-lightbox-btn {
+  position: fixed;
+  z-index: 10001;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(4, 20, 13, 0.78);
+  color: #ffffff;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+
+  opacity: 0;
+  transform: translateY(-4px);
+
+  transition:
+    opacity 0.22s ease 0.12s,
+    transform 0.22s ease 0.12s,
+    background 0.25s ease;
+}
+
+.photo-lightbox.active .photo-lightbox-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.photo-lightbox.closing .photo-lightbox-btn {
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.14s ease,
+    transform 0.14s ease;
+}
+
+.photo-lightbox-btn:hover {
+  background: rgba(232, 137, 18, 0.78);
+}
+
+.photo-lightbox-close {
+  top: 16px;
+  right: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 32px;
+  line-height: 1;
+}
+
+.photo-lightbox-back {
+  top: 16px;
+  left: 18px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.photo-lightbox-arrow {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  font-size: 34px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+}
+
+.photo-lightbox.active .photo-lightbox-arrow {
+  transform: translateY(-50%);
+}
+
+.photo-lightbox-arrow.arrow-pulse {
+  animation: arrowPulse 0.22s ease both;
+}
+
+.photo-lightbox-prev {
+  left: 18px;
+}
+
+.photo-lightbox-next {
+  right: 18px;
+}
+
+.photo-lightbox-counter {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 10001;
+  color: #ffffff;
+  background: rgba(4, 20, 13, 0.82);
+  border: 1px solid rgba(232, 137, 18, 0.24);
+  border-radius: 999px;
+  padding: 7px 13px;
+  font-size: 13px;
+  backdrop-filter: blur(12px);
+
+  opacity: 0;
+  transition: opacity 0.22s ease 0.16s;
+}
+
+.photo-lightbox.active .photo-lightbox-counter {
+  opacity: 1;
+}
+
+.photo-lightbox.closing .photo-lightbox-counter {
+  opacity: 0;
+  transition: opacity 0.14s ease;
+}
+
+@keyframes photoSwap {
+  from {
+    opacity: 0.45;
+    transform: scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes arrowPulse {
+  0% {
+    transform: translateY(-50%) scale(1);
+  }
+
+  50% {
+    transform: translateY(-50%) scale(1.14);
+  }
+
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+@media (max-width: 620px) {
+  .photo-lightbox {
+    padding: 62px 8px 34px;
+  }
+
+  .photo-lightbox-img {
+    width: 98vw;
+    height: 82vh;
+    object-fit: contain;
+  }
+
+  .photo-lightbox-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 30px;
+  }
+
+  .photo-lightbox-prev {
+    left: 8px;
+  }
+
+  .photo-lightbox-next {
+    right: 8px;
+  }
+
+  .photo-lightbox-back {
+    left: 10px;
+    padding: 0 13px;
+    font-size: 14px;
+  }
+
+  .photo-lightbox-close {
+    right: 10px;
+  }
+}
+  
+  </style>
 </head>
 
 <body class="object-page-body brand-refresh">
