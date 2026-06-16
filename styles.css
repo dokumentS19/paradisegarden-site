@@ -2927,23 +2927,60 @@ html {
     max-width: 280px;
   }
 }
-/* Логотип у hero — трохи більший */
+/* ================================
+   HERO LOGO — FINAL RESPONSIVE
+   Логотип Райський Сад у hero
+================================ */
+
 .hero-logo-title {
-  max-width: 380px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 400px;
+  width: 100%;
   margin: 14px auto 12px;
 }
 
 .hero-logo-img {
+  display: block;
   width: 100%;
+  max-width: 400px;
   height: auto;
   object-fit: contain;
-  display: block;
   filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.30));
 }
 
+/* Планшети */
+@media (max-width: 900px) {
+  .hero-logo-title {
+    max-width: 340px;
+    margin: 13px auto 11px;
+  }
+
+  .hero-logo-img {
+    max-width: 340px;
+  }
+}
+
+/* Телефони */
 @media (max-width: 680px) {
   .hero-logo-title {
-    max-width: 260px;
+    max-width: 270px;
     margin: 12px auto 10px;
+  }
+
+  .hero-logo-img {
+    max-width: 270px;
+  }
+}
+
+/* Дуже вузькі телефони */
+@media (max-width: 420px) {
+  .hero-logo-title {
+    max-width: 240px;
+  }
+
+  .hero-logo-img {
+    max-width: 240px;
   }
 }
