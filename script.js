@@ -176,6 +176,27 @@ function getHouseTypeName(value) {
     duplex: "Дуплекс"
   }[value] || "";
 }
+function getApartmentFloorText(item) {
+  const a = item.apartment;
+
+  if (!a) {
+    return "";
+  }
+
+  if (a.floor && a.floorsTotal) {
+    return `${a.floor} / ${a.floorsTotal}`;
+  }
+
+  if (a.floor) {
+    return `${a.floor}`;
+  }
+
+  if (a.floorsTotal) {
+    return `Будинок ${a.floorsTotal} пов.`;
+  }
+
+  return "";
+}
 /* ================================
    MOBILE MENU
 ================================ */
