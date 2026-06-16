@@ -311,6 +311,362 @@ h1 {
       .article-image { min-height: 230px; padding: 22px; }
       .compare { display: block; overflow-x: auto; }
     }
+    /* ================================
+   LIGHT PAPER STYLE FOR GUIDE ARTICLE
+   Стиль як у reiestry-komunalni-borhy.html
+================================ */
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(184, 121, 46, 0.10), transparent 34%),
+    linear-gradient(180deg, #fbf6ee, #f4eadb) !important;
+  color: #1f2933 !important;
+}
+
+/* Шапка залишаємо фірмову зелену */
+.topbar {
+  background: rgba(18, 67, 45, 0.96) !important;
+  border-bottom: 1px solid rgba(184, 121, 46, 0.20) !important;
+  box-shadow: 0 10px 26px rgba(80, 50, 20, 0.12) !important;
+}
+
+.brand-icon {
+  background: linear-gradient(135deg, #e88912, #95571f) !important;
+  color: #ffffff !important;
+}
+
+.brand strong,
+.brand small,
+.nav a {
+  color: #ffffff !important;
+}
+
+.nav a:hover,
+.nav a.active {
+  background: rgba(232, 137, 18, 0.16) !important;
+  color: #ffffff !important;
+}
+
+/* Загальна ширина сторінки */
+.article-page,
+.article-shell,
+.article-wrapper,
+.guide-page,
+.post-page {
+  max-width: 1240px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 18px !important;
+  padding-right: 18px !important;
+}
+
+/* Сітка: основна стаття + правий блок */
+.article-layout,
+.article-grid,
+.post-layout,
+.guide-layout,
+.content-layout {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 320px !important;
+  gap: 24px !important;
+  align-items: start !important;
+}
+
+/* Кнопка назад */
+.back-link,
+.back-to-blog,
+.article-back {
+  color: #8a551e !important;
+  background: rgba(255, 250, 242, 0.92) !important;
+  border: 1px solid rgba(138, 85, 30, 0.24) !important;
+  box-shadow: 0 10px 24px rgba(80, 50, 20, 0.08) !important;
+}
+
+.back-link:hover,
+.back-to-blog:hover,
+.article-back:hover {
+  background: #ffffff !important;
+  color: #8a551e !important;
+}
+
+/* Основна картка статті */
+.article-card,
+.article-main,
+.article-view,
+.post-card,
+.guide-card,
+.content-card {
+  background: #fffaf2 !important;
+  border: 1px solid rgba(138, 85, 30, 0.24) !important;
+  color: #1f2933 !important;
+  box-shadow: 0 16px 36px rgba(80, 50, 20, 0.10) !important;
+}
+
+/* Верхній блок / hero статті */
+.article-hero,
+.post-hero,
+.guide-hero,
+.article-header-card {
+  background:
+    radial-gradient(circle at top right, rgba(184, 121, 46, 0.13), transparent 34%),
+    linear-gradient(180deg, #fffaf2, #f8eddd) !important;
+  border: 1px solid rgba(138, 85, 30, 0.24) !important;
+  box-shadow: 0 14px 32px rgba(80, 50, 20, 0.10) !important;
+}
+
+/* Якщо у статті є картинка зверху */
+.article-hero-img,
+.article-cover,
+.article-image,
+.post-image,
+.guide-cover,
+.hero-image {
+  background: #fff4e4 !important;
+  border-bottom: 1px solid rgba(138, 85, 30, 0.18) !important;
+}
+
+/* Прибираємо надто темний оверлей з картинки */
+.article-hero-img::before,
+.article-cover::before,
+.article-image::before,
+.post-image::before,
+.guide-cover::before,
+.hero-image::before {
+  background: linear-gradient(
+    180deg,
+    rgba(5, 28, 18, 0.10),
+    rgba(5, 28, 18, 0.18)
+  ) !important;
+}
+
+/* Заголовки */
+.article-card h1,
+.article-card h2,
+.article-card h3,
+.article-main h1,
+.article-main h2,
+.article-main h3,
+.article-view h1,
+.article-view h2,
+.article-view h3,
+.post-card h1,
+.post-card h2,
+.post-card h3,
+.guide-card h1,
+.guide-card h2,
+.guide-card h3,
+.article-hero h1,
+.post-hero h1,
+.guide-hero h1 {
+  color: #1f2933 !important;
+}
+
+/* Текст */
+.article-card p,
+.article-card li,
+.article-main p,
+.article-main li,
+.article-view p,
+.article-view li,
+.post-card p,
+.post-card li,
+.guide-card p,
+.guide-card li,
+.article-hero p,
+.post-hero p,
+.guide-hero p {
+  color: #475569 !important;
+}
+
+/* Основний заголовок трохи компактніше */
+.article-card h1,
+.article-main h1,
+.article-view h1,
+.post-card h1,
+.guide-card h1 {
+  font-size: clamp(28px, 3vw, 44px) !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* Теги / пігулки */
+.article-kicker,
+.article-pill,
+.post-pill,
+.article-tag,
+.tag,
+.badge {
+  background: rgba(184, 121, 46, 0.12) !important;
+  border: 1px solid rgba(184, 121, 46, 0.30) !important;
+  color: #8a551e !important;
+}
+
+/* Правий блок */
+.article-sidebar,
+.sidebar,
+.aside {
+  color: #1f2933 !important;
+}
+
+.sidebar-box,
+.article-sidebar-box,
+.sidebar-card,
+.aside-card {
+  background: #fffaf2 !important;
+  border: 1px solid rgba(138, 85, 30, 0.24) !important;
+  color: #1f2933 !important;
+  box-shadow: 0 14px 30px rgba(80, 50, 20, 0.10) !important;
+}
+
+.sidebar-box h3,
+.article-sidebar-box h3,
+.sidebar-card h3,
+.aside-card h3 {
+  color: #1f2933 !important;
+}
+
+.sidebar-box p,
+.sidebar-box li,
+.article-sidebar-box p,
+.article-sidebar-box li,
+.sidebar-card p,
+.sidebar-card li,
+.aside-card p,
+.aside-card li {
+  color: #475569 !important;
+}
+
+/* Пункти правого блоку */
+.sidebar-box li::before,
+.article-sidebar-box li::before,
+.sidebar-card li::before,
+.aside-card li::before {
+  background: linear-gradient(135deg, #b8792e, #8a551e) !important;
+  color: #ffffff !important;
+}
+
+/* Виділені блоки всередині статті */
+.article-note,
+.note,
+.info-box {
+  background: rgba(184, 121, 46, 0.12) !important;
+  border: 1px solid rgba(184, 121, 46, 0.30) !important;
+  color: #3f2f1b !important;
+}
+
+.article-note p,
+.note p,
+.info-box p {
+  color: #3f2f1b !important;
+}
+
+/* CTA внизу статті */
+.article-footer-cta,
+.article-cta,
+.post-cta,
+.guide-cta {
+  background:
+    radial-gradient(circle at top right, rgba(184, 121, 46, 0.16), transparent 34%),
+    #fff4e4 !important;
+  border: 1px solid rgba(184, 121, 46, 0.24) !important;
+  color: #1f2933 !important;
+}
+
+.article-footer-cta h2,
+.article-cta h2,
+.post-cta h2,
+.guide-cta h2 {
+  color: #1f2933 !important;
+}
+
+.article-footer-cta p,
+.article-cta p,
+.post-cta p,
+.guide-cta p {
+  color: #475569 !important;
+}
+
+/* Кнопки */
+.article-page .cta-big,
+.article-shell .cta-big,
+.article-wrapper .cta-big,
+.guide-page .cta-big,
+.post-page .cta-big {
+  background: linear-gradient(135deg, #e88912, #a6631f) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(184, 121, 46, 0.35) !important;
+  box-shadow: 0 12px 24px rgba(138, 85, 30, 0.22) !important;
+}
+
+.article-page .cta-outline,
+.article-shell .cta-outline,
+.article-wrapper .cta-outline,
+.guide-page .cta-outline,
+.post-page .cta-outline {
+  background: #fffaf2 !important;
+  color: #8a551e !important;
+  border: 1px solid rgba(184, 121, 46, 0.38) !important;
+  box-shadow: 0 10px 22px rgba(80, 50, 20, 0.08) !important;
+}
+
+.article-page .cta-outline:hover,
+.article-shell .cta-outline:hover,
+.article-wrapper .cta-outline:hover,
+.guide-page .cta-outline:hover,
+.post-page .cta-outline:hover {
+  background: #fff4e4 !important;
+  color: #6f3f12 !important;
+}
+
+/* Посилання */
+.article-card a,
+.article-main a,
+.article-view a,
+.post-card a,
+.guide-card a,
+.sidebar-box a {
+  color: #8a551e !important;
+}
+
+/* Мобільна адаптація */
+@media (max-width: 920px) {
+  .article-layout,
+  .article-grid,
+  .post-layout,
+  .guide-layout,
+  .content-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .article-page,
+  .article-shell,
+  .article-wrapper,
+  .guide-page,
+  .post-page {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .article-page,
+  .article-shell,
+  .article-wrapper,
+  .guide-page,
+  .post-page {
+    max-width: 100% !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .article-card h1,
+  .article-main h1,
+  .article-view h1,
+  .post-card h1,
+  .guide-card h1 {
+    font-size: 26px !important;
+  }
+}
   </style>
 </head>
 <body>
