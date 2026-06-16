@@ -514,17 +514,24 @@ photo-lightbox {
 }
 
 
+
 .photo-lightbox-img {
   display: block;
-  width: 96vw;
+  width: 98vw;
   height: 88vh;
-  max-width: 1600px;
-  max-height: 950px;
+  max-width: 1700px;
+  max-height: 980px;
   object-fit: contain;
-  border-radius: 14px;
+  border-radius: 10px;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.60);
-  animation: photoZoomIn 0.24s ease both;
+
+  opacity: 0;
+  transform: scale(0.965);
+  transition:
+    opacity 0.24s ease 0.06s,
+    transform 0.24s ease 0.06s;
 }
+
 
 .photo-lightbox-btn {
   position: fixed;
