@@ -533,6 +533,7 @@ photo-lightbox {
 }
 
 
+
 .photo-lightbox-btn {
   position: fixed;
   z-index: 10001;
@@ -541,9 +542,17 @@ photo-lightbox {
   color: #ffffff;
   cursor: pointer;
   backdrop-filter: blur(12px);
-  transition: 0.25s ease;
-  animation: lightboxControlsIn 0.24s ease both;
+
+  opacity: 0;
+  transform: translateY(-4px);
+
+  transition:
+    opacity 0.22s ease 0.12s,
+    transform 0.22s ease 0.12s,
+    background 0.25s ease,
+    scale 0.25s ease;
 }
+
 
 .photo-lightbox-btn:hover {
   background: rgba(232, 137, 18, 0.78);
