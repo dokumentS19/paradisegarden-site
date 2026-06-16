@@ -2533,13 +2533,13 @@ html {
     ),
     radial-gradient(
       circle at 50% 82%,
-      rgba(7, 92, 43, 0.12),
+      rgba(7, 92, 43, 0.16),
       transparent 40%
     ),
     linear-gradient(
       to bottom,
-      transparent 68%,
-      rgba(8, 21, 15, 0.34) 100%
+      transparent 65%,
+      rgba(8, 21, 15, 0.46) 100%
     ) !important;
 }
 
