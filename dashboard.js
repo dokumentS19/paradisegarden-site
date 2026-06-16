@@ -486,7 +486,12 @@ ${
 }
 
 <p>💰 ${price}</p>
-          <p>📐 ${area}</p>
+${
+  item.propertyType === "apartment" && apartmentFloorText
+    ? `<p>🏢 Поверх: ${apartmentFloorText}</p>`
+    : ""
+}
+         <p>📐 ${area}</p>
           <p>📍 ${address}</p>
           <p>${status}</p>
           <p>👁 Переглядів: ${views}</p>
