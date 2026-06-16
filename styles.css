@@ -1807,3 +1807,14 @@ select:focus {
   font-weight: 700 !important;
   letter-spacing: -0.01em !important;
 }
+/* FINAL: зменшити заголовок "Актуальні пропозиції нерухомості" */
+#objects h2,
+#objects .section-head h2,
+.objects h2,
+.objects .section-head h2 {
+ font-size: 22px !important;
+  line-height: 1.15 !important;
+  font-style: italic !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+}
