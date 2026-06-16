@@ -608,6 +608,7 @@ photo-lightbox {
 }
 
 
+
 .photo-lightbox-counter {
   position: fixed;
   left: 50%;
@@ -621,7 +622,11 @@ photo-lightbox {
   padding: 7px 13px;
   font-size: 13px;
   backdrop-filter: blur(12px);
+
+  opacity: 0;
+  transition: opacity 0.22s ease 0.16s;
 }
+
 
 @media (max-width: 620px) {
   .photo-lightbox {
