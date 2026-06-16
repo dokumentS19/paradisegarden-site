@@ -414,18 +414,20 @@ body {
   box-shadow: 0 14px 32px rgba(80, 50, 20, 0.10) !important;
 }
 
-/* Якщо у статті є картинка зверху */
+/* Фото у верхній частині статті залишаємо видимим */
 .article-hero-img,
 .article-cover,
 .article-image,
 .post-image,
 .guide-cover,
 .hero-image {
-  background: #fff4e4 !important;
   border-bottom: 1px solid rgba(138, 85, 30, 0.18) !important;
+  background-color: transparent !important;
+  background-size: cover !important;
+  background-position: center !important;
 }
 
-/* Прибираємо надто темний оверлей з картинки */
+/* Лише м’яко освітлюємо оверлей, але не прибираємо саме фото */
 .article-hero-img::before,
 .article-cover::before,
 .article-image::before,
@@ -434,8 +436,8 @@ body {
 .hero-image::before {
   background: linear-gradient(
     180deg,
-    rgba(5, 28, 18, 0.10),
-    rgba(5, 28, 18, 0.18)
+    rgba(5, 28, 18, 0.06),
+    rgba(5, 28, 18, 0.14)
   ) !important;
 }
 
