@@ -2213,3 +2213,157 @@ html body.brand-refresh main.seo-page .cta-outline {
   padding: 9px 18px !important;
   min-height: 38px !important;
 }
+/* =====================================================
+   ГЛОБАЛЬНЕ ЗМЕНШЕННЯ ШРИФТІВ ДЛЯ ВСІХ SEO-СТОРІНОК
+   ===================================================== */
+
+body.brand-refresh .seo-page {
+  max-width: 1180px !important;
+  padding-top: 18px !important;
+}
+
+body.brand-refresh .seo-page .seo-hero {
+  padding: 24px 34px !important;
+  margin-bottom: 18px !important;
+}
+
+body.brand-refresh .seo-page .seo-kicker {
+  font-size: 11px !important;
+  padding: 5px 10px !important;
+  margin-bottom: 12px !important;
+}
+
+body.brand-refresh .seo-page .seo-hero h1 {
+  font-size: 32px !important;
+  line-height: 1.16 !important;
+  max-width: 900px !important;
+  letter-spacing: -0.02em !important;
+}
+
+body.brand-refresh .seo-page .seo-hero p {
+  font-size: 15px !important;
+  line-height: 1.55 !important;
+  max-width: 860px !important;
+  margin-top: 14px !important;
+}
+
+body.brand-refresh .seo-page .seo-actions {
+  margin-top: 18px !important;
+}
+
+body.brand-refresh .seo-page .cta-big,
+body.brand-refresh .seo-page .cta-outline {
+  font-size: 14px !important;
+  padding: 10px 20px !important;
+  min-height: 40px !important;
+}
+
+body.brand-refresh .seo-page .seo-card {
+  padding: 20px 22px !important;
+  margin-bottom: 16px !important;
+}
+
+body.brand-refresh .seo-page .seo-card h2 {
+  font-size: 24px !important;
+  line-height: 1.22 !important;
+  margin-bottom: 10px !important;
+}
+
+body.brand-refresh .seo-page .seo-card h3 {
+  font-size: 19px !important;
+  line-height: 1.25 !important;
+}
+
+body.brand-refresh .seo-page .seo-card p,
+body.brand-refresh .seo-page .seo-card li {
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+}
+
+body.brand-refresh .seo-page .category-card {
+  padding: 18px !important;
+}
+
+body.brand-refresh .seo-page .category-card span {
+  width: 38px !important;
+  height: 38px !important;
+  font-size: 18px !important;
+  margin-bottom: 10px !important;
+}
+
+body.brand-refresh .seo-page .category-card h2 {
+  font-size: 20px !important;
+  line-height: 1.22 !important;
+}
+
+body.brand-refresh .seo-page .category-card p {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+body.brand-refresh .seo-page .seo-mini-card {
+  padding: 18px !important;
+}
+
+body.brand-refresh .seo-page .seo-mini-card h3 {
+  font-size: 18px !important;
+}
+
+body.brand-refresh .seo-page .seo-mini-card p,
+body.brand-refresh .seo-page .seo-mini-card a {
+  font-size: 14px !important;
+}
+
+body.brand-refresh .seo-page .seo-cta {
+  padding: 24px 28px !important;
+}
+
+body.brand-refresh .seo-page .seo-cta h2 {
+  font-size: 28px !important;
+  line-height: 1.2 !important;
+}
+
+body.brand-refresh .seo-page .seo-cta p {
+  font-size: 15px !important;
+  line-height: 1.55 !important;
+}
+
+/* Головна сторінка — блок популярних послуг */
+.seo-links-home a {
+  font-size: 17px !important;
+  line-height: 1.35 !important;
+  min-height: 56px !important;
+  padding: 14px 16px !important;
+}
+
+/* Мобільна версія */
+@media (max-width: 768px) {
+  body.brand-refresh .seo-page .seo-hero {
+    padding: 20px 18px !important;
+  }
+
+  body.brand-refresh .seo-page .seo-hero h1 {
+    font-size: 25px !important;
+  }
+
+  body.brand-refresh .seo-page .seo-hero p {
+    font-size: 14px !important;
+  }
+
+  body.brand-refresh .seo-page .seo-card h2 {
+    font-size: 21px !important;
+  }
+
+  body.brand-refresh .seo-page .seo-card p,
+  body.brand-refresh .seo-page .seo-card li {
+    font-size: 14px !important;
+  }
+
+  body.brand-refresh .seo-page .category-card h2 {
+    font-size: 19px !important;
+  }
+
+  .seo-links-home a {
+    font-size: 15px !important;
+  }
+}
