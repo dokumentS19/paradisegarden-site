@@ -2079,3 +2079,85 @@ background: rgba(4, 20, 13, 0.38);
     font-size: 16px !important;
   }
 }
+/* ===== SEO сторінки: ще менші шрифти ===== */
+
+.seo-page .seo-hero {
+  padding: 28px 36px !important;
+}
+
+.seo-page .seo-hero h1 {
+  font-size: clamp(26px, 2.6vw, 38px) !important;
+  line-height: 1.18 !important;
+  max-width: 960px !important;
+}
+
+.seo-page .seo-hero p {
+  font-size: clamp(14px, 1.05vw, 17px) !important;
+  line-height: 1.55 !important;
+  max-width: 880px !important;
+}
+
+.seo-page .seo-kicker {
+  font-size: 12px !important;
+  padding: 6px 11px !important;
+}
+
+.seo-page .seo-card h2 {
+  font-size: clamp(20px, 1.8vw, 28px) !important;
+  line-height: 1.22 !important;
+}
+
+.seo-page .seo-card p,
+.seo-page .seo-card li {
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+}
+
+.seo-page .category-card h2 {
+  font-size: 19px !important;
+  line-height: 1.25 !important;
+}
+
+.seo-page .category-card p {
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+}
+
+.seo-page .seo-mini-card h3 {
+  font-size: 18px !important;
+}
+
+.seo-page .seo-mini-card p,
+.seo-page .seo-mini-card a {
+  font-size: 14px !important;
+}
+
+.seo-page .cta-big,
+.seo-page .cta-outline {
+  font-size: 14px !important;
+  padding: 10px 20px !important;
+  min-height: 42px !important;
+}
+
+@media (max-width: 768px) {
+  .seo-page .seo-hero {
+    padding: 22px 18px !important;
+  }
+
+  .seo-page .seo-hero h1 {
+    font-size: 25px !important;
+  }
+
+  .seo-page .seo-hero p {
+    font-size: 14px !important;
+  }
+
+  .seo-page .seo-card h2 {
+    font-size: 21px !important;
+  }
+
+  .seo-page .seo-card p,
+  .seo-page .seo-card li {
+    font-size: 14px !important;
+  }
+}
