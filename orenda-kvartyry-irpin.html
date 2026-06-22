@@ -559,6 +559,35 @@
     });
   }
 </script>
+<script>
+  function sendSeoRequest(event) {
+    event.preventDefault();
 
+    const name = document.getElementById("seoName").value.trim();
+    const phone = document.getElementById("seoPhone").value.trim();
+    const message = document.getElementById("seoMessage").value.trim();
+    const status = document.getElementById("seoFormStatus");
+
+    if (!name || !phone) {
+      status.textContent = "Будь ласка, вкажіть імʼя та телефон.";
+      return;
+    }
+
+    const text =
+      "Нова заявка з SEO-сторінки:%0A" +
+      "Імʼя: " + encodeURIComponent(name) + "%0A" +
+      "Телефон: " + encodeURIComponent(phone) + "%0A" +
+      "Повідомлення: " + encodeURIComponent(message || "Не вказано") + "%0A" +
+      "Сторінка: " + encodeURIComponent(window.location.href);
+
+    const telegramLink = "https://t.me/share/url?url=" + text;
+
+    status.textContent = "Заявку підготовлено. Відкриваємо Telegram для надсилання.";
+
+    window.open(telegramLink, "_blank");
+
+    event.target.reset();
+  }
+</script>
 </body>
 </html>
