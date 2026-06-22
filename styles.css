@@ -101,11 +101,9 @@ img {
   border-radius: 50%;
   animation: spin 0.9s linear infinite;
 }
-
 /* ================================
    HEADER
 ================================ */
-
 .topbar {
   position: sticky;
   top: 0;
