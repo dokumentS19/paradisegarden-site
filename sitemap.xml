@@ -134,5 +134,10 @@
    priority>    <lastmod>2026-06-22</lastmod>
   </url>
     <changefreq>monthly</changefreq>
-
+<url>
+    <loc>https://paradisegarden.com.ua/kvartyry.html</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+  </url>
 </urlset>
