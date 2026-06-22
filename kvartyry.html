@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name: 46px;  <meta name="viewport" content="width=device-width, initial-scale=1">
+      height: 46px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #e88912, #95571f);
+      color: #ffffff;
+      font-size: 22px;
+      margin-bottom: 14px;
+    }
+
+    .category-card h2 {
+      margin: 0 0 10px;
+      color: #fff3df;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+
+    .category-card p {
+      margin: 0;
+      color: #dbeafe;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    .seo-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .seo-card {
+      background:
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      border-radius: 22px;
+      padding: clamp(20px, 3vw, 30px);
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.26);
+      margin-bottom: 18px;
+    }
+
+    .seo-card h2 {
+      color: #fff3df;
+      margin: 0 0 14px;
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.16;
+    }
+
+    .seo-card p {
+      color: #dbeafe;
+      line-height: 1.75;
+      margin: 0 0 14px;
+      font-size: 16px;
+    }
+
+    .seo-card ul {
+      display: grid;
+      gap: 10px;
+      margin: 14px 0 0;
+      padding-left: 22px;
+      color: #dbeafe;
+      line-height: 1.65;
+    }
+
+    .seo-card li strong {
+      color: #ffffff;
+    }
+
+    .seo-sidebar {
+      position: sticky;
+      top: 18px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .seo-mini-card {
+      background:
+        radial-gradient(circle at top right, rgba(232, 137, 18, 0.14), transparent 34%),
+        rgba(13, 25, 22, 0.98);
+      border: 1px solid rgba(232, 137, 18, 0.20);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+    }
+
+    .seo-mini-card h3 {
+      margin: 0 0 10px;
+      color: #fff3df;
+      font-size: 20px;
+    }
+
+    .seo-mini-card p,
+    .seo-mini-card a {
+      color: #dbeafe;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    .seo-links {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .seo-links a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(8, 21, 15, 0.74);
+      border: 1px solid rgba(232, 137, 18, 0.16);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .seo-links a:hover {
+      background: rgba(232, 137, 18, 0.16);
+    }
+
+    .seo-cta {
+      margin-top: 24px;
+      border-radius: 24px;
+      padding: clamp(24px, 4vw, 40px);
+      background:
+        radial-gradient(circle at top right, rgba(232, 137, 18, 0.20), transparent 36%),
+        linear-gradient(180deg, rgba(20, 35, 30, 0.98), rgba(11, 24, 19, 0.98));
+      border: 1px solid rgba(232, 137, 18, 0.26);
+      box-shadow: 0 22px 54px rgba(0, 0, 0, 0.30);
+      text-align: center;
+    }
+
+    .seo-cta h2 {
+      color: #ffffff;
+      font-size: clamp(26px, 4vw, 42px);
+      margin: 0 0 12px;
+    }
+
+    .seo-cta p {
+      color: #dbeafe;
+      max-width: 760px;
+      margin: 0 auto 22px;
+      line-height: 1.7;
+      font-size: 17px;
+    }
+
+    @media (max-width: 900px) {
+      .seo-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .seo-sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+
+<body class="brand-refresh">
+
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <span class="brand-icon">РС</span>
+    <span>
+      <strong>Райський Сад</strong>
+      <small>Агенція нерухомості</small>
+    </span>
+  </a>
+
+  <button class="menu-btn" id="menuBtn" aria-label="Відкрити меню">☰</button>
+
+  <nav class="nav" id="mainNav">
+    <a href="index.html">Головна</a>
+    <a href="index.html#objects">Обʼєкти</a>
+    <a href="articles.html">📰 Статті</a>
+    <a href="nerukhomist-irpin.html">Нерухомість</a>
+    <a href="index.html#contacts">Контакти</a>
+    <a href="favorites.html">❤️ Обране</a>
+  </nav>
+</header>
+
+<main class="seo-page">
+
+  <section class="seo-hero">
+    <div class="seo-kicker">Квартири • Купівля • Продаж • Оренда</div>
+
+    <h1>Квартири в Ірпені, Бучі та Київській області</h1>
+
+    <p>
+      АН «Райський Сад» допомагає купувати, продавати та орендувати квартири
+      в Ірпені, Бучі, Гостомелі, Ворзелі, Києві та Київській області.
+      Підбираємо актуальні варіанти, перевіряємо документи, супроводжуємо переговори
+      та допомагаємо пройти угоду спокійно й без зайвої плутанини.
+    </p>
+
+    <div class="seo-actions">
+      <a href="index.html#objects" class="cta-big">Переглянути квартири</a>
+      <a href="tel:+380953777196" class="cta-outline">📞 Подзвонити</a>
+      <a href="index.html#request" class="cta-outline">Залишити заявку</a>
+    </div>
+  </section>
+
+  <section class="category-grid">
+    <a class="category-card" href="kupyty-kvartyru-irpin.html">
+      <span>🏢</span>
+      <h2>Купити квартиру</h2>
+      <p>
+        Підбір квартир у новобудовах і на вторинному ринку:
+        1-кімнатні, 2-кімнатні, 3-кімнатні та варіанти під інвестицію.
+      </p>
+    </a>
+
+    <a class="category-card" href="prodaty-kvartyru-irpin.html">
+      <span>📢</span>
+      <h2>Продати квартиру</h2>
+      <p>
+        Оцінка вартості, підготовка оголошення, робота з покупцями,
+        переговори та супровід продажу.
+      </p>
+    </a>
+
+    <a class="category-card" href="orenda-kvartyry-irpin.html">
+      <span>🔑</span>
+      <h2>Оренда квартир</h2>
+      <p>
+        Допомога з пошуком квартири в оренду або здачею квартири:
+        умови, застава, комунальні платежі, договір.
+      </p>
+    </a>
+
+    <a class="category-card" href="index.html#request">
+      <span>📩</span>
+      <h2>Залишити заявку</h2>
+      <p>
+        Напишіть, що саме потрібно: купити, продати або орендувати квартиру —
+        ми звʼяжемося з вами.
+      </p>
+    </a>
+  </section>
+
+  <section class="seo-grid">
+
+    <div>
+
+      <article class="seo-card">
+        <h2>Квартири як основний напрям нерухомості</h2>
+
+        <p>
+          Квартири залишаються одним із найпопулярніших форматів нерухомості
+          в Ірпені, Бучі та Київській області. Їх купують для проживання,
+          інвестиції, здачі в оренду, переїзду ближче до Києва або покращення
+          житлових умов.
+        </p>
+
+        <p>
+          Для покупця важливо підібрати квартиру за бюджетом, районом, площею,
+          станом, поверхом, плануванням і документами. Для продавця важливо
+          правильно оцінити обʼєкт, підготувати його до показів і знайти реального покупця.
+        </p>
+
+        <ul>
+          <li><strong>1-кімнатні квартири</strong> — для проживання, оренди або першої покупки.</li>
+          <li><strong>2-кімнатні квартири</strong> — популярний формат для сімей і довгострокового проживання.</li>
+          <li><strong>3-кімнатні квартири</strong> — більше простору для родини або роботи з дому.</li>
+          <li><strong>Новобудови</strong> — сучасні житлові комплекси з новими плануваннями.</li>
+          <li><strong>Вторинний ринок</strong> — квартири з ремонтом, меблями або готові до заселення.</li>
+        </ul>
+      </article>
+
+      <article class="seo-card">
+        <h2>Що перевіряємо при роботі з квартирами</h2>
+
+        <p>
+          У квартирі важливі не тільки гарні фото й ціна. Перед купівлею,
+          продажем або орендою треба звертати увагу на документи, право власності,
+          обтяження, стан квартири, борги, умови розрахунку або оренди.
+        </p>
+
+        <ul>
+          <li><strong>Право власності</strong> — хто власник і на якій підставі оформлена квартира.</li>
+          <li><strong>Документи</strong> — відповідність даних у документах і реєстрах.</li>
+          <li><strong>Обтяження</strong> — арешти, іпотеки, заборони, судові спори або інші ризики.</li>
+          <li><strong>Комунальні платежі</strong> — наявність боргів або спірних нарахувань.</li>
+          <li><strong>Стан квартири</strong> — ремонт, техніка, сантехніка, електрика, опалення.</li>
+          <li><strong>Умови угоди</strong> — ціна, строки, завдаток, розрахунок, заселення або звільнення.</li>
+        </ul>
+      </article>
+
+      <article class="seo-card">
+        <h2>Як АН «Райський Сад» допомагає</h2>
+
+        <p>
+          Ми допомагаємо клієнтам не просто знайти або продати квартиру,
+          а пройти весь процес зрозуміло: від першої консультації до фінального результату.
+        </p>
+
+        <ul>
+          <li><strong>Для покупців</strong> — підбір квартир, перегляди, перевірка документів і супровід купівлі.</li>
+          <li><strong>Для продавців</strong> — оцінка квартири, підготовка оголошення, робота з покупцями.</li>
+          <li><strong>Для орендарів</strong> — підбір квартири, перевірка умов, застава, комунальні платежі.</li>
+          <li><strong>Для власників</strong> — допомога зі здачею квартири в оренду та пошуком орендаря.</li>
+        </ul>
+      </article>
+
+    </div>
+
+    <aside class="seo-sidebar">
+
+      <div class="seo-mini-card">
+        <h3>Швидкий вибір</h3>
+
+        <div class="seo-links">
+          <a href="kupyty-kvartyru-irpin.html">Купити квартиру <span>→</span></a>
+          <a href="prodaty-kvartyru-irpin.html">Продати квартиру <span>→</span></a>
+          <a href="orenda-kvartyry-irpin.html">Оренда квартир <span>→</span></a>
+          <a href="index.html#objects">Переглянути обʼєкти <span>→</span></a>
+        </div>
+      </div>
+
+      <div class="seo-mini-card">
+        <h3>Регіон роботи</h3>
+        <p>
+          Ірпінь, Буча, Гостомель, Ворзель, Київ та Київська область.
+        </p>
+      </div>
+
+      <div class="seo-mini-card">
+        <h3>Контакти</h3>
+        <p>
+          Телефон:
+          <a href="tel:+380953777196">095 377 7196</a>
+        </p>
+
+        <div class="seo-links">
+          <a href="index.html#request">Залишити заявку <span>→</span></a>
+          <a href="index.html#contacts">Контакти <span>→</span></a>
+        </div>
+      </div>
+
+    </aside>
+
+  </section>
+
+  <section class="seo-cta">
+    <h2>Потрібна квартира або треба продати квартиру?</h2>
+    <p>
+      Зателефонуйте або залиште заявку — АН «Райський Сад» допоможе підібрати,
+      оцінити, перевірити документи та супроводити купівлю, продаж або оренду квартири.
+    </p>
+
+    <div class="seo-actions" style="justify-content: center;">
+      <a href="tel:+380953777196" class="cta-big">📞 Подзвонити</a>
+      <a href="kupyty-kvartyru-irpin.html" class="cta-outline">Купити квартиру</a>
+      <a href="prodaty-kvartyru-irpin.html" class="cta-outline">Продати квартиру</a>
+      <a href="orenda-kvartyry-irpin.html" class="cta-outline">Оренда квартир</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>© 2002–2026 АН «Райський Сад». Нерухомість Ірпеня, Києва та Київської області.</p>
+  <p>Директор: Іванчик Олег Степанович</p>
+</footer>
+
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const mainNav = document.getElementById("mainNav");
+
+  if (menuBtn && mainNav) {
+    menuBtn.addEventListener("click", () => {
+      mainNav.classList.toggle("active");
+    });
+  }
+</script>
+
+</body>
+</html>
+
+
+  <title>Квартири в Ірпені, Бучі та Київській області — АН «Райський Сад»</title>
+  <meta name="description" content="Квартири в Ірпені, Бучі, Гостомелі, Ворзелі, Києві та Київській області. Купівля, продаж, оренда квартир, перевірка документів і супровід угод.">
+  <meta name="keywords" content="квартири Ірпінь, купити квартиру Ірпінь, продати квартиру Ірпінь, оренда квартир Ірпінь, квартири Буча, нерухомість Київська область">
+
+  <link rel="canonical" href="https://paradisegarden.com.ua/kvartyry.html">
+  <link rel="alternate" hreflang="uk" href="https://paradisegarden.com.ua/kvartyry.html">
+  <link rel="alternate" hreflang="x-default" href="https://paradisegarden.com.ua/kvartyry.html">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6XHWE6Y0JE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-6XHWE6Y0JE');
+  </script>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .seo-page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 16px 46px;
+    }
+
+    .seo-hero {
+      border-radius: 24px;
+      padding: clamp(28px, 5vw, 56px);
+      background:
+        radial-gradient(circle at top right, rgba(232, 137, 18, 0.18), transparent 34%),
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(11, 24, 19, 0.98));
+      border: 1px solid rgba(232, 137, 18, 0.24);
+      box-shadow: 0 22px 54px rgba(0, 0, 0, 0.34);
+      margin-bottom: 26px;
+    }
+
+    .seo-kicker {
+      display: inline-flex;
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: rgba(232, 137, 18, 0.14);
+      border: 1px solid rgba(232, 137, 18, 0.32);
+      color: #ffd89b;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .seo-hero h1 {
+      margin: 0;
+      color: #ffffff;
+      font-size: clamp(30px, 5vw, 56px);
+      line-height: 1.08;
+      max-width: 920px;
+      letter-spacing: -0.03em;
+    }
+
+    .seo-hero p {
+      color: #dbeafe;
+      font-size: clamp(16px, 2vw, 19px);
+      line-height: 1.7;
+      max-width: 850px;
+      margin: 18px 0 0;
+    }
+
+    .seo-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 26px;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .category-card {
+      display: block;
+      text-decoration: none;
+      background:
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.22);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.24);
+      transition: 0.2s ease;
+    }
+
+    .category-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(232, 137, 18, 0.52);
+      background: rgba(232, 137, 18, 0.14);
+    }
+
+    .category-card span {
+      display: inline-flex;
