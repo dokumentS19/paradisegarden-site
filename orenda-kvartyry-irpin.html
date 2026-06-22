@@ -482,7 +482,28 @@
       <a href="index.html#request" class="cta-outline">Залишити заявку</a>
     </div>
   </section>
+<section class="seo-card" id="callback">
+  <h2>Зворотний звʼязок</h2>
+  <p>
+    Залиште імʼя, телефон і коротко опишіть, що вас цікавить.
+    Ми звʼяжемося з вами та допоможемо з орендою квартири в Ірпені.
+  </p>
 
+  <form class="seo-contact-form" onsubmit="sendSeoRequest(event)">
+    <label for="seoName">Ваше імʼя</label>
+    <input id="seoName" type="text" placeholder="Наприклад: Олег" required>
+
+    <label for="seoPhone">Телефон</label>
+    <input id="seoPhone" type="tel" placeholder="+380..." required>
+
+    <label for="seoMessage">Що вас цікавить?</label>
+    <textarea id="seoMessage" placeholder="Наприклад: шукаю 1-кімнатну квартиру в оренду в Ірпені"></textarea>
+
+    <button class="cta-big" type="submit">📩 Відправити заявку</button>
+
+    <p id="seoFormStatus" style="margin-top: 12px; color: #ffd89b; font-weight: 800;"></p>
+  </form>
+</section>
 </main>
 
 <footer class="footer">
