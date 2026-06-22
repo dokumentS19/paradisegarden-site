@@ -167,3 +167,321 @@
       margin-top: 10px;
     }
 
+    .seo-links a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(8, 21, 15, 0.74);
+      border: 1px solid rgba(232, 137, 18, 0.16);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .seo-links a:hover {
+      background: rgba(232, 137, 18, 0.16);
+    }
+
+    .steps-list {
+      counter-reset: step;
+      list-style: none;
+      padding-left: 0 !important;
+    }
+
+    .steps-list li {
+      counter-increment: step;
+      position: relative;
+      padding: 15px 15px 15px 58px;
+      background: rgba(8, 21, 15, 0.62);
+      border: 1px solid rgba(232, 137, 18, 0.16);
+      border-radius: 16px;
+    }
+
+    .steps-list li::before {
+      content: counter(step);
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e88912, #95571f);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .seo-cta {
+      margin-top: 24px;
+      border-radius: 24px;
+      padding: clamp(24px, 4vw, 40px);
+      background:
+        radial-gradient(circle at top right, rgba(232, 137, 18, 0.20), transparent 36%),
+        linear-gradient(180deg, rgba(20, 35, 30, 0.98), rgba(11, 24, 19, 0.98));
+      border: 1px solid rgba(232, 137, 18, 0.26);
+      box-shadow: 0 22px 54px rgba(0, 0, 0, 0.30);
+      text-align: center;
+    }
+
+    .seo-cta h2 {
+      color: #ffffff;
+      font-size: clamp(26px, 4vw, 42px);
+      margin: 0 0 12px;
+    }
+
+    .seo-cta p {
+      color: #dbeafe;
+      max-width: 760px;
+      margin: 0 auto 22px;
+      line-height: 1.7;
+      font-size: 17px;
+    }
+
+    @media (max-width: 900px) {
+      .seo-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .seo-sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+
+<body class="brand-refresh">
+
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <span class="brand-icon">PC</span>
+    <span>
+      <strong>Райський Сад</strong>
+      <small>Агенція нерухомості</small>
+    </span>
+  </a>
+
+  <button class="menu-btn" id="menuBtn" aria-label="Відкрити меню">☰</button>
+
+  <nav class="nav" id="mainNav">
+    <a href="index.html">Головна</a>
+    <a href="index.html#objects">Обʼєкти</a>
+    <a href="articles.html">📰 Статті</a>
+    <a href="index.html#director">Директор</a>
+    <a href="index.html#contacts">Контакти</a>
+    <a href="favorites.html">❤️ Обране</a>
+  </nav>
+</header>
+
+<main class="seo-page">
+
+  <section class="seo-hero">
+    <div class="seo-kicker">Ірпінь • Київська область • Нерухомість</div>
+
+    <h1>Нерухомість в Ірпені: купівля, продаж, оренда та супровід угод</h1>
+
+    <p>
+      АН «Райський Сад» допомагає клієнтам купувати, продавати, орендувати та вигідно
+      інвестувати в нерухомість в Ірпені, Києві та Київській області. Ми працюємо з квартирами,
+      будинками, земельними ділянками, комерційними об’єктами та супроводжуємо угоди від першої
+      консультації до оформлення документів.
+    </p>
+
+    <div class="seo-actions">
+      <a href="index.html#objects" class="cta-big">Переглянути обʼєкти</a>
+      <a href="tel:+380953777196" class="cta-outline">📞 Подзвонити</a>
+      <a href="index.html#request" class="cta-outline">Залишити заявку</a>
+    </div>
+  </section>
+
+  <section class="seo-grid">
+
+    <div>
+
+      <article class="seo-card">
+        <h2>Нерухомість Ірпеня: що ми допомагаємо знайти або продати</h2>
+
+        <p>
+          Ринок нерухомості Ірпеня залишається активним завдяки зручному розташуванню,
+          розвитку інфраструктури, близькості до Києва та різноманіттю житлових форматів.
+          Тут шукають квартири для проживання, будинки для сімей, земельні ділянки під будівництво,
+          а також комерційні приміщення для бізнесу.
+        </p>
+
+        <p>
+          АН «Райський Сад» працює з різними типами нерухомості та допомагає клієнтам приймати
+          рішення спокійно, з розумінням ринку, документів і реальної вартості обʼєкта.
+        </p>
+
+        <ul>
+          <li><strong>Квартири в Ірпені</strong> — новобудови, вторинний ринок, 1-кімнатні, 2-кімнатні та 3-кімнатні квартири.</li>
+          <li><strong>Будинки</strong> — окремі будинки, частини будинків, дуплекси, таунхауси, дачі.</li>
+          <li><strong>Земельні ділянки</strong> — ділянки під будівництво, садівництво, комерцію або інвестиції.</li>
+          <li><strong>Оренда</strong> — квартири, будинки, комерційні приміщення.</li>
+          <li><strong>Комерційна нерухомість</strong> — офіси, магазини, склади, приміщення для бізнесу.</li>
+        </ul>
+      </article>
+
+      <article class="seo-card">
+        <h2>Чому обирають АН «Райський Сад»</h2>
+
+        <p>
+          У нерухомості важлива не тільки ціна. Важливі документи, історія об’єкта, реальний стан,
+          умови угоди, безпека розрахунків і правильна комунікація між сторонами.
+          Саме тому клієнти звертаються до агентства, яке допомагає пройти весь шлях без зайвого ризику.
+        </p>
+
+        <ul>
+          <li><strong>Досвід роботи з нерухомістю Ірпеня та Київської області.</strong></li>
+          <li><strong>Перевірка документів</strong> перед купівлею, продажем або орендою.</li>
+          <li><strong>Індивідуальний підбір</strong> під бюджет, ціль і стиль життя клієнта.</li>
+          <li><strong>Супровід переговорів</strong> між покупцем, продавцем, орендодавцем або орендарем.</li>
+          <li><strong>Допомога з підготовкою обʼєкта</strong> до продажу або здачі в оренду.</li>
+          <li><strong>Людяний підхід</strong> і пояснення кожного етапу простими словами.</li>
+        </ul>
+      </article>
+
+      <article class="seo-card">
+        <h2>Як ми працюємо</h2>
+
+        <p>
+          Ми не просто показуємо об’єкти. Ми допомагаємо клієнту зрозуміти ринок,
+          оцінити ризики, підготувати документи та прийняти рішення впевнено.
+        </p>
+
+        <ol class="steps-list">
+          <li>
+            <strong>Консультація.</strong><br>
+            З’ясовуємо вашу задачу: купити, продати, орендувати, здати або оцінити нерухомість.
+          </li>
+
+          <li>
+            <strong>Аналіз ситуації.</strong><br>
+            Дивимося тип об’єкта, документи, ринкову ціну, район, стан і попит.
+          </li>
+
+          <li>
+            <strong>Підбір або підготовка об’єкта.</strong><br>
+            Підбираємо актуальні варіанти або готуємо вашу нерухомість до продажу чи оренди.
+          </li>
+
+          <li>
+            <strong>Перегляди та переговори.</strong><br>
+            Організовуємо комунікацію, перегляди, уточнення умов і домовленості між сторонами.
+          </li>
+
+          <li>
+            <strong>Перевірка документів.</strong><br>
+            Звертаємо увагу на право власності, обтяження, борги, кадастрові дані та інші важливі питання.
+          </li>
+
+          <li>
+            <strong>Супровід угоди.</strong><br>
+            Допомагаємо пройти шлях до оформлення угоди максимально спокійно та зрозуміло.
+          </li>
+        </ol>
+      </article>
+
+      <article class="seo-card">
+        <h2>Популярні напрямки нерухомості в Ірпені</h2>
+
+        <p>
+          Найчастіше клієнти звертаються до нас із запитами щодо купівлі квартир,
+          продажу житла, оренди, пошуку будинку або перевірки земельної ділянки.
+          Для кожного напрямку ми готуємо окремі сторінки з корисною інформацією.
+        </p>
+
+        <div class="seo-links">
+          <a href="kupyty-kvartyru-irpin.html">Купити квартиру в Ірпені <span>→</span></a>
+          <a href="prodaty-kvartyru-irpin.html">Продати квартиру в Ірпені <span>→</span></a>
+          <a href="orenda-kvartyry-irpin.html">Оренда квартир в Ірпені <span>→</span></a>
+          <a href="kupyty-budynok-irpin.html">Купити будинок в Ірпені <span>→</span></a>
+          <a href="zemelni-dilyanky-irpin.html">Земельні ділянки в Ірпені <span>→</span></a>
+          <a href="agentstvo-nerukhomosti-irpin.html">Агенція нерухомості Ірпінь <span>→</span></a>
+        </div>
+      </article>
+
+    </div>
+
+    <aside class="seo-sidebar">
+
+      <div class="seo-mini-card">
+        <h3>Швидкий звʼязок</h3>
+        <p>
+          Потрібна консультація щодо купівлі, продажу або оренди нерухомості в Ірпені?
+        </p>
+
+        <div class="seo-links">
+          <a href="tel:+380953777196">📞 095 377 7196</a>
+          <a href="https://t.me/" target="_blank" rel="noopener">✈️ Telegram</a>
+          <a href="index.html#request">📩 Залишити заявку</a>
+        </div>
+      </div>
+
+      <div class="seo-mini-card">
+        <h3>Корисні розділи</h3>
+
+        <div class="seo-links">
+          <a href="index.html">Головна</a>
+          <a href="index.html#objects">Обʼєкти</a>
+          <a href="articles.html">Статті</a>
+          <a href="index.html#contacts">Контакти</a>
+        </div>
+      </div>
+
+      <div class="seo-mini-card">
+        <h3>Регіон роботи</h3>
+        <p>
+          Ірпінь, Буча, Гостомель, Ворзель, Київ та Київська область.
+        </p>
+      </div>
+
+      <div class="seo-mini-card">
+        <h3>Що перевіряємо</h3>
+        <p>
+          Документи, право власності, технічний стан, історію об’єкта, кадастрові дані,
+          комунальні питання та умови майбутньої угоди.
+        </p>
+      </div>
+
+    </aside>
+
+  </section>
+
+  <section class="seo-cta">
+    <h2>Потрібна нерухомість в Ірпені?</h2>
+    <p>
+      Залиште заявку або зателефонуйте — ми уточнимо вашу задачу, бюджет, бажаний район
+      і запропонуємо оптимальне рішення щодо купівлі, продажу чи оренди нерухомості.
+    </p>
+
+    <div class="seo-actions" style="justify-content: center;">
+      <a href="tel:+380953777196" class="cta-big">📞 Подзвонити</a>
+      <a href="index.html#objects" class="cta-outline">Переглянути обʼєкти</a>
+      <a href="index.html#request" class="cta-outline">Залишити заявку</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>© 2002–2026 АН «Райський Сад». Нерухомість Ірпеня, Києва та Київської області.</p>
+  <p>Директор: Іванчик Олег Степанович</p>
+</footer>
+
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const mainNav = document.getElementById("mainNav");
+
+  if (menuBtn && mainNav) {
+    menuBtn.addEventListener("click", () => {
+      mainNav.classList.toggle("active");
+    });
+  }
+</script>
+
+</body>
+</html>
