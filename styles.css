@@ -2161,3 +2161,57 @@ background: rgba(4, 20, 13, 0.38);
     font-size: 14px !important;
   }
 }
+/* ===== ФІНАЛЬНЕ ЗМЕНШЕННЯ ШРИФТІВ ДЛЯ SEO-СТОРІНОК ===== */
+
+html body.brand-refresh main.seo-page section.seo-hero {
+  padding: 22px 32px !important;
+  margin-bottom: 16px !important;
+}
+
+html body.brand-refresh main.seo-page section.seo-hero h1 {
+  font-size: 30px !important;
+  line-height: 1.18 !important;
+  max-width: 850px !important;
+  letter-spacing: -0.01em !important;
+}
+
+html body.brand-refresh main.seo-page section.seo-hero p {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  max-width: 820px !important;
+  margin-top: 12px !important;
+}
+
+html body.brand-refresh main.seo-page .seo-kicker {
+  font-size: 11px !important;
+  padding: 5px 10px !important;
+  margin-bottom: 12px !important;
+}
+
+html body.brand-refresh main.seo-page .seo-card h2 {
+  font-size: 22px !important;
+  line-height: 1.22 !important;
+}
+
+html body.brand-refresh main.seo-page .seo-card p,
+html body.brand-refresh main.seo-page .seo-card li {
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+}
+
+html body.brand-refresh main.seo-page .category-card h2 {
+  font-size: 19px !important;
+  line-height: 1.22 !important;
+}
+
+html body.brand-refresh main.seo-page .category-card p {
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+}
+
+html body.brand-refresh main.seo-page .cta-big,
+html body.brand-refresh main.seo-page .cta-outline {
+  font-size: 13px !important;
+  padding: 9px 18px !important;
+  min-height: 38px !important;
+}
