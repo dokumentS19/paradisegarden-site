@@ -1,17 +1,24 @@
-<!DOCTYPE html>  
-<html lang="uk">    
-  
+<!DOCTYPE html>
+<html lang="uk">
 <head>
-  <meta charset.ua/garazhi.html">  <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Гаражі та паркомісця в Ірпені, Бучі та Київській області — АН «Райський Сад»</title>
+  <meta name="description" content="Гаражі, бокси та паркомісця в Ірпені, Бучі, Гостомелі, Ворзелі, Києві та Київській області. Купівля, продаж, оренда, здача гаражів в оренду, перевірка документів і супровід угод.">
+  <meta name="keywords" content="гаражі Ірпінь, купити гараж Ірпінь, продати гараж Ірпінь, оренда гаража Ірпінь, здати гараж в оренду Ірпінь, паркомісце Ірпінь, гараж Буча, гаражі Київська область">
+
+  <link rel="canonical" href="https://paradisegarden.com.ua/garazhi.html">
+  <link rel="alternate" hreflang="uk" href="https://paradisegarden.com.ua/garazhi.html">
+  <link rel="alternate" hreflang="x-default" href="https://paradisegarden.com.ua/garazhi.html">
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6XHWE6Y0JE"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-6XHWE6Y0JE');
+    gtag("js", new Date());
+    gtag("config", "G-6XHWE6Y0JE");
   </script>
 
   <link rel="stylesheet" href="styles.css">
@@ -20,58 +27,61 @@
     .seo-page {
       max-width: 1180px;
       margin: 0 auto;
-      padding: 28px 16px 46px;
-    }
-
-    .seo-hero,
-    .seo-card,
-    .seo-mini-card,
-    .category-card,
-    .seo-cta {
-      background: linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
-      border: 1px solid rgba(232, 137, 18, 0.22);
-      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.26);
+      padding: 24px 16px 42px;
     }
 
     .seo-hero {
       border-radius: 24px;
-      padding: clamp(28px, 5vw, 56px);
-      margin-bottom: 26px;
+      padding: 24px 34px;
+      background:
+        radial-gradient(circle at top right, rgba(232, 137, 18, 0.18), transparent 34%),
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(11, 24, 19, 0.98));
+      border: 1px solid rgba(232, 137, 18, 0.24);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+      margin-bottom: 22px;
     }
 
     .seo-kicker {
       display: inline-flex;
-      padding: 7px 13px;
+      padding: 5px 10px;
       border-radius: 999px;
       background: rgba(232, 137, 18, 0.14);
       border: 1px solid rgba(232, 137, 18, 0.32);
       color: #ffd89b;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 800;
-      margin-bottom: 18px;
+      margin-bottom: 12px;
     }
 
     .seo-hero h1 {
       margin: 0;
       color: #ffffff;
-     font-size: 22px !important;
-      line-height: 1.08;
-      max-width: 920px;
+      font-size: 30px;
+      line-height: 1.18;
+      max-width: 900px;
+      letter-spacing: -0.01em;
     }
 
-    .seo-hero p,
-    .seo-card p,
-    .seo-mini-card p,
-    .category-card p {
+    .seo-hero p {
       color: #dbeafe;
-      line-height: 1.7;
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 850px;
+      margin: 14px 0 0;
     }
 
     .seo-actions {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
-      margin-top: 26px;
+      margin-top: 20px;
+    }
+
+    .seo-actions .cta-big,
+    .seo-actions .cta-outline {
+      font-size: 13px;
+      padding: 9px 18px;
+      min-height: 38px;
     }
 
     .category-grid {
@@ -84,8 +94,12 @@
     .category-card {
       display: block;
       text-decoration: none;
+      background:
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.22);
       border-radius: 22px;
-      padding: 22px;
+      padding: 18px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
       transition: 0.2s ease;
     }
 
@@ -97,22 +111,29 @@
 
     .category-card span {
       display: inline-flex;
-      width: 46px;
-      height: 46px;
+      width: 38px;
+      height: 38px;
       align-items: center;
       justify-content: center;
-      border-radius: 16px;
+      border-radius: 14px;
       background: linear-gradient(135deg, #e88912, #95571f);
       color: #ffffff;
-      font-size: 22px;
-      margin-bottom: 14px;
+      font-size: 18px;
+      margin-bottom: 10px;
     }
 
-    .category-card h2,
-    .seo-card h2,
-    .seo-mini-card h3,
-    .seo-cta h2 {
+    .category-card h2 {
+      margin: 0 0 8px;
       color: #fff3df;
+      font-size: 20px;
+      line-height: 1.22;
+    }
+
+    .category-card p {
+      margin: 0;
+      color: #dbeafe;
+      line-height: 1.5;
+      font-size: 14px;
     }
 
     .seo-grid {
@@ -122,19 +143,38 @@
       align-items: start;
     }
 
-    .seo-card,
-    .seo-mini-card,
-    .seo-cta {
+    .seo-card {
+      background:
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.18);
       border-radius: 22px;
-      padding: clamp(20px, 3vw, 30px);
-      margin-bottom: 18px;
+      padding: 20px 22px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+      margin-bottom: 16px;
+    }
+
+    .seo-card h2 {
+      color: #fff3df;
+      margin: 0 0 10px;
+      font-size: 22px;
+      line-height: 1.22;
+    }
+
+    .seo-card p {
+      color: #dbeafe;
+      line-height: 1.6;
+      margin: 0 0 12px;
+      font-size: 14px;
     }
 
     .seo-card ul {
-      color: #dbeafe;
-      line-height: 1.65;
       display: grid;
-      gap: 10px;
+      gap: 9px;
+      margin: 12px 0 0;
+      padding-left: 22px;
+      color: #dbeafe;
+      line-height: 1.55;
+      font-size: 14px;
     }
 
     .seo-card li strong {
@@ -148,6 +188,29 @@
       gap: 16px;
     }
 
+    .seo-mini-card {
+      background:
+        radial-gradient(circle at top right, rgba(232, 137, 18, 0.14), transparent 34%),
+        rgba(13, 25, 22, 0.98);
+      border: 1px solid rgba(232, 137, 18, 0.20);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+    }
+
+    .seo-mini-card h3 {
+      margin: 0 0 10px;
+      color: #fff3df;
+      font-size: 18px;
+    }
+
+    .seo-mini-card p,
+    .seo-mini-card a {
+      color: #dbeafe;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
     .seo-links {
       display: grid;
       gap: 10px;
@@ -156,15 +219,17 @@
 
     .seo-links a {
       display: flex;
+      align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 12px 14px;
+      padding: 11px 13px;
       border-radius: 14px;
       background: rgba(8, 21, 15, 0.74);
       border: 1px solid rgba(232, 137, 18, 0.16);
       color: #ffffff;
       text-decoration: none;
       font-weight: 800;
+      font-size: 14px;
     }
 
     .seo-links a:hover {
@@ -172,8 +237,30 @@
     }
 
     .seo-cta {
-      text-align: center;
       margin-top: 24px;
+      border-radius: 24px;
+      padding: 24px 28px;
+      background:
+        radial-gradient(circle at top right, rgba(232, 137, 18, 0.20), transparent 36%),
+        linear-gradient(180deg, rgba(20, 35, 30, 0.98), rgba(11, 24, 19, 0.98));
+      border: 1px solid rgba(232, 137, 18, 0.26);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+      text-align: center;
+    }
+
+    .seo-cta h2 {
+      color: #ffffff;
+      font-size: 28px;
+      line-height: 1.2;
+      margin: 0 0 12px;
+    }
+
+    .seo-cta p {
+      color: #dbeafe;
+      max-width: 760px;
+      margin: 0 auto 20px;
+      line-height: 1.55;
+      font-size: 15px;
     }
 
     @media (max-width: 900px) {
@@ -183,6 +270,14 @@
 
       .seo-sidebar {
         position: static;
+      }
+
+      .seo-hero h1 {
+        font-size: 26px;
+      }
+
+      .seo-hero p {
+        font-size: 14px;
       }
     }
   </style>
@@ -219,26 +314,27 @@
     <h1>Гаражі та паркомісця в Ірпені, Бучі та Київській області</h1>
 
     <p>
-      АН «Райський Сад» допомагає купувати та продавати гаражі, бокси й паркомісця
-      в Ірпені, Бучі, Гостомелі, Ворзелі, Києві та Київській області.
-      Допомагаємо перевірити документи, стан обʼєкта, підʼїзд, електрику,
-      охорону та умови угоди.
+      АН «Райський Сад» допомагає купувати, продавати, орендувати та здавати в оренду
+      гаражі, бокси й паркомісця в Ірпені, Бучі, Гостомелі, Ворзелі,
+      Києві та Київській області. Допомагаємо перевірити документи,
+      стан обʼєкта, підʼїзд, електрику, охорону та умови угоди.
     </p>
 
     <div class="seo-actions">
-      <a href="index.html#objects" class="cta-big">Переглянути обʼєкти</a>
+      <a href="index.html#objects" class="cta-big">Переглянути гаражі</a>
       <a href="tel:+380953777196" class="cta-outline">📞 Подзвонити</a>
       <a href="index.html#request" class="cta-outline">Залишити заявку</a>
     </div>
   </section>
 
   <section class="category-grid">
+
     <a class="category-card" href="garazhi-irpin.html">
       <span>🚗</span>
       <h2>Купити гараж</h2>
       <p>
         Підбір гаражів, боксів, паркомісць і підземних паркінгів
-        під ваш бюджет і локацію.
+        під ваш бюджет, район і тип авто.
       </p>
     </a>
 
@@ -246,30 +342,34 @@
       <span>📢</span>
       <h2>Продати гараж</h2>
       <p>
-        Оцінка, підготовка оголошення, пошук покупця, переговори
-        та супровід продажу.
-      </p>
-    </a>
-
-    <a class="category-card" href="index.html#objects">
-      <span>🔎</span>
-      <h2>Переглянути обʼєкти</h2>
-      <p>
-        Актуальні пропозиції гаражів, будинків, квартир, землі та комерції.
+        Оцінка, підготовка оголошення, пошук покупця,
+        переговори та супровід продажу.
       </p>
     </a>
 
     <a class="category-card" href="index.html#request">
-      <span>📩</span>
-      <h2>Залишити заявку</h2>
+      <span>🔑</span>
+      <h2>Орендувати гараж</h2>
       <p>
-        Напишіть, який гараж шукаєте або продаєте — ми звʼяжемося з вами.
+        Допоможемо знайти гараж, бокс або паркомісце в оренду
+        під ваш бюджет і потрібну локацію.
       </p>
     </a>
+
+    <a class="category-card" href="index.html#request">
+      <span>🅿️</span>
+      <h2>Здати гараж в оренду</h2>
+      <p>
+        Допоможемо власнику підготувати гараж до оренди,
+        знайти орендаря та погодити умови користування.
+      </p>
+    </a>
+
   </section>
 
   <section class="seo-grid">
     <div>
+
       <article class="seo-card">
         <h2>Гаражі як окремий напрям нерухомості</h2>
 
@@ -292,7 +392,7 @@
         <h2>Що перевіряємо при роботі з гаражами</h2>
 
         <p>
-          Перед купівлею або продажем гаража важливо розуміти його правовий статус:
+          Перед купівлею, продажем або орендою гаража важливо розуміти його правовий статус:
           чи це право власності, пай у кооперативі, право користування або інший формат.
         </p>
 
@@ -309,17 +409,18 @@
         <h2>Як АН «Райський Сад» допомагає</h2>
 
         <p>
-          Ми допомагаємо покупцям і продавцям гаражів пройти процес зрозуміло:
-          від підбору або оцінки до перевірки документів і фінального оформлення.
+          Ми допомагаємо покупцям, продавцям, орендарям і власникам гаражів пройти процес
+          зрозуміло: від підбору або оцінки до перевірки документів і фінального оформлення.
         </p>
 
         <ul>
-          <li><strong>Для покупців</strong> — підбір гаража, боксів або паркомісць за локацією і бюджетом.</li>
+          <li><strong>Для покупців</strong> — підбір гаража, боксу або паркомісця за локацією і бюджетом.</li>
           <li><strong>Для продавців</strong> — оцінка, підготовка оголошення, пошук покупця.</li>
-          <li><strong>Для власників авто</strong> — підбір зручного й безпечного місця.</li>
-          <li><strong>Для інвесторів</strong> — аналіз невеликих обʼєктів для довгострокового використання.</li>
+          <li><strong>Для орендарів</strong> — підбір гаража або паркомісця в оренду.</li>
+          <li><strong>Для власників</strong> — допомога зі здачею гаража в оренду.</li>
         </ul>
       </article>
+
     </div>
 
     <aside class="seo-sidebar">
@@ -329,8 +430,8 @@
         <div class="seo-links">
           <a href="garazhi-irpin.html">Купити гараж <span>→</span></a>
           <a href="prodaty-garazh-irpin.html">Продати гараж <span>→</span></a>
-          <a href="index.html#objects">Переглянути обʼєкти <span>→</span></a>
-          <a href="index.html#request">Залишити заявку <span>→</span></a>
+          <a href="index.html#request">Орендувати гараж <span>→</span></a>
+          <a href="index.html#request">Здати гараж в оренду <span>→</span></a>
         </div>
       </div>
 
@@ -357,7 +458,7 @@
   </section>
 
   <section class="seo-cta">
-    <h2>Потрібен гараж або треба продати гараж?</h2>
+    <h2>Потрібен гараж або треба здати / продати гараж?</h2>
     <p>
       Зателефонуйте або залиште заявку — АН «Райський Сад» допоможе підібрати,
       оцінити, перевірити документи та супроводити угоду з гаражем або паркомісцем.
@@ -367,6 +468,7 @@
       <a href="tel:+380953777196" class="cta-big">📞 Подзвонити</a>
       <a href="garazhi-irpin.html" class="cta-outline">Купити гараж</a>
       <a href="prodaty-garazh-irpin.html" class="cta-outline">Продати гараж</a>
+      <a href="index.html#request" class="cta-outline">Оренда / здати</a>
     </div>
   </section>
 
@@ -390,11 +492,3 @@
 
 </body>
 </html>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Гаражі та паркомісця в Ірпені, Бучі та Київській області — АН «Райський Сад»</title>
-  <meta name="description" content="Гаражі, бокси та паркомісця в Ірпені, Бучі, Гостомелі, Ворзелі, Києві та Київській області. Купівля, продаж, перевірка документів і супровід угод.">
-  <meta name="keywords" content="гаражі Ірпінь, купити гараж Ірпінь, продати гараж Ірпінь, паркомісце Ірпінь, гараж Буча, гаражі Київська область">
-
-  <link rel="canonical" href="https://paradisegarden.com.ua/garazhi.html">
-  <link rel="alternate" hreflang="uk" href="https://paradisegarden.com.ua/garazhi.html">
