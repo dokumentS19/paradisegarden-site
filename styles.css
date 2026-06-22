@@ -2164,8 +2164,10 @@ html body.brand-refresh main.seo-page section.seo-hero {
   margin-bottom: 16px !important;
 }
 
+
 html body.brand-refresh main.seo-page section.seo-hero h1 {
-  font-size: 26px !important;
+  font-size: 22px !important;
+
   line-height: 1.18 !important;
   max-width: 850px !important;
   letter-spacing: -0.01em !important;
