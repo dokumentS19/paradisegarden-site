@@ -243,7 +243,45 @@
       line-height: 1.7;
       font-size: 17px;
     }
+.seo-contact-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
 
+.seo-contact-form label {
+  color: #fff3df;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.seo-contact-form input,
+.seo-contact-form textarea {
+  width: 100%;
+  border: 1px solid rgba(232, 137, 18, 0.24);
+  border-radius: 14px;
+  padding: 13px 14px;
+  background: rgba(8, 21, 15, 0.82);
+  color: #ffffff;
+  font-size: 15px;
+  outline: none;
+}
+
+.seo-contact-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.seo-contact-form input::placeholder,
+.seo-contact-form textarea::placeholder {
+  color: #94a3b8;
+}
+
+.seo-contact-form input:focus,
+.seo-contact-form textarea:focus {
+  border-color: rgba(232, 137, 18, 0.72);
+  box-shadow: 0 0 0 3px rgba(232, 137, 18, 0.14);
+}
     @media (max-width: 900px) {
       .seo-grid {
         grid-template-columns: 1fr;
