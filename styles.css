@@ -2033,3 +2033,52 @@ background: rgba(4, 20, 13, 0.38);
   border-color: rgba(232, 137, 18, 0.48);
   transform: translateY(-2px);
 }
+/* ===== SEO сторінки: зменшення шрифтів ===== */
+
+.seo-page .seo-hero {
+  padding: 34px 44px !important;
+}
+
+.seo-page .seo-hero h1 {
+  font-size: clamp(30px, 3.2vw, 46px) !important;
+  line-height: 1.15 !important;
+  max-width: 1000px !important;
+}
+
+.seo-page .seo-hero p {
+  font-size: clamp(16px, 1.3vw, 19px) !important;
+  line-height: 1.55 !important;
+  max-width: 920px !important;
+}
+
+.seo-page .seo-card h2 {
+  font-size: clamp(24px, 2.2vw, 32px) !important;
+}
+
+.seo-page .seo-card p,
+.seo-page .seo-card li {
+  font-size: 16px !important;
+  line-height: 1.65 !important;
+}
+
+.seo-page .category-card h2 {
+  font-size: 22px !important;
+}
+
+.seo-page .category-card p {
+  font-size: 15px !important;
+}
+
+@media (max-width: 768px) {
+  .seo-page .seo-hero {
+    padding: 26px 20px !important;
+  }
+
+  .seo-page .seo-hero h1 {
+    font-size: 30px !important;
+  }
+
+  .seo-page .seo-hero p {
+    font-size: 16px !important;
+  }
+}
