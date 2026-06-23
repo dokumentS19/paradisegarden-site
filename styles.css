@@ -2518,26 +2518,14 @@ body.brand-refresh header.topbar,
 body.brand-refresh .topbar {
   border-bottom: 2px solid rgba(212, 124, 19, 0.45) !important;
 }
-/* ОДНАКОВА ШИРИНА ВСІХ ОСНОВНИХ БЛОКІВ ГОЛОВНОЇ */
+/* ЄДИНА АКУРАТНА ШИРИНА ГОЛОВНОЇ — ЯК У СТАТТІ */
 
 :root {
-  --pg-container-width: 1580px;
-  --pg-side-space: 48px;
+  --pg-home-content-width: 82vw;
+  --pg-home-content-max: 1580px;
 }
 
-/* Секції залишаються на всю ширину */
-#about,
-#objects,
-#popular-services,
-#registers-preview,
-#director,
-#contacts {
-  width: 100% !important;
-  max-width: none !important;
-  box-sizing: border-box !important;
-}
-
-/* Усі великі внутрішні блоки робимо однієї ширини */
+/* Не чіпаємо самі секції, тільки внутрішні картки */
 .home-hero-card,
 .main-hero-card,
 .hero-card,
@@ -2564,12 +2552,8 @@ body.brand-refresh .topbar {
 
 .contacts-section,
 .contacts-grid {
-  width: min(
-    calc(100% - var(--pg-side-space) * 2),
-    var(--pg-container-width)
-  ) !important;
-
-  max-width: var(--pg-container-width) !important;
+  width: min(var(--pg-home-content-width), var(--pg-home-content-max)) !important;
+  max-width: var(--pg-home-content-max) !important;
   margin-left: auto !important;
   margin-right: auto !important;
   box-sizing: border-box !important;
@@ -2578,13 +2562,13 @@ body.brand-refresh .topbar {
 /* На планшеті */
 @media (max-width: 1200px) {
   :root {
-    --pg-side-space: 32px;
+    --pg-home-content-width: calc(100% - 64px);
   }
 }
 
 /* На телефоні */
 @media (max-width: 768px) {
   :root {
-    --pg-side-space: 16px;
+    --pg-home-content-width: calc(100% - 32px);
   }
 }
