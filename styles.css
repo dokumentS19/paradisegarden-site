@@ -2518,3 +2518,73 @@ body.brand-refresh header.topbar,
 body.brand-refresh .topbar {
   border-bottom: 2px solid rgba(212, 124, 19, 0.45) !important;
 }
+/* ОДНАКОВА ШИРИНА ВСІХ ОСНОВНИХ БЛОКІВ ГОЛОВНОЇ */
+
+:root {
+  --pg-container-width: 1580px;
+  --pg-side-space: 48px;
+}
+
+/* Секції залишаються на всю ширину */
+#about,
+#objects,
+#popular-services,
+#registers-preview,
+#director,
+#contacts {
+  width: 100% !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Усі великі внутрішні блоки робимо однієї ширини */
+.home-hero-card,
+.main-hero-card,
+.hero-card,
+.hero-panel,
+.hero-info,
+
+.benefits-grid,
+.features-grid,
+.advantages-grid,
+.home-benefits,
+.benefits,
+
+.about-card,
+.about-section,
+
+.objects-panel,
+.objects-shell,
+.objects-wrap,
+
+.popular-services,
+.services-grid,
+.registers-preview,
+.director-section,
+
+.contacts-section,
+.contacts-grid {
+  width: min(
+    calc(100% - var(--pg-side-space) * 2),
+    var(--pg-container-width)
+  ) !important;
+
+  max-width: var(--pg-container-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+}
+
+/* На планшеті */
+@media (max-width: 1200px) {
+  :root {
+    --pg-side-space: 32px;
+  }
+}
+
+/* На телефоні */
+@media (max-width: 768px) {
+  :root {
+    --pg-side-space: 16px;
+  }
+}
