@@ -2602,3 +2602,62 @@ body.brand-refresh .topbar .nav a[aria-current="page"] {
   background-color: rgba(212, 124, 19, 0.24) !important;
   color: #ffffff !important;
 }
+/* ЄДИНА ШИРИНА КОНТЕНТУ НА ГОЛОВНІЙ */
+
+:root {
+  --pg-content-width: 1600px;
+}
+
+/* Обмежуємо основні внутрішні блоки */
+.hero-content,
+.hero-inner,
+.section-inner,
+.objects-panel,
+.objects-shell,
+.objects-wrap,
+.about-card,
+.about-section,
+.contacts-section,
+.contacts-grid,
+.registers-preview,
+.services-grid,
+.popular-services,
+.director-section {
+  max-width: var(--pg-content-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Секції залишаються на всю ширину, але внутрішній контент центрується */
+section {
+  box-sizing: border-box;
+}
+
+/* Блок обʼєктів */
+#objects .objects-panel,
+#objects .objects-shell,
+#objects .objects-wrap {
+  max-width: var(--pg-content-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Контакти */
+#contacts .contacts-section,
+#contacts .contacts-grid,
+.contacts-section,
+.contacts-grid {
+  max-width: var(--pg-content-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Про агентство */
+#about .about-card,
+#about .about-section,
+.about-card,
+.about-section {
+  max-width: var(--pg-content-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
