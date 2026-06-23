@@ -2367,3 +2367,51 @@ body.brand-refresh .seo-page .seo-cta p {
     font-size: 15px !important;
   }
 }
+/* ЄДИНИЙ КОЛІР ВЕРХНЬОГО МЕНЮ НА ВСІХ СТОРІНКАХ */
+
+:root {
+  --pg-header-bg: #071b12;
+  --pg-header-border: rgba(212, 124, 19, 0.35);
+  --pg-header-text: #ffffff;
+  --pg-header-muted: rgba(255, 255, 255, 0.82);
+  --pg-header-active: rgba(212, 124, 19, 0.28);
+  --pg-header-hover: rgba(212, 124, 19, 0.18);
+}
+
+/* Верхня панель */
+.topbar {
+  background: var(--pg-header-bg) !important;
+  border-bottom: 1px solid var(--pg-header-border) !important;
+}
+
+/* Логотип і текст бренду */
+.topbar .brand,
+.topbar .brand strong {
+  color: var(--pg-header-text) !important;
+}
+
+.topbar .brand small {
+  color: var(--pg-header-muted) !important;
+}
+
+/* Пункти меню */
+.topbar .nav a {
+  color: var(--pg-header-text) !important;
+  background: transparent !important;
+  border-radius: 999px;
+  padding: 10px 14px;
+  transition: 0.2s ease;
+}
+
+/* Наведення */
+.topbar .nav a:hover {
+  background: var(--pg-header-hover) !important;
+  color: #ffffff !important;
+}
+
+/* Активна сторінка */
+.topbar .nav a.active,
+.topbar .nav a[aria-current="page"] {
+  background: var(--pg-header-active) !important;
+  color: #ffffff !important;
+}
