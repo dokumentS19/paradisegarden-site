@@ -2518,3 +2518,38 @@ body.brand-refresh header.topbar,
 body.brand-refresh .topbar {
   border-bottom: 2px solid rgba(212, 124, 19, 0.45) !important;
 }
+/* ЄДИНА ШИРИНА ОСНОВНИХ БЛОКІВ ГОЛОВНОЇ СТОРІНКИ */
+
+:root {
+  --pg-main-width: 1600px;
+}
+
+/* Основні секції головної */
+.hero .hero-inner,
+.section,
+.objects-section,
+#objects,
+#about,
+#popular-services,
+#registers-preview,
+#director,
+#contacts {
+  max-width: var(--pg-main-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Внутрішні обгортки, якщо вони є */
+.section-inner,
+.objects-shell,
+.objects-panel,
+.objects-wrap,
+.services-grid,
+.popular-services,
+.registers-preview,
+.director-section,
+.contacts-section {
+  max-width: var(--pg-main-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
