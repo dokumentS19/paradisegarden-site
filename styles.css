@@ -2521,7 +2521,7 @@ body.brand-refresh .topbar {
 /* ЄДИНА ШИРИНА ОСНОВНИХ БЛОКІВ ГОЛОВНОЇ СТОРІНКИ */
 
 :root {
-  --pg-main-width: 1600px;
+ --pg-main-width: 1500px;
 }
 
 /* Основні секції головної */
