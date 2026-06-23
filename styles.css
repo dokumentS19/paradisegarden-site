@@ -2461,3 +2461,52 @@ body.brand-refresh .topbar .nav a[aria-current="page"] {
   background-color: rgba(212, 124, 19, 0.28) !important;
   color: #ffffff !important;
 }
+/* СВІТЛІШИЙ ЄДИНИЙ КОЛІР ВЕРХНЬОГО МЕНЮ НА ВСІХ СТОРІНКАХ */
+
+html body header.topbar,
+html body .topbar,
+body.brand-refresh header.topbar,
+body.brand-refresh .topbar {
+  background: #154c34 !important;
+  background-color: #154c34 !important;
+  background-image: none !important;
+  border-bottom: 1px solid rgba(212, 124, 19, 0.35) !important;
+}
+
+/* Логотип */
+html body .topbar .brand,
+html body .topbar .brand strong {
+  color: #ffffff !important;
+}
+
+html body .topbar .brand small {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+/* Пункти меню */
+html body .topbar .nav a,
+body.brand-refresh .topbar .nav a {
+  color: #ffffff !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border-radius: 999px !important;
+  padding: 10px 14px !important;
+}
+
+/* Наведення */
+html body .topbar .nav a:hover,
+body.brand-refresh .topbar .nav a:hover {
+  background: rgba(212, 124, 19, 0.18) !important;
+  background-color: rgba(212, 124, 19, 0.18) !important;
+  color: #ffffff !important;
+}
+
+/* Активна кнопка */
+html body .topbar .nav a.active,
+html body .topbar .nav a[aria-current="page"],
+body.brand-refresh .topbar .nav a.active,
+body.brand-refresh .topbar .nav a[aria-current="page"] {
+  background: rgba(212, 124, 19, 0.30) !important;
+  background-color: rgba(212, 124, 19, 0.30) !important;
+  color: #ffffff !important;
+}
