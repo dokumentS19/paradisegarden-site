@@ -2521,7 +2521,7 @@ body.brand-refresh .topbar {
 /* ЄДИНА ШИРИНА ВЕЛИКИХ БЛОКІВ НА ГОЛОВНІЙ */
 
 :root {
-  --pg-content-width: 1640px;
+  --pg-content-width: 1600px;
   --pg-content-side-gap: 48px;
 }
 
