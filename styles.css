@@ -2518,3 +2518,62 @@ body.brand-refresh header.topbar,
 body.brand-refresh .topbar {
   border-bottom: 2px solid rgba(212, 124, 19, 0.45) !important;
 }
+/* ШИРИНА ГОЛОВНОЇ ЯК НА СТОРІНЦІ СТАТТІ */
+
+:root {
+  --pg-page-side-gap: 78px;
+  --pg-page-max-width: 1740px;
+}
+
+/* Великі внутрішні блоки головної */
+.home-hero-card,
+.main-hero-card,
+.hero-card,
+.hero-panel,
+.about-card,
+.about-section,
+.objects-panel,
+.objects-shell,
+.objects-wrap,
+.contacts-section,
+.contacts-grid,
+.popular-services,
+.services-grid,
+.registers-preview,
+.director-section {
+  width: min(
+    calc(100% - var(--pg-page-side-gap) * 2),
+    var(--pg-page-max-width)
+  ) !important;
+
+  max-width: var(--pg-page-max-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+}
+
+/* Секції не стискаємо, тільки їхній внутрішній блок */
+#about,
+#objects,
+#popular-services,
+#registers-preview,
+#director,
+#contacts {
+  width: 100% !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+}
+
+/* На планшеті */
+@media (max-width: 1200px) {
+  :root {
+    --pg-page-side-gap: 40px;
+  }
+}
+
+/* На телефоні */
+@media (max-width: 768px) {
+  :root {
+    --pg-page-side-gap: 16px;
+  }
+}
