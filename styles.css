@@ -2510,3 +2510,11 @@ body.brand-refresh .topbar .nav a[aria-current="page"] {
   background-color: rgba(212, 124, 19, 0.30) !important;
   color: #ffffff !important;
 }
+/* Нижня лінія верхнього меню */
+
+html body header.topbar,
+html body .topbar,
+body.brand-refresh header.topbar,
+body.brand-refresh .topbar {
+  border-bottom: 2px solid rgba(212, 124, 19, 0.45) !important;
+}
