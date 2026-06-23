@@ -7,14 +7,12 @@
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
   </url>  
-
   <url>
     <loc>https://paradisegarden.com.ua/articles.html</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
-
   <url>
     <loc>https://paradisegarden.com.ua/article.html</loc>
     <lastmod>2026-06-22</lastmod>
