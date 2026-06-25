@@ -912,13 +912,10 @@ async function loadObject() {
     lightboxSlide = 0;
 
     try {
-      await updateDoc(objectRef, {
-        views: increment(1),
-        updatedAt: serverTimestamp()
-      });
-    } catch (viewsError) {
-      console.warn("Views update blocked:", viewsError);
-    }
+     updateDoc(objectRef, {
+  views: increment(1),
+  updatedAt: serverTimestamp()
+}).catch(e => console.warn("Views error:", e));
 
     renderObject(currentObject);
     updateGallery();
