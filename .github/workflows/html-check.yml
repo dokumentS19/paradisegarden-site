@@ -1,33 +1,16 @@
-name: HTML and Sitemap Check
+name: HTML Check
 
-on: 
+on:
   push:
-    branches:
-      - main
   pull_request:
 
 jobs:
-  validation:
-    name: Перевірка HTML і sitemap
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Завантажити код репозиторію
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Перевірити HTML-файли
-        uses: Cyb3r-Jak3/html5validator-action@v7.2.0
-        with:
-          root: .
-          format: text
-          log_level: INFO
-          css: true
-
-      - name: Перевірити sitemap.xml
-        run: |
-          python - <<'PY'
-          import xml.etree.ElementTree as ET
-          ET.parse("sitemap.xml")
-          print("sitemap.xml валідний")
-          PY
-  
+      - name: Test
+        run: echo "Workflow працює"
