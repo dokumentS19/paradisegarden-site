@@ -889,6 +889,18 @@ async function loadObject() {
 
   try {
     const objectRef = doc(db, "objects", objectId);
+    const cached = sessionStorage.getItem(`object_${objectId}`);
+
+if (cached) {
+  const data = JSON.parse(cached);
+
+  currentObject = data;
+  images = getImages(data);
+
+  renderObject(data);
+  updateGallery();
+}
+
     const snap = await getDoc(objectRef);
 
     if (!snap.exists()) {
