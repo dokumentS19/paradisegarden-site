@@ -911,10 +911,12 @@ async function loadObject() {
     currentSlide = 0;
     lightboxSlide = 0;
 
-   updateDoc(objectRef, {
-  views: increment(1),
-  updatedAt: serverTimestamp()
-}).catch(e => console.warn("Views error:", e));
+setTimeout(() => {
+  updateDoc(objectRef, {
+    views: increment(1),
+    updatedAt: serverTimestamp()
+  }).catch(() => {});
+}, 1000);
 
 
     renderObject(currentObject);
