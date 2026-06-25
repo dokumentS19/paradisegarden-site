@@ -1006,7 +1006,7 @@ function renderObject(item) {
 
       <div class="gallery">
         <div class="gallery-main">
-          <img id="mainImg" src="${escapeAttribute(images[0])}" alt="${title}">
+      <img id="mainImg" src="${escapeAttribute(images[0])}" alt="${title}" loading="lazy">
 
           <button class="gallery-btn left" type="button" onclick="changeSlide(-1)">‹</button>
           <button class="gallery-btn right" type="button" onclick="changeSlide(1)">›</button>
