@@ -911,11 +911,11 @@ async function loadObject() {
     currentSlide = 0;
     lightboxSlide = 0;
 
-    try {
-     updateDoc(objectRef, {
+   updateDoc(objectRef, {
   views: increment(1),
   updatedAt: serverTimestamp()
 }).catch(e => console.warn("Views error:", e));
+
 
     renderObject(currentObject);
     updateGallery();
