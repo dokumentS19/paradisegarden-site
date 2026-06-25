@@ -911,13 +911,16 @@ async function loadObject() {
     currentSlide = 0;
     lightboxSlide = 0;
 
-setTimeout(() => {
-  updateDoc(objectRef, {
-    views: increment(1),
-    updatedAt: serverTimestamp()
-  }).catch(() => {});
-}, 1000);
+if (!sessionStorage.getItem(`viewed_${objectId}`)) {
+  sessionStorage.setItem(`viewed_${objectId}`, "1");
 
+  setTimeout(() => {
+    updateDoc(objectRef, {
+      views: increment(1),
+      updatedAt: serverTimestamp()
+    }).catch(() => {});
+  }, 1000);
+}
 
     renderObject(currentObject);
     updateGallery();
