@@ -30,3 +30,4 @@ jobs:
           ET.parse("sitemap.xml")
           print("sitemap.xml валідний")
           PY
+  
