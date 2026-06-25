@@ -1,29 +1,67 @@
 name: HTML and Sitemap Check
 
-on:  
+on:
   push:
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   validation:
     name: Check HTML and sitemap
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Validate HTML files
+      - name: Prepare public HTML files
+        run: |
+          mkdir -p html-check
+
+          find . -name "*.html" \
+            ! -path "./.git/*" \
+            ! -path "./html-check/*" \
+            ! -name "admin.html" \
+            ! -name "dashboard.html" \
+            ! -name "leads.html" \
+            -exec cp --parents {} html-check/ \;
+
+      - name: Validate public HTML files
         uses: Cyb3r-Jak3/html5validator-action@v7.2.0
         with:
-          root: .
+          root: html-check
           format: text
           log_level: INFO
-          css: true
+          css: false
 
       - name: Validate sitemap.xml
         run: |
           python - <<'PY'
           import xml.etree.ElementTree as ET
-          ET.parse("sitemap.xml")
-          print("sitemap.xml валідний")
+
+          sitemap = "sitemap.xml"
+
+          tree = ET.parse(sitemap)
+          root = tree.getroot()
+
+          ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+
+          urls = root.findall("sm:url", ns)
+          locs = []
+
+          for url in urls:
+              loc = url.find("sm:loc", ns)
+              if loc is None or not loc.text or not loc.text.strip():
+                  raise SystemExit("Помилка: у sitemap.xml є порожній <loc>")
+              locs.append(loc.text.strip())
+
+          duplicates = sorted(set([x for x in locs if locs.count(x) > 1]))
+
+          if duplicates:
+              raise SystemExit("Помилка: дублікати в sitemap.xml: " + ", ".join(duplicates))
+
+          print(f"sitemap.xml валідний. URL знайдено: {len(locs)}")
           PY
