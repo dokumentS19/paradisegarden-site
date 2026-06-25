@@ -1122,7 +1122,7 @@ async function loadSimilarObjects(item) {
 
       return `
         <a class="similar-card" href="object.html?id=${escapeAttribute(obj.id)}">
-          <img src="${image}" alt="${title}">
+        <img src="${image}" alt="${title}" loading="lazy">
 
           <div>
             <strong>${title}</strong>
