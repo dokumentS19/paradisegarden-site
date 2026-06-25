@@ -1,6 +1,6 @@
 name: HTML and Sitemap Check
 
-on: 
+on:
   push:
     branches:
       - main
