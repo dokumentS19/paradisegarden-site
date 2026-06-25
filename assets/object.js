@@ -925,9 +925,9 @@ if (!sessionStorage.getItem(`viewed_${objectId}`)) {
     renderObject(currentObject);
     updateGallery();
 
-    setTimeout(() => {
-      initMap(currentObject);
-    }, 300);
+   setTimeout(() => {
+  initMap(currentObject);
+}, 1000);
 
     loadSimilarObjects(currentObject);
   } catch (error) {
