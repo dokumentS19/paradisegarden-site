@@ -918,7 +918,10 @@ if (cached) {
       id: snap.id,
       ...snap.data()
     };
-
+sessionStorage.setItem(
+  `object_${objectId}`,
+  JSON.stringify(currentObject)
+);
     images = getImages(currentObject);
     currentSlide = 0;
     lightboxSlide = 0;
