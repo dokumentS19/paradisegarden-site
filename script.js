@@ -481,7 +481,7 @@ ${
   (item.propertyType === "apartment" || item.propertyType === "room") && apartmentFloorText
     ? `<span>🏢 Поверх: ${apartmentFloorText}</span>`
     : ""
-}
+} 
 <span>📐 Площа: ${area}</span>
             <span>👁 Переглядів: ${views}</span>
           </div>
