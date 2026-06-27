@@ -321,17 +321,22 @@ const rentPeriodValue = rentPeriodFilter ? rentPeriodFilter.value : "all";
     const matchesProperty =
       propertyValue === "all" || item.propertyType === propertyValue;
 
-    const matchesCommercial =
-      commercialValue === "all" || item.commercialType === commercialValue;
+   const matchesCommercial =
+  commercialValue === "all" || item.commercialType === commercialValue;
 
-    return (
-      matchesText &&
-      matchesMin &&
-      matchesMax &&
-      matchesDeal &&
-      matchesProperty &&
-      matchesCommercial
-    );
+const matchesRentPeriod =
+  rentPeriodValue === "all" ||
+  item.rent?.pricePeriod === rentPeriodValue;
+
+return (
+  matchesText &&
+  matchesMin &&
+  matchesMax &&
+  matchesDeal &&
+  matchesProperty &&
+  matchesCommercial &&
+  matchesRentPeriod
+);
   });
 
   filteredObjects.sort((a, b) => {
