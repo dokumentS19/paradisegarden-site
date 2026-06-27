@@ -219,8 +219,13 @@
 <script>
   const menuBtn = document.getElementById("menuBtn");
   const mainNav = document.getElementById("mainNav");
+
   if (menuBtn && mainNav) {
-    menuBtn.addEventListener("click", () => { mainNav.classList.toggle("active"); });
+    menuBtn.addEventListener("click", () => {
+      mainNav.classList.toggle("active");
+      mainNav.classList.toggle("open");
+      document.body.classList.toggle("no-scroll");
+    });
   }
 </script>
 </body>
