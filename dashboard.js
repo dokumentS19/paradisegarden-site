@@ -298,8 +298,9 @@ window.addObject = async function(event) {
   const address = document.getElementById("address")?.value.trim();
   const description = document.getElementById("description")?.value.trim();
 
-  const dealType = document.getElementById("quickDealType")?.value || "sale";
-  const propertyType = document.getElementById("quickPropertyType")?.value || "apartment";
+ const dealType = document.getElementById("quickDealType")?.value || "sale";
+const propertyType = document.getElementById("quickPropertyType")?.value || "apartment";
+const quickRentPeriod = document.getElementById("quickRentPeriod")?.value || "month";
 
   if (!title) {
     alert("Вкажіть назву оголошення.");
