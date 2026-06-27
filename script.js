@@ -70,6 +70,7 @@ const sortSelect = document.getElementById("sortSelect");
 const dealTypeFilter = document.getElementById("dealTypeFilter");
 const propertyTypeFilter = document.getElementById("propertyTypeFilter");
 const commercialTypeFilter = document.getElementById("commercialTypeFilter");
+const rentPeriodFilter = document.getElementById("rentPeriodFilter");
 
 const resetFiltersBtn = document.getElementById("resetFilters");
 
