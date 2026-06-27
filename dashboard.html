@@ -326,8 +326,8 @@
       <small>Кабінет користувача</small>
     </span>
   </a>
-
-  <nav class="nav">
+<button class="menu-btn" id="menuBtn" aria-label="Відкрити меню">☰</button>
+<nav class="nav" id="mainNav">
     <a href="index.html">🏠 Головна</a>
     <a href="admin.html">⚙️ Адмін</a>
     <a href="favorites.html">❤️ Обране</a>
@@ -475,7 +475,18 @@
     toggleQuickRentPeriod();
   }
 </script>
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const mainNav = document.getElementById("mainNav");
 
+  if (menuBtn && mainNav) {
+    menuBtn.addEventListener("click", () => {
+      mainNav.classList.toggle("active");
+      mainNav.classList.toggle("open");
+      document.body.classList.toggle("no-scroll");
+    });
+  }
+</script>
 <script type="module" src="dashboard.js"></script>
 
 </body>
