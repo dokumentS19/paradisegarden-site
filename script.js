@@ -359,15 +359,16 @@ return (
 }
 
 function setupFilters() {
-  const controls = [
-    searchInput,
-    minPriceInput,
-    maxPriceInput,
-    sortSelect,
-    dealTypeFilter,
-    propertyTypeFilter,
-    commercialTypeFilter
-  ];
+const controls = [
+  searchInput,
+  minPriceInput,
+  maxPriceInput,
+  sortSelect,
+  dealTypeFilter,
+  propertyTypeFilter,
+  commercialTypeFilter,
+  rentPeriodFilter
+];
 
   controls.forEach(control => {
     if (!control) return;
