@@ -388,9 +388,10 @@ const controls = [
       if (maxPriceInput) maxPriceInput.value = "";
       if (sortSelect) sortSelect.value = "vip";
 
-      if (dealTypeFilter) dealTypeFilter.value = "all";
+     if (dealTypeFilter) dealTypeFilter.value = "all";
       if (propertyTypeFilter) propertyTypeFilter.value = "all";
       if (commercialTypeFilter) commercialTypeFilter.value = "all";
+      if (rentPeriodFilter) rentPeriodFilter.value = "all";
 
       applyFilters();
     });
