@@ -431,7 +431,7 @@ function createObjectCard(item) {
   const id = escapeAttribute(item.id);
   const title = escapeHtml(item.title || "Обʼєкт нерухомості");
   const area = escapeHtml(item.area || "-");
-  const price = formatPrice(item.price, item.dealType);
+  const price = formatPrice(item.price, item.dealType, item.rent?.pricePeriod || "");
   const image = escapeAttribute(getMainImage(item));
   const views = Number(item.views || 0);
   const isVip = Boolean(item.vip);
