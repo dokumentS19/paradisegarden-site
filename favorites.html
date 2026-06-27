@@ -315,8 +315,20 @@
 <footer class="footer">
   <p>© 2002–2026 АН «Райський Сад». Нерухомість Ірпеня, Києва та Київської області.</p>
 </footer>
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const mainNav = document.getElementById("mainNav");
 
-<script type="module" src="favorites.js"></script>
+  if (menuBtn && mainNav) {
+    menuBtn.addEventListener("click", () => {
+      mainNav.classList.toggle("active");
+      mainNav.classList.toggle("open");
+      document.body.classList.toggle("no-scroll");
+    });
+  }
+</script>
+
+  <script type="module" src="favorites.js"></script>
 
 </body>
 </html>
