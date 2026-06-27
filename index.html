@@ -190,22 +190,59 @@
       </p>
     </div>
  
-    <div class="filters">
-      <input id="search" type="text" placeholder="Пошук за назвою або локацією">
+   <div class="filters">
+  <input id="search" type="text" placeholder="Пошук за назвою або локацією">
 
-      <input id="minPrice" type="number" placeholder="Ціна від">
+  <select id="dealTypeFilter">
+    <option value="all">Усі угоди</option>
+    <option value="sale">Продаж</option>
+    <option value="rent">Оренда</option>
+  </select>
 
-      <input id="maxPrice" type="number" placeholder="Ціна до">
+  <select id="propertyTypeFilter">
+    <option value="all">Усі типи</option>
+    <option value="apartment">Квартира</option>
+    <option value="room">Кімната</option>
+    <option value="house">Будинок</option>
+    <option value="dacha">Дача</option>
+    <option value="land">Земельна ділянка</option>
+    <option value="garage">Гараж</option>
+    <option value="commercial">Комерція</option>
+  </select>
 
-      <select id="sortSelect">
-        <option value="vip">Спочатку VIP</option>
-        <option value="priceAsc">Ціна: від меншої</option>
-        <option value="priceDesc">Ціна: від більшої</option>
-        <option value="newest">Нові спочатку</option>
-      </select>
+  <select id="rentPeriodFilter">
+    <option value="all">Будь-який період</option>
+    <option value="month">За місяць</option>
+    <option value="day">За добу</option>
+    <option value="year">За рік</option>
+    <option value="sqm_month">За м² / місяць</option>
+    <option value="sotka_month">За сотку / місяць</option>
+    <option value="negotiable">Договірна</option>
+  </select>
 
-      <button class="btn" id="resetFilters">Скинути</button>
-    </div>
+  <select id="commercialTypeFilter">
+    <option value="all">Уся комерція</option>
+    <option value="office">Офіс</option>
+    <option value="hangar">Ангар</option>
+    <option value="warehouse">Склад</option>
+    <option value="shop">Магазин</option>
+    <option value="production">Виробниче приміщення</option>
+    <option value="other">Інше</option>
+  </select>
+
+  <input id="minPrice" type="number" placeholder="Ціна від">
+
+  <input id="maxPrice" type="number" placeholder="Ціна до">
+
+  <select id="sortSelect">
+    <option value="vip">Спочатку VIP</option>
+    <option value="priceAsc">Ціна: від меншої</option>
+    <option value="priceDesc">Ціна: від більшої</option>
+    <option value="newest">Нові спочатку</option>
+  </select>
+
+  <button class="btn" id="resetFilters">Скинути</button>
+</div>
 
     <div id="objectsGrid" class="objects-grid"></div>
   </section>
