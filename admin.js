@@ -700,9 +700,9 @@ window.toggleFormFields = function() {
     $("rentFields")?.classList.add("active");
   }
 
-  if (propertyType === "apartment") {
-    $("apartmentFields")?.classList.add("active");
-  }
+ if (propertyType === "apartment" || propertyType === "room") {
+  $("apartmentFields")?.classList.add("active");
+}
 
   if (propertyType === "house" || propertyType === "dacha") {
     $("houseFields")?.classList.add("active");
