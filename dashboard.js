@@ -508,7 +508,7 @@ ${
 
 <p>💰 ${price}</p>
 ${
-  item.propertyType === "apartment" && apartmentFloorText
+(item.propertyType === "apartment" || item.propertyType === "room") && apartmentFloorText
     ? `<p>🏢 Поверх: ${apartmentFloorText}</p>`
     : ""
 }
