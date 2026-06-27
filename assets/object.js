@@ -555,7 +555,7 @@ function buildCommercialFeatures(item) {
 }
 
 function buildTypeFeatures(item) {
-  if (item.propertyType === "apartment") return buildApartmentFeatures(item);
+  if (item.propertyType === "apartment" || item.propertyType === "room") return buildApartmentFeatures(item);
   if (item.propertyType === "house" || item.propertyType === "dacha") return buildHouseFeatures(item);
   if (item.propertyType === "land") return buildLandFeatures(item);
   if (item.propertyType === "garage") return buildGarageFeatures(item);
@@ -563,7 +563,6 @@ function buildTypeFeatures(item) {
 
   return "";
 }
-
 /* ================================
    GALLERY
 ================================ */
