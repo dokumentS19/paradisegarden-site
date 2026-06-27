@@ -112,16 +112,29 @@ function escapeAttribute(value = "") {
   return escapeHtml(value).replaceAll("`", "&#096;");
 }
 
-function formatPrice(value, dealType = "sale") {
+function formatPrice(value, dealType = "sale", pricePeriod = "") {
   const n = Number(value);
 
   if (!Number.isFinite(n) || n <= 0) {
     return "-";
   }
 
-  const currency = dealType === "rent" ? "грн" : "$";
+  const formatted = new Intl.NumberFormat("uk-UA").format(n);
 
-  return `${new Intl.NumberFormat("uk-UA").format(n)} ${currency}`;
+  if (dealType === "rent") {
+    const periodMap = {
+      month: " / місяць",
+      day: " / доба",
+      year: " / рік",
+      sqm_month: " / м² / місяць",
+      sotka_month: " / сотку / місяць",
+      negotiable: ""
+    };
+
+    return `${formatted} грн${periodMap[pricePeriod] || ""}`;
+  }
+
+  return `${formatted} $`;
 }
 
 function getMainImage(item) {
