@@ -373,11 +373,15 @@ function clearQuickForm() {
     }
   });
 
-  const quickDealType = document.getElementById("quickDealType");
-  const quickPropertyType = document.getElementById("quickPropertyType");
+const quickDealType = document.getElementById("quickDealType");
+const quickPropertyType = document.getElementById("quickPropertyType");
+const quickRentPeriod = document.getElementById("quickRentPeriod");
+const quickRentPeriodBox = document.getElementById("quickRentPeriodBox");
 
-  if (quickDealType) quickDealType.value = "sale";
-  if (quickPropertyType) quickPropertyType.value = "apartment";
+if (quickDealType) quickDealType.value = "sale";
+if (quickPropertyType) quickPropertyType.value = "apartment";
+if (quickRentPeriod) quickRentPeriod.value = "month";
+if (quickRentPeriodBox) quickRentPeriodBox.style.display = "none";
 }
 
 /* ================================
