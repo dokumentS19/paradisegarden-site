@@ -977,7 +977,7 @@ if (!sessionStorage.getItem(`viewed_${objectId}`)) {
 
 function renderObject(item) {
   const title = escapeHtml(item.title || "Обʼєкт нерухомості");
-  const price = formatPrice(item.price, item.dealType);
+  const price = formatPrice(item.price, item.dealType, item.rent?.pricePeriod || "");
   const area = item.area || "-";
   const address = getPublicAddress(item);
   const publicCadastralNumber = getPublicCadastralNumber(item);
