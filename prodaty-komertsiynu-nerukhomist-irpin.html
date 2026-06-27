@@ -195,11 +195,13 @@
   <section class="seo-cta">
     <h2>Потрібно продати комерційну нерухомість?</h2>
     <p>Зателефонуйте або залиште заявку — АН «Райський Сад» допоможе оцінити приміщення, знайти покупця та супроводити угоду.</p>
-    <div class="seo-actions" style="justify-content: center;">
-      <a href="tel:+380953777196" class="cta-big">📞 Подзвонити</a>
-      <a href="index.html#request" class="cta-outline">Залишити заявку</a>
-      <a href="komertsiya.html" class="cta-outline">Комерція</a>
-    </div>
+  <div class="seo-actions" style="justify-content: center;">
+  tel:+380953777196📞 Подзвонити</a>
+  <a href="index.html#request" class="cta-outline">Залишити заявку</a>
+  <a href="komertsiya.html" class="cta-outline">Комерція</a>
+  <a href="komertsiyna-nerukhomist-irpin.html" class="cta-outline">Купити комерцію</a>
+  <a href="orenda-komertsiynoyi-nerukhomosti-irpin.html" class="cta-outline">Оренда комерції</a>
+</div>
   </section>
 </main>
 
@@ -211,9 +213,12 @@
 <script>
   const menuBtn = document.getElementById("menuBtn");
   const mainNav = document.getElementById("mainNav");
+
   if (menuBtn && mainNav) {
     menuBtn.addEventListener("click", () => {
       mainNav.classList.toggle("active");
+      mainNav.classList.toggle("open");
+      document.body.classList.toggle("no-scroll");
     });
   }
 </script>
