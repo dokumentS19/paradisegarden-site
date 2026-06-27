@@ -517,11 +517,13 @@
       підготувати оголошення, знайти покупця та супроводити угоду.
     </p>
 
-    <div class="seo-actions" style="justify-content: center;">
-      <a href="tel:+380953777196" class="cta-big">📞 Подзвонити</a>
-      <a href="index.html#request" class="cta-outline">Залишити заявку</a>
-      <a href="garazhi.html" class="cta-outline">Гаражі та паркомісця</a>
-    </div>
+   <div class="seo-actions" style="justify-content: center;">
+  <a href="tel:+380953777196" class="cta-big">📞 Подзвонити</a>
+  <a href="index.html#request" class="cta-outline">Залишити заявку</a>
+  <a href="garazhi.html" class="cta-outline">Гаражі та паркомісця</a>
+  <a href="garazhi-irpin.html" class="cta-outline">Купити гараж</a>
+  <a href="orenda-garazha-irpin.html" class="cta-outline">Оренда гаража</a>
+</div>
   </section>
 
 </main>
@@ -538,9 +540,10 @@
   if (menuBtn && mainNav) {
     menuBtn.addEventListener("click", () => {
       mainNav.classList.toggle("active");
+      mainNav.classList.toggle("open");
+      document.body.classList.toggle("no-scroll");
     });
   }
 </script>
-
 </body>
 </html>
