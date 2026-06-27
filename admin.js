@@ -1052,10 +1052,10 @@ function buildPrivateData() {
 }
 
 function buildAreaLabel(propertyType, data) {
-  if (propertyType === "apartment") {
-    const total = data.apartment?.totalArea;
-    return total ? `${total} м²` : "-";
-  }
+  if (propertyType === "apartment" || propertyType === "room") {
+  const total = data.apartment?.totalArea;
+  return total ? `${total} м²` : "-";
+}
 
   if (propertyType === "house" || propertyType === "dacha") {
     const houseArea = data.house?.houseArea;
