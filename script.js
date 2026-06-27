@@ -292,9 +292,10 @@ function applyFilters() {
   const maxPrice = maxPriceInput ? Number(maxPriceInput.value) : 0;
   const sortValue = sortSelect ? sortSelect.value : "vip";
 
-  const dealValue = dealTypeFilter ? dealTypeFilter.value : "all";
-  const propertyValue = propertyTypeFilter ? propertyTypeFilter.value : "all";
-  const commercialValue = commercialTypeFilter ? commercialTypeFilter.value : "all";
+ const dealValue = dealTypeFilter ? dealTypeFilter.value : "all";
+const propertyValue = propertyTypeFilter ? propertyTypeFilter.value : "all";
+const commercialValue = commercialTypeFilter ? commercialTypeFilter.value : "all";
+const rentPeriodValue = rentPeriodFilter ? rentPeriodFilter.value : "all";
 
   filteredObjects = allObjects.filter(item => {
     const title = String(item.title || "").toLowerCase();
