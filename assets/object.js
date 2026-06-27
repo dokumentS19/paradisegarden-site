@@ -562,7 +562,7 @@ function buildTypeFeatures(item) {
   if (item.propertyType === "commercial") return buildCommercialFeatures(item);
 
   return "";
-}
+} 
 /* ================================
    GALLERY
 ================================ */
