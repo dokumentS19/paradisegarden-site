@@ -1143,7 +1143,7 @@ async function loadSimilarObjects(item) {
       const image = escapeAttribute(getMainImage(obj));
       const title = escapeHtml(obj.title || "Без назви");
       const area = escapeHtml(obj.area || "-");
-      const price = formatPrice(obj.price, obj.dealType);
+      const price = formatPrice(obj.price, obj.dealType, obj.rent?.pricePeriod || "");
 
       const dealName = escapeHtml(getDealTypeName(obj.dealType));
       const propertyName = escapeHtml(getPropertyTypeName(obj.propertyType));
