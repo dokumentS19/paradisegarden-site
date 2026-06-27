@@ -2518,3 +2518,67 @@ body.brand-refresh header.topbar,
 body.brand-refresh .topbar {
   border-bottom: 2px solid rgba(212, 124, 19, 0.45) !important;
 }
+/* ================================
+   HOME FILTERS — EXPANDED FILTER BAR
+   Фільтри головної сторінки після додавання:
+   угода / тип / період оренди / комерція
+================================ */
+
+#objects .filters {
+  display: grid !important;
+  grid-template-columns: 1.4fr 0.9fr 1fr 1fr 1fr 0.8fr 0.8fr 1fr auto !important;
+  gap: 10px !important;
+  align-items: stretch !important;
+  margin-bottom: 26px !important;
+}
+
+#objects .filters input,
+#objects .filters select,
+#objects .filters button {
+  min-height: 46px !important;
+  font-size: 13px !important;
+  padding: 11px 12px !important;
+  border-radius: 13px !important;
+}
+
+#objects .filters .btn,
+#resetFilters {
+  white-space: nowrap !important;
+  padding-left: 18px !important;
+  padding-right: 18px !important;
+}
+
+/* Планшети */
+@media (max-width: 1150px) {
+  #objects .filters {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  #objects .filters #search {
+    grid-column: 1 / -1 !important;
+  }
+
+  #objects .filters #resetFilters {
+    grid-column: auto !important;
+  }
+}
+
+/* Мобільні */
+@media (max-width: 680px) {
+  #objects .filters {
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+  }
+
+  #objects .filters input,
+  #objects .filters select,
+  #objects .filters button {
+    width: 100% !important;
+    min-height: 44px !important;
+    font-size: 14px !important;
+  }
+
+  #objects .filters #resetFilters {
+    width: 100% !important;
+  }
+}
