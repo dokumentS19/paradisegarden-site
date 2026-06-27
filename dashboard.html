@@ -405,6 +405,26 @@
   <p>© 2002–2026 АН «Райський Сад». Директор: Іванчик Олег Степанович.</p>
 </footer>
 
+<script>
+  const quickDealType = document.getElementById("quickDealType");
+  const quickRentPeriodBox = document.getElementById("quickRentPeriodBox");
+
+  function toggleQuickRentPeriod() {
+    if (!quickDealType || !quickRentPeriodBox) return;
+
+    if (quickDealType.value === "rent") {
+      quickRentPeriodBox.style.display = "grid";
+    } else {
+      quickRentPeriodBox.style.display = "none";
+    }
+  }
+
+  if (quickDealType) {
+    quickDealType.addEventListener("change", toggleQuickRentPeriod);
+    toggleQuickRentPeriod();
+  }
+</script>
+
 <script type="module" src="dashboard.js"></script>
 
 </body>
