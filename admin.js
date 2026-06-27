@@ -1254,7 +1254,7 @@ window.addObject = async function(event) {
 
   const dataByType = {
     rent: buildRentData(dealType),
-    apartment: propertyType === "apartment" ? buildApartmentData() : null,
+   apartment: (propertyType === "apartment" || propertyType === "room") ? buildApartmentData() : null,
     house: (propertyType === "house" || propertyType === "dacha") ? buildHouseData() : null,
     land: propertyType === "land" ? buildLandData() : null,
     garage: propertyType === "garage" ? buildGarageData() : null,
