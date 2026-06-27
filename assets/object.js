@@ -233,6 +233,7 @@ function getDealTypeName(value) {
 function getPropertyTypeName(value) {
   return {
     apartment: "Квартира",
+    room: "Кімната",
     house: "Будинок",
     dacha: "Дача",
     land: "Земельна ділянка",
