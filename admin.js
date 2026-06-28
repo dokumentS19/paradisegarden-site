@@ -1220,14 +1220,13 @@ window.addObject = async function(event) {
     return;
   }
 
-  const title = value("title");
-  const price = numberValue("price");
-  const description = value("description");
+const title = value("title");
+const price = numberValue("price");
+const description = value("description");
 
-  const dealType = value("dealType") || "sale";
-  const propertyType = value("propertyType") || "apartment";
-  const commercialType = propertyType === "commercial" ? value("commercialType") : "";
-
+const dealType = value("dealType") || "sale";
+const propertyType = value("propertyType") || "apartment";
+const commercialType = propertyType === "commercial" ? value("commercialType") : "";
   const vip = checked("vip");
   const sold = checked("sold");
 
