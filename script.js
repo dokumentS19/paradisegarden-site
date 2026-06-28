@@ -484,8 +484,9 @@ const image = escapeAttribute(getMainImage(item));
           <h3>${title}</h3>
 
           <div class="card-meta">
-            <span>🔑 ${dealName}</span>
-            <span>🏷️ ${propertyName}</span>
+           <span>🔑 ${dealName}</span>
+<span>🏷️ ${propertyName}</span>
+${city ? `<span>📍 ${city}</span>` : ""}
           ${
   item.propertyType === "commercial" && commercialName
     ? `<span>📌 ${commercialName}</span>`
