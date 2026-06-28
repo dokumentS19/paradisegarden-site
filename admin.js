@@ -1280,15 +1280,16 @@ const commercialType = propertyType === "commercial" ? value("commercialType") :
     const mapData = buildMapData();
 const city = extractCityFromAddress(mapData.addressPublic || mapData.addressFull || value("address"));
     const payload = {
-      title,
-      area,
-      price,
+  title,
+  city,
+  area,
+  price,
 
-      address: mapData.addressPublic || "",
-      addressFull: mapData.addressFull || "",
-      addressPublic: mapData.addressPublic || "",
+  address: mapData.addressPublic || "",
+  addressFull: mapData.addressFull || "",
+  addressPublic: mapData.addressPublic || "",
 
-      description: description || "",
+  description: description || "",
 
       dealType,
       propertyType,
