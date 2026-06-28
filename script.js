@@ -309,7 +309,7 @@ async function loadObjects() {
 ================================ */
 
 function applyFilters() {
-  const searchText = searchInput ? searchInput.value.trim().toLowerCase() : "";
+  const searchText = searchInput ? normalizeText(searchInput.value) : "";
   const minPrice = minPriceInput ? Number(minPriceInput.value) : 0;
   const maxPrice = maxPriceInput ? Number(maxPriceInput.value) : 0;
   const sortValue = sortSelect ? sortSelect.value : "vip";
