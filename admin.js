@@ -1278,7 +1278,7 @@ const commercialType = propertyType === "commercial" ? value("commercialType") :
     const finalImageUrls = [...currentImageUrls, ...uploadedImageUrls];
 
     const mapData = buildMapData();
-
+const city = extractCityFromAddress(mapData.addressPublic || mapData.addressFull || value("address"));
     const payload = {
       title,
       area,
