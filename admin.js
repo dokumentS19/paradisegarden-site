@@ -185,7 +185,15 @@ function showProgress(show) {
 /* ================================
    MAP / ADDRESS / PRIVACY
 ================================ */
+function extractCityFromAddress(address) {
+  const clean = String(address || "").trim();
 
+  if (!clean) {
+    return "";
+  }
+
+  return clean.split(",")[0].trim();
+}
 function makePublicAddress(fullAddress, hideHouseNumber) {
   const clean = String(fullAddress || "").trim();
 
