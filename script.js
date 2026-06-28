@@ -99,7 +99,29 @@ function normalizePrice(value) {
 
   return Number.isFinite(n) ? n : 0;
 }
+function normalizeText(value = "") {
+  return String(value)
+    .toLowerCase()
+    .trim()
+    .replaceAll("ʼ", "'")
+    .replaceAll("’", "'")
+    .replaceAll("`", "'")
+    .replaceAll("ї", "і");
+}
 
+function getObjectCity(item) {
+  if (item.city) {
+    return String(item.city);
+  }
+
+  const address = String(item.addressPublic || item.address || "");
+
+  if (!address) {
+    return "";
+  }
+
+  return address.split(",")[0].trim();
+}
 function formatPrice(value, dealType = "sale", pricePeriod = "") {
   const n = Number(value);
 
