@@ -2519,23 +2519,12 @@ body.brand-refresh .topbar {
   border-bottom: 2px solid rgba(212, 124, 19, 0.45) !important;
 }
 /* ================================
-   HOME FILTERS — EXPANDED FILTER BAR
-   Фільтри головної сторінки:
-   місто / угода / тип / ціна / сортування
+   HOME FILTERS — STABLE FILTER BAR
 ================================ */
 
 #objects .filters {
   display: grid !important;
-  grid-template-columns:
-    1.4fr
-    0.9fr
-    1fr
-    1fr
-    1fr
-    minmax(155px, 1fr)
-    minmax(155px, 1fr)
-    1fr
-    auto !important;
+  grid-template-columns: 1.4fr 0.9fr 1fr 1fr 1fr 0.8fr 0.8fr 1fr auto !important;
   gap: 10px !important;
   align-items: stretch !important;
   margin-bottom: 26px !important;
@@ -2548,12 +2537,6 @@ body.brand-refresh .topbar {
   font-size: 13px !important;
   padding: 11px 12px !important;
   border-radius: 13px !important;
-}
-
-#minPrice,
-#maxPrice {
-  min-width: 155px !important;
-  width: 100% !important;
 }
 
 #objects .filters .btn,
@@ -2572,22 +2555,11 @@ body.brand-refresh .topbar {
   #objects .filters #search {
     grid-column: 1 / -1 !important;
   }
-
-  #minPrice,
-  #maxPrice {
-    width: 100% !important;
-    min-width: 0 !important;
-  }
 }
 
 /* Мобільні */
 @media (max-width: 680px) {
-  #objects {
-    overflow: hidden !important;
-  }
-
   #objects .filters {
-    display: grid !important;
     grid-template-columns: 1fr !important;
     gap: 9px !important;
   }
@@ -2596,26 +2568,11 @@ body.brand-refresh .topbar {
   #objects .filters select,
   #objects .filters button {
     width: 100% !important;
-    min-width: 0 !important;
     min-height: 44px !important;
     font-size: 14px !important;
   }
 
   #objects .filters #resetFilters {
-    width: 100% !important;
-  }
-
-  #minPrice,
-  #maxPrice {
-    width: 100% !important;
-    min-width: 0 !important;
-  }
-
-  .objects-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .card {
     width: 100% !important;
   }
 }
