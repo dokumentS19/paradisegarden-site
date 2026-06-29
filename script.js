@@ -106,7 +106,14 @@ function normalizeText(value = "") {
     .replaceAll("ʼ", "'")
     .replaceAll("’", "'")
     .replaceAll("`", "'")
+    .replace(/[–—−]/g, "-")
+    .replace(/\s*-\s*/g, "-")
     .replace(/\s+/g, " ");
+}
+
+function normalizeCityKey(value = "") {
+  return normalizeText(value)
+    .replace(/[-\s]/g, "");
 }
 
 function getObjectCity(item) {
