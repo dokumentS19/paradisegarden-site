@@ -2582,3 +2582,8 @@ body.brand-refresh .topbar {
     width: 100% !important;
   }
 }
+#minPrice,
+#maxPrice {
+  min-width: 150px;
+  width: 150px;
+}
