@@ -448,18 +448,29 @@ function updatePricePlaceholders() {
 }
 
 function setupFilters() {
-const controls = [
-  searchInput,
-  minPriceInput,
-  maxPriceInput,
-  sortSelect,
-  dealTypeFilter,
-  propertyTypeFilter,
-  commercialTypeFilter,
-  rentPeriodFilter
-];
+  const controls = [
+    searchInput,
+    minPriceInput,
+    maxPriceInput,
+    sortSelect,
+    dealTypeFilter,
+    propertyTypeFilter,
+    commercialTypeFilter,
+    rentPeriodFilter
+  ];
 
-    if (dealTypeFilter) {
+  controls.forEach(control => {
+    if (!control) return;
+
+    control.addEventListener("input", () => {
+      clearTimeout(renderTimer);
+      renderTimer = setTimeout(applyFilters, 180);
+    });
+
+    control.addEventListener("change", applyFilters);
+  });
+
+  if (dealTypeFilter) {
     dealTypeFilter.addEventListener("change", updatePricePlaceholders);
   }
 
@@ -470,7 +481,7 @@ const controls = [
       if (maxPriceInput) maxPriceInput.value = "";
       if (sortSelect) sortSelect.value = "vip";
 
-          if (dealTypeFilter) dealTypeFilter.value = "all";
+      if (dealTypeFilter) dealTypeFilter.value = "all";
       if (propertyTypeFilter) propertyTypeFilter.value = "all";
       if (commercialTypeFilter) commercialTypeFilter.value = "all";
       if (rentPeriodFilter) rentPeriodFilter.value = "all";
