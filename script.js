@@ -335,16 +335,16 @@ const propertyValue = propertyTypeFilter ? propertyTypeFilter.value : "all";
 const commercialValue = commercialTypeFilter ? commercialTypeFilter.value : "all";
 const rentPeriodValue = rentPeriodFilter ? rentPeriodFilter.value : "all";
 
- filteredObjects = allObjects.filter(item => {
+filteredObjects = allObjects.filter(item => {
   const city = normalizeText(getObjectCity(item));
-  const address = normalizeText(item.addressPublic || item.address || "");
+  const locationText = normalizeText(getObjectLocationText(item));
 
   const price = normalizePrice(item.price);
 
   const matchesText =
     !searchText ||
     city.includes(searchText) ||
-    address.startsWith(searchText);
+    locationText.includes(searchText);
 
     const matchesMin = !minPrice || price >= minPrice;
     const matchesMax = !maxPrice || price <= maxPrice;
