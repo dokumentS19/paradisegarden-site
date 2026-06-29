@@ -432,20 +432,21 @@ function updatePricePlaceholders() {
   const dealValue = dealTypeFilter ? dealTypeFilter.value : "all";
 
   if (dealValue === "sale") {
-    minPriceInput.placeholder = "Ціна від, $";
-    maxPriceInput.placeholder = "Ціна до, $";
+    minPriceInput.placeholder = "від $";
+    maxPriceInput.placeholder = "до $";
     return;
   }
 
   if (dealValue === "rent") {
-    minPriceInput.placeholder = "Ціна від, грн";
-    maxPriceInput.placeholder = "Ціна до, грн";
+    minPriceInput.placeholder = "від грн";
+    maxPriceInput.placeholder = "до грн";
     return;
   }
 
-  minPriceInput.placeholder = "Ціна від";
-  maxPriceInput.placeholder = "Ціна до";
+  minPriceInput.placeholder = "ціна від";
+  maxPriceInput.placeholder = "ціна до";
 }
+
 
 function setupFilters() {
   const controls = [
