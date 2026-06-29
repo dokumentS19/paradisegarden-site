@@ -2576,3 +2576,59 @@ body.brand-refresh .topbar {
     width: 100% !important;
   }
 } 
+/* ================================
+   HERO TEXT SIZE FIX
+   Зменшення великого тексту на головному екрані
+================================ */
+
+.home-page .hero-title {
+  font-size: clamp(30px, 3.2vw, 44px) !important;
+  line-height: 1.12 !important;
+  margin: 12px 0 10px !important;
+  letter-spacing: -0.03em !important;
+}
+
+.home-page .hero-sub {
+  font-size: clamp(14px, 1.2vw, 17px) !important;
+  line-height: 1.45 !important;
+  font-weight: 600 !important;
+  max-width: 760px !important;
+  padding: 6px 12px !important;
+}
+
+.home-page .hero-logo-title {
+  max-width: 300px !important;
+  margin: 8px auto 6px !important;
+}
+
+.home-page .hero-logo-img {
+  max-width: 300px !important;
+}
+
+.home-page .hero-actions {
+  margin-top: 16px !important;
+}
+
+.home-page .hero-stats {
+  margin-top: 20px !important;
+}
+
+@media (max-width: 680px) {
+  .home-page .hero-title {
+    font-size: 28px !important;
+    line-height: 1.15 !important;
+  }
+
+  .home-page .hero-sub {
+    font-size: 14px !important;
+    line-height: 1.42 !important;
+  }
+
+  .home-page .hero-logo-title {
+    max-width: 220px !important;
+  }
+
+  .home-page .hero-logo-img {
+    max-width: 220px !important;
+  }
+}
