@@ -2520,8 +2520,8 @@ body.brand-refresh .topbar {
 }
 /* ================================
    HOME FILTERS — EXPANDED FILTER BAR
-   Фільтри головної сторінки після додавання:
-   угода / тип / період оренди / комерція
+   Фільтри головної сторінки:
+   місто / угода / тип / ціна / сортування
 ================================ */
 
 #objects .filters {
@@ -2532,8 +2532,8 @@ body.brand-refresh .topbar {
     1fr
     1fr
     1fr
-    minmax(150px, 0.95fr)
-    minmax(150px, 0.95fr)
+    minmax(155px, 1fr)
+    minmax(155px, 1fr)
     1fr
     auto !important;
   gap: 10px !important;
@@ -2552,7 +2552,7 @@ body.brand-refresh .topbar {
 
 #minPrice,
 #maxPrice {
-  min-width: 150px !important;
+  min-width: 155px !important;
   width: 100% !important;
 }
 
@@ -2573,20 +2573,21 @@ body.brand-refresh .topbar {
     grid-column: 1 / -1 !important;
   }
 
-  #objects .filters #resetFilters {
-    grid-column: auto !important;
-  }
-
   #minPrice,
   #maxPrice {
-    min-width: 0 !important;
     width: 100% !important;
+    min-width: 0 !important;
   }
 }
 
 /* Мобільні */
 @media (max-width: 680px) {
+  #objects {
+    overflow: hidden !important;
+  }
+
   #objects .filters {
+    display: grid !important;
     grid-template-columns: 1fr !important;
     gap: 9px !important;
   }
@@ -2595,6 +2596,7 @@ body.brand-refresh .topbar {
   #objects .filters select,
   #objects .filters button {
     width: 100% !important;
+    min-width: 0 !important;
     min-height: 44px !important;
     font-size: 14px !important;
   }
@@ -2607,5 +2609,13 @@ body.brand-refresh .topbar {
   #maxPrice {
     width: 100% !important;
     min-width: 0 !important;
+  }
+
+  .objects-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .card {
+    width: 100% !important;
   }
 }
