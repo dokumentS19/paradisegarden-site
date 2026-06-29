@@ -259,21 +259,21 @@ function getApartmentFloorText(item) {
 /* ================================
    MOBILE MENU
 ================================ */
-
 if (menuBtn && mainNav) {
   menuBtn.addEventListener("click", () => {
+    mainNav.classList.toggle("active");
     mainNav.classList.toggle("open");
     document.body.classList.toggle("no-scroll");
   });
 
   mainNav.querySelectorAll("a").forEach(link => {
     link.addEventListener("click", () => {
+      mainNav.classList.remove("active");
       mainNav.classList.remove("open");
       document.body.classList.remove("no-scroll");
     });
   });
 }
-
 /* ================================
    REVEAL ANIMATION
 ================================ */
