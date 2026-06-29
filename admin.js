@@ -1265,8 +1265,11 @@ const commercialType = propertyType === "commercial" ? value("commercialType") :
     const uploadedImageUrls = await uploadSelectedFiles();
     const finalImageUrls = [...currentImageUrls, ...uploadedImageUrls];
 
-    const mapData = buildMapData();
-const city = extractCityFromAddress(mapData.addressPublic || mapData.addressFull || value("address"));
+const mapData = buildMapData();
+
+const city = extractCityFromAddress(
+  mapData.addressPublic || mapData.addressFull || value("address")
+);
     const payload = {
   title,
   city,
