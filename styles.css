@@ -2526,7 +2526,16 @@ body.brand-refresh .topbar {
 
 #objects .filters {
   display: grid !important;
-  grid-template-columns: 1.4fr 0.9fr 1fr 1fr 1fr 0.8fr 0.8fr 1fr auto !important;
+  grid-template-columns:
+    1.4fr
+    0.9fr
+    1fr
+    1fr
+    1fr
+    minmax(150px, 0.95fr)
+    minmax(150px, 0.95fr)
+    1fr
+    auto !important;
   gap: 10px !important;
   align-items: stretch !important;
   margin-bottom: 26px !important;
@@ -2539,6 +2548,12 @@ body.brand-refresh .topbar {
   font-size: 13px !important;
   padding: 11px 12px !important;
   border-radius: 13px !important;
+}
+
+#minPrice,
+#maxPrice {
+  min-width: 150px !important;
+  width: 100% !important;
 }
 
 #objects .filters .btn,
@@ -2561,6 +2576,12 @@ body.brand-refresh .topbar {
   #objects .filters #resetFilters {
     grid-column: auto !important;
   }
+
+  #minPrice,
+  #maxPrice {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
 }
 
 /* Мобільні */
@@ -2581,16 +2602,10 @@ body.brand-refresh .topbar {
   #objects .filters #resetFilters {
     width: 100% !important;
   }
-#minPrice,
-#maxPrice {
-  min-width: 150px;
-  width: 150px;
-}
 
-@media (max-width: 768px) {
   #minPrice,
   #maxPrice {
-    width: 100%;
-    min-width: 0;
+    width: 100% !important;
+    min-width: 0 !important;
   }
 }
