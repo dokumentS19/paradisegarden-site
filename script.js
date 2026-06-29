@@ -106,7 +106,7 @@ function normalizeText(value = "") {
     .replaceAll("ʼ", "'")
     .replaceAll("’", "'")
     .replaceAll("`", "'")
-    .replaceAll("ї", "і");
+    .replace(/\s+/g, " ");
 }
 
 function getObjectCity(item) {
@@ -114,13 +114,29 @@ function getObjectCity(item) {
     return String(item.city);
   }
 
-  const address = String(item.addressPublic || item.address || "");
+  const address = String(
+    item.addressPublic ||
+    item.address ||
+    item.addressFull ||
+    ""
+  );
 
   if (!address) {
     return "";
   }
 
   return address.split(",")[0].trim();
+}
+
+function getObjectLocationText(item) {
+  return [
+    item.city,
+    item.addressPublic,
+    item.address,
+    item.addressFull
+  ]
+    .filter(Boolean)
+    .join(" ");
 }
 function formatPrice(value, dealType = "sale", pricePeriod = "") {
   const n = Number(value);
