@@ -259,9 +259,6 @@ function getApartmentFloorText(item) {
 /* ================================
    MOBILE MENU
 ================================ */
-/* ================================
-   MOBILE MENU
-================================ */
 if (menuBtn && mainNav) {
   menuBtn.addEventListener("click", () => {
     mainNav.classList.toggle("active");
