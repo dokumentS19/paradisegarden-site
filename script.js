@@ -463,11 +463,11 @@ function renderObjects(data) {
 
 function createObjectCard(item) {
   const id = escapeAttribute(item.id);
-const title = escapeHtml(item.title || "Обʼєкт нерухомості");
-const city = escapeHtml(getObjectCity(item));
-const area = escapeHtml(item.area || "-");
-const price = formatPrice(item.price, item.dealType, item.rent?.pricePeriod || "");
-const image = escapeAttribute(getMainImage(item));
+  const title = escapeHtml(item.title || "Обʼєкт нерухомості");
+  const city = escapeHtml(getObjectCity(item));
+  const area = escapeHtml(item.area || "-");
+  const price = formatPrice(item.price, item.dealType, item.rent?.pricePeriod || "");
+  const image = escapeAttribute(getMainImage(item));
   const views = Number(item.views || 0);
   const isVip = Boolean(item.vip);
   const isSold = item.status === "sold";
