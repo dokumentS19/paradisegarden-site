@@ -729,6 +729,7 @@ function renderHomeArticles() {
 ================================ */
 
 setupFilters();
+updatePricePlaceholders();
 renderHomeArticles();
 
 loadObjects().then(() => {
