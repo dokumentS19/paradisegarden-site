@@ -346,12 +346,18 @@ filteredObjects = allObjects.filter(item => {
   const city = normalizeText(getObjectCity(item));
   const locationText = normalizeText(getObjectLocationText(item));
 
+  const searchKey = normalizeCityKey(searchText);
+  const cityKey = normalizeCityKey(city);
+  const locationKey = normalizeCityKey(locationText);
+
   const price = normalizePrice(item.price);
 
   const matchesText =
     !searchText ||
     city.includes(searchText) ||
-    locationText.includes(searchText);
+    locationText.includes(searchText) ||
+    cityKey.includes(searchKey) ||
+    locationKey.includes(searchKey);
 
     const matchesMin = !minPrice || price >= minPrice;
     const matchesMax = !maxPrice || price <= maxPrice;
