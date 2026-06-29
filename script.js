@@ -257,42 +257,73 @@ function getApartmentFloorText(item) {
   return "";
 }
 /* ================================
-   MOBILE MENU
+   MOBILE MENU + INTERNAL LINKS
 ================================ */
+
+function scrollToSectionByHash(hash) {
+  if (!hash || !hash.startsWith("#")) {
+    return false;
+  }
+
+  const target = document.querySelector(hash);
+
+  if (!target) {
+    return false;
+  }
+
+  setTimeout(() => {
+    target.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+    history.pushState(null, "", hash);
+  }, 100);
+
+  setTimeout(() => {
+    target.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }, 700);
+
+  return true;
+}
+
 if (menuBtn && mainNav) {
   menuBtn.addEventListener("click", () => {
     mainNav.classList.toggle("active");
     mainNav.classList.toggle("open");
     document.body.classList.toggle("no-scroll");
   });
+}
 
-  mainNav.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", event => {
-      const href = link.getAttribute("href");
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener("click", event => {
+    const href = link.getAttribute("href");
 
+    if (!href || href === "#") {
+      return;
+    }
+
+    const target = document.querySelector(href);
+
+    if (!target) {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (mainNav) {
       mainNav.classList.remove("active");
       mainNav.classList.remove("open");
-      document.body.classList.remove("no-scroll");
+    }
 
-      if (href && href.startsWith("#")) {
-        event.preventDefault();
+    document.body.classList.remove("no-scroll");
 
-        const target = document.querySelector(href);
-
-        if (target) {
-          setTimeout(() => {
-            target.scrollIntoView({
-              behavior: "smooth",
-              block: "start"
-            });
-
-            history.pushState(null, "", href);
-          }, 100);
-        }
-      }
-    });
+    scrollToSectionByHash(href);
   });
-}
+});
 /* ================================
    REVEAL ANIMATION
 ================================ */
