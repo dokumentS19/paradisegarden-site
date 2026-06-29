@@ -267,10 +267,29 @@ if (menuBtn && mainNav) {
   });
 
   mainNav.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", () => {
+    link.addEventListener("click", event => {
+      const href = link.getAttribute("href");
+
       mainNav.classList.remove("active");
       mainNav.classList.remove("open");
       document.body.classList.remove("no-scroll");
+
+      if (href && href.startsWith("#")) {
+        event.preventDefault();
+
+        const target = document.querySelector(href);
+
+        if (target) {
+          setTimeout(() => {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+
+            history.pushState(null, "", href);
+          }, 100);
+        }
+      }
     });
   });
 }
