@@ -776,16 +776,23 @@ updatePricePlaceholders();
 renderHomeArticles();
 
 loadObjects().then(() => {
-  if (window.location.hash === "#contacts") {
-    setTimeout(() => {
-      const contactsSection = document.getElementById("contacts");
+  if (window.location.hash === "#objects") {
+    scrollToSectionByHash("#objects");
+  }
 
-      if (contactsSection) {
-        contactsSection.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      }
-    }, 400);
+  if (window.location.hash === "#contacts") {
+    scrollToSectionByHash("#contacts");
+  }
+
+  if (window.location.hash === "#request") {
+    scrollToSectionByHash("#request");
+  }
+
+  if (window.location.hash === "#director") {
+    scrollToSectionByHash("#director");
+  }
+
+  if (window.location.hash === "#registers-preview") {
+    scrollToSectionByHash("#registers-preview");
   }
 });
