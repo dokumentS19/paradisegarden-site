@@ -2577,58 +2577,58 @@ body.brand-refresh .topbar {
   }
 } 
 /* ================================
-   HERO TEXT SIZE FIX
-   Зменшення великого тексту на головному екрані
+   HERO TEXT SIZE FIX — SMALLER
+   Ще менший текст на головному екрані
 ================================ */
 
 .home-page .hero-title {
-  font-size: clamp(30px, 3.2vw, 44px) !important;
-  line-height: 1.12 !important;
-  margin: 12px 0 10px !important;
-  letter-spacing: -0.03em !important;
+  font-size: clamp(24px, 2.6vw, 36px) !important;
+  line-height: 1.14 !important;
+  margin: 10px 0 8px !important;
+  letter-spacing: -0.02em !important;
 }
 
 .home-page .hero-sub {
-  font-size: clamp(14px, 1.2vw, 17px) !important;
-  line-height: 1.45 !important;
+  font-size: clamp(13px, 1vw, 15px) !important;
+  line-height: 1.4 !important;
   font-weight: 600 !important;
-  max-width: 760px !important;
-  padding: 6px 12px !important;
+  max-width: 700px !important;
+  padding: 5px 10px !important;
 }
 
 .home-page .hero-logo-title {
-  max-width: 300px !important;
-  margin: 8px auto 6px !important;
+  max-width: 260px !important;
+  margin: 7px auto 5px !important;
 }
 
 .home-page .hero-logo-img {
-  max-width: 300px !important;
+  max-width: 260px !important;
 }
 
 .home-page .hero-actions {
-  margin-top: 16px !important;
+  margin-top: 14px !important;
 }
 
 .home-page .hero-stats {
-  margin-top: 20px !important;
+  margin-top: 18px !important;
 }
 
 @media (max-width: 680px) {
   .home-page .hero-title {
-    font-size: 28px !important;
-    line-height: 1.15 !important;
+    font-size: 24px !important;
+    line-height: 1.16 !important;
   }
 
   .home-page .hero-sub {
-    font-size: 14px !important;
-    line-height: 1.42 !important;
+    font-size: 13px !important;
+    line-height: 1.38 !important;
   }
 
   .home-page .hero-logo-title {
-    max-width: 220px !important;
+    max-width: 200px !important;
   }
 
   .home-page .hero-logo-img {
-    max-width: 220px !important;
+    max-width: 200px !important;
   }
 }
