@@ -459,16 +459,9 @@ const controls = [
   rentPeriodFilter
 ];
 
-  controls.forEach(control => {
-    if (!control) return;
-
-    control.addEventListener("input", () => {
-      clearTimeout(renderTimer);
-      renderTimer = setTimeout(applyFilters, 180);
-    });
-
-    control.addEventListener("change", applyFilters);
-  });
+    if (dealTypeFilter) {
+    dealTypeFilter.addEventListener("change", updatePricePlaceholders);
+  }
 
   if (resetFiltersBtn) {
     resetFiltersBtn.addEventListener("click", () => {
