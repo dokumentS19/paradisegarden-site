@@ -424,6 +424,29 @@ return (
   safeRender(filteredObjects);
 }
 
+function updatePricePlaceholders() {
+  if (!minPriceInput || !maxPriceInput) {
+    return;
+  }
+
+  const dealValue = dealTypeFilter ? dealTypeFilter.value : "all";
+
+  if (dealValue === "sale") {
+    minPriceInput.placeholder = "Ціна від, $";
+    maxPriceInput.placeholder = "Ціна до, $";
+    return;
+  }
+
+  if (dealValue === "rent") {
+    minPriceInput.placeholder = "Ціна від, грн";
+    maxPriceInput.placeholder = "Ціна до, грн";
+    return;
+  }
+
+  minPriceInput.placeholder = "Ціна від";
+  maxPriceInput.placeholder = "Ціна до";
+}
+
 function setupFilters() {
 const controls = [
   searchInput,
