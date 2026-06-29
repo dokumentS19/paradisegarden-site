@@ -252,6 +252,12 @@ function prepareAddressForGoogle(rawAddress) {
     return "";
   }
 
+  const publicLocation = value("address");
+
+  if (publicLocation && !address.toLowerCase().includes(publicLocation.toLowerCase())) {
+    address += `, ${publicLocation}`;
+  }
+
   const lower = address.toLowerCase();
 
   const hasUkraine =
@@ -259,28 +265,10 @@ function prepareAddressForGoogle(rawAddress) {
     lower.includes("ukraine");
 
   const hasRegion =
-    lower.includes("київська") ||
-    lower.includes("киевская") ||
-    lower.includes("kyiv");
-
-  const hasKnownCity =
-    lower.includes("ірпінь") ||
-    lower.includes("ирпень") ||
-    lower.includes("буча") ||
-    lower.includes("гостомель") ||
-    lower.includes("ворзель") ||
-    lower.includes("київ") ||
-    lower.includes("киев");
-
-  if (!hasKnownCity) {
-    const publicLocation = value("address");
-
-    if (publicLocation) {
-      address += `, ${publicLocation}`;
-    } else {
-      address += ", Ірпінь";
-    }
-  }
+    lower.includes("київська область") ||
+    lower.includes("киевская область") ||
+    lower.includes("kyiv oblast") ||
+    lower.includes("kyiv region");
 
   if (!hasRegion) {
     address += ", Київська область";
