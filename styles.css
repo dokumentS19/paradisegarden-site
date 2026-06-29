@@ -2581,9 +2581,16 @@ body.brand-refresh .topbar {
   #objects .filters #resetFilters {
     width: 100% !important;
   }
-}
 #minPrice,
 #maxPrice {
   min-width: 150px;
   width: 150px;
+}
+
+@media (max-width: 768px) {
+  #minPrice,
+  #maxPrice {
+    width: 100%;
+    min-width: 0;
+  }
 }
