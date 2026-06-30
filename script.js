@@ -792,7 +792,7 @@ setupFilters();
 updatePricePlaceholders();
 renderHomeArticles();
 
-loadObjects().then(() => {
+loadObjectsOnce().then(() => {
   if (window.location.hash === "#objects") {
     scrollToSectionByHash("#objects");
   }
