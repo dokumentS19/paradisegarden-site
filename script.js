@@ -376,7 +376,15 @@ async function loadObjects() {
     showLoader(false);
   }
 }
+function loadObjectsOnce() {
+  if (objectsLoadingPromise) {
+    return objectsLoadingPromise;
+  }
 
+  objectsLoadingPromise = loadObjects();
+
+  return objectsLoadingPromise;
+}
 /* ================================
    FILTERS
 ================================ */
