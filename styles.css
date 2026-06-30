@@ -2577,8 +2577,8 @@ body.brand-refresh .topbar {
   }
 } 
 /* ================================
-   HERO TEXT SIZE FIX — SMALLER
-   Ще менший текст на головному екрані
+   HERO TEXT + MOBILE VISIBILITY FIX
+   Малий текст і повернення видимості hero на мобільному
 ================================ */
 
 .home-page .hero-title {
@@ -2613,22 +2613,95 @@ body.brand-refresh .topbar {
   margin-top: 18px !important;
 }
 
+/* Мобільна версія */
 @media (max-width: 680px) {
+  .home-page .hero {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: calc(100svh - 62px) !important;
+    padding: 24px 14px 38px !important;
+    overflow: visible !important;
+  }
+
+  .home-page .hero-content {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    position: relative !important;
+    z-index: 10 !important;
+    max-width: 100% !important;
+  }
+
+  .home-page .hero-badge,
+  .home-page .hero-logo-title,
+  .home-page .hero-logo-img,
+  .home-page .hero-title,
+  .home-page .hero-sub,
+  .home-page .hero-actions,
+  .home-page .hero-stats {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .home-page .hero-badge {
+    font-size: 11px !important;
+    padding: 6px 10px !important;
+  }
+
+  .home-page .hero-logo-title {
+    max-width: 200px !important;
+    margin: 8px auto 6px !important;
+  }
+
+  .home-page .hero-logo-img {
+    max-width: 200px !important;
+  }
+
   .home-page .hero-title {
     font-size: 24px !important;
     line-height: 1.16 !important;
+    margin: 8px 0 7px !important;
   }
 
   .home-page .hero-sub {
     font-size: 13px !important;
     line-height: 1.38 !important;
+    padding: 5px 9px !important;
   }
 
-  .home-page .hero-logo-title {
-    max-width: 200px !important;
+  .home-page .hero-actions {
+    display: flex !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    margin-top: 13px !important;
   }
 
-  .home-page .hero-logo-img {
-    max-width: 200px !important;
+  .home-page .hero-actions .cta-big,
+  .home-page .hero-actions .cta-outline {
+    font-size: 13px !important;
+    padding: 11px 16px !important;
+    min-height: 42px !important;
+  }
+
+  .home-page .hero-stats {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+    margin-top: 16px !important;
+  }
+
+  .home-page .hero-stats div {
+    padding: 10px 12px !important;
+  }
+
+  .home-page .hero-stats strong {
+    font-size: 22px !important;
+  }
+
+  .home-page .hero-stats span {
+    font-size: 12px !important;
   }
 }
