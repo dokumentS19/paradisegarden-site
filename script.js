@@ -32,6 +32,7 @@ const db = getFirestore(app);
 let allObjects = [];
 let filteredObjects = [];
 let renderTimer = null;
+let objectsLoadingPromise = null;
 
 let favs = [];
 
