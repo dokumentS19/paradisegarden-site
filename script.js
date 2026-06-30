@@ -319,7 +319,16 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
       mainNav.classList.remove("open");
     }
 
-    document.body.classList.remove("no-scroll");
+        document.body.classList.remove("no-scroll");
+
+    if (href === "#objects") {
+      loadObjectsOnce().then(() => {
+        applyFilters();
+        scrollToSectionByHash("#objects");
+      });
+
+      return;
+    }
 
     scrollToSectionByHash(href);
   });
