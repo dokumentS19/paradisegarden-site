@@ -906,7 +906,7 @@ document.addEventListener("click", event => {
   }
 });
 
-setSiteLanguage(localStorage.getItem("siteLang") || "uk");
+setSiteLanguage(localStorage.getItem("siteLang") || "uk"); 
 /* ===============================
    START
 ================================ */
