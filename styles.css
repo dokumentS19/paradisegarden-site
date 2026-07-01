@@ -2705,3 +2705,39 @@ body.brand-refresh .topbar {
     font-size: 12px !important;
   }
 }
+/* ================================
+   MOBILE OBJECTS VISIBILITY FIX
+   Фікс показу бази об'єктів на вузьких екранах
+================================ */
+
+@media (max-width: 680px) {
+  #objects,
+  #objects.reveal,
+  .home-page #objects {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  #objects .section-head,
+  #objects .filters,
+  #objects #objectsGrid {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+
+  #objectsGrid,
+  .objects-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  #objects .card {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
