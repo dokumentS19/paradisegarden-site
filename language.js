@@ -5,7 +5,7 @@ const langButtons = document.querySelectorAll("[data-lang]");
 function updateBrandName(lang) {
   const brandElements = document.querySelectorAll(".brand-name-i18n");
 
-  brandElements.forEach(element => {
+  brandElements.forEach(element => { 
     const isHeaderBrand = element.tagName.toLowerCase() === "strong";
 
     if (lang === "uk") {
