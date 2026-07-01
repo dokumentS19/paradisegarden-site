@@ -1782,3 +1782,83 @@ body.brand-refresh .seo-page .seo-cta p {
     transform: translateY(0);
   }
 }
+/* ================================
+   LANGUAGE SWITCHER
+   Плаваюча кнопка вибору мови
+================================ */
+
+.language-switcher {
+  position: fixed;
+  right: 18px;
+  top: 92px;
+  z-index: 1200;
+}
+
+.language-toggle {
+  min-width: 76px;
+  min-height: 42px;
+  border: 1px solid rgba(232, 137, 18, 0.35);
+  border-radius: 999px;
+  background: rgba(4, 20, 13, 0.94);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(12px);
+}
+
+.language-menu {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 170px;
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 16px;
+  background: rgba(2, 6, 23, 0.96);
+  border: 1px solid rgba(232, 137, 18, 0.24);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.35);
+}
+
+.language-switcher.open .language-menu {
+  display: flex;
+}
+
+.language-menu button {
+  width: 100%;
+  min-height: 38px;
+  border: none;
+  border-radius: 12px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.language-menu button:hover,
+.language-menu button.active {
+  background: rgba(232, 137, 18, 0.22);
+}
+
+@media (max-width: 680px) {
+  .language-switcher {
+    top: 74px;
+    right: 12px;
+  }
+
+  .language-toggle {
+    min-width: 68px;
+    min-height: 38px;
+    font-size: 13px;
+  }
+
+  .language-menu {
+    width: 160px;
+  }
+}
