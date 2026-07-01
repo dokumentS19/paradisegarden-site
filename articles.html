@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Корисні статті — Агенція нерухомості «Райський Сад»</title>
+  <meta name="description" content="Корисні статті агенції нерухомості «Райський Сад»: поради покупцям, продавцям, орендарям, власникам квартир, будинків і земельних ділянок.">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6XHWE6Y0JE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6XHWE6Y0JE');
+  </script>
+
+  <style>
+    .articles-shell {
+      max-width: 1200px;
+      margin: 18px auto 34px;
+      padding: 0 16px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .articles-hero {
+      background:
+        linear-gradient(135deg, rgba(7, 92, 43, 0.22), rgba(149, 87, 31, 0.16)),
+        rgba(13, 25, 22, 0.96);
+      border: 1px solid rgba(232, 137, 18, 0.20);
+      border-radius: 18px;
+      padding: 16px 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
+    }
+
+    .articles-hero h1 {
+      margin: 6px 0 6px;
+      font-size: clamp(22px, 2.4vw, 30px);
+      line-height: 1.15;
+    }
+
+    .articles-hero p {
+      color: #dbeafe;
+      line-height: 1.5;
+      max-width: 850px;
+      margin-bottom: 0;
+      font-size: 14px;
+    }
+
+    .articles-toolbar {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 12px;
+      background:
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.24);
+    }
+
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .article-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      color: #ffffff;
+      text-decoration: none;
+      overflow: hidden;
+      border-radius: 20px;
+      background: rgba(8, 21, 15, 0.86);
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.28);
+      transition: 0.28s ease;
+    }
+
+    .article-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(232, 137, 18, 0.46);
+      box-shadow:
+        0 24px 65px rgba(0, 0, 0, 0.42),
+        0 0 28px rgba(232, 137, 18, 0.12);
+    }
+
+    .article-card-img {
+      height: 140px;
+      background:
+        radial-gradient(circle at top right, rgba(232, 137, 18, 0.22), transparent 45%),
+        #08150f;
+      overflow: hidden;
+    }
+
+    .article-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .article-card-body {
+      padding: 13px;
+      display: grid;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .article-category {
+      width: fit-content;
+      display: inline-flex;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(149, 87, 31, 0.34);
+      border: 1px solid rgba(232, 137, 18, 0.34);
+      color: #fff3df;
+      font-size: 10px;
+    }
+
+    .article-card h2 {
+      font-size: 16px;
+      line-height: 1.25;
+      margin: 0;
+    }
+
+    .article-card p {
+      color: #dbeafe;
+      line-height: 1.45;
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .article-meta {
+      color: #94a3b8;
+      font-size: 12px;
+      margin-top: auto;
+    }
+
+    .empty-articles {
+      grid-column: 1 / -1;
+      background:
+        linear-gradient(180deg, rgba(20, 35, 30, 0.96), rgba(13, 25, 22, 0.96));
+      border: 1px solid rgba(232, 137, 18, 0.18);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      color: #dbeafe;
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.26);
+    }
+
+    @media (max-width: 760px) {
+      .articles-toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .articles-hero {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body class="articles-page-body brand-refresh">
+
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <span class="brand-icon">РС</span>
+    <span>
+      <strong class="notranslate brand-name-i18n">Райський Сад</strong>
+      <small>Корисні статті</small>
+    </span>
+  </a>
+
+  <nav class="nav">
+    <a href="index.html">🏠 Головна</a>
+    <a href="index.html#registers-preview">🔗 Корисні посилання</a>
+    <a href="favorites.html">❤️ Обране</a>
+    <a href="dashboard.html">👤 Кабінет</a>
+    <a href="admin.html">⚙️ Адмін</a>
+  </nav>
+</header>
+
+<main class="articles-shell">
+  <section class="articles-hero">
+    <span class="section-label">Блог агенції нерухомості<span class="notranslate brand-name-i18n">«Райський Сад»</span></span>
+    <h1>Корисні статті</h1>
+    <p>
+      Практичні поради про купівлю, продаж, оренду, документи, податки,
+      земельні ділянки, квартири та будинки в Ірпені, Бучі, Києві та Київській області.
+    </p>
+  </section>
+
+  <section class="articles-toolbar">
+    <input id="articleSearch" type="text" placeholder="Пошук статей за назвою або текстом">
+
+    <select id="categoryFilter">
+      <option value="all">Усі категорії</option>
+      <option value="Поради продавцю">Поради продавцю</option>
+      <option value="Поради покупцю">Поради покупцю</option>
+      <option value="Оренда">Оренда</option>
+      <option value="Квартири">Квартири</option>
+      <option value="Будинки">Будинки</option>
+      <option value="Земельні ділянки">Земельні ділянки</option>
+      <option value="Документи">Документи</option>
+      <option value="Податки">Податки</option>
+      <option value="Ринок нерухомості">Ринок нерухомості</option>
+      <option value="Новини компанії">Новини компанії</option>
+    </select>
+  </section>
+
+  <section>
+    <div id="articlesGrid" class="articles-grid">
+      <div class="empty-articles">
+        <h2>Завантаження статей...</h2>
+        <p>Отримуємо корисні матеріали з Firebase.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>© 2002–2026 Агенція нерухомості<span class="notranslate brand-name-i18n">«Райський Сад»</span>. Корисні статті про нерухомість.</p>
+</footer>
+
+<script type="module" src="articles.js"></script>
+<div class="language-switcher" id="languageSwitcher">
+  <button class="language-toggle" id="langToggle" type="button">
+    🌐 <span id="currentLangLabel">UA</span>
+  </button>
+
+  <div class="language-menu" id="langMenu">
+    <button type="button" data-lang="uk">🇺🇦 Українська</button>
+    <button type="button" data-lang="pl">🇵🇱 Polski</button>
+    <button type="button" data-lang="en">🇬🇧 English</button>
+  </div>
+</div>
+
+<div id="google_translate_element"></div>
+
+<script>
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: "uk",
+      includedLanguages: "uk,pl,en",
+      autoDisplay: false
+    }, "google_translate_element");
+  }
+</script>
+
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script src="language.js"></script>
+</body>
+</html>
