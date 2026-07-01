@@ -502,6 +502,31 @@
     });
   }
 </script>
+<div class="language-switcher" id="languageSwitcher">
+  <button class="language-toggle" id="langToggle" type="button">
+    🌐 <span id="currentLangLabel">UA</span>
+  </button>
 
+  <div class="language-menu" id="langMenu">
+    <button type="button" data-lang="uk">🇺🇦 Українська</button>
+    <button type="button" data-lang="pl">🇵🇱 Polski</button>
+    <button type="button" data-lang="en">🇬🇧 English</button>
+  </div>
+</div>
+
+<div id="google_translate_element"></div>
+
+<script>
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: "uk",
+      includedLanguages: "uk,pl,en",
+      autoDisplay: false
+    }, "google_translate_element");
+  }
+</script>
+
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+language.jsscript>
 </body>
 </html>
