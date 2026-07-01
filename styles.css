@@ -1933,3 +1933,55 @@ body {
   background: transparent !important;
   box-shadow: none !important;
 }
+/* ================================
+   GOOGLE TRANSLATE FULL HIDE
+   Повністю ховає стандартне меню Google Translate
+================================ */
+
+#google_translate_element {
+  p*sition: absolute !important;
+  lef*: -9999px !important;
+  top: -9999*x !important;
+  width: 1px !import*nt;
+  height: 1px !important;
+  ov*rflow: hidden !important;
+  opacit*: 0 !important;
+  pointer-events: *one !important;
+}
+
+.goog-te-banner*frame,
+.goog-te-banner-frame.skipt*anslate,
+iframe.goog-te-banner-fra*e,
+body > .skiptranslate,
+.skiptra*slate,
+.goog-te-gadget,
+.goog-te-b*lloon-frame,
+#goog-gt-tt {
+  displ*y: none !important;
+  visibility: *idden !important;
+  height: 0 !imp*rtant;
+  width: 0 !important;
+  ov*rflow: hidden !important;
+}
+
+html,*body {
+  top: 0 !important;
+  marg*n-top: 0 !important;
+}
+
+body {
+  p*sition: static !important;
+}
+
+.tra*slated-ltr body,
+.translated-rtl b*dy,
+.translated-ltr,
+.translated-r*l {
+  top: 0 !important;
+  margin-*op: 0 !important;
+}
+
+.goog-text-hi*hlight {
+  background: transparent*!important;
+  box-shadow: none !im*ortant;
+}
