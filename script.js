@@ -785,14 +785,86 @@ function renderHomeArticles() {
   `).join("");
 }
 /* ================================
-   LANGUAGE SWITCHER
+   LANGUAGE SWITCHER + TRANSLATIONS
 ================================ */
+
+const translations = {
+  uk: {
+    "nav.objects": "Об’єкти",
+    "nav.contacts": "Контакти",
+    "nav.director": "Директор",
+
+    "hero.title": "Нерухомість Ірпеня, Києва та Київської області",
+    "hero.subtitle": "Продаж, оренда та супровід угод з нерухомістю. Працюємо чесно, уважно та з повагою до кожного клієнта.",
+    "hero.objectsBtn": "Переглянути обʼєкти",
+    "hero.consultBtn": "Отримати консультацію",
+
+    "objects.label": "База обʼєктів",
+    "objects.title": "Актуальні пропозиції нерухомості",
+
+    "filters.search": "Введіть місто, село або селище",
+    "filters.reset": "Скинути"
+  },
+
+  pl: {
+    "nav.objects": "Obiekty",
+    "nav.contacts": "Kontakty",
+    "nav.director": "Dyrektor",
+
+    "hero.title": "Nieruchomości w Irpieniu, Kijowie i obwodzie kijowskim",
+    "hero.subtitle": "Sprzedaż, wynajem oraz kompleksowa obsługa transakcji nieruchomości. Pracujemy uczciwie, uważnie i z szacunkiem do każdego klienta.",
+    "hero.objectsBtn": "Zobacz obiekty",
+    "hero.consultBtn": "Uzyskaj konsultację",
+
+    "objects.label": "Baza obiektów",
+    "objects.title": "Aktualne oferty nieruchomości",
+
+    "filters.search": "Wpisz miasto, wieś lub miejscowość",
+    "filters.reset": "Wyczyść"
+  },
+
+  en: {
+    "nav.objects": "Properties",
+    "nav.contacts": "Contacts",
+    "nav.director": "Director",
+
+    "hero.title": "Real estate in Irpin, Kyiv and Kyiv region",
+    "hero.subtitle": "Sales, rentals and full support for real estate transactions. We work honestly, carefully and with respect for every client.",
+    "hero.objectsBtn": "View properties",
+    "hero.consultBtn": "Get consultation",
+
+    "objects.label": "Property database",
+    "objects.title": "Current real estate offers",
+
+    "filters.search": "Enter a city, village or settlement",
+    "filters.reset": "Reset"
+  }
+};
 
 const languageSwitcher = document.getElementById("languageSwitcher");
 const langToggle = document.getElementById("langToggle");
-const langMenu = document.getElementById("langMenu");
 const currentLangLabel = document.getElementById("currentLangLabel");
 const langButtons = document.querySelectorAll("[data-lang]");
+
+function applyTranslations(lang) {
+  const dictionary = translations[lang] || translations.uk;
+
+  document.querySelectorAll("[data-i18n]").forEach(element => {
+    const key = element.dataset.i18n;
+
+    if (dictionary[key]) {
+      element.textContent = dictionary[key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
+    const key = element.dataset.i18nPlaceholder;
+
+    if (dictionary[key]) {
+      element.placeholder = dictionary[key];
+    }
+  });
+}
 
 function setSiteLanguage(lang) {
   const safeLang = ["uk", "pl", "en"].includes(lang) ? lang : "uk";
@@ -807,6 +879,8 @@ function setSiteLanguage(lang) {
   langButtons.forEach(button => {
     button.classList.toggle("active", button.dataset.lang === safeLang);
   });
+
+  applyTranslations(safeLang);
 
   if (languageSwitcher) {
     languageSwitcher.classList.remove("open");
@@ -827,10 +901,7 @@ langButtons.forEach(button => {
 });
 
 document.addEventListener("click", event => {
-  if (
-    languageSwitcher &&
-    !languageSwitcher.contains(event.target)
-  ) {
+  if (languageSwitcher && !languageSwitcher.contains(event.target)) {
     languageSwitcher.classList.remove("open");
   }
 });
