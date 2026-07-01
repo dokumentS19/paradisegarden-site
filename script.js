@@ -885,7 +885,7 @@ document.addEventListener("click", event => {
 const savedLang = localStorage.getItem("siteLang") || "uk";
 
 setLanguageButtonState(savedLang);
-
+setInterval(hideGoogleTranslateBar, 500);
 if (savedLang !== "uk") {
   setTimeout(() => {
     runGoogleTranslate(savedLang);
