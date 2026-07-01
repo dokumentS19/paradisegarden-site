@@ -1,6 +1,6 @@
 const languageSwitcher = document.getElementById("languageSwitcher");
 const langToggle = document.getElementById("langToggle");
-const currentLangLabel = document.getElementById("currentLangLabel");
+const currentLangLabel = document.getElementById("currentLangLabel"); 
 const langButtons = document.querySelectorAll("[data-lang]");
 function updateBrandName(lang) {
   const brandElements = document.querySelectorAll(".brand-name-i18n");
