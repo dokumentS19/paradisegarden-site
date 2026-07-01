@@ -798,7 +798,21 @@ const languageSwitcher = document.getElementById("languageSwitcher");
 const langToggle = document.getElementById("langToggle");
 const currentLangLabel = document.getElementById("currentLangLabel");
 const langButtons = document.querySelectorAll("[data-lang]");
+function hideGoogleTranslateBar() {
+  const googleFrames = document.querySelectorAll(
+    ".goog-te-banner-frame, .goog-te-balloon-frame, iframe.goog-te-banner-frame, body > .skiptranslate"
+  );
 
+  googleFrames.forEach(element => {
+    element.style.display = "none";
+    element.style.visibility = "hidden";
+    element.style.height = "0";
+  });
+
+  document.body.style.top = "0px";
+  document.documentElement.style.marginTop = "0px";
+  document.body.style.marginTop = "0px";
+}
 function clearGoogleTranslateCookie() {
   document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.paradisegarden.com.ua;";
