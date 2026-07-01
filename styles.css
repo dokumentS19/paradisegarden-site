@@ -1890,3 +1890,46 @@ body {
   background: transparent !important;
   box-shadow: none !important;
 }
+/* ================================
+   GOOGLE TRANSLATE BAR HIDE FIX
+   Ховає верхню панель Google Translate
+================================ */
+
+#google_translate_element {
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}
+
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+body > .skiptranslate,
+.skiptranslate iframe {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+}
+
+html,
+body {
+  margin-top: 0 !important;
+  top: 0 !important;
+}
+
+body {
+  position: static !important;
+}
+
+.translated-ltr body,
+.translated-rtl body {
+  top: 0 !important;
+}
+
+.goog-text-highlight {
+  background: transparent !important;
+  box-shadow: none !important;
+}
