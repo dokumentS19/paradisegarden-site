@@ -2,7 +2,19 @@ const languageSwitcher = document.getElementById("languageSwitcher");
 const langToggle = document.getElementById("langToggle");
 const currentLangLabel = document.getElementById("currentLangLabel");
 const langButtons = document.querySelectorAll("[data-lang]");
+function updateBrandName(lang) {
+  const brandElements = document.querySelectorAll(".brand-name-i18n");
 
+  brandElements.forEach(element => {
+    const isHeaderBrand = element.tagName.toLowerCase() === "strong";
+
+    if (lang === "uk") {
+      element.textContent = isHeaderBrand ? "Райський Сад" : "«Райський Сад»";
+    } else {
+      element.textContent = "Paradise Garden";
+    }
+  });
+}
 function clearGoogleTranslateCookie() {
   document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.paradisegarden.com.ua;";
