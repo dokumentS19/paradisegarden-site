@@ -575,7 +575,7 @@ if (currentLang && currentLang !== "uk") {
     runGoogleTranslate(currentLang);
   }, 700);
 }
-
+}
 function createObjectCard(item) {
   const id = escapeAttribute(item.id);
   const title = escapeHtml(item.title || "Обʼєкт нерухомості");
