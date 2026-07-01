@@ -785,91 +785,46 @@ function renderHomeArticles() {
   `).join("");
 }
 /* ================================
-   LANGUAGE SWITCHER + TRANSLATIONS
+   LANGUAGE SWITCHER — AUTO TRANSLATE
 ================================ */
-
-const translations = {
-  uk: {
-    "nav.objects": "Об’єкти",
-    "nav.contacts": "Контакти",
-    "nav.director": "Директор",
-
-    "hero.title": "Нерухомість Ірпеня, Києва та Київської області",
-    "hero.subtitle": "Продаж, оренда та супровід угод з нерухомістю. Працюємо чесно, уважно та з повагою до кожного клієнта.",
-    "hero.objectsBtn": "Переглянути обʼєкти",
-    "hero.consultBtn": "Отримати консультацію",
-
-    "objects.label": "База обʼєктів",
-    "objects.title": "Актуальні пропозиції нерухомості",
-
-    "filters.search": "Введіть місто, село або селище",
-    "filters.reset": "Скинути"
-  },
-
-  pl: {
-    "nav.objects": "Obiekty",
-    "nav.contacts": "Kontakty",
-    "nav.director": "Dyrektor",
-
-    "hero.title": "Nieruchomości w Irpieniu, Kijowie i obwodzie kijowskim",
-    "hero.subtitle": "Sprzedaż, wynajem oraz kompleksowa obsługa transakcji nieruchomości. Pracujemy uczciwie, uważnie i z szacunkiem do każdego klienta.",
-    "hero.objectsBtn": "Zobacz obiekty",
-    "hero.consultBtn": "Uzyskaj konsultację",
-
-    "objects.label": "Baza obiektów",
-    "objects.title": "Aktualne oferty nieruchomości",
-
-    "filters.search": "Wpisz miasto, wieś lub miejscowość",
-    "filters.reset": "Wyczyść"
-  },
-
-  en: {
-    "nav.objects": "Properties",
-    "nav.contacts": "Contacts",
-    "nav.director": "Director",
-
-    "hero.title": "Real estate in Irpin, Kyiv and Kyiv region",
-    "hero.subtitle": "Sales, rentals and full support for real estate transactions. We work honestly, carefully and with respect for every client.",
-    "hero.objectsBtn": "View properties",
-    "hero.consultBtn": "Get consultation",
-
-    "objects.label": "Property database",
-    "objects.title": "Current real estate offers",
-
-    "filters.search": "Enter a city, village or settlement",
-    "filters.reset": "Reset"
-  }
-};
 
 const languageSwitcher = document.getElementById("languageSwitcher");
 const langToggle = document.getElementById("langToggle");
 const currentLangLabel = document.getElementById("currentLangLabel");
 const langButtons = document.querySelectorAll("[data-lang]");
 
-function applyTranslations(lang) {
-  const dictionary = translations[lang] || translations.uk;
-
-  document.querySelectorAll("[data-i18n]").forEach(element => {
-    const key = element.dataset.i18n;
-
-    if (dictionary[key]) {
-      element.textContent = dictionary[key];
-    }
-  });
-
-  document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
-    const key = element.dataset.i18nPlaceholder;
-
-    if (dictionary[key]) {
-      element.placeholder = dictionary[key];
-    }
-  });
+function clearGoogleTranslateCookie() {
+  document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.paradisegarden.com.ua;";
 }
 
-function setSiteLanguage(lang) {
+function runGoogleTranslate(lang) {
+  if (lang === "uk") {
+    clearGoogleTranslateCookie();
+    localStorage.setItem("siteLang", "uk");
+    window.location.reload();
+    return;
+  }
+
+  const select = document.querySelector(".goog-te-combo");
+
+  if (!select) {
+    setTimeout(() => {
+      runGoogleTranslate(lang);
+    }, 500);
+
+    return;
+  }
+
+  select.value = lang;
+  select.dispatchEvent(new Event("change"));
+
+  localStorage.setItem("siteLang", lang);
+}
+
+function setLanguageButtonState(lang) {
   const safeLang = ["uk", "pl", "en"].includes(lang) ? lang : "uk";
 
-  localStorage.setItem("siteLang", safeLang);
   document.documentElement.setAttribute("lang", safeLang);
 
   if (currentLangLabel) {
@@ -879,8 +834,6 @@ function setSiteLanguage(lang) {
   langButtons.forEach(button => {
     button.classList.toggle("active", button.dataset.lang === safeLang);
   });
-
-  applyTranslations(safeLang);
 
   if (languageSwitcher) {
     languageSwitcher.classList.remove("open");
@@ -896,7 +849,10 @@ if (langToggle && languageSwitcher) {
 
 langButtons.forEach(button => {
   button.addEventListener("click", () => {
-    setSiteLanguage(button.dataset.lang);
+    const lang = button.dataset.lang;
+
+    setLanguageButtonState(lang);
+    runGoogleTranslate(lang);
   });
 });
 
@@ -906,7 +862,15 @@ document.addEventListener("click", event => {
   }
 });
 
-setSiteLanguage(localStorage.getItem("siteLang") || "uk"); 
+const savedLang = localStorage.getItem("siteLang") || "uk";
+
+setLanguageButtonState(savedLang);
+
+if (savedLang !== "uk") {
+  setTimeout(() => {
+    runGoogleTranslate(savedLang);
+  }, 1200);
+}
 /* ===============================
    START
 ================================ */
