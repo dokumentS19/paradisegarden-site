@@ -805,11 +805,11 @@ function updateBrandName(lang) {
     const isHeaderBrand = element.tagName.toLowerCase() === "strong";
 
     if (lang === "uk") {
-      element.textContent = isHeaderBrand ? "Райський Сад" : "«Райський Сад»";
+      element.textContent = isHeaderBrand ? "Райський Сад" : " «Райський Сад»";
       return;
     }
 
-    element.textContent = "Paradise Garden";
+    element.textContent = isHeaderBrand ? "Paradise Garden" : " “Paradise Garden”";
   });
 }
 function hideGoogleTranslateBar() {
