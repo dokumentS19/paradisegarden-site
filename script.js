@@ -798,6 +798,20 @@ const languageSwitcher = document.getElementById("languageSwitcher");
 const langToggle = document.getElementById("langToggle");
 const currentLangLabel = document.getElementById("currentLangLabel");
 const langButtons = document.querySelectorAll("[data-lang]");
+function updateBrandName(lang) {
+  const brandElements = document.querySelectorAll(".brand-name-i18n");
+
+  brandElements.forEach(element => {
+    const isHeaderBrand = element.tagName.toLowerCase() === "strong";
+
+    if (lang === "uk") {
+      element.textContent = isHeaderBrand ? "Райський Сад" : "«Райський Сад»";
+      return;
+    }
+
+    element.textContent = "Paradise Garden";
+  });
+}
 function hideGoogleTranslateBar() {
  const googleFrames = document.querySelectorAll(
   ".goog-te-banner-frame, .goog-te-balloon-frame, iframe.goog-te-banner-frame, body > .skiptranslate"
