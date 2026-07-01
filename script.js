@@ -784,6 +784,58 @@ function renderHomeArticles() {
     </a>
   `).join("");
 }
+/* ================================
+   LANGUAGE SWITCHER
+================================ */
+
+const languageSwitcher = document.getElementById("languageSwitcher");
+const langToggle = document.getElementById("langToggle");
+const langMenu = document.getElementById("langMenu");
+const currentLangLabel = document.getElementById("currentLangLabel");
+const langButtons = document.querySelectorAll("[data-lang]");
+
+function setSiteLanguage(lang) {
+  const safeLang = ["uk", "pl", "en"].includes(lang) ? lang : "uk";
+
+  localStorage.setItem("siteLang", safeLang);
+  document.documentElement.setAttribute("lang", safeLang);
+
+  if (currentLangLabel) {
+    currentLangLabel.textContent = safeLang.toUpperCase();
+  }
+
+  langButtons.forEach(button => {
+    button.classList.toggle("active", button.dataset.lang === safeLang);
+  });
+
+  if (languageSwitcher) {
+    languageSwitcher.classList.remove("open");
+  }
+}
+
+if (langToggle && languageSwitcher) {
+  langToggle.addEventListener("click", event => {
+    event.stopPropagation();
+    languageSwitcher.classList.toggle("open");
+  });
+}
+
+langButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    setSiteLanguage(button.dataset.lang);
+  });
+});
+
+document.addEventListener("click", event => {
+  if (
+    languageSwitcher &&
+    !languageSwitcher.contains(event.target)
+  ) {
+    languageSwitcher.classList.remove("open");
+  }
+});
+
+setSiteLanguage(localStorage.getItem("siteLang") || "uk");
 /* ===============================
    START
 ================================ */
