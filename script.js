@@ -799,9 +799,9 @@ const langToggle = document.getElementById("langToggle");
 const currentLangLabel = document.getElementById("currentLangLabel");
 const langButtons = document.querySelectorAll("[data-lang]");
 function hideGoogleTranslateBar() {
-  const googleFrames = document.querySelectorAll(
-    ".goog-te-banner-frame, .goog-te-balloon-frame, iframe.goog-te-banner-frame, body > .skiptranslate"
-  );
+ const googleFrames = document.querySelectorAll(
+  ".goog-te-banner-frame, .goog-te-balloon-frame, iframe.goog-te-banner-frame, body > .skiptranslate"
+);
 
   googleFrames.forEach(element => {
     element.style.display = "none";
