@@ -860,7 +860,7 @@ function setLanguageButtonState(lang) {
   const safeLang = ["uk", "pl", "en"].includes(lang) ? lang : "uk";
 
   document.documentElement.setAttribute("lang", safeLang);
-
+updateBrandName(safeLang);
   if (currentLangLabel) {
     currentLangLabel.textContent = safeLang.toUpperCase();
   }
