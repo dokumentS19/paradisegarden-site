@@ -568,6 +568,12 @@ function renderObjects(data) {
   }
 
   grid.innerHTML = data.map(item => createObjectCard(item)).join("");
+const currentLang = localStorage.getItem("siteLang");
+
+if (currentLang && currentLang !== "uk") {
+  setTimeout(() => {
+    runGoogleTranslate(currentLang);
+  }, 700);
 }
 
 function createObjectCard(item) {
