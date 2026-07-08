@@ -1,330 +1,247 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<section class="article-hero">
 
-<title>Топ-10 житлових комплексів Ірпеня у 2026 році | Райський Сад</title>
+  <div class="article-kicker">
+    Нерухомість • Новобудови Ірпеня
+  </div>
 
-<meta name="description" content="Огляд популярних житлових комплексів Ірпеня у 2026 році.">
-<meta name="keywords" content="Ірпінь, ЖК Ірпінь, новобудови Ірпінь, квартири Ірпінь">
+  <h1>Топ-10 житлових комплексів Ірпеня у 2026 році</h1>
 
-<style>
-:root{
-    --green:#0e4e2d;
-    --gold:#a66a1f;
-    --beige:#f4eee5;
-    --card:#faf7f2;
-    --border:#decdb4;
-    --text:#223248;
-}
+  <p class="article-lead">
+    Огляд найпопулярніших житлових комплексів Ірпеня для життя та інвестицій.
+  </p>
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+  <div class="article-meta">
+    <span class="article-pill">🏢 Новобудови</span>
+    <span class="article-pill">📍 Ірпінь</span>
+    <span class="article-pill">📅 2026</span>
+  </div>
 
-body{
-    font-family:Segoe UI,Tahoma,sans-serif;
-    background:var(--beige);
-    color:var(--text);
-    line-height:1.8;
-}
+</section>
 
-.container{
-    max-width:1500px;
-    margin:0 auto;
-    padding:30px;
-}
+<section class="article-layout">
 
-.back-link{
-    display:inline-block;
-    margin-bottom:20px;
-    text-decoration:none;
-    color:#8a5517;
-    background:#f7f1e8;
-    border:1px solid var(--border);
-    padding:12px 22px;
-    border-radius:30px;
-    font-weight:600;
-}
+  <article class="article-card">
 
-.layout{
-    display:grid;
-    grid-template-columns: 1fr 340px;
-    gap:30px;
-}
+    <style>
+      .zhk-photo{
+        width:100%;
+        height:auto;
+        border-radius:18px;
+        margin:15px 0 20px;
+        display:block;
+        box-shadow:0 10px 25px rgba(0,0,0,.1);
+      }
 
-.article-card{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:30px;
-    padding:36px;
-}
+      .zhk-card{
+        margin-bottom:40px;
+        border-bottom:1px solid rgba(0,0,0,.08);
+        padding-bottom:30px;
+      }
 
-.sidebar-card{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:24px;
-    padding:28px;
-    height:fit-content;
-    position:sticky;
-    top:20px;
-}
+      .zhk-card:last-child{
+        border-bottom:none;
+      }
 
-.category{
-    display:inline-block;
-    border:1px solid var(--border);
-    border-radius:30px;
-    padding:10px 18px;
-    color:#9c641d;
-    font-weight:700;
-    margin-bottom:25px;
-}
+      @media(max-width:768px){
+        .zhk-photo{
+          border-radius:12px;
+        }
+      }
+    </style>
 
-h1{
-    font-size:52px;
-    line-height:1.2;
-    margin-bottom:25px;
-    color:#172b42;
-}
+    <div class="zhk-card">
 
-.intro{
-    font-size:24px;
-    color:#47566a;
-    margin-bottom:30px;
-}
+      <h2>1. ЖК «Синергія Сіті»</h2>
 
-.tags{
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
-    margin-bottom:40px;
-}
+      <img
+        src="images/synergia-city.jpg"
+        alt="ЖК Синергія Сіті Ірпінь"
+        class="zhk-photo"
+        loading="lazy"
+      >
 
-.tag{
-    border:1px solid var(--border);
-    background:#fff;
-    border-radius:25px;
-    padding:10px 16px;
-    font-weight:600;
-}
+      <p>
+        Масштабний житловий квартал біля набережної Ірпеня.
+        Має магазини, кав'ярні, дитячі майданчики та суч.jpg"
+        alt="ЖК Молодість Ірпінь"
+        class="zhk-photo"
+        loading="lazy"
+      >
 
-.complex{
-    margin-bottom:45px;
-    padding-bottom:35px;
-    border-bottom:1px solid #e4d7c3;
-}
-
-.complex:last-child{
-    border-bottom:none;
-}
-
-.complex h2{
-    font-size:34px;
-    color:#16304f;
-    margin-bottom:18px;
-}
-
-.complex img{
-    width:100%;
-    border-radius:16px;
-    display:block;
-    margin-bottom:20px;
-}
-
-.complex p{
-    font-size:20px;
-    color:#425168;
-}
-
-.sidebar-card h3{
-    font-size:22px;
-    margin-bottom:18px;
-}
-
-.sidebar-card p{
-    color:#59697d;
-    margin-bottom:15px;
-}
-
-.cta{
-    margin-top:50px;
-    background:#eef7ef;
-    border:1px solid #cfe0d2;
-    border-radius:18px;
-    padding:30px;
-    text-align:center;
-}
-
-.cta h3{
-    margin-bottom:15px;
-}
-
-.cta-button{
-    display:inline-block;
-    margin-top:15px;
-    background:var(--green);
-    color:white;
-    text-decoration:none;
-    padding:15px 28px;
-    border-radius:10px;
-    font-weight:700;
-}
-
-footer{
-    text-align:center;
-    padding:40px 20px;
-    color:#666;
-}
-
-@media(max-width:1024px){
-
-    .layout{
-        grid-template-columns:1fr;
-    }
-
-    h1{
-        font-size:38px;
-    }
-
-    .intro{
-        font-size:20px;
-    }
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-  <a href="articles.html" class="back-link">
-    ← Назад до статей
-</a>
-    <div class="layout">
-
-        <article class="article-card">
-
-            <div class="category">
-                НЕРУХОМІСТЬ • ЖК ІРПЕНЯ
-            </div>
-
-            <h1>
-                Топ-10 житлових комплексів Ірпеня у 2026 році
-            </h1>
-
-            <p class="intro">
-                Ірпінь залишається одним із найпопулярніших міст для купівлі житла біля Києва.
-                Ми зібрали десятку житлових комплексів, які найчастіше розглядають покупці квартир.
-            </p>
-
-            <div class="tags">
-                <span class="tag">🏢 Новобудови</span>
-                <span class="tag">📍 Ірпінь</span>
-                <span class="tag">🏠 Квартири</span>
-                <span class="tag">📅 2026</span>
-            </div>
-
-           <div class="complex">
-    <h2>1. ЖК «Синергія Сіті»</h2>
-    <img src="images/synergia-city.jpg" alt="ЖКбільших житлових кварталів Ірпеня з власною інфраструктурою, магазинами та зонами відпочинку.</p>
-</div>
-
-<div class="complex">
-    <h2>2. ЖК «Молодість»</h2>
-    <img src="images/molodist.jpg" altй комплекс із закритою територією та якісним благоустроєм.</p>
-</div>
-
-<div class="complex">
-    <h2>3. ЖК «Центральний Преміум»</h2>
-    ium.jpg" alt="ЖК Центральний Преміум" loading="lazy">
-    <p>Престижний комплекс поруч із центральною частиною міста.</p>
-</div>
-
-<div class="complex">
-    <h2>4. ЖК «Green Side»</h2>
-    <img src="images/.jpg
-    <p>Житло біля лісу для тих, хто цінує тишу та природу.</p>
-</div>
-
-<div class="complex">
-    <h2>5. ЖК «Royal Park»</h2>
-    <img srcoyal-park.jpg
-    <p>Сучасна архітектура та комфортне середовище для життя.</p>
-</div>
-
-<div class="complex">
-    <h2>6. ЖК «City Park»</h2>
-    .jpg" alt="ЖК City Park" loading="lazy">
-    <p>Популярний житловий комплекс із розвиненою інфраструктурою.</p>
-</div>
-
-<div class="complex">
-    <h2>7. ЖК «Мюнхаузен 2»</h2>
-    images/munchausen-2.jpg="ЖК Мюнхаузен 2" loading="lazy">
-    <p>Упізнаваний комплекс із якісним будівництвом та затишними дворами.</p>
-</div>
-
-<div class="complex">
-    <h2>8. ЖК «Rich Town»</h2>
-    images/rich-town.jpg loading="lazy">
-    <p>Поєднання доступної ціни, комфорту та вдалого розташування.</p>
-</div>
-
-<div class="complex">
-    <h2>9. ЖК «Chehov Парк Квартал»</h2>
-    /chehov-park.jpg" alt="ЖК Chehov Парк Квартал" loading="lazy">
-    <p>Сучасний квартал із просторими дворами та місцями для відпочинку.</p>
-</div>
-
-<div class="complex">
-    <h2>10. ЖК «Versal Park»</h2>
-    " alt="ЖК Versal Park" loading="lazy">
-    <p>Один із найвідоміших житлових комплексів у центральній частині Ірпеня.</p>
-</div>
-
-            <div class="cta">
-                <h3>Потрібна допомога з вибором квартири?</h3>
-
-                <p>
-                    Фахівці агенції «Райський Сад» допоможуть перевірити забудовника,
-                    документи та підібрати оптимальний варіант.
-                </p>
-
-                <a href="index.html#contact" class="cta-button">
-                    Отримати консультацію
-                </a>
-            </div>
-
-        </article>
-
-        <aside class="sidebar-card">
-
-            <h3>Коротко про головне</h3>
-
-            <p>
-                У статті зібрані житлові комплекси Ірпеня, які мають найбільшу популярність серед покупців у 2026 році.
-            </p>
-
-            <p>
-                Перед придбанням квартири рекомендується перевіряти документи забудовника та історію будівництва об'єкта.
-            </p>
-
-            <p>
-                Для вибору житла бажано оцінювати не лише ціну, а й інфраструктуру, транспорт та перспективи району.
-            </p>
-
-        </aside>
+      <p>
+        Сучасний житловий комплекс на вулиці Університетській
+        із закритою територією та продуманим благоустроєм.
+      </p>
 
     </div>
 
-</div>
+    <div class="zhk-card">
 
-<footer>
-    © 2026 Агенція нерухомості «Райський Сад»
-</footer>
+      <h2>3. ЖК «Центральний Преміум»</h2>
 
-</body>
-</html>
+      central-premium.jpg"
+        alt="ЖК Центральний Преміум"
+        class="zhk-photo"
+        loading="lazy"
+      >
+
+      <p>
+        Преміальна новобудова в центрі міста з підземним паркінгом
+        та сучасними плануваннями квартир.
+      </p>
+
+    </div>
+
+    <div class="zhk-card">
+
+      <h2>4. ЖК «Green Side»</h2>
+
+      <img
+        src="images/green-side.jpg" Комплекс поруч із лісом.
+        Один із найкращих варіантів для прихильників природи.
+      </p>
+
+    </div>
+
+    <div class="zhk-card">
+
+      <h2>5. ЖК «Royal Park»</h2>
+
+      images/royal-park.jpg alt="ЖК Royal Park"
+        class="zhk-photo"
+        loading="lazy"
+      >
+
+      <p>
+        Розташований поблизу Центрального парку.
+        Відрізняється сучасною архітектурою та комфортною територією.
+      </p>
+
+    </div>
+
+    <div class="zhk-card">
+
+      <h2>6. ЖК «City Park»</h2>
+
+      <img
+        src="images/city-park.jpg"
+        alt="ЖК City Park"
+        class="zhk-photo"
+      з розвиненою інфраструктурою.
+      </p>
+
+    </div>
+
+    <div class="zhk-card">
+
+      <h2>7. ЖК «Мюнхаузен 2»</h2>
+
+      <img
+        src="images/munchausen-2.jpg"
+     ий комплекс із впізнаваною архітектурою
+        та якісними будівельними рішеннями.
+      </p>
+
+    </div>
+
+    <div class="zhk-card">
+
+      <h2>8. ЖК «Rich Town»</h2>
+
+      <img
+        src="images/rich-town.jpg"
+        alt="ЖК Rich Town"
+        class="zhk-photo"
+        loading="lazy"
+     ості.
+      </p>
+
+    </div>
+
+    <div class="zhk-card">
+
+      <h2>9. ЖК «Chehov Парк Квартал»</h2>
+
+      <img
+        src="images/chehov-park.jpg"
+        alt="ЖК Chehov Парк Квартал"
+        class="zhk-photo"
+        loading="lazy"
+      >
+
+      <p>
+       </div>
+
+    <div class="zhk-card">
+
+      <h2>10. ЖК «Versal Park»</h2>
+
+      versal-park.jpg"
+        alt="ЖК Versal Park"
+        class="zhk-photo"
+        loading="lazy"
+      >
+
+      <p>
+        Один із найбільш впізнаваних житлових комплексів
+        центральної частини Ірпеня.
+      </p>
+
+    </div>
+
+    <div class="article-footer-cta">
+
+      <h2>Потрібна допомога з вибором квартири?</h2>
+
+      <p>
+        Агенція нерухомості
+        <span class="notranslate brand-name-i18n">«Райський Сад»</span>
+        допоможе підібрати найкращий варіант та перевірити забудовника.
+      </p>
+
+      <div class="hero-actions">
+
+        196" class="cta-big">
+          📞 Подзвонити
+        </a>
+
+        <a href="index.html#request" class="cta-outline">
+          📩 Залишити заявку
+        </a>
+
+      </div>
+
+    </div>
+
+  </article>
+
+  <aside class="article-sidebar">
+
+    <div class="sidebar-box">
+
+      <h3>Коротко про головне</h3>
+
+      <p>
+        У добірку увійшли найвідоміші житлові комплекси Ірпеня,
+        що активно розглядаються покупцями у 2026 році.
+      </p>
+
+    </div>
+
+    <div class="sidebar-box">
+
+      <h3>На що звернути увагу</h3>
+
+      <ul>
+        <li>Документи забудовника.</li>
+        <li>Репутацію забудовника.</li>
+        <li>Інфраструктуру району.</li>
+        <li>Паркінг.</li>
+        <li>Транспортне сполучення.</li>
+      </ul>
+
+    </div>
+
+  </aside>
+
+</section>
