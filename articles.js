@@ -49,7 +49,17 @@ const localArticles = [
   url: "top-10-zhk-irpin-2026.html",
   content: "жк ірпінь новобудови синергія сіті молодість центральний преміум green side royal park city park rich town versal park"
 }
-
+{
+  id: "novyna-001",
+  title: "Назва новини",
+  excerpt: "Короткий опис новини.",
+  category: "Новини",
+  dateText: "08.07.2026",
+  dateSort: new Date("2026-07-08").getTime(),
+  image: "images/news/news-001.jpg",
+  url: "novyna-001.html",
+  content: "текст для пошуку"
+}
 ];
 
 /* ================================
