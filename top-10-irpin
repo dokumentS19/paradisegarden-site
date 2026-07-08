@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Топ-10 ЖК Ірпеня 2026 | Агенція нерухомості "Райський Сад"</title>
+    <style>
+        :root {
+            --primary-color: #2d5a27; /* Зелений "Райський Сад" */
+            --text-color: #333;
+            --bg-color: #f9f9f9;
+            --accent-bg: #f0f4ef;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 { color: var(--primary-color); text-align: center; margin-bottom: 30px; }
+        h2 { color: var(--primary-color); border-left: 4px solid var(--primary-color); padding-left: 15px; margin-top: 40px; }
+        
+        .intro { font-size: 1.1em; margin-bottom: 30px; color: #555; }
+        
+        .cta-box {
+            background-color: var(--accent-bg);
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 50px;
+            border: 1px solid #dcdcdc;
+            text-align: center;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+
+        .cta-button:hover { background-color: #1e3d1a; }
+
+        footer { text-align: center; margin-top: 40px; font-size: 0.9em; color: #888; }
+    </style>
+</head>
+<body>
+
+<main class="container">
+    <article>
+        <h1>Топ-10 житлових комплексів Ірпеня: обираємо найкраще для життя у 2026 році</h1>
+        
+        <p class="intro">Ірпінь вже давно перестав бути просто «передмістям Києва». Сьогодні це самодостатнє місто з розвиненою інфраструктурою, парками та сучасними новобудовами. Як експерти агенції нерухомості «Райський Сад», ми підготували для вас список із 10 популярних житлових комплексів, які мають найкращі відгуки у 2026 році.</p>
+
+        <section>
+            <h2>1. ЖК «Синергія Сіті»</h2>
+            <p>Великий проєкт із власною інфраструктурою, що виділяється масштабним благоустроєм та сучасним підходом до планувань.</p>
+            
+            <h2>2. ЖК «Молодість»</h2>
+            <p>Концепція «закритої території», висока якість будівництва та вдале розташування.</p>
+
+            <h2>3. ЖК «Центральний-Преміум»</h2>
+            <p>Комфорт бізнес-класу, стильна архітектура та престижне розташування близько до центру.</p>
+
+            <h2>4. ЖК «Green Side»</h2>
+            <p>Велика територія, багато зелені та розвинена прибудинкова інфраструктура для любителів спокою.</p>
+
+            <h2>5. ЖК «Royal Park»</h2>
+            <p>Поєднання естетики та функціональності. Відомий своїм дизайном та доглянутою територією.</p>
+
+            <h2>6. ЖК «City Park»</h2>
+            <p>Розташування біля парку забезпечує чудові краєвиди та чисте повітря.</p>
+
+            <h2>7. ЖК «Мюнхаузен 2»</h2>
+            <p>Камерна атмосфера, невисока поверховість та акцент на індивідуальності.</p>
+
+            <h2>8. ЖК «Rich Town»</h2>
+            <p>Перевірений часом комплекс із стабільною якістю обслуговування та розвиненим ком’юніті.</p>
+
+            <h2>9. ЖК «Chehov Парк Квартал»</h2>
+            <p>Сучасна концепція «все включено» та зручна транспортна розв’язка.</p>
+
+            <h2>10. ЖК «Versal Park»</h2>
+            <p>Висока якість оздоблення місць загального користування та професійне управління.</p>
+        </section>
+
+        <div class="cta-box">
+            <h3>Потрібна допомога у виборі?</h3>
+            <p>Ринок нерухомості Ірпеня динамічний. Агенція «Райський Сад» допоможе вам перевірити документи та обрати варіант, який стане вашим справжнім домом.</p>
+            <a href="#" class="cta-button">Отримати консультацію експерта</a>
+        </div>
+    </article>
+</main>
+
+<footer>
+    © 2026 Агенція нерухомості «Райський Сад»
+</footer>
+
+</body>
+</html>
