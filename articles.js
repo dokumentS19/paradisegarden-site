@@ -48,7 +48,7 @@ const localArticles = [
   image: "images/articles/top10-zhk-irpin.jpg",
   url: "top-10-zhk-irpin-2026.html",
   content: "жк ірпінь новобудови синергія сіті молодість центральний преміум green side royal park city park rich town versal park"
-}
+},
 {
   id: "novyna-001",
   title: "Назва новини",
