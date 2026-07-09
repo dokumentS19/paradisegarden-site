@@ -45,7 +45,7 @@ const localArticles = [
   category: "Ринок нерухомості",
   dateText: "08.07.2026",
   dateSort: new Date("2026-07-08").getTime(),
-  image: "images/articles/top10-zhk-irpin.jpg",
+image: "images/articles/investytsii-v-nerukhomist-irpin-bucha-2026.jpg",
   url: "investytsii-v-nerukhomist-irpin-bucha-2026.html",
   content: "інвестиції ірпінь буча приірпіння нерухомість квартири земля комерційна нерухомість гостомель стоянка дмитрівка михайлівка-рубежівка"
 }
