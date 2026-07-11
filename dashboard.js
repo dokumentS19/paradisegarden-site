@@ -533,7 +533,12 @@ ${
                 ? `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'active')">✅ Зробити активним</button>`
                 : `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'sold')">❌ Позначити проданим</button>`
             }
-
+                 <button
+                  class="cta-outline"
+                  type="button"
+                  onclick="resetViews('${id}')">
+                 🔄 Скинути перегляди
+                 </button>
             <button class="danger-btn" type="button" onclick="deleteAd('${id}')">🗑 Видалити</button>
           </div>
         </div>
