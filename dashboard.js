@@ -569,7 +569,30 @@ window.setAdStatus = async function(id, status) {
     alert("❌ Не вдалося змінити статус.");
   }
 };
+window.resetViews = async function(id) {
+  if (!currentUser) {
+    alert("Увійдіть через Google.");
+    return;
+  }
 
+  if (!confirm("Скинути перегляди цього оголошення?")) {
+    return;
+  }
+
+  try {
+    await updateDoc(doc(db, "objects", id), {
+      views: 0,
+      updatedAt: serverTimestamp()
+    });
+
+    await loadMyAds(currentUser.uid);
+
+    alert("✅ Перегляди скинуто.");
+  } catch (error) {
+    console.error("RESET VIEWS ERROR:", error);
+    alert("❌ Не вдалося скинути перегляди.");
+  }
+};
 window.deleteAd = async function(id) {
   if (!currentUser) {
     alert("Увійдіть через Google.");
