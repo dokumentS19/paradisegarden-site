@@ -249,19 +249,21 @@
       background: transparent;
     }
 
-    .thumbs img {
-      width: 70px;
-      height: 46px;
-      object-fit: cover;
-      object-position: center center;
-      border-radius: 7px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      opacity: 0.72;
-      transition: 0.25s ease;
-      flex: 0 0 auto;
-      background: #08150f;
-    }
+  .thumbs {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 3px 2px 4px;
+  background: transparent;
+  scrollbar-width: none;
+}
+
+.thumbs::-webkit-scrollbar {
+  display: none;
+}
 
     .thumbs img:hover,
     .thumbs img.active {
