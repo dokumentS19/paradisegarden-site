@@ -207,7 +207,7 @@ function getMainImage(item) {
 
 function getImages(item) {
   if (Array.isArray(item.images) && item.images.length > 0) {
- return item.images.slice(0, 10);
+    return item.images;
   }
 
   return [
