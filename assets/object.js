@@ -746,7 +746,7 @@ window.scrollThumbs = function(direction) {
   if (!container) return;
 
   container.scrollBy({
-    left: direction * 300,
+    left: direction * 1000,
     behavior: "smooth"
   });
 };
