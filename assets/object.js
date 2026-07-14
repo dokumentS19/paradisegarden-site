@@ -1042,9 +1042,15 @@ function renderObject(item) {
           <div id="counter" class="counter">1 / ${images.length}</div>
         </div>
 
-        <div class="thumbs">
-          ${thumbsHtml}
-        </div>
+       <div class="thumbs-wrapper">
+  <button class="thumbs-nav left" onclick="scrollThumbs(-1)">‹</button>
+
+  <div class="thumbs" id="thumbsContainer">
+    ${thumbsHtml}
+  </div>
+
+  <button class="thumbs-nav right" onclick="scrollThumbs(1)">›</button>
+</div>
       </div>
     </section>
 
