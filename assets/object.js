@@ -608,8 +608,16 @@ function updateGallery() {
   }
 
   document.querySelectorAll(".thumbs img").forEach((img, index) => {
-    img.classList.toggle("active", index === currentSlide);
-  });
+  img.classList.toggle("active", index === currentSlide);
+
+  if (index === currentSlide) {
+    img.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest"
+    });
+  }
+});
 
   bindGalleryOpenEvents();
 }
