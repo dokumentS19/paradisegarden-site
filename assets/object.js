@@ -740,7 +740,16 @@ window.selectImage = function(index) {
   currentSlide = index;
   updateGallery();
 };
+window.scrollThumbs = function(direction) {
+  const container = document.getElementById("thumbsContainer");
 
+  if (!container) return;
+
+  container.scrollBy({
+    left: direction * 300,
+    behavior: "smooth"
+  });
+};
 document.addEventListener("keydown", event => {
   if (isPhotoLightboxOpen()) {
     if (event.key === "ArrowRight") {
