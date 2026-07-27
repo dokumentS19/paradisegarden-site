@@ -529,9 +529,13 @@ ${
             </button>
 
             ${
-              item.status === "sold"
-                ? `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'active')">✅ Зробити активним</button>`
-                : `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'sold')">❌ Позначити проданим</button>`
+  item.status === "sold"
+    ? `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'active')">✅ Зробити активним</button>`
+    : `<button class="cta-outline" type="button" onclick="setAdStatus('${id}', 'sold')">${
+        item.dealType === "rent"
+          ? "❌ Позначити зданим"
+          : "❌ Позначити проданим"
+      }</button>`
             }
                  <button
                   class="cta-outline"
