@@ -479,7 +479,9 @@ function renderMyAds(data) {
     const address = escapeHtml(item.address || "Київ та Київська область");
    const price = formatPrice(item.price, item.dealType, item.rent?.pricePeriod || "");
     const image = escapeAttribute(getMainImage(item));
-    const status = item.status === "sold" ? "❌ Продано" : "✅ Активне";
+  const status = item.status === "sold"
+  ? (item.dealType === "rent" ? "❌ Здано" : "❌ Продано")
+  : "✅ Активне";
     const views = Number(item.views || 0);
     
 const dealName = escapeHtml(getDealTypeName(item.dealType));
