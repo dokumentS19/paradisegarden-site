@@ -606,9 +606,13 @@ function createObjectCard(item) {
         <div class="card-img">
           <img src="${image}" alt="${title}" loading="lazy">
 
-          <div class="status-badge">
-            ${isSold ? "❌ Продано" : "✅ Активне"}
-          </div>
+         <div class="status-badge">
+  ${
+    isSold
+      ? (item.dealType === "rent" ? "❌ Здано" : "❌ Продано")
+      : "✅ Активне"
+  }
+</div>
         </div>
 
         <div class="card-body">
